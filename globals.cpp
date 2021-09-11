@@ -16,3 +16,5 @@ string Globals::clipOffDataHeader(string data) {
 	}
 	return data;
 }
+
+SDL_Rect Globals::camera;

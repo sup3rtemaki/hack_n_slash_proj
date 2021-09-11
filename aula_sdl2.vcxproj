@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="animationSet.cpp" />
+    <ClCompile Include="cameraController.cpp" />
     <ClCompile Include="cleanup.cpp" />
     <ClCompile Include="drawing_functions.cpp" />
     <ClCompile Include="entity.cpp" />
@@ -172,6 +173,7 @@
   <ItemGroup>
     <ClInclude Include="animation.h" />
     <ClInclude Include="animationSet.h" />
+    <ClInclude Include="cameraController.h" />
     <ClInclude Include="cleanup.h" />
     <ClInclude Include="dataGroupType.h" />
     <ClInclude Include="drawing_functions.h" />

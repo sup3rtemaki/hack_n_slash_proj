@@ -22,6 +22,9 @@ public:
 
 	//clips off header
 	static string clipOffDataHeader(string data);
+
+	//camera
+	static SDL_Rect camera;
 };
 
 #endif // !GLOBALS
