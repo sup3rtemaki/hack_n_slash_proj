@@ -87,11 +87,12 @@ void Entity::updateCollisions() {
 		
 		list<Entity*> collisions; //list of potential collisions
 
+		//broad phase
 		//if we collide with this entity
 		for (auto entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
 			
 			if ((*entity)->active &&
-				(*entity)->type != this->type &&
+				//(*entity)->type != this->type && //add this line if thing of same type cant collide
 				(*entity)->solid &&
 				Entity::checkCollision(collisionBox, (*entity)->collisionBox)) {
 
@@ -102,86 +103,157 @@ void Entity::updateCollisions() {
 		if (collisions.size() > 0) {
 			updateCollisionBox();
 
-			//multisample check for collisions
-			//find the sample distance we should travel between checks
-			float boxTravelSize = 0;
-			if (collisionBox.w < collisionBox.h) {
-				boxTravelSize = collisionBox.w / 4;
-			}
-			else {
-				boxTravelSize = collisionBox.h / 4;
-			}
+			float collisionTime = 1; //1 = no collision
+			float normalX, normalY; //wich side we collide into stuff
 
-			// use sampleBox to check for collisions from start point to end point
-			SDL_Rect sampleBox = lastCollisionBox;
-			float collisionMoveX = sampleBox.x, collisionMoveY = sampleBox.y;
-			float movementAngle = Entity::angleBetweenTwoRects(lastCollisionBox, collisionBox);
-			bool foundCollision = false;
-			while (!foundCollision) {
-				//check samplebox for collisions where it is now
-				SDL_Rect intersection;
-				for (auto entity = collisions.begin(); entity != collisions.end(); entity++) {
-					if (SDL_IntersectRect(&sampleBox, &(*entity)->collisionBox, &intersection)) {
-						moveSpeed = 0;
-						moving = false;
-						foundCollision = true;
-						slideAngle = angleBetweenTwoEntities((*entity), this);
+			//collision before we try to move
+			SDL_Rect startingCollisionBox = lastCollisionBox;
 
-						//intersecting a entity, need to do collision resolution
-						if (intersection.w < intersection.h) {
-							if (lastCollisionBox.x + lastCollisionBox.w / 2 < (*entity)->collisionBox.x + (*entity)->collisionBox.w / 2) {
-								sampleBox.x -= intersection.w; // started on left, so move left out of collision
-							}
-							else {
-								sampleBox.x += intersection.w; // started on right, so move right out of collision
-							}
-						}
-						else {
-							if (lastCollisionBox.y + lastCollisionBox.h / 2 < (*entity)->collisionBox.y + (*entity)->collisionBox.h / 2) {
-								sampleBox.y -= intersection.h; // started on top, so move up out of collision
-							}
-							else {
-								sampleBox.y += intersection.h; // started on bottom, so move down out of collision
-							}
-						}
-					}
-				}
+			//loop through entities that are in the list from broad phase
+			for (auto entity = collisions.begin(); entity != collisions.end(); entity++) {
+				//temp var for normal x and y and temp collisionTime
+				float tmpNormalX, tmpNormalY;
+				float tmpCollisionTime = SweptAABB(startingCollisionBox, totalXMove, totalYMove, (*entity)->collisionBox, tmpNormalX, tmpNormalY);
 
-				//if collisionsfound or sampleBox is at same place as collisionBox, exit loop
-				if (foundCollision || (sampleBox.x == collisionBox.x && sampleBox.y == collisionBox.y)) {
-					break;
-				}
-
-				//move sample box up to check the next spot
-				if (distanceBetweenTwoRects(sampleBox, collisionBox) > boxTravelSize) {
-					movementAngle = Entity::angleBetweenTwoRects(sampleBox, collisionBox);
-					float xMove = boxTravelSize * (cos(movementAngle * Globals::PI / 180));
-					float yMove = boxTravelSize * (sin(movementAngle * Globals::PI / 180));
-
-					//fix for float values below 1
-					collisionMoveX += xMove;
-					collisionMoveY += yMove;
-					sampleBox.x = collisionMoveX;
-					sampleBox.y = collisionMoveY;
-				}
-				else {
-					sampleBox = collisionBox;
+				//tmpCollisionTime < lastCollisionTime, use it instead
+				if (tmpCollisionTime < collisionTime) {
+					collisionTime = tmpCollisionTime;
+					normalX = tmpNormalX;
+					normalY = tmpNormalY;
 				}
 			}
 
-			if (foundCollision) {
-				//move our entity to where the sampleBox ended
-				slideAmount = slideAmount / 2;
-				x = sampleBox.x + sampleBox.w / 2;
-				y = sampleBox.y - collisionBoxYOffset;
-			}
+			//if there was a collision, slide off of it
+			if (collisionTime < 1.0f) {
+				//if die on solids, run ctash function
+				if (dieOnSolids) {
+					crashOntoSolid();
+				}
 
-			updateCollisionBox();
+				//move our collisionBox position to where we collided
+				startingCollisionBox.x += totalXMove * collisionTime;
+				startingCollisionBox.y += totalYMove * collisionTime;
+
+				//how much move time was remaining
+				float remainingTime = 1.0f - collisionTime;
+
+				//update entities x and y to here we bumped into other entity
+				x = startingCollisionBox.x + startingCollisionBox.w / 2;
+				y = startingCollisionBox.y - collisionBoxYOffset;
+
+				//collision response: slide
+				//work out dotProduct using remainingTime
+				float dotProd = (totalXMove * normalY + totalYMove * normalX) * remainingTime;
+				totalXMove = dotProd * normalY;
+				totalYMove = dotProd * normalX;
+				x += totalXMove;
+				y += totalYMove;
+
+				//store coliisionbox at this point
+				lastCollisionBox = startingCollisionBox;
+
+				//update entities main collisionbox
+				updateCollisionBox();
+
+				//sliding may have bumped into other objects: run function again
+				updateCollisions();
+			}
 		}
 	}
 }
 
 // help functions
+//return type: gives 0 -1 depending on where collision is. 1 = no collision, 0 = collide immediately, 0.5 = halfway through, etc
+//params: movingBox = entity being checked
+//		vx, vy = velocities moving box is moving
+//		otherbox = other entities collision box we may collide
+//		normalX, normalY = wich side of otherbox we collided with (pass by reference)
+float Entity::SweptAABB(SDL_Rect movingBox, float vx, float vy, SDL_Rect otherBox, float& normalX, float& normalY) {
+	float xInvEntry, yInvEntry;
+	float xInvExit, yInvExit;
+
+	//find distance between objects on near and far sides fot x and y
+	if (vx > 0.0f) {
+		xInvEntry = otherBox.x - (movingBox.x + movingBox.w);
+		xInvExit = (otherBox.x + otherBox.w) - movingBox.x;
+	}
+	else {
+		xInvEntry = (otherBox.x + otherBox.w) - movingBox.x;
+		xInvExit = otherBox.x - (movingBox.x + movingBox.w);
+	}
+
+	if (vy > 0.0f) {
+		yInvEntry = otherBox.y - (movingBox.y + movingBox.h);
+		yInvExit = (otherBox.y + otherBox.h) - movingBox.y;
+	}
+	else {
+		yInvEntry = (otherBox.y + otherBox.h) - movingBox.y;
+		yInvExit = otherBox.y - (movingBox.y + movingBox.h); 
+	}
+
+	//find time of collision and time of leaving for each axis
+	float xEntry, yEntry;
+	float xExit, yExit;
+
+	if (vx == 0.0f) {
+		xEntry = -std::numeric_limits<float>::infinity();
+		xExit = std::numeric_limits<float>::infinity();
+	}
+	else {
+		xEntry = xInvEntry / vx;
+		xExit = xInvExit / vx;
+	}
+
+	if (vy == 0.0f) {
+		yEntry = -std::numeric_limits<float>::infinity();
+		yExit = std::numeric_limits<float>::infinity();
+	}
+	else {
+		yEntry = yInvEntry / vy;
+		yExit = yInvExit / vy;
+	}
+
+	//find the earliest/latest times of collision
+	float entryTime = std::max(xEntry, yEntry);
+	float exitTime = std::min(xExit, yExit);
+
+	//if there was no collision
+	if (entryTime > exitTime || xEntry < 0.0f && yEntry < 0.0f || xEntry > 1.0f || yEntry > 1.0f) {
+		normalX = 0.0f;
+		normalY = 0.0f;
+		return 1.0f;
+	}
+	else {
+		//there was a collision
+		//work out wich sides/normal of otherbox we hit
+		if (xEntry > yEntry) {
+			//we hit on x axis
+			if (xInvEntry < 0.0f) {
+				normalX = 1;//hit right
+				normalY = 0;//not hit top or bottom of otherbox
+			}
+			else {
+				normalX = -1;//hit left
+				normalY = 0;//not hit top or bottom of otherbox
+			}
+		}
+		else {
+			//we hit on y axis
+			if (yInvEntry < 0.0f) {
+				normalX = 0;
+				normalY = 1;
+			}
+			else {
+				normalX = 0;
+				normalY = -1;
+			}
+		}
+
+		//return the time of collision (0 - 1)
+		return entryTime;
+	}
+}
+
 float Entity::distanceBetweenTwoRects(SDL_Rect& r1, SDL_Rect& r2) {
 	SDL_Point e1, e2;
 
@@ -197,6 +269,11 @@ float Entity::distanceBetweenTwoRects(SDL_Rect& r1, SDL_Rect& r2) {
 
 float Entity::distanceBetweenTwoEntities(Entity* e1, Entity* e2) {
 	float d = abs(sqrt(pow(e2->x - e1->x, 2) + pow(e2->y - e1->y, 2)));
+	return d;
+}
+
+float Entity::distaceBettweenTwoPoints(float cx1, float cy1, float cx2, float cy2) {
+	float d = abs(sqrt(pow(cx2 - cx1, 2) + pow(cy2 - cy1, 2)));
 	return d;
 }
 
