@@ -52,6 +52,9 @@ Game::Game() {
 	globAnimSet = new AnimationSet();
 	globAnimSet->loadAnimationSet("glob.fdset", dataGroupTypes, true, 0, true);
 
+	grobAnimSet = new AnimationSet();
+	grobAnimSet->loadAnimationSet("grob.fdset", dataGroupTypes, true, 0, true);
+
 	wallAnimSet = new AnimationSet();
 	wallAnimSet->loadAnimationSet("wall.fdset", dataGroupTypes);
 
@@ -123,6 +126,7 @@ Game::~Game() {
 	Entity::removeAllFromList(&Entity::entities, false);
 	delete heroAnimSet;
 	delete globAnimSet;
+	delete grobAnimSet;
 	delete wallAnimSet;
 	delete hero;
 	Entity::removeAllFromList(&walls, true);
@@ -174,6 +178,7 @@ void Game::update() {
 						overlayTimer = 2;
 
 						Glob::globsKilled = 0;
+						Grob::grobsKilled = 0;
 
 						if (scoreTexture != NULL) {
 							cleanup(scoreTexture);
@@ -213,12 +218,24 @@ void Game::update() {
 			}
 			enemyBuildTimer -= TimeController::timeController.dT;
 			if (enemyBuildTimer <= 0 && enemiesBuilt < enemiesToBuild && enemies.size() < 10) {
-				Glob* enemy = new Glob(globAnimSet);
-				enemy->x = getRandomNumber(Globals::ScreenWidth - (2 * 32) - 32) + 32 + 16;
-				enemy->y = getRandomNumber(Globals::ScreenHeight - (2 * 32) - 32) + 32 + 16;
-				enemy->invincibleTimer = 0.1;
-				enemies.push_back(enemy);
-				Entity::entities.push_back(enemy);
+				float grobChance = getRandomNumber(10);
+
+				if (grobChance < 3) {
+					Grob* enemy = new Grob(grobAnimSet);
+					enemy->x = getRandomNumber(Globals::ScreenWidth - (2 * 32) - 32) + 32 + 16;
+					enemy->y = getRandomNumber(Globals::ScreenHeight - (2 * 32) - 32) + 32 + 16;
+					enemy->invincibleTimer = 0.1;
+					enemies.push_back(enemy);
+					Entity::entities.push_back(enemy);
+				}
+				else {
+					Glob* enemy = new Glob(globAnimSet);
+					enemy->x = getRandomNumber(Globals::ScreenWidth - (2 * 32) - 32) + 32 + 16;
+					enemy->y = getRandomNumber(Globals::ScreenHeight - (2 * 32) - 32) + 32 + 16;
+					enemy->invincibleTimer = 0.1;
+					enemies.push_back(enemy);
+					Entity::entities.push_back(enemy);
+				}
 			}
 		}
 
@@ -256,7 +273,7 @@ void Game::draw() {
 				SDL_Color color = { 255, 255, 255, 255 };
 
 				stringstream ss;
-				ss << "Enemies dispatched: " << Glob::globsKilled;
+				ss << "Enemies dispatched: " << Glob::globsKilled + Grob::grobsKilled;
 
 				string resPath = getResourcePath();
 				scoreTexture = renderText(ss.str(), resPath + "vermin_vibes_1989.ttf", color, 30, Globals::renderer);

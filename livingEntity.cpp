@@ -45,7 +45,7 @@ void LivingEntity::draw() {
 		SDL_SetRenderDrawColor(Globals::renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 		SDL_RenderDrawRect(Globals::renderer, &collisionBox);
 
-		SDL_SetRenderDrawColor(Globals::renderer, 255, 0, 255, SDL_ALPHA_OPAQUE);
+		SDL_SetRenderDrawColor(Globals::renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
 		SDL_RenderDrawRect(Globals::renderer, &hitBox);
 	}
 }

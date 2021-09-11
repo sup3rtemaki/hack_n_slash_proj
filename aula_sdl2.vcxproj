@@ -157,6 +157,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="glob.cpp" />
     <ClCompile Include="globals.cpp" />
+    <ClCompile Include="grob.cpp" />
     <ClCompile Include="groupBuilder.cpp" />
     <ClCompile Include="hero.cpp" />
     <ClCompile Include="keyboardInput.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="glob.h" />
     <ClInclude Include="globals.h" />
+    <ClInclude Include="grob.h" />
     <ClInclude Include="group.h" />
     <ClInclude Include="groupBox.h" />
     <ClInclude Include="groupBuilder.h" />

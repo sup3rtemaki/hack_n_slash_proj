@@ -220,6 +220,10 @@ void Hero::updateDamages() {
 		for (auto entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
 			if ((*entity)->active && (*entity)->type == "enemy") {
 				LivingEntity* enemy = (LivingEntity*)(*entity); //enemies are living entites
+
+				/*if ((*entity)->animSet->imageName == "grob.png"){
+
+				}*/
 				
 				if (enemy->damage > 0 && Entity::checkCollision(collisionBox, enemy->hitBox)) {
 					hp -= enemy->damage;
