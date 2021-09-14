@@ -1,0 +1,2 @@
+D:\Workspaces\Cpp\aula_sdl2\Debug\aula_sdl2.exe
+D:\Workspaces\Cpp\aula_sdl2\Debug\aula_sdl2.pdb

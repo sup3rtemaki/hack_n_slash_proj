@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="animationSet.cpp" />
+    <ClCompile Include="bullet.cpp" />
     <ClCompile Include="cameraController.cpp" />
     <ClCompile Include="cleanup.cpp" />
     <ClCompile Include="drawing_functions.cpp" />
@@ -161,11 +162,13 @@
     <ClCompile Include="grob.cpp" />
     <ClCompile Include="groupBuilder.cpp" />
     <ClCompile Include="hero.cpp" />
+    <ClCompile Include="hpBar.cpp" />
     <ClCompile Include="keyboardInput.cpp" />
     <ClCompile Include="livingEntity.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="randomNumber.cpp" />
     <ClCompile Include="res_path.cpp" />
+    <ClCompile Include="roundKing.cpp" />
     <ClCompile Include="soundManager.cpp" />
     <ClCompile Include="timeController.cpp" />
     <ClCompile Include="wall.cpp" />
@@ -173,6 +176,7 @@
   <ItemGroup>
     <ClInclude Include="animation.h" />
     <ClInclude Include="animationSet.h" />
+    <ClInclude Include="bullet.h" />
     <ClInclude Include="cameraController.h" />
     <ClInclude Include="cleanup.h" />
     <ClInclude Include="dataGroupType.h" />
@@ -190,10 +194,12 @@
     <ClInclude Include="groupPosition.h" />
     <ClInclude Include="groupString.h" />
     <ClInclude Include="hero.h" />
+    <ClInclude Include="hpBar.h" />
     <ClInclude Include="keyboardInput.h" />
     <ClInclude Include="livingEntity.h" />
     <ClInclude Include="randomNumber.h" />
     <ClInclude Include="res_path.h" />
+    <ClInclude Include="roundKing.h" />
     <ClInclude Include="soundManager.h" />
     <ClInclude Include="timeController.h" />
     <ClInclude Include="wall.h" />
