@@ -1,4 +1,8 @@
 #include "game.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
 
 Game::Game() {
 	string resPath = getResourcePath();
@@ -87,43 +91,72 @@ Game::Game() {
 	//get camera to follow hero
 	camController.target = hero;
 
-	// build the walls
+	// build the outer walls
 	int tileSize = 32;
 
-	for (int i = 0; i < Globals::ScreenWidth / tileSize; i++) {
+	for(int i = 0; i < 1028 / tileSize; i++) {
 		// top walls
 		Wall* newWall = new Wall(wallAnimSet);
-		newWall->x = i * tileSize + tileSize / 2;
+		newWall->x = i * tileSize + tileSize; /// 2;
 		newWall->y = tileSize / 2;
 		walls.push_back(newWall);
 		Entity::entities.push_back(newWall);
 
 		// bottom walls
 		newWall = new Wall(wallAnimSet); // reusing the pointer
-		newWall->x = i * tileSize + tileSize / 2;
-		newWall->y = Globals::ScreenHeight - tileSize / 2;
+		newWall->x = i * tileSize + tileSize; /// 2;
+		newWall->y = 1028 - tileSize; /// 2;
 		walls.push_back(newWall);
 		Entity::entities.push_back(newWall);
 	}
 
-	for (int i = 1; i < Globals::ScreenHeight / tileSize - 1; i++) {
+	for (int i = 0; i < 1028 / tileSize; i++) {
 		// left walls
 		Wall* newWall = new Wall(wallAnimSet);
 		newWall->x = tileSize / 2;
-		newWall->y = i * tileSize + tileSize / 2;
+		newWall->y = i * tileSize + tileSize; /// 2;
 		walls.push_back(newWall);
 		Entity::entities.push_back(newWall);
 
 		// right walls
 		newWall = new Wall(wallAnimSet); // reusing the pointer
-		newWall->x = Globals::ScreenWidth - tileSize / 2;
-		newWall->y = i * tileSize + tileSize / 2;
+		newWall->x = 1028 - tileSize; /// 2;
+		newWall->y = i * tileSize + tileSize; /// 2;
 		walls.push_back(newWall);
 		Entity::entities.push_back(newWall);
 	}
 
 	buildBossNext = false;
 	bossActive = false;
+
+	//build walls based on wall map
+	string line;
+	string s;
+	int yPos = 35;
+	ifstream myfile(resPath + "wallMap.txt");
+	if (myfile.is_open()){
+		while (getline(myfile, line)){
+			std::string::size_type pos = line.find('x');
+			s = line.substr(0, pos);
+
+			for (int i = 0; i < s.length(); i++) {
+				if (s[i] == '1') {
+					//teste
+					Wall* newWall = new Wall(wallAnimSet);
+					newWall->x = i * 32;
+					newWall->y = yPos;
+					walls.push_back(newWall);
+					Entity::entities.push_back(newWall);
+				}
+			}
+
+			yPos += 16;
+		}
+
+		myfile.close();
+	}
+
+	else cout << "Unable to open file";
 
 	//setup hpbars position
 	heroHpBar.x = 10;
@@ -133,12 +166,7 @@ Game::Game() {
 	bossHpBar.x = Globals::ScreenWidth / 2.0f - (bossHpBar.barWidth / 2.0f); // centered horizontally
 	bossHpBar.y = Globals::ScreenHeight - bossHpBar.barHeight - 20; // 20 pixels off the bottom
 
-	////teste
-	//Wall* newWall = new Wall(wallAnimSet);
-	//newWall->x = Globals::ScreenWidth / 4;
-	//newWall->y = Globals::ScreenHeight / 2;
-	//walls.push_back(newWall);
-	//Entity::entities.push_back(newWall);
+	
 }
 
 Game::~Game() {
@@ -204,7 +232,7 @@ void Game::update() {
 
 					if (overlayTimer <= 0 && hero->hp < 1) {
 						//cleanup and restart game
-						enemiesToBuild = 2;
+						enemiesToBuild = 6;
 						enemiesBuilt = 0;
 						enemyBuildTimer = 3;
 						overlayTimer = 2;
@@ -249,7 +277,7 @@ void Game::update() {
 		//spawn enemies
 		if (hero->hp > 0 && !splashShowing) {
 			if (enemiesToBuild == enemiesBuilt && enemies.size() <= 0) {
-				enemiesToBuild = enemiesToBuild + 2;
+				enemiesToBuild = enemiesToBuild + 6;
 				enemiesBuilt = 0;
 				enemyBuildTimer = 4;
 				enemyWavesTillBoss--;
@@ -265,8 +293,8 @@ void Game::update() {
 
 				if (grobChance < 3) {
 					Grob* enemy = new Grob(grobAnimSet);
-					enemy->x = getRandomNumber(Globals::ScreenWidth - (2 * 32) - 32) + 32 + 16;
-					enemy->y = getRandomNumber(Globals::ScreenHeight - (2 * 32) - 32) + 32 + 16;
+					enemy->x = getRandomNumber((Globals::ScreenWidth) - (2 * 32) - 32) + 32 + 16;
+					enemy->y = getRandomNumber((Globals::ScreenHeight) - (2 * 32) - 32) + 32 + 16;
 					enemy->invincibleTimer = 0.1;
 					enemies.push_back(enemy);
 					Entity::entities.push_back(enemy);
@@ -275,8 +303,8 @@ void Game::update() {
 				}
 				else {
 					Glob* enemy = new Glob(globAnimSet);
-					enemy->x = getRandomNumber(Globals::ScreenWidth - (2 * 32) - 32) + 32 + 16;
-					enemy->y = getRandomNumber(Globals::ScreenHeight - (2 * 32) - 32) + 32 + 16;
+					enemy->x = getRandomNumber((Globals::ScreenWidth) - (2 * 32) - 32) + 32 + 16;
+					enemy->y = getRandomNumber((Globals::ScreenHeight) - (2 * 32) - 32) + 32 + 16;
 					enemy->invincibleTimer = 0.1;
 					enemies.push_back(enemy);
 					Entity::entities.push_back(enemy);

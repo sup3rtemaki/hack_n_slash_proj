@@ -49,7 +49,8 @@ void Entity::updateMovement() {
 			totalYMove = yMove;
 
 			if (!moving) {
-				moveSpeed -= moveDist;
+				//moveSpeed -= moveDist;
+				moveSpeed -= moveDist * 3.0f;
 			}
 		}
 	}
@@ -65,7 +66,7 @@ void Entity::updateMovement() {
 
 			totalXMove += xMove;
 			totalYMove += yMove;
-			slideAmount -= slideDist;
+			slideAmount -= slideDist * 2;
 		}
 		else {
 			slideAmount = 0;

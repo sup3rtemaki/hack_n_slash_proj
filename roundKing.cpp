@@ -28,8 +28,8 @@ RoundKing::RoundKing(AnimationSet* animSet, AnimationSet* bulletAnimSet) {
 	this->animSet = animSet;
 	this->bulletAnimSet = bulletAnimSet;
 	type = "enemy";
-	x = Globals::ScreenWidth / 2;
-	y = Globals::ScreenHeight / 2;
+	x = Globals::ScreenWidth - 32;
+	y = Globals::ScreenHeight - 32;
 	moveSpeed = 0;
 	moveSpeedMax = 20;
 	hp = hpMax = 500;
