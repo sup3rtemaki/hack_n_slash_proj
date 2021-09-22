@@ -6,7 +6,7 @@ using namespace std;
 
 Game::Game() {
 	string resPath = getResourcePath();
-	backGroundImage = loadTexture(resPath + "map.png", Globals::renderer);
+	backGroundImage = loadTexture(resPath + "map1.png", Globals::renderer);
 	splashImage = loadTexture(resPath + "cyborgtitle.png", Globals::renderer);
 	overlayImage = loadTexture(resPath + "overlay.png", Globals::renderer);
 
@@ -94,37 +94,37 @@ Game::Game() {
 	// build the outer walls
 	int tileSize = 32;
 
-	for(int i = 0; i < 1028 / tileSize; i++) {
-		// top walls
-		Wall* newWall = new Wall(wallAnimSet);
-		newWall->x = i * tileSize + tileSize; /// 2;
-		newWall->y = tileSize / 2;
-		walls.push_back(newWall);
-		Entity::entities.push_back(newWall);
+	//for(int i = 0; i < 1028 / tileSize; i++) {
+	//	// top walls
+	//	Wall* newWall = new Wall(wallAnimSet);
+	//	newWall->x = i * tileSize + tileSize; /// 2;
+	//	newWall->y = tileSize / 2;
+	//	walls.push_back(newWall);
+	//	Entity::entities.push_back(newWall);
 
-		// bottom walls
-		newWall = new Wall(wallAnimSet); // reusing the pointer
-		newWall->x = i * tileSize + tileSize; /// 2;
-		newWall->y = 1028 - tileSize; /// 2;
-		walls.push_back(newWall);
-		Entity::entities.push_back(newWall);
-	}
+	//	// bottom walls
+	//	newWall = new Wall(wallAnimSet); // reusing the pointer
+	//	newWall->x = i * tileSize + tileSize; /// 2;
+	//	newWall->y = 1028 - tileSize; /// 2;
+	//	walls.push_back(newWall);
+	//	Entity::entities.push_back(newWall);
+	//}
 
-	for (int i = 0; i < 1028 / tileSize; i++) {
-		// left walls
-		Wall* newWall = new Wall(wallAnimSet);
-		newWall->x = tileSize / 2;
-		newWall->y = i * tileSize + tileSize; /// 2;
-		walls.push_back(newWall);
-		Entity::entities.push_back(newWall);
+	//for (int i = 0; i < 1028 / tileSize; i++) {
+	//	// left walls
+	//	Wall* newWall = new Wall(wallAnimSet);
+	//	newWall->x = tileSize / 2;
+	//	newWall->y = i * tileSize + tileSize; /// 2;
+	//	walls.push_back(newWall);
+	//	Entity::entities.push_back(newWall);
 
-		// right walls
-		newWall = new Wall(wallAnimSet); // reusing the pointer
-		newWall->x = 1028 - tileSize; /// 2;
-		newWall->y = i * tileSize + tileSize; /// 2;
-		walls.push_back(newWall);
-		Entity::entities.push_back(newWall);
-	}
+	//	// right walls
+	//	newWall = new Wall(wallAnimSet); // reusing the pointer
+	//	newWall->x = 1028 - tileSize; /// 2;
+	//	newWall->y = i * tileSize + tileSize; /// 2;
+	//	walls.push_back(newWall);
+	//	Entity::entities.push_back(newWall);
+	//}
 
 	buildBossNext = false;
 	bossActive = false;
@@ -132,7 +132,7 @@ Game::Game() {
 	//build walls based on wall map
 	string line;
 	string s;
-	int yPos = 35;
+	int yPos = 0;
 	ifstream myfile(resPath + "wallMap.txt");
 	if (myfile.is_open()){
 		while (getline(myfile, line)){
@@ -143,14 +143,14 @@ Game::Game() {
 				if (s[i] == '1') {
 					//teste
 					Wall* newWall = new Wall(wallAnimSet);
-					newWall->x = i * 32;
+					newWall->x = i * 32 + 16;
 					newWall->y = yPos;
 					walls.push_back(newWall);
 					Entity::entities.push_back(newWall);
 				}
 			}
 
-			yPos += 16;
+			yPos += 32;
 		}
 
 		myfile.close();
