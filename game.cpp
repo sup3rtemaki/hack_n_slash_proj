@@ -1,11 +1,47 @@
 #include "game.h"
+#include "tinyxml2.h"
 #include <iostream>
 #include <fstream>
 #include <string>
+#define MAP1_X 1025
+#define MAP1_Y 0
+#define MAP_DISTANCE 300
+
 using namespace std;
 
 Game::Game() {
 	string resPath = getResourcePath();
+
+	//tinyxml2::XMLDocument doc;
+	//doc.LoadFile("mapsPositions.xml");
+	//tinyxml2::XMLText* textNode = doc.FirstChildElement("maps")->FirstChildElement("map")->FirstChild()->ToText();
+	//const char* title = textNode->Value();
+	//printf("Name of play (2): %s\n", title);
+
+	tinyxml2::XMLDocument xml_doc;
+
+	tinyxml2::XMLError eResult = xml_doc.LoadFile("mapsPositions.xml");
+
+	tinyxml2::XMLNode* root = xml_doc.FirstChildElement("maps");
+
+	tinyxml2::XMLElement* element = root->FirstChildElement("map");
+
+	//TODO Implement dynamic map render
+	/*
+	* 00000
+	* 01110
+	* 01x10
+	* 01110
+	* 00000
+	* 
+	* Based on distance to the player: If map is location is < distance render map
+	* else discard/unrender map
+	* 
+	* 0 - map NOT to render
+	* 1 - map to render
+	* x - map where player is
+	*/
+	map = 0;
 	backGroundImage = loadTexture(resPath + "map1.png", Globals::renderer);
 	splashImage = loadTexture(resPath + "cyborgtitle.png", Globals::renderer);
 	overlayImage = loadTexture(resPath + "overlay.png", Globals::renderer);
@@ -78,7 +114,6 @@ Game::Game() {
 	bulletAnimSet = new AnimationSet();
 	bulletAnimSet->loadAnimationSet("bullet.fdset", dataGroupTypes, true, 0, true);
 
-
 	// build hero entity
 	hero = new Hero(heroAnimSet);
 	hero->invincibleTimer = 0;
@@ -130,33 +165,33 @@ Game::Game() {
 	bossActive = false;
 
 	//build walls based on wall map
-	string line;
-	string s;
-	int yPos = 0;
-	ifstream myfile(resPath + "wallMap.txt");
-	if (myfile.is_open()){
-		while (getline(myfile, line)){
-			std::string::size_type pos = line.find('x');
-			s = line.substr(0, pos);
+	//string line;
+	//string s;
+	//int yPos = 0;
+	//ifstream myfile(resPath + "wallMap.txt");
+	//if (myfile.is_open()){
+	//	while (getline(myfile, line)){
+	//		std::string::size_type pos = line.find('x');
+	//		s = line.substr(0, pos);
 
-			for (int i = 0; i < s.length(); i++) {
-				if (s[i] == '1') {
-					//teste
-					Wall* newWall = new Wall(wallAnimSet);
-					newWall->x = i * 32 + 16;
-					newWall->y = yPos;
-					walls.push_back(newWall);
-					Entity::entities.push_back(newWall);
-				}
-			}
+	//		for (int i = 0; i < s.length(); i++) {
+	//			if (s[i] == '1') {
+	//				//teste
+	//				Wall* newWall = new Wall(wallAnimSet);
+	//				newWall->x = i * 32 + 16;
+	//				newWall->y = yPos;
+	//				walls.push_back(newWall);
+	//				Entity::entities.push_back(newWall);
+	//			}
+	//		}
 
-			yPos += 32;
-		}
+	//		yPos += 32;
+	//	}
 
-		myfile.close();
-	}
+	//	myfile.close();
+	//}
 
-	else cout << "Unable to open file";
+	//else cout << "Unable to open file";
 
 	//setup hpbars position
 	heroHpBar.x = 10;
@@ -165,12 +200,11 @@ Game::Game() {
 	heroHpBar.barWidth = 100;
 	bossHpBar.x = Globals::ScreenWidth / 2.0f - (bossHpBar.barWidth / 2.0f); // centered horizontally
 	bossHpBar.y = Globals::ScreenHeight - bossHpBar.barHeight - 20; // 20 pixels off the bottom
-
-	
 }
 
 Game::~Game() {
 	cleanup(backGroundImage);
+	cleanup(backGroundImage2);
 	cleanup(splashImage);
 	cleanup(overlayImage);
 
@@ -356,8 +390,25 @@ void Game::draw() {
 	}
 	else {
 
-		// draw backgorund
+		// draw background
 		renderTexture(backGroundImage, Globals::renderer, 0 - Globals::camera.x, 0 - Globals::camera.y);
+
+		if (sqrt(pow(MAP1_X - hero->x, 2) + pow(MAP1_Y - hero->y, 2)) < MAP_DISTANCE) {
+			backGroundImage2 = loadTexture(getResourcePath() + "map.png", Globals::renderer);
+			renderTexture(backGroundImage2, Globals::renderer, MAP1_X - Globals::camera.x, MAP1_Y - Globals::camera.y);
+		}
+		else {
+			cleanup(backGroundImage2);
+		}
+		
+		//renderTexture(backGroundImage, Globals::renderer, 1024 - Globals::camera.x, -1024 - Globals::camera.y);
+		//renderTexture(backGroundImage, Globals::renderer, -1024 - Globals::camera.x, 1024 - Globals::camera.y);
+		//renderTexture(backGroundImage, Globals::renderer, -1024 - Globals::camera.x, 0 - Globals::camera.y);
+		//renderTexture(backGroundImage, Globals::renderer, 0 - Globals::camera.x, -1024 - Globals::camera.y);
+		//renderTexture(backGroundImage, Globals::renderer, -1024 - Globals::camera.x, -1024 - Globals::camera.y);
+		//renderTexture(backGroundImage, Globals::renderer, 1024 - Globals::camera.x, 0 - Globals::camera.y);
+		//renderTexture(backGroundImage, Globals::renderer, 0 - Globals::camera.x, 1024 - Globals::camera.y);
+		//renderTexture(backGroundImage, Globals::renderer, 1024 - Globals::camera.x, 1024 - Globals::camera.y);
 
 		// sort all entities based on y (depth)
 		Entity::entities.sort(Entity::EntityCompare);

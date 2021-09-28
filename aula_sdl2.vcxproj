@@ -171,6 +171,7 @@
     <ClCompile Include="roundKing.cpp" />
     <ClCompile Include="soundManager.cpp" />
     <ClCompile Include="timeController.cpp" />
+    <ClCompile Include="tinyxml2.cpp" />
     <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +203,7 @@
     <ClInclude Include="roundKing.h" />
     <ClInclude Include="soundManager.h" />
     <ClInclude Include="timeController.h" />
+    <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

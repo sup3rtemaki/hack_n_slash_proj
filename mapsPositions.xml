@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<maps>
+  <map>
+    <name>"map.png"</name>
+    <pos_x>1025</pos_x>
+    <pos_y>0</pos_y>
+    <map_n></map_n>
+    <map_nw></map_nw>
+    <map_w></map_w>
+    <map_sw></map_sw>
+    <map_s></map_s>
+    <map_se></map_se>
+    <map_e></map_e>
+    <map_ne></map_ne>
+  </map>
+</maps>

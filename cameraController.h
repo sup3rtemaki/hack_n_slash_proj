@@ -7,7 +7,7 @@
 class CameraController {
 public:
 	Entity* target = NULL;
-	float lerp = 2.6f;
+	float lerp = 5.0f;
 
 	void update();
 };

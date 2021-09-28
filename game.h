@@ -25,6 +25,7 @@ public:
 	AnimationSet* bulletAnimSet;
 
 	SDL_Texture* backGroundImage;
+	SDL_Texture* backGroundImage2;
 	SDL_Texture* splashImage;
 	SDL_Texture* overlayImage;
 
@@ -45,6 +46,8 @@ public:
 
 	bool splashShowing;
 	float overlayTimer;
+
+	int map;
 
 	CameraController camController;
 
