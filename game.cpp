@@ -1,5 +1,6 @@
 #include "game.h"
 #include "tinyxml2.h"
+#include "map.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -20,11 +21,54 @@ Game::Game() {
 
 	tinyxml2::XMLDocument xml_doc;
 
-	tinyxml2::XMLError eResult = xml_doc.LoadFile("mapsPositions.xml");
+	tinyxml2::XMLError mResult = xml_doc.LoadFile("mapsPositions.xml");
 
-	tinyxml2::XMLNode* root = xml_doc.FirstChildElement("maps");
+	if (mResult == tinyxml2::XML_SUCCESS) {
+		tinyxml2::XMLNode* root = xml_doc.FirstChildElement("maps");
+		tinyxml2::XMLElement* element = root->FirstChildElement("map_count");
 
-	tinyxml2::XMLElement* element = root->FirstChildElement("map");
+		int xml_count;
+		mResult = element->QueryIntText(&xml_count);
+		cout << element->GetText();
+
+		Map* maps;
+		list<Map*> mapList;
+
+		element = root->FirstChildElement("map");
+		int i = 0;
+
+		//TODO Descomentar e implementar recuperacao de mapas do XML para classe Map
+		//while (element != nullptr && i < xml_count)
+		//{
+		//	tinyxml2::XMLElement* item = element->FirstChildElement("idEmpleado");
+		//	int id;
+		//	mResult = item->QueryIntText(&id);
+		//	//XMLCheckResult(eResult);
+
+		//	item = element->FirstChildElement("nombre");
+		//	string nombre = item->GetText();
+
+		//	item = element->FirstChildElement("apellidos");
+		//	string apellidos = item->GetText();
+
+		//	m = Empleado();
+		//	e.id = id;
+		//	e.nombre = nombre;
+		//	e.apellidos = apellidos;
+		//	empleados[i] = e;
+
+		//	element = element->NextSiblingElement("empleado");
+		//	i++;
+		//}
+
+		/*const char* text = element->GetText();
+		cout << text;*/
+	}
+	else {
+		cout << "Error opening XML";
+	}
+
+	
 
 	//TODO Implement dynamic map render
 	/*

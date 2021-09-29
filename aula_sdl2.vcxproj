@@ -166,6 +166,7 @@
     <ClCompile Include="keyboardInput.cpp" />
     <ClCompile Include="livingEntity.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="map.cpp" />
     <ClCompile Include="randomNumber.cpp" />
     <ClCompile Include="res_path.cpp" />
     <ClCompile Include="roundKing.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="hpBar.h" />
     <ClInclude Include="keyboardInput.h" />
     <ClInclude Include="livingEntity.h" />
+    <ClInclude Include="map.h" />
     <ClInclude Include="randomNumber.h" />
     <ClInclude Include="res_path.h" />
     <ClInclude Include="roundKing.h" />
