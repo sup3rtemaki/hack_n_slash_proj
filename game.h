@@ -12,6 +12,7 @@
 #include "cameraController.h"
 #include "roundKing.h"
 #include "hpBar.h"
+#include "map.h"
 
 class Game {
 public:
@@ -30,6 +31,8 @@ public:
 	SDL_Texture* overlayImage;
 
 	SDL_Texture* scoreTexture = NULL; //draw string to screen
+
+	list<Map> mapList;
 
 	Hero* hero;
 	KeyboardInput heroInput;

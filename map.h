@@ -1,12 +1,16 @@
 #ifndef MAP
 #define MAP
 
+#include <string>
+
 class Map {
 public:
-	char *file;
+	std::string file;
 	long mapPosX, mapPosY;
-	char *mapN, *mapNW, *mapW, *mapSW, *mapS, *mapSE, *mapE,*mapNE;
-	Map(char* file, long x, long y, char* mapN, char* mapNW, char* mapW, char* mapSW, char* mapS, char* mapSE, char* mapE, char* mapNE);
+	std::string mapN, mapNW, mapW, mapSW, mapS, mapSE, mapE,mapNE;
+
+	Map();
+	Map(std::string file, int x, int y, std::string mapN, std::string mapNW, std::string mapW, std::string mapSW, std::string mapS, std::string mapSE, std::string mapE, std::string mapNE);
 };
 
 #endif // !MAP

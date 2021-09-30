@@ -1,6 +1,6 @@
 #include "map.h"
 
-Map::Map(char* file, long x, long y, char* mapN, char* mapNW, char* mapW, char* mapSW, char* mapS, char* mapSE, char* mapE, char* mapNE) {
+Map::Map(std::string file, int x, int y, std::string mapN, std::string mapNW, std::string mapW, std::string mapSW, std::string mapS, std::string mapSE, std::string mapE, std::string mapNE) {
 	this->file = file;
 	this->mapPosX = x;
 	this->mapPosY = y;
@@ -13,3 +13,17 @@ Map::Map(char* file, long x, long y, char* mapN, char* mapNW, char* mapW, char* 
 	this->mapE = mapE;
 	this->mapNE = mapNE;
 }
+
+Map::Map() {
+	this->file = "";
+	this->mapPosX = 0;
+	this->mapPosY = 0;
+	this->mapN = "";
+	this->mapNW = "";
+	this->mapW = "";
+	this->mapSW = "";
+	this->mapS = "";
+	this->mapSE = "";
+	this->mapE = "";
+	this->mapNE = "";
+};

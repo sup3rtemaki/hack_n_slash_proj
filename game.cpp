@@ -1,6 +1,5 @@
 #include "game.h"
 #include "tinyxml2.h"
-#include "map.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -13,62 +12,75 @@ using namespace std;
 Game::Game() {
 	string resPath = getResourcePath();
 
-	//tinyxml2::XMLDocument doc;
-	//doc.LoadFile("mapsPositions.xml");
-	//tinyxml2::XMLText* textNode = doc.FirstChildElement("maps")->FirstChildElement("map")->FirstChild()->ToText();
-	//const char* title = textNode->Value();
-	//printf("Name of play (2): %s\n", title);
-
 	tinyxml2::XMLDocument xml_doc;
 
 	tinyxml2::XMLError mResult = xml_doc.LoadFile("mapsPositions.xml");
 
 	if (mResult == tinyxml2::XML_SUCCESS) {
 		tinyxml2::XMLNode* root = xml_doc.FirstChildElement("maps");
-		tinyxml2::XMLElement* element = root->FirstChildElement("map_count");
 
+		tinyxml2::XMLElement* element = root->FirstChildElement("map_count");
 		int xml_count;
 		mResult = element->QueryIntText(&xml_count);
-		cout << element->GetText();
+		cout << element->GetText() << "\n";
 
-		Map* maps;
-		list<Map*> mapList;
+		//list<Map> mapList;
 
 		element = root->FirstChildElement("map");
 		int i = 0;
+		
+		while (element != nullptr && i < xml_count)
+		{
+			tinyxml2::XMLElement* item = element->FirstChildElement("file");
+			string f = item->GetText();
 
-		//TODO Descomentar e implementar recuperacao de mapas do XML para classe Map
-		//while (element != nullptr && i < xml_count)
-		//{
-		//	tinyxml2::XMLElement* item = element->FirstChildElement("idEmpleado");
-		//	int id;
-		//	mResult = item->QueryIntText(&id);
-		//	//XMLCheckResult(eResult);
+			int x;
+			item = element->FirstChildElement("pos_x");
+			mResult = item->QueryIntText(&x);
 
-		//	item = element->FirstChildElement("nombre");
-		//	string nombre = item->GetText();
+			int y;
+			item = element->FirstChildElement("pos_y");
+			mResult = item->QueryIntText(&y);
 
-		//	item = element->FirstChildElement("apellidos");
-		//	string apellidos = item->GetText();
+			item = element->FirstChildElement("map_n");
+			string mN = item->GetText();
 
-		//	m = Empleado();
-		//	e.id = id;
-		//	e.nombre = nombre;
-		//	e.apellidos = apellidos;
-		//	empleados[i] = e;
+			item = element->FirstChildElement("map_nw");
+			string mNW = item->GetText();
 
-		//	element = element->NextSiblingElement("empleado");
-		//	i++;
-		//}
+			item = element->FirstChildElement("map_w");
+			string mW = item->GetText();
 
-		/*const char* text = element->GetText();
-		cout << text;*/
+			item = element->FirstChildElement("map_sw");
+			string mSW = item->GetText();
+
+			item = element->FirstChildElement("map_s");
+			string mS = item->GetText();
+
+			item = element->FirstChildElement("map_se");
+			string mSE = item->GetText();
+
+			item = element->FirstChildElement("map_e");
+			string mE = item->GetText();
+
+			item = element->FirstChildElement("map_ne");
+			string mNE = item->GetText();
+
+			
+			Map m = Map(f, x, y, mN, mNW, mW, mSW, mS, mSE, mE, mNE);
+			mapList.push_back(m);
+
+			cout << m.file << " " << m.mapPosX << " " << m.mapPosY << " " << 
+				m.mapN << " " << m.mapNW << " " << m.mapW << " " << m.mapSW << " " 
+				<< m.mapS << " " << m.mapSE << " " << m.mapE << " " << m.mapNE << "\n";
+
+			element = element->NextSiblingElement("map");
+			i++;
+		}
 	}
 	else {
 		cout << "Error opening XML";
 	}
-
-	
 
 	//TODO Implement dynamic map render
 	/*
@@ -434,16 +446,20 @@ void Game::draw() {
 	}
 	else {
 
-		// draw background
-		renderTexture(backGroundImage, Globals::renderer, 0 - Globals::camera.x, 0 - Globals::camera.y);
+		//TODO Implement dynamic map loading
+		auto mapTest = std::next(mapList.begin(), 0); //TESTE
 
-		if (sqrt(pow(MAP1_X - hero->x, 2) + pow(MAP1_Y - hero->y, 2)) < MAP_DISTANCE) {
-			backGroundImage2 = loadTexture(getResourcePath() + "map.png", Globals::renderer);
-			renderTexture(backGroundImage2, Globals::renderer, MAP1_X - Globals::camera.x, MAP1_Y - Globals::camera.y);
-		}
-		else {
-			cleanup(backGroundImage2);
-		}
+		// draw background
+		renderTexture(backGroundImage, Globals::renderer, mapTest->mapPosX - Globals::camera.x, mapTest->mapPosY - Globals::camera.y);
+
+		//if(Entity::distaceBettweenTwoPoints)
+		//if (sqrt(pow(MAP1_X - hero->x, 2) + pow(MAP1_Y - hero->y, 2)) < MAP_DISTANCE) {
+		//	backGroundImage2 = loadTexture(getResourcePath() + "map.png", Globals::renderer);
+		//	renderTexture(backGroundImage2, Globals::renderer, MAP1_X - Globals::camera.x, MAP1_Y - Globals::camera.y);
+		//}
+		//else {
+		//	cleanup(backGroundImage2);
+		//}
 		
 		//renderTexture(backGroundImage, Globals::renderer, 1024 - Globals::camera.x, -1024 - Globals::camera.y);
 		//renderTexture(backGroundImage, Globals::renderer, -1024 - Globals::camera.x, 1024 - Globals::camera.y);

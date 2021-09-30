@@ -3,30 +3,30 @@
   <map_count>2</map_count>
   
   <map name="map1">
-    <file>"map1.png"</file>
+    <file>map1.png</file>
     <pos_x>0</pos_x>
     <pos_y>0</pos_y>
-    <map_n></map_n>
-    <map_nw></map_nw>
-    <map_w></map_w>
-    <map_sw></map_sw>
-    <map_s></map_s>
-    <map_se></map_se>
-    <map_e></map_e>
-    <map_ne></map_ne>
+    <map_n>bg.png</map_n>
+    <map_nw>bg.png</map_nw>
+    <map_w>bg.png</map_w>
+    <map_sw>bg.png</map_sw>
+    <map_s>bg.png</map_s>
+    <map_se>bg.png</map_se>
+    <map_e>map2.png</map_e>
+    <map_ne>bg.png</map_ne>
   </map>
 
   <map name="map2">
-    <file>"map2.png"</file>
+    <file>map2.png</file>
     <pos_x>1025</pos_x>
     <pos_y>0</pos_y>
-    <map_n></map_n>
-    <map_nw></map_nw>
-    <map_w></map_w>
-    <map_sw></map_sw>
-    <map_s></map_s>
-    <map_se></map_se>
-    <map_e></map_e>
-    <map_ne></map_ne>
+    <map_n>bg.png</map_n>
+    <map_nw>bg.png</map_nw>
+    <map_w>map1.png</map_w>
+    <map_sw>bg.png</map_sw>
+    <map_s>bg.png</map_s>
+    <map_se>bg.png</map_se>
+    <map_e>bg.png</map_e>
+    <map_ne>bg.png</map_ne>
   </map>
 </maps>
