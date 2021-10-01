@@ -26,12 +26,21 @@ public:
 	AnimationSet* bulletAnimSet;
 
 	SDL_Texture* backGroundImage;
-	SDL_Texture* backGroundImage2;
+	SDL_Texture* backGroundImageN;
+	SDL_Texture* backGroundImageNW;
+	SDL_Texture* backGroundImageW;
+	SDL_Texture* backGroundImageSW;
+	SDL_Texture* backGroundImageS;
+	SDL_Texture* backGroundImageSE;
+	SDL_Texture* backGroundImageE;
+	SDL_Texture* backGroundImageNE;
 	SDL_Texture* splashImage;
 	SDL_Texture* overlayImage;
 
 	SDL_Texture* scoreTexture = NULL; //draw string to screen
 
+	int currentMapId;
+	Map currentMap;
 	list<Map> mapList;
 
 	Hero* hero;
@@ -49,8 +58,6 @@ public:
 
 	bool splashShowing;
 	float overlayTimer;
-
-	int map;
 
 	CameraController camController;
 

@@ -3,30 +3,34 @@
   <map_count>2</map_count>
   
   <map name="map1">
+    <id>0</id>
     <file>map1.png</file>
     <pos_x>0</pos_x>
     <pos_y>0</pos_y>
-    <map_n>bg.png</map_n>
-    <map_nw>bg.png</map_nw>
-    <map_w>bg.png</map_w>
-    <map_sw>bg.png</map_sw>
-    <map_s>bg.png</map_s>
-    <map_se>bg.png</map_se>
-    <map_e>map2.png</map_e>
-    <map_ne>bg.png</map_ne>
+    <map_n>0</map_n>
+    <map_nw>0</map_nw>
+    <map_w>0</map_w>
+    <map_sw>0</map_sw>
+    <map_s>0</map_s>
+    <map_se>0</map_se>
+    <map_e>1</map_e>
+    <map_ne>0</map_ne>
   </map>
 
   <map name="map2">
+    <id>1</id>
     <file>map2.png</file>
     <pos_x>1025</pos_x>
     <pos_y>0</pos_y>
-    <map_n>bg.png</map_n>
-    <map_nw>bg.png</map_nw>
-    <map_w>map1.png</map_w>
-    <map_sw>bg.png</map_sw>
-    <map_s>bg.png</map_s>
-    <map_se>bg.png</map_se>
-    <map_e>bg.png</map_e>
-    <map_ne>bg.png</map_ne>
+    <map_n>0</map_n>
+    <map_nw>0</map_nw>
+    <map_w>0</map_w>
+    <map_sw>0</map_sw>
+    <map_s>0</map_s>
+    <map_se>0</map_se>
+    <map_e>0</map_e>
+    <map_ne>0</map_ne>
   </map>
+  
+  <!--TODO Implementar mapa id 0 (default) -->
 </maps>

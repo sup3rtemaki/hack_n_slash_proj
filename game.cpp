@@ -12,6 +12,8 @@ using namespace std;
 Game::Game() {
 	string resPath = getResourcePath();
 
+	currentMapId = 0;
+
 	tinyxml2::XMLDocument xml_doc;
 
 	tinyxml2::XMLError mResult = xml_doc.LoadFile("mapsPositions.xml");
@@ -34,6 +36,10 @@ Game::Game() {
 			tinyxml2::XMLElement* item = element->FirstChildElement("file");
 			string f = item->GetText();
 
+			int mId;
+			item = element->FirstChildElement("id");
+			mResult = item->QueryIntText(&mId);
+
 			int x;
 			item = element->FirstChildElement("pos_x");
 			mResult = item->QueryIntText(&x);
@@ -42,35 +48,43 @@ Game::Game() {
 			item = element->FirstChildElement("pos_y");
 			mResult = item->QueryIntText(&y);
 
+			int mN;
 			item = element->FirstChildElement("map_n");
-			string mN = item->GetText();
+			mResult = item->QueryIntText(&mN);
 
+			int mNW;
 			item = element->FirstChildElement("map_nw");
-			string mNW = item->GetText();
+			mResult = item->QueryIntText(&mNW);
 
+			int mW;
 			item = element->FirstChildElement("map_w");
-			string mW = item->GetText();
+			mResult = item->QueryIntText(&mW);
 
+			int mSW;
 			item = element->FirstChildElement("map_sw");
-			string mSW = item->GetText();
+			mResult = item->QueryIntText(&mSW);
 
+			int mS;
 			item = element->FirstChildElement("map_s");
-			string mS = item->GetText();
+			mResult = item->QueryIntText(&mS);
 
+			int mSE;
 			item = element->FirstChildElement("map_se");
-			string mSE = item->GetText();
+			mResult = item->QueryIntText(&mSE);
 
+			int mE;
 			item = element->FirstChildElement("map_e");
-			string mE = item->GetText();
+			mResult = item->QueryIntText(&mE);
 
+			int mNE;
 			item = element->FirstChildElement("map_ne");
-			string mNE = item->GetText();
+			mResult = item->QueryIntText(&mNE);
 
 			
-			Map m = Map(f, x, y, mN, mNW, mW, mSW, mS, mSE, mE, mNE);
+			Map m = Map(mId, f, x, y, mN, mNW, mW, mSW, mS, mSE, mE, mNE);
 			mapList.push_back(m);
 
-			cout << m.file << " " << m.mapPosX << " " << m.mapPosY << " " << 
+			cout << m.id << " " << m.file << " " << m.mapPosX << " " << m.mapPosY << " " <<
 				m.mapN << " " << m.mapNW << " " << m.mapW << " " << m.mapSW << " " 
 				<< m.mapS << " " << m.mapSE << " " << m.mapE << " " << m.mapNE << "\n";
 
@@ -82,23 +96,48 @@ Game::Game() {
 		cout << "Error opening XML";
 	}
 
-	//TODO Implement dynamic map render
-	/*
-	* 00000
-	* 01110
-	* 01x10
-	* 01110
-	* 00000
-	* 
-	* Based on distance to the player: If map is location is < distance render map
-	* else discard/unrender map
-	* 
-	* 0 - map NOT to render
-	* 1 - map to render
-	* x - map where player is
-	*/
-	map = 0;
-	backGroundImage = loadTexture(resPath + "map1.png", Globals::renderer);
+	auto tempMap = std::next(mapList.begin(), currentMapId); //Get the current map based on currentMapId
+
+	currentMap = Map(tempMap->id, tempMap->file, tempMap->mapPosX, tempMap->mapPosY,
+		tempMap->mapN, tempMap->mapNW, tempMap->mapW, tempMap->mapSW,
+		tempMap->mapS, tempMap->mapSE, tempMap->mapE, tempMap->mapNE);
+
+	//Pre-load current and surroundings maps images
+	backGroundImage = loadTexture(resPath + currentMap.file, Globals::renderer);
+	tempMap = mapList.begin();
+
+	tempMap = std::next(mapList.begin(), currentMap.mapN);
+	backGroundImageN = loadTexture(resPath + tempMap->file, Globals::renderer);
+	tempMap = mapList.begin();
+
+	tempMap = std::next(mapList.begin(), currentMap.mapNW);
+	backGroundImageNW = loadTexture(resPath + tempMap->file, Globals::renderer);
+	tempMap = mapList.begin();
+
+	tempMap = std::next(mapList.begin(), currentMap.mapW);
+	backGroundImageW = loadTexture(resPath + tempMap->file, Globals::renderer);
+	tempMap = mapList.begin();
+
+	tempMap = std::next(mapList.begin(), currentMap.mapSW);
+	backGroundImageSW = loadTexture(resPath + tempMap->file, Globals::renderer);
+	tempMap = mapList.begin();
+
+	tempMap = std::next(mapList.begin(), currentMap.mapS);
+	backGroundImageS = loadTexture(resPath + tempMap->file, Globals::renderer);
+	tempMap = mapList.begin();
+
+	tempMap = std::next(mapList.begin(), currentMap.mapSE);
+	backGroundImageSE = loadTexture(resPath + tempMap->file, Globals::renderer);
+	tempMap = mapList.begin();
+
+	tempMap = std::next(mapList.begin(), currentMap.mapE);
+	backGroundImageE = loadTexture(resPath + tempMap->file, Globals::renderer);
+	tempMap = mapList.begin();
+
+	tempMap = std::next(mapList.begin(), currentMap.mapNE);
+	backGroundImageNE = loadTexture(resPath + tempMap->file, Globals::renderer);
+	tempMap = mapList.begin();
+
 	splashImage = loadTexture(resPath + "cyborgtitle.png", Globals::renderer);
 	overlayImage = loadTexture(resPath + "overlay.png", Globals::renderer);
 
@@ -260,7 +299,7 @@ Game::Game() {
 
 Game::~Game() {
 	cleanup(backGroundImage);
-	cleanup(backGroundImage2);
+	cleanup(backGroundImageE);
 	cleanup(splashImage);
 	cleanup(overlayImage);
 
@@ -447,10 +486,42 @@ void Game::draw() {
 	else {
 
 		//TODO Implement dynamic map loading
-		auto mapTest = std::next(mapList.begin(), 0); //TESTE
+
+		if ((hero->x > (currentMap.mapPosX + 1024)) && (hero->y > (currentMap.mapPosY + 1024))) {
+			//Hero is SE
+			auto tempMap = std::next(mapList.begin(), currentMapId);
+		}
+		else if (hero->x > (currentMap.mapPosX + 1024)) {
+			//Hero is E
+
+		}
+		else if (hero->y > (currentMap.mapPosY + 1024)) {
+			//Hero is S
+
+		}
+		else if ((hero->x < currentMap.mapPosX) && (hero->y > (currentMap.mapPosY + 1024))) {
+			//Hero is SW
+
+		}
+		else if (hero->x < currentMap.mapPosX) {
+			//Hero is W
+
+		}
+		else if ((hero->x < currentMap.mapPosX) && (hero->y < currentMap.mapPosY)) {
+			//Hero is NW
+
+		}
+		else if (hero->y < currentMap.mapPosY) {
+			//Hero is N
+
+		}
+		else if ((hero->x > (currentMap.mapPosX + 1024)) && (hero->y < currentMap.mapPosY)) {
+			//Hero is NE
+
+		}
 
 		// draw background
-		renderTexture(backGroundImage, Globals::renderer, mapTest->mapPosX - Globals::camera.x, mapTest->mapPosY - Globals::camera.y);
+		renderTexture(backGroundImage, Globals::renderer, currentMap.mapPosX - Globals::camera.x, currentMap.mapPosY - Globals::camera.y);
 
 		//if(Entity::distaceBettweenTwoPoints)
 		//if (sqrt(pow(MAP1_X - hero->x, 2) + pow(MAP1_Y - hero->y, 2)) < MAP_DISTANCE) {
