@@ -39,7 +39,7 @@ public:
 
 	SDL_Texture* scoreTexture = NULL; //draw string to screen
 
-	int currentMapId;
+	int currentMapId, lastMapId;
 	Map currentMap;
 	list<Map> mapList;
 

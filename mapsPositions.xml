@@ -1,27 +1,192 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <maps>
-  <map_count>2</map_count>
-  
+  <map_count>10</map_count>
+
+  <!--
+  4 3 9
+  5 x 2
+  6 7 8
+  -->
   <map name="map1">
-    <id>0</id>
+    <id>1</id>
     <file>map1.png</file>
     <pos_x>0</pos_x>
     <pos_y>0</pos_y>
+    <map_n>3</map_n>
+    <map_nw>4</map_nw>
+    <map_w>5</map_w>
+    <map_sw>6</map_sw>
+    <map_s>7</map_s>
+    <map_se>8</map_se>
+    <map_e>2</map_e>
+    <map_ne>9</map_ne>
+  </map>
+
+  <!--
+  4 3 9
+  5 1 x
+  6 7 8
+  -->
+  <map name="map2">
+    <id>2</id>
+    <file>mapTest.png</file>
+    <pos_x>1025</pos_x>
+    <pos_y>0</pos_y>
+    <map_n>9</map_n>
+    <map_nw>3</map_nw>
+    <map_w>1</map_w>
+    <map_sw>7</map_sw>
+    <map_s>8</map_s>
+    <map_se>0</map_se>
+    <map_e>0</map_e>
+    <map_ne>0</map_ne>
+  </map>
+
+  <!--
+  4 x 9
+  5 1 2
+  6 7 8
+  -->
+  <map name="map0">
+    <id>3</id>
+    <file>mapTest.png</file>
+    <pos_x>0</pos_x>
+    <pos_y>-1025</pos_y>
+    <map_n>0</map_n>
+    <map_nw>0</map_nw>
+    <map_w>4</map_w>
+    <map_sw>5</map_sw>
+    <map_s>1</map_s>
+    <map_se>2</map_se>
+    <map_e>9</map_e>
+    <map_ne>0</map_ne>
+  </map>
+
+  <!--
+  x 3 9
+  5 1 2
+  6 7 8
+  -->
+  <map name="map0">
+    <id>4</id>
+    <file>mapTest.png</file>
+    <pos_x>-1025</pos_x>
+    <pos_y>-1025</pos_y>
     <map_n>0</map_n>
     <map_nw>0</map_nw>
     <map_w>0</map_w>
     <map_sw>0</map_sw>
-    <map_s>0</map_s>
-    <map_se>0</map_se>
-    <map_e>1</map_e>
+    <map_s>5</map_s>
+    <map_se>1</map_se>
+    <map_e>3</map_e>
     <map_ne>0</map_ne>
   </map>
 
-  <map name="map2">
-    <id>1</id>
-    <file>map2.png</file>
-    <pos_x>1025</pos_x>
+  <!--
+  4 3 9
+  x 1 2
+  6 7 8
+  -->
+  <map name="map0">
+    <id>5</id>
+    <file>mapTest.png</file>
+    <pos_x>-1025</pos_x>
     <pos_y>0</pos_y>
+    <map_n>4</map_n>
+    <map_nw>0</map_nw>
+    <map_w>0</map_w>
+    <map_sw>0</map_sw>
+    <map_s>6</map_s>
+    <map_se>7</map_se>
+    <map_e>1</map_e>
+    <map_ne>3</map_ne>
+  </map>
+
+  <!--
+  4 3 9
+  5 1 2
+  x 7 8
+  -->
+  <map name="map0">
+    <id>6</id>
+    <file>mapTest.png</file>
+    <pos_x>-1025</pos_x>
+    <pos_y>1025</pos_y>
+    <map_n>1</map_n>
+    <map_nw>1</map_nw>
+    <map_w>1</map_w>
+    <map_sw>1</map_sw>
+    <map_s>1</map_s>
+    <map_se>1</map_se>
+    <map_e>1</map_e>
+    <map_ne>1</map_ne>
+  </map>
+
+  <!--
+  4 3 9
+  5 1 2
+  6 x 8
+  -->
+  <map name="map0">
+    <id>7</id>
+    <file>mapTest.png</file>
+    <pos_x>0</pos_x>
+    <pos_y>1025</pos_y>
+    <map_n>1</map_n>
+    <map_nw>5</map_nw>
+    <map_w>6</map_w>
+    <map_sw>0</map_sw>
+    <map_s>0</map_s>
+    <map_se>0</map_se>
+    <map_e>8</map_e>
+    <map_ne>2</map_ne>
+  </map>
+
+  <!--
+  4 3 9
+  5 1 2
+  6 7 x
+  -->
+  <map name="map0">
+    <id>8</id>
+    <file>mapTest.png</file>
+    <pos_x>1025</pos_x>
+    <pos_y>1025</pos_y>
+    <map_n>2</map_n>
+    <map_nw>1</map_nw>
+    <map_w>7</map_w>
+    <map_sw>0</map_sw>
+    <map_s>0</map_s>
+    <map_se>0</map_se>
+    <map_e>0</map_e>
+    <map_ne>0</map_ne>
+  </map>
+
+  <!--
+  4 3 x
+  5 1 2
+  6 7 8
+  -->
+  <map name="map0">
+    <id>9</id>
+    <file>mapTest.png</file>
+    <pos_x>-1025</pos_x>
+    <pos_y>1025</pos_y>
+    <map_n>0</map_n>
+    <map_nw>0</map_nw>
+    <map_w>3</map_w>
+    <map_sw>1</map_sw>
+    <map_s>2</map_s>
+    <map_se>0</map_se>
+    <map_e>0</map_e>
+    <map_ne>0</map_ne>
+  </map>
+
+  <map name="map0">
+    <id>0</id>
+    <file>mapTest.png</file>
+    <pos_x>1</pos_x>
+    <pos_y>1</pos_y>
     <map_n>0</map_n>
     <map_nw>0</map_nw>
     <map_w>0</map_w>

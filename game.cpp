@@ -5,7 +5,7 @@
 #include <string>
 #define MAP1_X 1025
 #define MAP1_Y 0
-#define MAP_DISTANCE 300
+#define MAP_DISTANCE 2000
 
 using namespace std;
 
@@ -104,39 +104,31 @@ Game::Game() {
 
 	//Pre-load current and surroundings maps images
 	backGroundImage = loadTexture(resPath + currentMap.file, Globals::renderer);
-	tempMap = mapList.begin();
+	cout << currentMap.file << "\n";
 
 	tempMap = std::next(mapList.begin(), currentMap.mapN);
 	backGroundImageN = loadTexture(resPath + tempMap->file, Globals::renderer);
-	tempMap = mapList.begin();
 
 	tempMap = std::next(mapList.begin(), currentMap.mapNW);
 	backGroundImageNW = loadTexture(resPath + tempMap->file, Globals::renderer);
-	tempMap = mapList.begin();
 
 	tempMap = std::next(mapList.begin(), currentMap.mapW);
 	backGroundImageW = loadTexture(resPath + tempMap->file, Globals::renderer);
-	tempMap = mapList.begin();
 
 	tempMap = std::next(mapList.begin(), currentMap.mapSW);
 	backGroundImageSW = loadTexture(resPath + tempMap->file, Globals::renderer);
-	tempMap = mapList.begin();
 
 	tempMap = std::next(mapList.begin(), currentMap.mapS);
 	backGroundImageS = loadTexture(resPath + tempMap->file, Globals::renderer);
-	tempMap = mapList.begin();
 
 	tempMap = std::next(mapList.begin(), currentMap.mapSE);
 	backGroundImageSE = loadTexture(resPath + tempMap->file, Globals::renderer);
-	tempMap = mapList.begin();
 
 	tempMap = std::next(mapList.begin(), currentMap.mapE);
 	backGroundImageE = loadTexture(resPath + tempMap->file, Globals::renderer);
-	tempMap = mapList.begin();
 
 	tempMap = std::next(mapList.begin(), currentMap.mapNE);
 	backGroundImageNE = loadTexture(resPath + tempMap->file, Globals::renderer);
-	tempMap = mapList.begin();
 
 	splashImage = loadTexture(resPath + "cyborgtitle.png", Globals::renderer);
 	overlayImage = loadTexture(resPath + "overlay.png", Globals::renderer);
@@ -162,11 +154,11 @@ Game::Game() {
 	SoundManager::soundManager.loadSound("shoot", resPath + "shoot2.wav");
 	SoundManager::soundManager.loadSound("laugh", resPath + "laugh2.wav");
 
-	song = Mix_LoadMUS(string(resPath + "Fatal Theory.wav").c_str());
-	if (song != NULL) {
-		Mix_PlayMusic(song, -1);
-		Mix_Volume(-1, 50);
-	}
+	//song = Mix_LoadMUS(string(resPath + "Fatal Theory.wav").c_str());
+	//if (song != NULL) {
+	//	Mix_PlayMusic(song, -1);
+	//	Mix_Volume(-1, 50);
+	//}
 
 	list<DataGroupType> dataGroupTypes; //describes the types of groups the data can have
 
@@ -487,41 +479,211 @@ void Game::draw() {
 
 		//TODO Implement dynamic map loading
 
-		if ((hero->x > (currentMap.mapPosX + 1024)) && (hero->y > (currentMap.mapPosY + 1024))) {
+		auto tempMap = std::next(mapList.begin(), currentMapId);
+
+		if ((hero->x > (currentMap.mapPosX + 1024)) && (hero->y > (currentMap.mapPosY + 1024)) && (currentMap.mapSE != 0)) {
 			//Hero is SE
-			auto tempMap = std::next(mapList.begin(), currentMapId);
+			currentMap = *tempMap;
+
+			currentMapId = currentMap.mapSE;
+			tempMap = std::next(mapList.begin(), currentMapId);
+			currentMap = *tempMap;
+
+			backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
 		}
-		else if (hero->x > (currentMap.mapPosX + 1024)) {
+		else if (hero->x > (currentMap.mapPosX + 1024) && (currentMap.mapE != 0)) {
 			//Hero is E
+			currentMap = *tempMap;
 
+			currentMapId = currentMap.mapE;
+			tempMap = std::next(mapList.begin(), currentMapId);
+			currentMap = *tempMap;
+
+			backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
 		}
-		else if (hero->y > (currentMap.mapPosY + 1024)) {
+		else if (hero->y > (currentMap.mapPosY + 1024) && (currentMap.mapS != 0)) {
 			//Hero is S
+			currentMap = *tempMap;
 
+			currentMapId = currentMap.mapS;
+			tempMap = std::next(mapList.begin(), currentMapId);
+			currentMap = *tempMap;
+
+			backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
 		}
-		else if ((hero->x < currentMap.mapPosX) && (hero->y > (currentMap.mapPosY + 1024))) {
+		else if ((hero->x < currentMap.mapPosX) && (hero->y > (currentMap.mapPosY + 1024)) && (currentMap.mapSW != 0)) {
 			//Hero is SW
+			currentMap = *tempMap;
 
+			currentMapId = currentMap.mapSW;
+			tempMap = std::next(mapList.begin(), currentMapId);
+			currentMap = *tempMap;
+
+			backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
 		}
-		else if (hero->x < currentMap.mapPosX) {
+		else if ((hero->x < currentMap.mapPosX) && (currentMap.mapW != 0)) {
 			//Hero is W
+			currentMap = *tempMap;
 
+			currentMapId = currentMap.mapW;
+			tempMap = std::next(mapList.begin(), currentMapId);
+			currentMap = *tempMap;
+
+			backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
 		}
-		else if ((hero->x < currentMap.mapPosX) && (hero->y < currentMap.mapPosY)) {
+		else if ((hero->x < currentMap.mapPosX) && (hero->y < currentMap.mapPosY) && (currentMap.mapNW != 0)) {
 			//Hero is NW
+			currentMap = *tempMap;
 
+			currentMapId = currentMap.mapNW;
+			tempMap = std::next(mapList.begin(), currentMapId);
+			currentMap = *tempMap;
+
+			backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
 		}
-		else if (hero->y < currentMap.mapPosY) {
+		else if ((hero->y < currentMap.mapPosY) && (currentMap.mapN != 0)) {
 			//Hero is N
+			currentMap = *tempMap;
 
+			currentMapId = currentMap.mapN;
+			tempMap = std::next(mapList.begin(), currentMapId);
+			currentMap = *tempMap;
+
+			backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
 		}
-		else if ((hero->x > (currentMap.mapPosX + 1024)) && (hero->y < currentMap.mapPosY)) {
+		else if ((hero->x > (currentMap.mapPosX + 1024)) && (hero->y < currentMap.mapPosY) && (currentMap.mapNE != 0)) {
 			//Hero is NE
+			currentMap = *tempMap;
 
+			currentMapId = currentMap.mapNE;
+			tempMap = std::next(mapList.begin(), currentMapId);
+			currentMap = *tempMap;
+
+			backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
 		}
 
-		// draw background
+		//Draw current map
 		renderTexture(backGroundImage, Globals::renderer, currentMap.mapPosX - Globals::camera.x, currentMap.mapPosY - Globals::camera.y);
+
+		if (lastMapId != currentMapId) {
+
+			lastMapId = currentMapId;
+
+			tempMap = std::next(mapList.begin(), currentMap.mapN);
+			backGroundImageN = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
+			renderTexture(backGroundImageN, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+
+			tempMap = std::next(mapList.begin(), currentMap.mapNW);
+			backGroundImageNW = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
+			renderTexture(backGroundImageNW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+
+			tempMap = std::next(mapList.begin(), currentMap.mapW);
+			backGroundImageW = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
+			renderTexture(backGroundImageW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+
+			tempMap = std::next(mapList.begin(), currentMap.mapSW);
+			backGroundImageSW = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
+			renderTexture(backGroundImageSW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+
+			tempMap = std::next(mapList.begin(), currentMap.mapS);
+			backGroundImageS = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
+			renderTexture(backGroundImageS, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+
+			tempMap = std::next(mapList.begin(), currentMap.mapSE);
+			backGroundImageSE = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
+			renderTexture(backGroundImageSE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+
+			tempMap = std::next(mapList.begin(), currentMap.mapE);
+			backGroundImageE = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
+			renderTexture(backGroundImageE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+
+			tempMap = std::next(mapList.begin(), currentMap.mapNE);
+			backGroundImageNE = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
+			renderTexture(backGroundImageNE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+		}
+		else {
+			tempMap = std::next(mapList.begin(), currentMap.mapN);
+			renderTexture(backGroundImageN, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+
+			tempMap = std::next(mapList.begin(), currentMap.mapNW);
+			renderTexture(backGroundImageNW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+
+			tempMap = std::next(mapList.begin(), currentMap.mapW);
+			renderTexture(backGroundImageW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+
+			tempMap = std::next(mapList.begin(), currentMap.mapSW);
+			renderTexture(backGroundImageSW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+
+			tempMap = std::next(mapList.begin(), currentMap.mapS);
+			renderTexture(backGroundImageS, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+
+			tempMap = std::next(mapList.begin(), currentMap.mapSE);
+			renderTexture(backGroundImageSE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+
+			tempMap = std::next(mapList.begin(), currentMap.mapE);
+			renderTexture(backGroundImageE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+
+			tempMap = std::next(mapList.begin(), currentMap.mapNE);
+			renderTexture(backGroundImageNE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+		}
+
+		//Load and draw surrounding maps
+		//tempMap = std::next(mapList.begin(), currentMap.mapN);
+		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE) 
+		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
+		//	backGroundImageN = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
+		//	renderTexture(backGroundImageN, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+		//}
+
+		//tempMap = std::next(mapList.begin(), currentMap.mapNW);
+		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE)
+		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
+		//	backGroundImageNW = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
+		//	renderTexture(backGroundImageNW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+		//}
+
+		//tempMap = std::next(mapList.begin(), currentMap.mapW);
+		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE)
+		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
+		//	backGroundImageW = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
+		//	renderTexture(backGroundImageW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+		//}
+
+		//tempMap = std::next(mapList.begin(), currentMap.mapSW);
+		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE)
+		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
+		//	backGroundImageSW = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
+		//	renderTexture(backGroundImageSW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+		//}
+
+		//tempMap = std::next(mapList.begin(), currentMap.mapS);
+		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE)
+		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
+		//	backGroundImageS = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
+		//	renderTexture(backGroundImageS, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+		//}
+
+		//tempMap = std::next(mapList.begin(), currentMap.mapSE);
+		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE)
+		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
+		//	backGroundImageSE = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
+		//	renderTexture(backGroundImageSE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+		//}
+
+		//tempMap = std::next(mapList.begin(), currentMap.mapE);
+		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE)
+		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
+		//	backGroundImageE = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
+		//	renderTexture(backGroundImageE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+		//}
+
+		//tempMap = std::next(mapList.begin(), currentMap.mapNE);
+		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE)
+		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
+		//	backGroundImageNE = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
+		//	renderTexture(backGroundImageNE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+		//}
+
 
 		//if(Entity::distaceBettweenTwoPoints)
 		//if (sqrt(pow(MAP1_X - hero->x, 2) + pow(MAP1_Y - hero->y, 2)) < MAP_DISTANCE) {
