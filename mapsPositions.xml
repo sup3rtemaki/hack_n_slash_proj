@@ -2,6 +2,21 @@
 <maps>
   <map_count>10</map_count>
 
+  <map name="map0">
+    <id>0</id>
+    <file>mapTest.png</file>
+    <pos_x>1</pos_x>
+    <pos_y>1</pos_y>
+    <map_n>0</map_n>
+    <map_nw>0</map_nw>
+    <map_w>0</map_w>
+    <map_sw>0</map_sw>
+    <map_s>0</map_s>
+    <map_se>0</map_se>
+    <map_e>0</map_e>
+    <map_ne>0</map_ne>
+  </map>
+
   <!--
   4 3 9
   5 x 2
@@ -170,8 +185,8 @@
   <map name="map0">
     <id>9</id>
     <file>mapTest.png</file>
-    <pos_x>-1025</pos_x>
-    <pos_y>1025</pos_y>
+    <pos_x>1025</pos_x>
+    <pos_y>-1025</pos_y>
     <map_n>0</map_n>
     <map_nw>0</map_nw>
     <map_w>3</map_w>
@@ -181,21 +196,5 @@
     <map_e>0</map_e>
     <map_ne>0</map_ne>
   </map>
-
-  <map name="map0">
-    <id>0</id>
-    <file>mapTest.png</file>
-    <pos_x>1</pos_x>
-    <pos_y>1</pos_y>
-    <map_n>0</map_n>
-    <map_nw>0</map_nw>
-    <map_w>0</map_w>
-    <map_sw>0</map_sw>
-    <map_s>0</map_s>
-    <map_se>0</map_se>
-    <map_e>0</map_e>
-    <map_ne>0</map_ne>
-  </map>
-  
-  <!--TODO Implementar mapa id 0 (default) -->
+ 
 </maps>

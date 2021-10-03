@@ -12,7 +12,7 @@ using namespace std;
 Game::Game() {
 	string resPath = getResourcePath();
 
-	currentMapId = 0;
+	currentMapId = 1;
 
 	tinyxml2::XMLDocument xml_doc;
 
@@ -291,7 +291,14 @@ Game::Game() {
 
 Game::~Game() {
 	cleanup(backGroundImage);
+	cleanup(backGroundImageN);
+	cleanup(backGroundImageNW);
+	cleanup(backGroundImageW);
+	cleanup(backGroundImageSW);
+	cleanup(backGroundImageS);
+	cleanup(backGroundImageSE);
 	cleanup(backGroundImageE);
+	cleanup(backGroundImageNE);
 	cleanup(splashImage);
 	cleanup(overlayImage);
 
@@ -477,8 +484,6 @@ void Game::draw() {
 	}
 	else {
 
-		//TODO Implement dynamic map loading
-
 		auto tempMap = std::next(mapList.begin(), currentMapId);
 
 		if ((hero->x > (currentMap.mapPosX + 1024)) && (hero->y > (currentMap.mapPosY + 1024)) && (currentMap.mapSE != 0)) {
@@ -565,9 +570,20 @@ void Game::draw() {
 		//Draw current map
 		renderTexture(backGroundImage, Globals::renderer, currentMap.mapPosX - Globals::camera.x, currentMap.mapPosY - Globals::camera.y);
 
+		//Load and draw surrounding maps based on map change
 		if (lastMapId != currentMapId) {
 
 			lastMapId = currentMapId;
+
+			//cleanup(backGroundImage);
+			//cleanup(backGroundImageN);
+			//cleanup(backGroundImageNW);
+			//cleanup(backGroundImageW);
+			//cleanup(backGroundImageSW);
+			//cleanup(backGroundImageS);
+			//cleanup(backGroundImageSE);
+			//cleanup(backGroundImageE);
+			//cleanup(backGroundImageNE);
 
 			tempMap = std::next(mapList.begin(), currentMap.mapN);
 			backGroundImageN = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
@@ -627,7 +643,7 @@ void Game::draw() {
 			renderTexture(backGroundImageNE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
 		}
 
-		//Load and draw surrounding maps
+		//Load and draw surrounding maps based on distance
 		//tempMap = std::next(mapList.begin(), currentMap.mapN);
 		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE) 
 		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
