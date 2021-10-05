@@ -13,6 +13,7 @@
 #include "roundKing.h"
 #include "hpBar.h"
 #include "map.h"
+#include<thread>
 
 class Game {
 public:
@@ -40,6 +41,7 @@ public:
 	SDL_Texture* scoreTexture = NULL; //draw string to screen
 
 	int currentMapId, lastMapId;
+	int mapToDrawCount;
 	Map currentMap;
 	list<Map> mapList;
 
@@ -66,6 +68,7 @@ public:
 
 	void update();
 	void draw();
+	void updateMaps();
 };
 
 #endif // !GAME
