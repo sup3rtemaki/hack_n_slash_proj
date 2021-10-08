@@ -15,6 +15,10 @@ Game::Game() {
 
 	string resPath = getResourcePath();
 
+	//teste
+	backGroundImage = loadTexture(resPath + "map.png", Globals::renderer);
+	fadeImage = loadTexture(resPath + "blackBG.png", Globals::renderer);
+
 	currentMapId = 1;
 	mapToDrawCount = 0;
 
@@ -107,7 +111,7 @@ Game::Game() {
 		tempMap->mapS, tempMap->mapSE, tempMap->mapE, tempMap->mapNE);
 
 	//Pre-load current and surroundings maps images
-	backGroundImage = loadTexture(resPath + currentMap.file, Globals::renderer);
+	//backGroundImage = loadTexture(resPath + currentMap.file, Globals::renderer);
 	cout << currentMap.file << "\n";
 
 	tempMap = std::next(mapList.begin(), currentMap.mapN);
@@ -208,8 +212,8 @@ Game::Game() {
 	// build hero entity
 	hero = new Hero(heroAnimSet);
 	hero->invincibleTimer = 0;
-	hero->x = Globals::ScreenWidth / 2;
-	hero->y = Globals::ScreenHeight / 2;
+	hero->x = 0;//Globals::ScreenWidth / 2;
+	hero->y = 0;//Globals::ScreenHeight / 2;
 	heroInput.hero = hero;
 	heroHpBar.entity = hero;
 	Entity::entities.push_back(hero);
@@ -470,6 +474,12 @@ void Game::update() {
 			}
 		}
 
+		//TESTE
+		if ((hero->x > 500) && (hero->y > 0 || hero->y < 15)) {
+			isFading = true;
+			fadeIn = true;
+		}
+
 		//update camera position
 		camController.update();
 
@@ -664,14 +674,57 @@ void Game::draw() {
 	SDL_SetRenderDrawColor(Globals::renderer, 145, 133, 129, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(Globals::renderer);
 
+	//TESTE
 	if (splashShowing) {
 		renderTexture(splashImage, Globals::renderer, 0, 0);
 	}
 	else {
 
+		if (isFading) {
+
+			if (alpha < 255 && fadeIn) {
+				fadeIn = true;
+				fadeOut = false;
+				alphaCalc += 3.0f;
+				alpha = alphaCalc;
+				SDL_SetTextureAlphaMod(fadeImage, alpha);
+
+				if (alpha > 254) {
+					hero->x = 300;
+					hero->y = 300;
+					fadeIn = false;
+					fadeOut = true;
+				}
+			}
+			else if (alpha >= 0 && fadeOut) {
+				fadeIn = false;
+				fadeOut = true;
+				alphaCalc -= 3.0f;
+				alpha = alphaCalc;
+				SDL_SetTextureAlphaMod(fadeImage, alpha);
+
+				if (alpha == 0) {
+					fadeOut = false;
+				}
+			}
+			else {
+				isFading = false;
+				fadeIn = false;
+				fadeOut = false;
+			}
+			cout << alpha << "\n";
+		}
+		else {
+			SDL_SetTextureAlphaMod(fadeImage, 0);
+			alpha = 0;
+			alphaCalc = 0.0f;
+		}
+
 		int i = 1;
 
-		updateMaps();
+		renderTexture(backGroundImage, Globals::renderer, 0 - Globals::camera.x, 0 - Globals::camera.y);
+		renderTexture(fadeImage, Globals::renderer, (-200) - Globals::camera.x, (-200) - Globals::camera.y);
+		//updateMaps();
 
 		//Load and draw surrounding maps based on distance
 		//tempMap = std::next(mapList.begin(), currentMap.mapN);

@@ -27,6 +27,7 @@ public:
 	AnimationSet* bulletAnimSet;
 
 	SDL_Texture* backGroundImage;
+	SDL_Texture* fadeImage;
 	SDL_Texture* backGroundImageN;
 	SDL_Texture* backGroundImageNW;
 	SDL_Texture* backGroundImageW;
@@ -39,6 +40,11 @@ public:
 	SDL_Texture* overlayImage;
 
 	SDL_Texture* scoreTexture = NULL; //draw string to screen
+
+	bool isFading = false;
+	bool fadeIn, fadeOut;
+	int alpha = 0;
+	float alphaCalc;
 
 	int currentMapId, lastMapId;
 	int mapToDrawCount;
