@@ -489,184 +489,50 @@ void Game::update() {
 }
 
 void Game::updateMaps() {
-	auto tempMap = std::next(mapList.begin(), currentMapId);
 
-	if ((hero->x > (currentMap.mapPosX + 1024)) && (hero->y > (currentMap.mapPosY + 1024)) && (currentMap.mapSE != 0)) {
-		//Hero is SE
-		currentMap = *tempMap;
-		mapToDrawCount = 0;
+	if (isFading) {
 
-		currentMapId = currentMap.mapSE;
-		tempMap = std::next(mapList.begin(), currentMapId);
-		currentMap = *tempMap;
+		if (alpha < 255 && fadeIn) {
+			fadeIn = true;
+			fadeOut = false;
+			alphaCalc += 3.0f;
+			alpha = alphaCalc;
+			SDL_SetTextureAlphaMod(fadeImage, alpha);
 
-		backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
-	}
-	else if (hero->x > (currentMap.mapPosX + 1024) && (currentMap.mapE != 0)) {
-		//Hero is E
-		currentMap = *tempMap;
-		mapToDrawCount = 0;
-
-		currentMapId = currentMap.mapE;
-		tempMap = std::next(mapList.begin(), currentMapId);
-		currentMap = *tempMap;
-
-		backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
-	}
-	else if (hero->y > (currentMap.mapPosY + 1024) && (currentMap.mapS != 0)) {
-		//Hero is S
-		currentMap = *tempMap;
-		mapToDrawCount = 0;
-
-		currentMapId = currentMap.mapS;
-		tempMap = std::next(mapList.begin(), currentMapId);
-		currentMap = *tempMap;
-
-		backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
-	}
-	else if ((hero->x < currentMap.mapPosX) && (hero->y > (currentMap.mapPosY + 1024)) && (currentMap.mapSW != 0)) {
-		//Hero is SW
-		currentMap = *tempMap;
-		mapToDrawCount = 0;
-
-		currentMapId = currentMap.mapSW;
-		tempMap = std::next(mapList.begin(), currentMapId);
-		currentMap = *tempMap;
-
-		backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
-	}
-	else if ((hero->x < currentMap.mapPosX) && (currentMap.mapW != 0)) {
-		//Hero is W
-		currentMap = *tempMap;
-		mapToDrawCount = 0;
-
-		currentMapId = currentMap.mapW;
-		tempMap = std::next(mapList.begin(), currentMapId);
-		currentMap = *tempMap;
-
-		backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
-	}
-	else if ((hero->x < currentMap.mapPosX) && (hero->y < currentMap.mapPosY) && (currentMap.mapNW != 0)) {
-		//Hero is NW
-		currentMap = *tempMap;
-		mapToDrawCount = 0;
-
-		currentMapId = currentMap.mapNW;
-		tempMap = std::next(mapList.begin(), currentMapId);
-		currentMap = *tempMap;
-
-		backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
-	}
-	else if ((hero->y < currentMap.mapPosY) && (currentMap.mapN != 0)) {
-		//Hero is N
-		currentMap = *tempMap;
-		mapToDrawCount = 0;
-
-		currentMapId = currentMap.mapN;
-		tempMap = std::next(mapList.begin(), currentMapId);
-		currentMap = *tempMap;
-
-		backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
-	}
-	else if ((hero->x > (currentMap.mapPosX + 1024)) && (hero->y < currentMap.mapPosY) && (currentMap.mapNE != 0)) {
-		//Hero is NE
-		currentMap = *tempMap;
-		mapToDrawCount = 0;
-
-		currentMapId = currentMap.mapNE;
-		tempMap = std::next(mapList.begin(), currentMapId);
-		currentMap = *tempMap;
-
-		backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
-	}
-
-	//Draw current map
-	renderTexture(backGroundImage, Globals::renderer, currentMap.mapPosX - Globals::camera.x, currentMap.mapPosY - Globals::camera.y);
-
-	//Load and draw surrounding maps based on map change
-	if ((lastMapId != currentMapId) && mapToDrawCount < 8) {
-
-		//FSM
-		switch (mapToDrawCount)
-		{
-		case 0:
-			tempMap = std::next(mapList.begin(), currentMap.mapN);
-			backGroundImageN = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
-			//renderTexture(backGroundImageN, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-			mapToDrawCount++;
-			break;
-		case 1:
-			tempMap = std::next(mapList.begin(), currentMap.mapNW);
-			backGroundImageNW = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
-			//renderTexture(backGroundImageNW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-			mapToDrawCount++;
-			break;
-		case 2:
-			tempMap = std::next(mapList.begin(), currentMap.mapW);
-			backGroundImageW = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
-			//renderTexture(backGroundImageW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-			mapToDrawCount++;
-			break;
-		case 3:
-			tempMap = std::next(mapList.begin(), currentMap.mapSW);
-			backGroundImageSW = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
-			//renderTexture(backGroundImageSW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-			mapToDrawCount++;
-			break;
-		case 4:
-			tempMap = std::next(mapList.begin(), currentMap.mapS);
-			backGroundImageS = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
-			//renderTexture(backGroundImageS, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-			mapToDrawCount++;
-			break;
-		case 5:
-			tempMap = std::next(mapList.begin(), currentMap.mapSE);
-			backGroundImageSE = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
-			//renderTexture(backGroundImageSE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-			mapToDrawCount++;
-			break;
-		case 6:
-			tempMap = std::next(mapList.begin(), currentMap.mapE);
-			backGroundImageE = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
-			//renderTexture(backGroundImageE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-			mapToDrawCount++;
-			break;
-		case 7:
-			tempMap = std::next(mapList.begin(), currentMap.mapNE);
-			backGroundImageNE = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
-			//renderTexture(backGroundImageNE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-			mapToDrawCount++;
-			lastMapId = currentMapId;
-			break;
-		default:
-			break;
+			if (alpha > 254) {
+				backGroundImage = loadTexture(getResourcePath() + "map1.png", Globals::renderer);
+				hero->x = 300;
+				hero->y = 300;
+				fadeIn = false;
+				fadeOut = true;
+			}
 		}
+		else if (alpha >= 0 && fadeOut) {
+			fadeIn = false;
+			fadeOut = true;
+			alphaCalc -= 3.0f;
+			alpha = alphaCalc;
+			SDL_SetTextureAlphaMod(fadeImage, alpha);
+
+			if (alpha == 0) {
+				fadeOut = false;
+			}
+		}
+		else {
+			isFading = false;
+			fadeIn = false;
+			fadeOut = false;
+		}
+		cout << alpha << "\n";
 	}
 	else {
-		tempMap = std::next(mapList.begin(), currentMap.mapN);
-		renderTexture(backGroundImageN, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-
-		tempMap = std::next(mapList.begin(), currentMap.mapNW);
-		renderTexture(backGroundImageNW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-
-		tempMap = std::next(mapList.begin(), currentMap.mapW);
-		renderTexture(backGroundImageW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-
-		tempMap = std::next(mapList.begin(), currentMap.mapSW);
-		renderTexture(backGroundImageSW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-
-		tempMap = std::next(mapList.begin(), currentMap.mapS);
-		renderTexture(backGroundImageS, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-
-		tempMap = std::next(mapList.begin(), currentMap.mapSE);
-		renderTexture(backGroundImageSE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-
-		tempMap = std::next(mapList.begin(), currentMap.mapE);
-		renderTexture(backGroundImageE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-
-		tempMap = std::next(mapList.begin(), currentMap.mapNE);
-		renderTexture(backGroundImageNE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
+		SDL_SetTextureAlphaMod(fadeImage, 0);
+		alpha = 0;
+		alphaCalc = 0.0f;
 	}
+
+	renderTexture(backGroundImage, Globals::renderer, 0 - Globals::camera.x, 0 - Globals::camera.y);
+	renderTexture(fadeImage, Globals::renderer, (-200) - Globals::camera.x, (-200) - Globals::camera.y);
 }
 
 void Game::draw() {
@@ -680,127 +546,7 @@ void Game::draw() {
 	}
 	else {
 
-		if (isFading) {
-
-			if (alpha < 255 && fadeIn) {
-				fadeIn = true;
-				fadeOut = false;
-				alphaCalc += 3.0f;
-				alpha = alphaCalc;
-				SDL_SetTextureAlphaMod(fadeImage, alpha);
-
-				if (alpha > 254) {
-					hero->x = 300;
-					hero->y = 300;
-					fadeIn = false;
-					fadeOut = true;
-				}
-			}
-			else if (alpha >= 0 && fadeOut) {
-				fadeIn = false;
-				fadeOut = true;
-				alphaCalc -= 3.0f;
-				alpha = alphaCalc;
-				SDL_SetTextureAlphaMod(fadeImage, alpha);
-
-				if (alpha == 0) {
-					fadeOut = false;
-				}
-			}
-			else {
-				isFading = false;
-				fadeIn = false;
-				fadeOut = false;
-			}
-			cout << alpha << "\n";
-		}
-		else {
-			SDL_SetTextureAlphaMod(fadeImage, 0);
-			alpha = 0;
-			alphaCalc = 0.0f;
-		}
-
-		int i = 1;
-
-		renderTexture(backGroundImage, Globals::renderer, 0 - Globals::camera.x, 0 - Globals::camera.y);
-		renderTexture(fadeImage, Globals::renderer, (-200) - Globals::camera.x, (-200) - Globals::camera.y);
-		//updateMaps();
-
-		//Load and draw surrounding maps based on distance
-		//tempMap = std::next(mapList.begin(), currentMap.mapN);
-		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE) 
-		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
-		//	backGroundImageN = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
-		//	renderTexture(backGroundImageN, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-		//}
-
-		//tempMap = std::next(mapList.begin(), currentMap.mapNW);
-		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE)
-		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
-		//	backGroundImageNW = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
-		//	renderTexture(backGroundImageNW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-		//}
-
-		//tempMap = std::next(mapList.begin(), currentMap.mapW);
-		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE)
-		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
-		//	backGroundImageW = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
-		//	renderTexture(backGroundImageW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-		//}
-
-		//tempMap = std::next(mapList.begin(), currentMap.mapSW);
-		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE)
-		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
-		//	backGroundImageSW = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
-		//	renderTexture(backGroundImageSW, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-		//}
-
-		//tempMap = std::next(mapList.begin(), currentMap.mapS);
-		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE)
-		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
-		//	backGroundImageS = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
-		//	renderTexture(backGroundImageS, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-		//}
-
-		//tempMap = std::next(mapList.begin(), currentMap.mapSE);
-		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE)
-		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
-		//	backGroundImageSE = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
-		//	renderTexture(backGroundImageSE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-		//}
-
-		//tempMap = std::next(mapList.begin(), currentMap.mapE);
-		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE)
-		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
-		//	backGroundImageE = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
-		//	renderTexture(backGroundImageE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-		//}
-
-		//tempMap = std::next(mapList.begin(), currentMap.mapNE);
-		//if ((Entity::distaceBettweenTwoPoints(hero->x, hero->y, tempMap->mapPosX, tempMap->mapPosY) < MAP_DISTANCE)
-		//	&& ((tempMap->mapPosX != 1) && (tempMap->mapPosY != 1))) {
-		//	backGroundImageNE = loadTexture(getResourcePath() + tempMap->file, Globals::renderer);
-		//	renderTexture(backGroundImageNE, Globals::renderer, tempMap->mapPosX - Globals::camera.x, tempMap->mapPosY - Globals::camera.y);
-		//}
-
-
-		//if(Entity::distaceBettweenTwoPoints)
-		//if (sqrt(pow(MAP1_X - hero->x, 2) + pow(MAP1_Y - hero->y, 2)) < MAP_DISTANCE) {
-		//	backGroundImage2 = loadTexture(getResourcePath() + "map.png", Globals::renderer);
-		//	renderTexture(backGroundImage2, Globals::renderer, MAP1_X - Globals::camera.x, MAP1_Y - Globals::camera.y);
-		//}
-		//else {
-		//	cleanup(backGroundImage2);
-		//}
-		
-		//renderTexture(backGroundImage, Globals::renderer, 1024 - Globals::camera.x, -1024 - Globals::camera.y);
-		//renderTexture(backGroundImage, Globals::renderer, -1024 - Globals::camera.x, 1024 - Globals::camera.y);
-		//renderTexture(backGroundImage, Globals::renderer, -1024 - Globals::camera.x, 0 - Globals::camera.y);
-		//renderTexture(backGroundImage, Globals::renderer, 0 - Globals::camera.x, -1024 - Globals::camera.y);
-		//renderTexture(backGroundImage, Globals::renderer, -1024 - Globals::camera.x, -1024 - Globals::camera.y);
-		//renderTexture(backGroundImage, Globals::renderer, 1024 - Globals::camera.x, 0 - Globals::camera.y);
-		//renderTexture(backGroundImage, Globals::renderer, 0 - Globals::camera.x, 1024 - Globals::camera.y);
-		//renderTexture(backGroundImage, Globals::renderer, 1024 - Globals::camera.x, 1024 - Globals::camera.y);
+		updateMaps();
 
 		// sort all entities based on y (depth)
 		Entity::entities.sort(Entity::EntityCompare);
