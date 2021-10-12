@@ -48,53 +48,96 @@ Game::Game() {
 			item = element->FirstChildElement("id");
 			mResult = item->QueryIntText(&mId);
 
-			int x;
-			item = element->FirstChildElement("pos_x");
-			mResult = item->QueryIntText(&x);
+			int l_x1;
+			item = element->FirstChildElement("l_x1");
+			mResult = item->QueryIntText(&l_x1);
 
-			int y;
-			item = element->FirstChildElement("pos_y");
-			mResult = item->QueryIntText(&y);
+			int l_y1;
+			item = element->FirstChildElement("l_y1");
+			mResult = item->QueryIntText(&l_y1);
 
-			int mN;
-			item = element->FirstChildElement("map_n");
-			mResult = item->QueryIntText(&mN);
+			int l_x2;
+			item = element->FirstChildElement("l_x2");
+			mResult = item->QueryIntText(&l_x2);
 
-			int mNW;
-			item = element->FirstChildElement("map_nw");
-			mResult = item->QueryIntText(&mNW);
+			int l_y2;
+			item = element->FirstChildElement("l_y2");
+			mResult = item->QueryIntText(&l_y2);
 
-			int mW;
-			item = element->FirstChildElement("map_w");
-			mResult = item->QueryIntText(&mW);
+			int r_x1;
+			item = element->FirstChildElement("r_x1");
+			mResult = item->QueryIntText(&r_x1);
 
-			int mSW;
-			item = element->FirstChildElement("map_sw");
-			mResult = item->QueryIntText(&mSW);
+			int r_y1;
+			item = element->FirstChildElement("r_y1");
+			mResult = item->QueryIntText(&r_y1);
 
-			int mS;
-			item = element->FirstChildElement("map_s");
-			mResult = item->QueryIntText(&mS);
+			int r_x2;
+			item = element->FirstChildElement("r_x2");
+			mResult = item->QueryIntText(&r_x2);
 
-			int mSE;
-			item = element->FirstChildElement("map_se");
-			mResult = item->QueryIntText(&mSE);
+			int r_y2;
+			item = element->FirstChildElement("r_y2");
+			mResult = item->QueryIntText(&r_y2);
 
-			int mE;
-			item = element->FirstChildElement("map_e");
-			mResult = item->QueryIntText(&mE);
+			int t_x1;
+			item = element->FirstChildElement("t_x1");
+			mResult = item->QueryIntText(&t_x1);
 
-			int mNE;
-			item = element->FirstChildElement("map_ne");
-			mResult = item->QueryIntText(&mNE);
+			int t_y1;
+			item = element->FirstChildElement("t_y1");
+			mResult = item->QueryIntText(&t_y1);
 
+			int t_x2;
+			item = element->FirstChildElement("t_x2");
+			mResult = item->QueryIntText(&t_x2);
+
+			int t_y2;
+			item = element->FirstChildElement("t_y2");
+			mResult = item->QueryIntText(&t_y2);
+
+			int b_x1;
+			item = element->FirstChildElement("b_x1");
+			mResult = item->QueryIntText(&b_x1);
+
+			int b_y1;
+			item = element->FirstChildElement("b_y1");
+			mResult = item->QueryIntText(&b_y1);
+
+			int b_x2;
+			item = element->FirstChildElement("b_x2");
+			mResult = item->QueryIntText(&b_x2);
+
+			int b_y2;
+			item = element->FirstChildElement("b_y2");
+			mResult = item->QueryIntText(&b_y2);
+
+			int l_map;
+			item = element->FirstChildElement("l_map");
+			mResult = item->QueryIntText(&l_map);
+
+			int r_map;
+			item = element->FirstChildElement("r_map");
+			mResult = item->QueryIntText(&r_map);
+
+			int t_map;
+			item = element->FirstChildElement("t_map");
+			mResult = item->QueryIntText(&t_map);
+
+			int b_map;
+			item = element->FirstChildElement("b_map");
+			mResult = item->QueryIntText(&b_map);
 			
-			Map m = Map(mId, f, x, y, mN, mNW, mW, mSW, mS, mSE, mE, mNE);
+			Map m = Map(mId, f, l_x1, l_y1, l_x2, l_y2, r_x1, r_y1, r_x2, r_y2, t_x1, t_y1, t_x2, t_y2, b_x1, b_y1, b_x2, b_y2, l_map, r_map, t_map, b_map);
 			mapList.push_back(m);
 
-			cout << m.id << " " << m.file << " " << m.mapPosX << " " << m.mapPosY << " " <<
-				m.mapN << " " << m.mapNW << " " << m.mapW << " " << m.mapSW << " " 
-				<< m.mapS << " " << m.mapSE << " " << m.mapE << " " << m.mapNE << "\n";
+			cout << m.id << " " << m.file << " " << 
+				m.leftX1 << " " << m.leftY1 << " " << m.leftX2 << " " << m.leftY2 << " " <<
+				m.rightX1 << " " << m.rightY1 << " " << m.rightX2 << " " << m.rightY2 << " " <<
+				m.topX1 << " " << m.topY1 << " " << m.topX2 << " " << m.topY2 << " " <<
+				m.bottomX1 << " " << m.bottomY1 << " " << m.bottomX2 << " " << m.bottomY2 << " " <<
+				m.leftMapId << " " << m.rightMapId << " " << m.topMapId << " " << m.bottomMapId << " " <<
+				"\n";
 
 			element = element->NextSiblingElement("map");
 			i++;
@@ -106,37 +149,40 @@ Game::Game() {
 
 	auto tempMap = std::next(mapList.begin(), currentMapId); //Get the current map based on currentMapId
 
-	currentMap = Map(tempMap->id, tempMap->file, tempMap->mapPosX, tempMap->mapPosY,
-		tempMap->mapN, tempMap->mapNW, tempMap->mapW, tempMap->mapSW,
-		tempMap->mapS, tempMap->mapSE, tempMap->mapE, tempMap->mapNE);
+	currentMap = Map(tempMap->id, tempMap->file, tempMap->leftX1, tempMap->leftY1, tempMap->leftX2, tempMap->leftY2, 
+		tempMap->rightX1, tempMap->rightY1,tempMap->rightX2, tempMap->rightY2,
+		tempMap->topX1, tempMap->topY1, tempMap->topX2, tempMap->topY2,
+		tempMap->bottomX1, tempMap->bottomY1, tempMap->bottomX2, tempMap->bottomY2,
+		tempMap->leftMapId, tempMap->rightMapId, tempMap->topMapId, tempMap->bottomMapId
+		);
 
 	//Pre-load current and surroundings maps images
 	//backGroundImage = loadTexture(resPath + currentMap.file, Globals::renderer);
 	cout << currentMap.file << "\n";
 
-	tempMap = std::next(mapList.begin(), currentMap.mapN);
-	backGroundImageN = loadTexture(resPath + tempMap->file, Globals::renderer);
+	//tempMap = std::next(mapList.begin(), currentMap.mapN);
+	//backGroundImageN = loadTexture(resPath + tempMap->file, Globals::renderer);
 
-	tempMap = std::next(mapList.begin(), currentMap.mapNW);
-	backGroundImageNW = loadTexture(resPath + tempMap->file, Globals::renderer);
+	//tempMap = std::next(mapList.begin(), currentMap.mapNW);
+	//backGroundImageNW = loadTexture(resPath + tempMap->file, Globals::renderer);
 
-	tempMap = std::next(mapList.begin(), currentMap.mapW);
-	backGroundImageW = loadTexture(resPath + tempMap->file, Globals::renderer);
+	//tempMap = std::next(mapList.begin(), currentMap.mapW);
+	//backGroundImageW = loadTexture(resPath + tempMap->file, Globals::renderer);
 
-	tempMap = std::next(mapList.begin(), currentMap.mapSW);
-	backGroundImageSW = loadTexture(resPath + tempMap->file, Globals::renderer);
+	//tempMap = std::next(mapList.begin(), currentMap.mapSW);
+	//backGroundImageSW = loadTexture(resPath + tempMap->file, Globals::renderer);
 
-	tempMap = std::next(mapList.begin(), currentMap.mapS);
-	backGroundImageS = loadTexture(resPath + tempMap->file, Globals::renderer);
+	//tempMap = std::next(mapList.begin(), currentMap.mapS);
+	//backGroundImageS = loadTexture(resPath + tempMap->file, Globals::renderer);
 
-	tempMap = std::next(mapList.begin(), currentMap.mapSE);
-	backGroundImageSE = loadTexture(resPath + tempMap->file, Globals::renderer);
+	//tempMap = std::next(mapList.begin(), currentMap.mapSE);
+	//backGroundImageSE = loadTexture(resPath + tempMap->file, Globals::renderer);
 
-	tempMap = std::next(mapList.begin(), currentMap.mapE);
-	backGroundImageE = loadTexture(resPath + tempMap->file, Globals::renderer);
+	//tempMap = std::next(mapList.begin(), currentMap.mapE);
+	//backGroundImageE = loadTexture(resPath + tempMap->file, Globals::renderer);
 
-	tempMap = std::next(mapList.begin(), currentMap.mapNE);
-	backGroundImageNE = loadTexture(resPath + tempMap->file, Globals::renderer);
+	//tempMap = std::next(mapList.begin(), currentMap.mapNE);
+	//backGroundImageNE = loadTexture(resPath + tempMap->file, Globals::renderer);
 
 	splashImage = loadTexture(resPath + "cyborgtitle.png", Globals::renderer);
 	overlayImage = loadTexture(resPath + "overlay.png", Globals::renderer);
@@ -475,7 +521,7 @@ void Game::update() {
 		}
 
 		//TESTE
-		if ((hero->x > 500) && (hero->y > 0 || hero->y < 15)) {
+		if ((hero->x > 500) && (hero->y > 0 && hero->y < 15)) {
 			isFading = true;
 			fadeIn = true;
 		}

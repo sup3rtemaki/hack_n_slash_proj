@@ -2,44 +2,62 @@
 <maps>
   <map_count>2</map_count>
 
-  <map name="map0">
-    <id>0</id>
-    <file>mapTest.png</file>
-    <pos_x>1</pos_x>
-    <pos_y>1</pos_y>
-    <map_n>0</map_n>
-    <map_nw>0</map_nw>
-    <map_w>0</map_w>
-    <map_sw>0</map_sw>
-    <map_s>0</map_s>
-    <map_se>0</map_se>
-    <map_e>0</map_e>
-    <map_ne>0</map_ne>
-  </map>
-
-  <map name="map1">
+  <map>
     <id>1</id>
-    <file>map1.png</file>
-    <pos_x>0</pos_x>
-    <pos_y>0</pos_y>
-    <map_n>3</map_n>
-    <map_nw>4</map_nw>
-    <map_w>5</map_w>
-    <map_sw>6</map_sw>
-    <map_s>7</map_s>
-    <map_se>8</map_se>
-    <map_e>2</map_e>
-    <map_ne>9</map_ne>
+    <file>mapTest.png</file>
+    
+    <l_x1>1024</l_x1>
+    <l_y1>150</l_y1>
+    <l_x2>1056</l_x2>
+    <l_y2>200</l_y2>
+    <l_map>2</l_map>
+    
+    <t_x1>-1</t_x1>
+    <t_y1>-1</t_y1>
+    <t_x2>-1</t_x2>
+    <t_y2>-1</t_y2>
+    <t_map>2</t_map>
+    
+    <r_x1>-1</r_x1>
+    <r_y1>-1</r_y1>
+    <r_x2>-1</r_x2>
+    <r_y2>-1</r_y2>
+    <r_map>2</r_map>
+    
+    <b_x1>-1</b_x1>
+    <b_y1>-1</b_y1>
+    <b_x2>-1</b_x2>
+    <b_y2>-1</b_y2>
+    <b_map>2</b_map>
   </map>
 
   <map>
-    <id>1</id>
-    <file>map.png</file>
-    <left_x>-1</left_x>
-    <left_y>-1</left_y>
-    <top_x></top_x>
-    <top_y></top_y>
-    <
+    <id>2</id>
+    <file>map2.png</file>
+
+    <l_x1>-1</l_x1>
+    <l_y1>-1</l_y1>
+    <l_x2>-1</l_x2>
+    <l_y2>-1</l_y2>
+    <l_map>2</l_map>
+
+    <t_x1>-1</t_x1>
+    <t_y1>-1</t_y1>
+    <t_x2>-1</t_x2>
+    <t_y2>-1</t_y2>
+    <t_map>2</t_map>
+
+    <r_x1>0</r_x1>
+    <r_y1>150</r_y1>
+    <r_x2>32</r_x2>
+    <r_y2>200</r_y2>
+    <r_map>1</r_map>
+
+    <b_x1>-1</b_x1>
+    <b_y1>-1</b_y1>
+    <b_x2>-1</b_x2>
+    <b_y2>-1</b_y2>
+    <b_map>2</b_map>
   </map>
  
 </maps>
