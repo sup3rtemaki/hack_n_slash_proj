@@ -50,6 +50,14 @@ public:
 	int mapToDrawCount;
 	Map currentMap;
 	list<Map> mapList;
+	enum class NextMap {
+		NONE,
+		LEFT,
+		TOP,
+		RIGHT,
+		BOTTOM
+	};
+	NextMap nextMap;
 
 	Hero* hero;
 	KeyboardInput heroInput;

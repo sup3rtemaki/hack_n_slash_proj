@@ -3,14 +3,14 @@
   <map_count>2</map_count>
 
   <map>
-    <id>1</id>
+    <id>0</id>
     <file>mapTest.png</file>
     
-    <l_x1>1024</l_x1>
+    <l_x1>988</l_x1>
     <l_y1>150</l_y1>
-    <l_x2>1056</l_x2>
-    <l_y2>200</l_y2>
-    <l_map>2</l_map>
+    <l_x2>1024</l_x2>
+    <l_y2>250</l_y2>
+    <l_map>1</l_map>
     
     <t_x1>-1</t_x1>
     <t_y1>-1</t_y1>
@@ -32,14 +32,14 @@
   </map>
 
   <map>
-    <id>2</id>
+    <id>1</id>
     <file>map2.png</file>
 
     <l_x1>-1</l_x1>
     <l_y1>-1</l_y1>
     <l_x2>-1</l_x2>
     <l_y2>-1</l_y2>
-    <l_map>2</l_map>
+    <l_map>1</l_map>
 
     <t_x1>-1</t_x1>
     <t_y1>-1</t_y1>
@@ -51,7 +51,7 @@
     <r_y1>150</r_y1>
     <r_x2>32</r_x2>
     <r_y2>200</r_y2>
-    <r_map>1</r_map>
+    <r_map>0</r_map>
 
     <b_x1>-1</b_x1>
     <b_y1>-1</b_y1>

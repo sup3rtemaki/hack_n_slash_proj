@@ -19,7 +19,7 @@ Game::Game() {
 	backGroundImage = loadTexture(resPath + "map.png", Globals::renderer);
 	fadeImage = loadTexture(resPath + "blackBG.png", Globals::renderer);
 
-	currentMapId = 1;
+	currentMapId = 0;
 	mapToDrawCount = 0;
 
 	tinyxml2::XMLDocument xml_doc;
@@ -157,7 +157,7 @@ Game::Game() {
 		);
 
 	//Pre-load current and surroundings maps images
-	//backGroundImage = loadTexture(resPath + currentMap.file, Globals::renderer);
+	backGroundImage = loadTexture(resPath + currentMap.file, Globals::renderer);
 	cout << currentMap.file << "\n";
 
 	//tempMap = std::next(mapList.begin(), currentMap.mapN);
@@ -334,6 +334,20 @@ Game::Game() {
 
 	//else cout << "Unable to open file";
 
+	//teste
+	Wall* newWall = new Wall(wallAnimSet);
+	newWall->x = 988;
+	newWall->y = 150;
+	walls.push_back(newWall);
+	Entity::entities.push_back(newWall);
+
+	newWall = new Wall(wallAnimSet);
+	newWall->x = 1024;
+	newWall->y = 250;
+	walls.push_back(newWall);
+	Entity::entities.push_back(newWall);
+	///////////////////////////////////
+
 	//setup hpbars position
 	heroHpBar.x = 10;
 	heroHpBar.y = 10;
@@ -442,7 +456,9 @@ void Game::update() {
 					break;
 				}
 			}
-			heroInput.update(&e);
+			if (!isFading) {
+				heroInput.update(&e);
+			}
 		}
 
 		//make overlay timer tick down
@@ -520,10 +536,30 @@ void Game::update() {
 			}
 		}
 
-		//TESTE
-		if ((hero->x > 500) && (hero->y > 0 && hero->y < 15)) {
+		//If hero is in change map region, fade to change map
+		if ((hero->x > currentMap.leftX1) && (hero->x < currentMap.leftX2) && (hero->y > currentMap.leftY1) && (hero->y < currentMap.leftY2)) {
 			isFading = true;
 			fadeIn = true;
+			nextMap = NextMap::LEFT;
+		}
+		else if ((hero->x >= currentMap.topX1) && (hero->x < currentMap.topX2) && (hero->y >= currentMap.topY1) && (hero->y < currentMap.topY2)) {
+			isFading = true;
+			fadeIn = true;
+			nextMap = NextMap::TOP;
+		}
+		else if ((hero->x >= currentMap.rightX1) && (hero->x < currentMap.rightX2) && (hero->y >= currentMap.rightY1) && (hero->y < currentMap.rightY2)) {
+			isFading = true;
+			fadeIn = true;
+			nextMap = NextMap::RIGHT;
+		}
+		else if ((hero->x >= currentMap.bottomX1) && (hero->x < currentMap.bottomX2) && (hero->y >= currentMap.bottomY1) && (hero->y < currentMap.bottomY2)) {
+			isFading = true;
+			fadeIn = true;
+			nextMap = NextMap::BOTTOM;
+		}
+		else {
+			isFading = false;
+			nextMap = NextMap::NONE;
 		}
 
 		//update camera position
@@ -546,11 +582,38 @@ void Game::updateMaps() {
 			SDL_SetTextureAlphaMod(fadeImage, alpha);
 
 			if (alpha > 254) {
-				backGroundImage = loadTexture(getResourcePath() + "map1.png", Globals::renderer);
-				hero->x = 300;
-				hero->y = 300;
-				fadeIn = false;
-				fadeOut = true;
+				if (nextMap == NextMap::LEFT) {
+					auto tempMap = std::next(mapList.begin(), currentMap.leftMapId);
+					currentMap = *tempMap;
+					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
+					hero->x = (hero->x - 960) + 32;
+					fadeIn = false;
+					fadeOut = true;
+				}
+				else if (nextMap == NextMap::RIGHT) {
+					auto tempMap = std::next(mapList.begin(), currentMap.rightMapId);
+					currentMap = *tempMap;
+					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
+					hero->x = (hero->x + 960) - 32;
+					fadeIn = false;
+					fadeOut = true;
+				}
+				else if (nextMap == NextMap::TOP) {
+					auto tempMap = std::next(mapList.begin(), currentMap.topMapId);
+					currentMap = *tempMap;
+					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
+					hero->y = (hero->y - 960) + 32;
+					fadeIn = false;
+					fadeOut = true;
+				}
+				else if (nextMap == NextMap::BOTTOM) {
+					auto tempMap = std::next(mapList.begin(), currentMap.bottomMapId);
+					currentMap = *tempMap;
+					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
+					hero->y = (hero->y + 960) - 32;
+					fadeIn = false;
+					fadeOut = true;
+				}
 			}
 		}
 		else if (alpha >= 0 && fadeOut) {

@@ -1,4 +1,5 @@
 #include "cameraController.h"
+#include "game.h"
 
 void CameraController::update() {
 	if (target != NULL) {
