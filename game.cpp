@@ -459,6 +459,9 @@ void Game::update() {
 			if (!isFading) {
 				heroInput.update(&e);
 			}
+			else {
+				hero->moving = false;
+			}
 		}
 
 		//make overlay timer tick down
@@ -573,6 +576,8 @@ void Game::update() {
 void Game::updateMaps() {
 
 	if (isFading) {
+
+		hero->moving = false;
 
 		if (alpha < 255 && fadeIn) {
 			fadeIn = true;
