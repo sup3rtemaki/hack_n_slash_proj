@@ -8,12 +8,15 @@ void CameraController::update() {
 		float targetY = target->y - Globals::camera.h / 2;
 
 		//move to target position with delay
-		Globals::camera.x += ((targetX) - Globals::camera.x) * lerp * TimeController::timeController.dT;
-		Globals::camera.y += ((targetY) - Globals::camera.y) * lerp * TimeController::timeController.dT;
-		
-		//or fixed on target position
-		//Globals::camera.x = targetX;
-		//Globals::camera.y = targetY;
+		if (isLerping) {
+			Globals::camera.x += ((targetX)-Globals::camera.x) * lerp * TimeController::timeController.dT;
+			Globals::camera.y += ((targetY)-Globals::camera.y) * lerp * TimeController::timeController.dT;
+		}
+		else {
+			//or fixed on target position
+			Globals::camera.x = targetX;
+			Globals::camera.y = targetY;
+		}
 	}
 	else {
 		//dont follow

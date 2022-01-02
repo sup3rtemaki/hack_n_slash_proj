@@ -355,6 +355,8 @@ Game::Game() {
 	heroHpBar.barWidth = 100;
 	bossHpBar.x = Globals::ScreenWidth / 2.0f - (bossHpBar.barWidth / 2.0f); // centered horizontally
 	bossHpBar.y = Globals::ScreenHeight - bossHpBar.barHeight - 20; // 20 pixels off the bottom
+
+	camController.isLerping = true;
 }
 
 Game::~Game() {
@@ -576,22 +578,24 @@ void Game::update() {
 void Game::updateMaps() {
 
 	if (isFading) {
-
 		hero->moving = false;
 
 		if (alpha < 255 && fadeIn) {
 			fadeIn = true;
 			fadeOut = false;
-			alphaCalc += 3.0f;
+			alphaCalc += 5.0f;
 			alpha = alphaCalc;
 			SDL_SetTextureAlphaMod(fadeImage, alpha);
 
 			if (alpha > 254) {
+				camController.isLerping = false;
+
 				if (nextMap == NextMap::LEFT) {
 					auto tempMap = std::next(mapList.begin(), currentMap.leftMapId);
 					currentMap = *tempMap;
 					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
 					hero->x = (hero->x - 960) + 32;
+					//Globals::camera.x = hero->x - 32;
 					fadeIn = false;
 					fadeOut = true;
 				}
@@ -600,6 +604,7 @@ void Game::updateMaps() {
 					currentMap = *tempMap;
 					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
 					hero->x = (hero->x + 960) - 32;
+					//Globals::camera.x = hero->x + 32;
 					fadeIn = false;
 					fadeOut = true;
 				}
@@ -608,14 +613,16 @@ void Game::updateMaps() {
 					currentMap = *tempMap;
 					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
 					hero->y = (hero->y - 960) + 32;
+					//Globals::camera.y = hero->y - 32;
 					fadeIn = false;
 					fadeOut = true;
 				}
 				else if (nextMap == NextMap::BOTTOM) {
 					auto tempMap = std::next(mapList.begin(), currentMap.bottomMapId);
 					currentMap = *tempMap;
-					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
+					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);			
 					hero->y = (hero->y + 960) - 32;
+					//Globals::camera.y = hero->y + 32;
 					fadeIn = false;
 					fadeOut = true;
 				}
@@ -637,9 +644,10 @@ void Game::updateMaps() {
 			fadeIn = false;
 			fadeOut = false;
 		}
-		cout << alpha << "\n";
+		//cout << alpha << "\n";
 	}
 	else {
+		camController.isLerping = true;
 		SDL_SetTextureAlphaMod(fadeImage, 0);
 		alpha = 0;
 		alphaCalc = 0.0f;
