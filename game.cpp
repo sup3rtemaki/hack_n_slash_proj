@@ -573,6 +573,8 @@ void Game::update() {
 		// draw all entites
 		draw();
 	}
+
+	cout << "x:" << hero->x << ", " << "y:" << hero->y;
 }
 
 void Game::updateMaps() {
@@ -583,7 +585,7 @@ void Game::updateMaps() {
 		if (alpha < 255 && fadeIn) {
 			fadeIn = true;
 			fadeOut = false;
-			alphaCalc += 5.0f;
+			alphaCalc += 20.0f;
 			alpha = alphaCalc;
 			SDL_SetTextureAlphaMod(fadeImage, alpha);
 
@@ -595,7 +597,6 @@ void Game::updateMaps() {
 					currentMap = *tempMap;
 					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
 					hero->x = (hero->x - 960) + 32;
-					//Globals::camera.x = hero->x - 32;
 					fadeIn = false;
 					fadeOut = true;
 				}
@@ -604,7 +605,6 @@ void Game::updateMaps() {
 					currentMap = *tempMap;
 					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
 					hero->x = (hero->x + 960) - 32;
-					//Globals::camera.x = hero->x + 32;
 					fadeIn = false;
 					fadeOut = true;
 				}
@@ -613,7 +613,6 @@ void Game::updateMaps() {
 					currentMap = *tempMap;
 					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
 					hero->y = (hero->y - 960) + 32;
-					//Globals::camera.y = hero->y - 32;
 					fadeIn = false;
 					fadeOut = true;
 				}
@@ -622,7 +621,6 @@ void Game::updateMaps() {
 					currentMap = *tempMap;
 					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);			
 					hero->y = (hero->y + 960) - 32;
-					//Globals::camera.y = hero->y + 32;
 					fadeIn = false;
 					fadeOut = true;
 				}
