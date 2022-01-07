@@ -1,5 +1,7 @@
 #include "game.h"
 #include "tinyxml2.h"
+#include "nlohmann/json.hpp"
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -10,6 +12,14 @@
 #define MAP_DISTANCE 2000
 
 using namespace std;
+
+/*
+* TESTE
+*/
+using json = nlohmann::json;
+
+ifstream in("file.json");
+json j;
 
 Game::Game() {
 
@@ -575,6 +585,8 @@ void Game::update() {
 	}
 
 	cout << "x:" << hero->x << ", " << "y:" << hero->y;
+	in >> j;
+	cout << j;
 }
 
 void Game::updateMaps() {

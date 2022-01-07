@@ -200,7 +200,10 @@
     <ClInclude Include="keyboardInput.h" />
     <ClInclude Include="livingEntity.h" />
     <ClInclude Include="map.h" />
+    <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="randomNumber.h" />
+    <ClInclude Include="rapidjson\istreamwrapper.h" />
+    <ClInclude Include="rapidjson\writer.h" />
     <ClInclude Include="res_path.h" />
     <ClInclude Include="roundKing.h" />
     <ClInclude Include="soundManager.h" />

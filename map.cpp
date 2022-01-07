@@ -1,5 +1,7 @@
 #include "map.h"
 
+//=================================================================
+
 Map::Map(int id, std::string file, int leftX1, int leftY1, int leftX2, int leftY2,
 	int rightX1, int rightY1, int rightX2, int rightY2,
 	int topX1, int topY1, int topX2, int topY2,
