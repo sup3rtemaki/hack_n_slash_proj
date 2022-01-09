@@ -188,9 +188,6 @@
     <ClInclude Include="map.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="rapidjson\istreamwrapper.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
     <ClInclude Include="rapidjson\writer.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
