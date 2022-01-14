@@ -27,6 +27,8 @@ public:
 	int topX1, topY1, topX2, topY2;
 	int bottomX1, bottomY1, bottomX2, bottomY2;
 	int leftMapId, rightMapId, topMapId, bottomMapId;
+	int qtEnemies;
+	//TODO Criar lista de inimigos
 
 	Map();
 	Map(int id, std::string file, int leftX1, int leftY1, int leftX2, int leftY2,

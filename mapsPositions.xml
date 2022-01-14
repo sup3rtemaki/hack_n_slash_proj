@@ -29,6 +29,13 @@
     <b_x2>-1</b_x2>
     <b_y2>-1</b_y2>
     <b_map>2</b_map>
+
+    <qt_enemies>1</qt_enemies>
+    <enemy>
+      <e_id>0</e_id>
+      <e_x>50</e_x>
+      <e_y>50</e_y>
+    </enemy>
   </map>
 
   <map>
@@ -58,6 +65,8 @@
     <b_x2>-1</b_x2>
     <b_y2>-1</b_y2>
     <b_map>2</b_map>
+
+    <qt_enemies>0</qt_enemies>
   </map>
  
 </maps>
