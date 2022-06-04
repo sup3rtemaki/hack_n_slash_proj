@@ -17,6 +17,10 @@
 */
 
 #include <string>
+#include <tuple>
+#include <vector>
+
+#include "entity.h"
 
 class Map {
 public:
@@ -28,14 +32,19 @@ public:
 	int bottomX1, bottomY1, bottomX2, bottomY2;
 	int leftMapId, rightMapId, topMapId, bottomMapId;
 	int qtEnemies;
-	//TODO Criar lista de inimigos
+
+	std::vector<std::tuple<int, int, int>> enemies;
+	
+	//EXEMPLO
+	//std::tie(enemyId, enemyX, enemyY) = enemies[0];
 
 	Map();
 	Map(int id, std::string file, int leftX1, int leftY1, int leftX2, int leftY2,
 		int rightX1, int rightY1, int rightX2, int rightY2,
 		int topX1, int topY1, int topX2, int topY2,
 		int bottomX1, int bottomY1, int bottomX2, int bottomY2,
-		int leftMapId, int rightMapId, int topMapId, int bottomMapId);
+		int leftMapId, int rightMapId, int topMapId, int bottomMapId, int qtEnemies,
+		std::vector<std::tuple<int, int, int>> enemies);
 };
 
 #endif // !MAP

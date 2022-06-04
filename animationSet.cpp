@@ -34,6 +34,9 @@ void AnimationSet::loadAnimationSet(string fileName, list<DataGroupType>& groupT
 	if (file.good())
 	{
 		getline(file, imageName);
+
+		SDL_Surface* spriteSurface = loadSurface(resPath + imageName, Globals::renderer);
+
 		if (setColourKey)
 		{
 			SDL_Surface* spriteSurface = loadSurface(resPath + imageName, Globals::renderer);

@@ -68,6 +68,7 @@ public:
 	int enemyWavesTillBoss = 3;
 	bool buildBossNext = false;
 	bool bossActive = false;
+	bool hasToSpawnEnemies = false;
 	
 	HPBar heroHpBar;
 	HPBar bossHpBar;

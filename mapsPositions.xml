@@ -30,11 +30,31 @@
     <b_y2>-1</b_y2>
     <b_map>2</b_map>
 
-    <qt_enemies>1</qt_enemies>
+    <qt_enemies>5</qt_enemies>
     <enemy>
       <e_id>0</e_id>
       <e_x>50</e_x>
       <e_y>50</e_y>
+    </enemy>
+    <enemy>
+      <e_id>0</e_id>
+      <e_x>200</e_x>
+      <e_y>50</e_y>
+    </enemy>
+    <enemy>
+      <e_id>0</e_id>
+      <e_x>50</e_x>
+      <e_y>200</e_y>
+    </enemy>
+    <enemy>
+      <e_id>1</e_id>
+      <e_x>200</e_x>
+      <e_y>250</e_y>
+    </enemy>
+    <enemy>
+      <e_id>1</e_id>
+      <e_x>300</e_x>
+      <e_y>250</e_y>
     </enemy>
   </map>
 
@@ -66,7 +86,17 @@
     <b_y2>-1</b_y2>
     <b_map>2</b_map>
 
-    <qt_enemies>0</qt_enemies>
+    <qt_enemies>2</qt_enemies>
+    <enemy>
+      <e_id>0</e_id>
+      <e_x>50</e_x>
+      <e_y>50</e_y>
+    </enemy>
+    <enemy>
+      <e_id>0</e_id>
+      <e_x>200</e_x>
+      <e_y>50</e_y>
+    </enemy>
   </map>
  
 </maps>

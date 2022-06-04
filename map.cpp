@@ -6,7 +6,8 @@ Map::Map(int id, std::string file, int leftX1, int leftY1, int leftX2, int leftY
 	int rightX1, int rightY1, int rightX2, int rightY2,
 	int topX1, int topY1, int topX2, int topY2,
 	int bottomX1, int bottomY1, int bottomX2, int bottomY2,
-	int leftMapId, int rightMapId, int topMapId, int bottomMapId) {
+	int leftMapId, int rightMapId, int topMapId, int bottomMapId, int qtEnemies,
+	std::vector<std::tuple<int, int, int>> enemies) {
 
 	this->id = id;
 	this->file = file;
@@ -34,7 +35,10 @@ Map::Map(int id, std::string file, int leftX1, int leftY1, int leftX2, int leftY
 	this->leftMapId = leftMapId;
 	this->rightMapId = rightMapId;
 	this->topMapId = topMapId;
-	this->bottomMapId= bottomMapId;
+	this->bottomMapId = bottomMapId;
+
+	this->qtEnemies = qtEnemies;
+	this->enemies = enemies;
 }
 
 Map::Map() {

@@ -32,7 +32,7 @@ Game::Game() {
 		tinyxml2::XMLElement* element = root->FirstChildElement("map_count");
 		int xml_count;
 		mResult = element->QueryIntText(&xml_count);
-		cout << element->GetText() << "\n";
+		//cout << element->GetText() << "\n";
 
 		//list<Map> mapList;
 
@@ -127,8 +127,38 @@ Game::Game() {
 			int b_map;
 			item = element->FirstChildElement("b_map");
 			mResult = item->QueryIntText(&b_map);
+
+			int qt_enemies;
+			std::vector<std::tuple<int, int, int>> mapEnemies;
+			item = element->FirstChildElement("qt_enemies");
+			mResult = item->QueryIntText(&qt_enemies);
+
+			if (qt_enemies > 0) {
+				tinyxml2::XMLElement* enemy_element = element->FirstChildElement("enemy");
+				int j = 0;
+
+				while (enemy_element != nullptr && j < qt_enemies) {
+					int e_id;
+					item = enemy_element->FirstChildElement("e_id");
+					mResult = item->QueryIntText(&e_id);
+
+					int e_x;
+					item = enemy_element->FirstChildElement("e_x");
+					mResult = item->QueryIntText(&e_x);
+
+					int e_y;
+					item = enemy_element->FirstChildElement("e_y");
+					mResult = item->QueryIntText(&e_y);
+
+					mapEnemies.push_back(std::make_tuple(e_id, e_x, e_y));
+
+					enemy_element = enemy_element->NextSiblingElement("enemy");
+					j++;
+				}
+			}
 			
-			Map m = Map(mId, f, l_x1, l_y1, l_x2, l_y2, r_x1, r_y1, r_x2, r_y2, t_x1, t_y1, t_x2, t_y2, b_x1, b_y1, b_x2, b_y2, l_map, r_map, t_map, b_map);
+			Map m = Map(mId, f, l_x1, l_y1, l_x2, l_y2, r_x1, r_y1, r_x2, r_y2, t_x1, t_y1, t_x2, t_y2, b_x1, b_y1, b_x2, b_y2, l_map, r_map, t_map, b_map, qt_enemies, mapEnemies);
+
 			mapList.push_back(m);
 
 			cout << m.id << " " << m.file << " " << 
@@ -147,18 +177,25 @@ Game::Game() {
 		cout << "Error opening XML";
 	}
 
-	auto tempMap = std::next(mapList.begin(), currentMapId); //Get the current map based on currentMapId
+	currentMap = *std::next(mapList.begin(), currentMapId);
 
-	currentMap = Map(tempMap->id, tempMap->file, tempMap->leftX1, tempMap->leftY1, tempMap->leftX2, tempMap->leftY2, 
+	//auto tempMap = std::next(mapList.begin(), currentMapId); //Get the current map based on currentMapId
+
+	/*currentMap = Map(tempMap->id, tempMap->file, tempMap->leftX1, tempMap->leftY1, tempMap->leftX2, tempMap->leftY2, 
 		tempMap->rightX1, tempMap->rightY1,tempMap->rightX2, tempMap->rightY2,
 		tempMap->topX1, tempMap->topY1, tempMap->topX2, tempMap->topY2,
 		tempMap->bottomX1, tempMap->bottomY1, tempMap->bottomX2, tempMap->bottomY2,
 		tempMap->leftMapId, tempMap->rightMapId, tempMap->topMapId, tempMap->bottomMapId
-		);
+		);*/
 
 	//Pre-load current and surroundings maps images
 	backGroundImage = loadTexture(resPath + currentMap.file, Globals::renderer);
+	hasToSpawnEnemies = true;
 	cout << currentMap.file << "\n";
+
+	/*int enemyId, enemyX, enemyY;
+	std::tie(enemyId, enemyX, enemyY) = currentMap.enemies.empty();
+	cout << enemyId << ", " << enemyX << ", " << enemyY << "\n";*/
 
 	//tempMap = std::next(mapList.begin(), currentMap.mapN);
 	//backGroundImageN = loadTexture(resPath + tempMap->file, Globals::renderer);
@@ -238,7 +275,7 @@ Game::Game() {
 	dataGroupTypes.push_back(dmgType);
 
 	heroAnimSet = new AnimationSet();
-	heroAnimSet->loadAnimationSet("udemyCyborg.fdset", dataGroupTypes, true, 0, true);
+	heroAnimSet->loadAnimationSet("antHero.fdset", dataGroupTypes, true, 0, true);//"udemyCyborg.fdset", dataGroupTypes, true, 0, true);
 
 	globAnimSet = new AnimationSet();
 	globAnimSet->loadAnimationSet("glob.fdset", dataGroupTypes, true, 0, true);
@@ -392,10 +429,9 @@ Game::~Game() {
 }
 
 void Game::update() {
-	int enemiesToBuild = 2;
+	int enemiesToBuild = currentMap.qtEnemies;
 	int enemiesBuilt = 0;
 	float enemyBuildTimer = 1;
-
 	bool quit = false;
 	SDL_Event e;
 	
@@ -430,7 +466,7 @@ void Game::update() {
 
 					if (overlayTimer <= 0 && hero->hp < 1) {
 						//cleanup and restart game
-						enemiesToBuild = 6;
+						enemiesToBuild = currentMap.qtEnemies;
 						enemiesBuilt = 0;
 						enemyBuildTimer = 3;
 						overlayTimer = 2;
@@ -477,9 +513,39 @@ void Game::update() {
 			(*entity)->update();
 		}
 
+		enemiesToBuild = currentMap.qtEnemies;
+
 		//spawn enemies
 		if (hero->hp > 0 && !splashShowing) {
-			if (enemiesToBuild == enemiesBuilt && enemies.size() <= 0) {
+			if (enemies.size() <= 0 && hasToSpawnEnemies) {
+				cout << "hasToSpawn " << enemiesToBuild << " Enemies\n";
+				int i = 0;
+				while (i < enemiesToBuild) {
+					cout << i << "\n";
+					if (std::get<0>(currentMap.enemies[i]) == 0) {
+						Glob* enemy = new Glob(globAnimSet);
+						enemy->x = std::get<1>(currentMap.enemies[i]);
+						enemy->y = std::get<2>(currentMap.enemies[i]);
+						enemy->invincibleTimer = 0.1;
+						enemies.push_back(enemy);
+						Entity::entities.push_back(enemy);
+						i++;
+						cout << "GLOB\n";
+					}
+					else if (std::get<0>(currentMap.enemies[i]) == 1) {
+						Grob* enemy = new Grob(grobAnimSet);
+						enemy->x = std::get<1>(currentMap.enemies[i]);
+						enemy->y = std::get<2>(currentMap.enemies[i]);
+						enemy->invincibleTimer = 0.1;
+						enemies.push_back(enemy);
+						Entity::entities.push_back(enemy);
+						i++;
+						cout << "GROB\n";
+					}
+				}
+				hasToSpawnEnemies = false;
+			}
+			/*if (enemiesToBuild == enemiesBuilt && enemies.size() <= 0) {
 				enemiesToBuild = enemiesToBuild + 6;
 				enemiesBuilt = 0;
 				enemyBuildTimer = 4;
@@ -488,10 +554,13 @@ void Game::update() {
 				if (enemyWavesTillBoss <= 0) {
 					buildBossNext = true;
 				}
-			}
-			enemyBuildTimer -= TimeController::timeController.dT;
+			}*/
+
+			//enemyBuildTimer -= TimeController::timeController.dT;
+			enemyBuildTimer = 0;
+
 			//if no bosses, check if we must build globs and grobs
-			if (!buildBossNext && !bossActive && enemyBuildTimer <= 0 && enemiesBuilt < enemiesToBuild && enemies.size() < 8) {
+			/*if (!buildBossNext && !bossActive && enemyBuildTimer <= 0 && enemiesBuilt < enemiesToBuild && enemies.size() < 8) {
 				float grobChance = getRandomNumber(10);
 
 				if (grobChance < 3) {
@@ -514,7 +583,7 @@ void Game::update() {
 					enemiesBuilt++;
 					enemyBuildTimer = 1;
 				}
-			}
+			}*/
 
 			//boss
 			if (buildBossNext && enemyBuildTimer <= 0 && enemies.size() == 0) {
@@ -585,7 +654,7 @@ void Game::updateMaps() {
 		if (alpha < 255 && fadeIn) {
 			fadeIn = true;
 			fadeOut = false;
-			alphaCalc += 20.0f;
+			alphaCalc += 15.0f;
 			alpha = alphaCalc;
 			SDL_SetTextureAlphaMod(fadeImage, alpha);
 
@@ -624,12 +693,19 @@ void Game::updateMaps() {
 					fadeIn = false;
 					fadeOut = true;
 				}
+
+				for (list<Entity*>::iterator enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
+					(*enemy)->active = false;
+				}
+				cout << "New enemies: " << currentMap.qtEnemies << "\n";
+				hasToSpawnEnemies = true;
+				camController.update();
 			}
 		}
 		else if (alpha >= 0 && fadeOut) {
 			fadeIn = false;
 			fadeOut = true;
-			alphaCalc -= 3.0f;
+			alphaCalc -= 2.0f;
 			alpha = alphaCalc;
 			SDL_SetTextureAlphaMod(fadeImage, alpha);
 
