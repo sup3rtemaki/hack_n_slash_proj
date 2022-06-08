@@ -62,13 +62,14 @@ public:
 	Hero* hero;
 	KeyboardInput heroInput;
 
-	list<Entity*> enemies;
+	list<Entity*> currentMapEnemies;
 	list<Entity*> walls;
+	list<int> deadEnemiesIds;
 
 	int enemyWavesTillBoss = 3;
 	bool buildBossNext = false;
 	bool bossActive = false;
-	bool hasToSpawnEnemies = false;
+	bool mustSpawnEnemies = false;
 	
 	HPBar heroHpBar;
 	HPBar bossHpBar;

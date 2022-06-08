@@ -8,7 +8,7 @@ class LivingEntity : public Entity {
 public:
 	int hp, hpMax;
 	int damage = 0;
-	int enemyId = 0;
+	int enemyId;
 	SDL_Rect hitBox;
 	float invincibleTimer = 0;
 

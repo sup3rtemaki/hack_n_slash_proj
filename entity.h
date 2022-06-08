@@ -16,7 +16,7 @@ public:
 	int direction;
 	bool solid = true;
 	bool collideWithSolids = true;
-	bool dieOnSolids = false; //new, die on touching, e.g. bullet
+	bool dieOnSolids = false; // die on touching, e.g. bullet
 	bool active = true;
 	string type = "entity";
 	bool moving;

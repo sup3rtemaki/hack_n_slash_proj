@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
 		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
 		Globals::ScreenWidth * Globals::ScreenScale, 
 		Globals::ScreenHeight * Globals::ScreenScale,
-		SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN); //SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN
+		SDL_WINDOW_BORDERLESS); //SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN
 	if (window == nullptr) {
 		SDL_Quit();
 		cout << "window error" << endl;
