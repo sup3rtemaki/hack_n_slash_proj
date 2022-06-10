@@ -84,7 +84,10 @@ public:
 
 	void update();
 	void draw();
+
+private:
 	void updateMaps();
+	void spawnEnemies(int enemiesToBuild);
 };
 
 #endif // !GAME

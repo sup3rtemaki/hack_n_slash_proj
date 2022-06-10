@@ -445,13 +445,7 @@ void Game::update() {
 
 		Entity::removeInactiveEntitiesFromList(&Entity::entities, false);
 
-		//TODO: Encapsular essa lógica em um método, talvez dentro de Entity ou LivingEntity
-		for (list<Entity*>::iterator enemy = currentMapEnemies.begin(); enemy != currentMapEnemies.end(); enemy++) {
-			LivingEntity* livingEntity = (LivingEntity*)(*enemy);
-			if (livingEntity->hp <= 0) {
-				deadEnemiesIds.push_back(livingEntity->enemyId);
-			}
-		}
+		LivingEntity::saveDeadEnemiesIds(currentMapEnemies, deadEnemiesIds);
 
 		//remove and delete enemies in the list who are dead/inactive
 		Entity::removeInactiveEntitiesFromList(&currentMapEnemies, true);
@@ -532,42 +526,7 @@ void Game::update() {
 		if (hero->hp > 0 && !splashShowing) {
 			if (currentMapEnemies.size() <= 0 && mustSpawnEnemies) {
 				//TODO: Encapsular spawn
-				int i = 0;
-				int enemyId;
-				int enemyPosX, enemyPosY;
-				int uniqueId;
-				while (i < enemiesToBuild) {
-					enemyId = std::get<0>(currentMap.enemies[i]);
-					enemyPosX = std::get<1>(currentMap.enemies[i]);
-					enemyPosY = std::get<2>(currentMap.enemies[i]);
-					uniqueId = (currentMap.id * 100) + (enemyId * 10) + i;
-					if (enemyId == 0) {
-						if (deadEnemiesIds.empty() ||
-							std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
-							Glob* enemy = new Glob(globAnimSet);
-							enemy->x = enemyPosX;
-							enemy->y = enemyPosY;
-							enemy->invincibleTimer = 0.1;
-							enemy->enemyId = uniqueId;
-							currentMapEnemies.push_back(enemy);
-							Entity::entities.push_back(enemy);
-						}
-					}
-					else if (enemyId == 1) {
-						if (deadEnemiesIds.empty() || 
-							std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
-							Grob* enemy = new Grob(grobAnimSet);
-							enemy->x = enemyPosX;
-							enemy->y = enemyPosY;
-							enemy->invincibleTimer = 0.1;
-							enemy->enemyId = uniqueId;
-							currentMapEnemies.push_back(enemy);
-							Entity::entities.push_back(enemy);
-						}
-					}
-					i++;
-				}
-				mustSpawnEnemies = false;
+				spawnEnemies(enemiesToBuild);
 			}
 			/*if (enemiesToBuild == enemiesBuilt && currentMapEnemies.size() <= 0) {
 				enemiesToBuild = enemiesToBuild + 6;
@@ -668,7 +627,6 @@ void Game::update() {
 }
 
 void Game::updateMaps() {
-
 	if (isFading) {
 		hero->moving = false;
 
@@ -797,4 +755,47 @@ void Game::draw() {
 
 	// after done drawing, show it to the screen
 	SDL_RenderPresent(Globals::renderer);
+}
+
+void Game::spawnEnemies(int enemiesToBuild) {
+	int i = 0;
+	int enemyId;
+	int enemyPosX, enemyPosY;
+	int uniqueId;
+	while (i < enemiesToBuild) {
+		enemyId = std::get<0>(currentMap.enemies[i]);
+		enemyPosX = std::get<1>(currentMap.enemies[i]);
+		enemyPosY = std::get<2>(currentMap.enemies[i]);
+		uniqueId = (currentMap.id * 100) + (enemyId * 10) + i;
+		switch (enemyId) {
+		case 0:
+			if (deadEnemiesIds.empty() ||
+				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
+				Glob* enemy = new Glob(globAnimSet);
+				enemy->x = enemyPosX;
+				enemy->y = enemyPosY;
+				enemy->invincibleTimer = 0.1;
+				enemy->enemyId = uniqueId;
+				currentMapEnemies.push_back(enemy);
+				Entity::entities.push_back(enemy);
+			}
+			break;
+
+		case 1:
+			if (deadEnemiesIds.empty() ||
+				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
+				Grob* enemy = new Grob(grobAnimSet);
+				enemy->x = enemyPosX;
+				enemy->y = enemyPosY;
+				enemy->invincibleTimer = 0.1;
+				enemy->enemyId = uniqueId;
+				currentMapEnemies.push_back(enemy);
+				Entity::entities.push_back(enemy);
+			}
+			break;
+		}
+		
+		i++;
+	}
+	mustSpawnEnemies = false;
 }

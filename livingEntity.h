@@ -19,6 +19,8 @@ public:
 	virtual void hitLanded(LivingEntity* entity) { ; }
 
 	void draw(); // override entites draw()
+
+	static void saveDeadEnemiesIds(list<Entity*> entityList, list<int>& enemiesIdList);
 };
 
 #endif // !LIVINGENTITY

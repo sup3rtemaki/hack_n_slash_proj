@@ -49,3 +49,15 @@ void LivingEntity::draw() {
 		SDL_RenderDrawRect(Globals::renderer, &hitBox);
 	}
 }
+
+void LivingEntity::saveDeadEnemiesIds(list<Entity*> entityList, list<int>& enemiesIdList){
+	for (list<Entity*>::iterator enemyEntity = entityList.begin(); enemyEntity != entityList.end(); enemyEntity++) {
+		//Checks if Entity is a LivingEntity
+		if (dynamic_cast<LivingEntity*>((*enemyEntity)) != nullptr) {
+			LivingEntity* livingEntity = (LivingEntity*)(*enemyEntity);
+			if (livingEntity->hp <= 0) {
+				enemiesIdList.push_back(livingEntity->enemyId);
+			}
+		}
+	}
+}
