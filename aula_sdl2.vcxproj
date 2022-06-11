@@ -91,12 +91,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\sdl2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -108,14 +108,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\sdl2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -154,67 +154,65 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="animation.cpp" />
-    <ClCompile Include="animationSet.cpp" />
-    <ClCompile Include="bullet.cpp" />
-    <ClCompile Include="cameraController.cpp" />
-    <ClCompile Include="cleanup.cpp" />
-    <ClCompile Include="drawing_functions.cpp" />
-    <ClCompile Include="entity.cpp" />
-    <ClCompile Include="frame.cpp" />
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="glob.cpp" />
-    <ClCompile Include="globals.cpp" />
-    <ClCompile Include="grob.cpp" />
-    <ClCompile Include="groupBuilder.cpp" />
-    <ClCompile Include="hero.cpp" />
-    <ClCompile Include="hpBar.cpp" />
-    <ClCompile Include="keyboardInput.cpp" />
-    <ClCompile Include="livingEntity.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="map.cpp" />
-    <ClCompile Include="randomNumber.cpp" />
-    <ClCompile Include="res_path.cpp" />
-    <ClCompile Include="roundKing.cpp" />
-    <ClCompile Include="soundManager.cpp" />
-    <ClCompile Include="timeController.cpp" />
-    <ClCompile Include="tinyxml2.cpp" />
-    <ClCompile Include="wall.cpp" />
+    <ClCompile Include="src\animation.cpp" />
+    <ClCompile Include="src\animationSet.cpp" />
+    <ClCompile Include="src\bullet.cpp" />
+    <ClCompile Include="src\cameraController.cpp" />
+    <ClCompile Include="src\cleanup.cpp" />
+    <ClCompile Include="src\drawing_functions.cpp" />
+    <ClCompile Include="src\entity.cpp" />
+    <ClCompile Include="src\frame.cpp" />
+    <ClCompile Include="src\game.cpp" />
+    <ClCompile Include="src\glob.cpp" />
+    <ClCompile Include="src\globals.cpp" />
+    <ClCompile Include="src\grob.cpp" />
+    <ClCompile Include="src\groupBuilder.cpp" />
+    <ClCompile Include="src\hero.cpp" />
+    <ClCompile Include="src\hpBar.cpp" />
+    <ClCompile Include="src\keyboardInput.cpp" />
+    <ClCompile Include="src\livingEntity.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\map.cpp" />
+    <ClCompile Include="src\randomNumber.cpp" />
+    <ClCompile Include="src\res_path.cpp" />
+    <ClCompile Include="src\roundKing.cpp" />
+    <ClCompile Include="src\soundManager.cpp" />
+    <ClCompile Include="src\timeController.cpp" />
+    <ClCompile Include="src\tinyxml2.cpp" />
+    <ClCompile Include="src\wall.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="animation.h" />
-    <ClInclude Include="animationSet.h" />
-    <ClInclude Include="bullet.h" />
-    <ClInclude Include="cameraController.h" />
-    <ClInclude Include="cleanup.h" />
-    <ClInclude Include="dataGroupType.h" />
-    <ClInclude Include="drawing_functions.h" />
-    <ClInclude Include="entity.h" />
-    <ClInclude Include="frame.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="glob.h" />
-    <ClInclude Include="globals.h" />
-    <ClInclude Include="grob.h" />
-    <ClInclude Include="group.h" />
-    <ClInclude Include="groupBox.h" />
-    <ClInclude Include="groupBuilder.h" />
-    <ClInclude Include="groupNumber.h" />
-    <ClInclude Include="groupPosition.h" />
-    <ClInclude Include="groupString.h" />
-    <ClInclude Include="hero.h" />
-    <ClInclude Include="hpBar.h" />
-    <ClInclude Include="keyboardInput.h" />
-    <ClInclude Include="livingEntity.h" />
-    <ClInclude Include="map.h" />
-    <ClInclude Include="nlohmann\json.hpp" />
-    <ClInclude Include="randomNumber.h" />
-    <ClInclude Include="rapidjson\writer.h" />
-    <ClInclude Include="res_path.h" />
-    <ClInclude Include="roundKing.h" />
-    <ClInclude Include="soundManager.h" />
-    <ClInclude Include="timeController.h" />
-    <ClInclude Include="tinyxml2.h" />
-    <ClInclude Include="wall.h" />
+    <ClInclude Include="inc\animation.h" />
+    <ClInclude Include="inc\animationSet.h" />
+    <ClInclude Include="inc\bullet.h" />
+    <ClInclude Include="inc\cameraController.h" />
+    <ClInclude Include="inc\cleanup.h" />
+    <ClInclude Include="inc\dataGroupType.h" />
+    <ClInclude Include="inc\drawing_functions.h" />
+    <ClInclude Include="inc\entity.h" />
+    <ClInclude Include="inc\frame.h" />
+    <ClInclude Include="inc\game.h" />
+    <ClInclude Include="inc\glob.h" />
+    <ClInclude Include="inc\globals.h" />
+    <ClInclude Include="inc\grob.h" />
+    <ClInclude Include="inc\group.h" />
+    <ClInclude Include="inc\groupBox.h" />
+    <ClInclude Include="inc\groupBuilder.h" />
+    <ClInclude Include="inc\groupNumber.h" />
+    <ClInclude Include="inc\groupPosition.h" />
+    <ClInclude Include="inc\groupString.h" />
+    <ClInclude Include="inc\hero.h" />
+    <ClInclude Include="inc\hpBar.h" />
+    <ClInclude Include="inc\keyboardInput.h" />
+    <ClInclude Include="inc\livingEntity.h" />
+    <ClInclude Include="inc\map.h" />
+    <ClInclude Include="inc\randomNumber.h" />
+    <ClInclude Include="inc\res_path.h" />
+    <ClInclude Include="inc\roundKing.h" />
+    <ClInclude Include="inc\soundManager.h" />
+    <ClInclude Include="inc\timeController.h" />
+    <ClInclude Include="inc\tinyxml2.h" />
+    <ClInclude Include="inc\wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
