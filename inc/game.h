@@ -7,6 +7,7 @@
 #include "glob.h"
 #include "grob.h"
 #include "keyboardInput.h"
+#include "joystickInput.h"
 #include "drawing_functions.h"
 #include "soundManager.h"
 #include "cameraController.h"
@@ -60,7 +61,8 @@ public:
 	NextMap nextMap;
 
 	Hero* hero;
-	KeyboardInput heroInput;
+	KeyboardInput heroKeyboardInput;
+	JoystickInput heroJoystickInput;
 
 	list<Entity*> currentMapEnemies;
 	list<Entity*> walls;

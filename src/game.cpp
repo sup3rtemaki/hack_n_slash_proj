@@ -297,7 +297,8 @@ Game::Game() {
 	hero->invincibleTimer = 0;
 	hero->x = Globals::ScreenWidth / 2;
 	hero->y = Globals::ScreenHeight / 2;
-	heroInput.hero = hero;
+	heroKeyboardInput.hero = hero;
+	heroJoystickInput.hero = hero;
 	heroHpBar.entity = hero;
 	Entity::entities.push_back(hero);
 
@@ -502,7 +503,8 @@ void Game::update() {
 				}
 			}
 			if (!isFading) {
-				heroInput.update(&e);
+				heroKeyboardInput.update(&e);
+				heroJoystickInput.update(&e);
 			}
 			else {
 				hero->moving = false;

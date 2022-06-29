@@ -169,6 +169,7 @@
     <ClCompile Include="src\groupBuilder.cpp" />
     <ClCompile Include="src\hero.cpp" />
     <ClCompile Include="src\hpBar.cpp" />
+    <ClCompile Include="src\joystickInput.cpp" />
     <ClCompile Include="src\keyboardInput.cpp" />
     <ClCompile Include="src\livingEntity.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="inc\groupString.h" />
     <ClInclude Include="inc\hero.h" />
     <ClInclude Include="inc\hpBar.h" />
+    <ClInclude Include="inc\joystickInput.h" />
     <ClInclude Include="inc\keyboardInput.h" />
     <ClInclude Include="inc\livingEntity.h" />
     <ClInclude Include="inc\map.h" />
