@@ -4,6 +4,8 @@
 #include "globals.h"
 #include "livingEntity.h"
 #include "soundManager.h"
+#include "item.h"
+#include <map>
 
 class Hero : public LivingEntity {
 public:
@@ -35,7 +37,13 @@ public:
 	static const int HERO_STATE_DASH;
 	static const int HERO_STATE_DEAD;
 
+	int inventoryIndex = 0;
+	int honeydewQty;
+
+	map<int, Item*> inventory;
+
 	Hero(AnimationSet* animSet);
+	~Hero();
 
 	void update();
 	void slash();
@@ -45,6 +53,8 @@ public:
 	void changeAnimation(int newState, bool resetFrameToBeginning);
 	void updateAnimation();
 	void updateDamages();
+	void addItemToInventory(Item* item);
+	void useSelectedItem();
 };
 
 #endif

@@ -76,8 +76,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <PublicIncludeDirectories>
-    </PublicIncludeDirectories>
+    <PublicIncludeDirectories>C:\sdl2\include;$(PublicIncludeDirectories)</PublicIncludeDirectories>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -91,7 +90,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\src\inventory;D:\Workspaces\Cpp\aula_sdl2\inc\inventory;D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -108,7 +107,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\src\inventory;D:\Workspaces\Cpp\aula_sdl2\inc\inventory;D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -169,6 +168,7 @@
     <ClCompile Include="src\groupBuilder.cpp" />
     <ClCompile Include="src\hero.cpp" />
     <ClCompile Include="src\hpBar.cpp" />
+    <ClCompile Include="src\item.cpp" />
     <ClCompile Include="src\joystickInput.cpp" />
     <ClCompile Include="src\keyboardInput.cpp" />
     <ClCompile Include="src\livingEntity.cpp" />
@@ -204,6 +204,7 @@
     <ClInclude Include="inc\groupString.h" />
     <ClInclude Include="inc\hero.h" />
     <ClInclude Include="inc\hpBar.h" />
+    <ClInclude Include="inc\item.h" />
     <ClInclude Include="inc\joystickInput.h" />
     <ClInclude Include="inc\keyboardInput.h" />
     <ClInclude Include="inc\livingEntity.h" />
@@ -215,6 +216,10 @@
     <ClInclude Include="inc\timeController.h" />
     <ClInclude Include="inc\tinyxml2.h" />
     <ClInclude Include="inc\wall.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="aula_sdl2.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

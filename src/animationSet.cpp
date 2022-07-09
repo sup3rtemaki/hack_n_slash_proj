@@ -1,5 +1,10 @@
 #include "animationSet.h"
 
+AnimationSet::AnimationSet(){
+	spriteSheet = NULL;
+	whiteSpriteSheet = NULL;
+}
+
 AnimationSet::~AnimationSet() {
 	cleanup(spriteSheet);
 	if (whiteSpriteSheet != NULL) {

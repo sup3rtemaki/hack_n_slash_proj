@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\inc\</FILEPATH>
+      <FILENAME>tinyxml2.h</FILENAME>
+      <LINE>1164</LINE>
+      <COLUMN>15</COLUMN>
+    </SFA>
+    <DEFECTCODE>26812</DEFECTCODE>
+    <DESCRIPTION>O tipo enumerado 'tinyxml2::XMLError' não está no escopo. Prefira 'classe enumerada' em vez de 'enumeração' (Enum.3).</DESCRIPTION>
+    <FUNCTION>tinyxml2::XMLAttribute::IntValue</FUNCTION>
+    <DECORATED>?IntValue@XMLAttribute@tinyxml2@@QBEHXZ</DECORATED>
+    <FUNCLINE>1162</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\inc\</FILEPATH>
+      <FILENAME>tinyxml2.h</FILENAME>
+      <LINE>1677</LINE>
+      <COLUMN>8</COLUMN>
+    </SFA>
+    <DEFECTCODE>26812</DEFECTCODE>
+    <DESCRIPTION>O tipo enumerado 'tinyxml2::XMLElement::ElementClosingType' não está no escopo. Prefira 'classe enumerada' em vez de 'enumeração' (Enum.3).</DESCRIPTION>
+    <FUNCTION>tinyxml2::XMLElement::ClosingType</FUNCTION>
+    <DECORATED>?ClosingType@XMLElement@tinyxml2@@QBE?AW4ElementClosingType@12@XZ</DECORATED>
+    <FUNCLINE>1676</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\inc\</FILEPATH>
+      <FILENAME>tinyxml2.h</FILENAME>
+      <LINE>1792</LINE>
+      <COLUMN>8</COLUMN>
+    </SFA>
+    <DEFECTCODE>26812</DEFECTCODE>
+    <DESCRIPTION>O tipo enumerado 'tinyxml2::Whitespace' não está no escopo. Prefira 'classe enumerada' em vez de 'enumeração' (Enum.3).</DESCRIPTION>
+    <FUNCTION>tinyxml2::XMLDocument::WhitespaceMode</FUNCTION>
+    <DECORATED>?WhitespaceMode@XMLDocument@tinyxml2@@QBE?AW4Whitespace@2@XZ</DECORATED>
+    <FUNCLINE>1791</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\src\</FILEPATH>
+      <FILENAME>tinyxml2.cpp</FILENAME>
+      <LINE>1211</LINE>
+      <COLUMN>46</COLUMN>
+    </SFA>
+    <DEFECTCODE>26812</DEFECTCODE>
+    <DESCRIPTION>O tipo enumerado 'tinyxml2::StrPair::Mode' não está no escopo. Prefira 'classe enumerada' em vez de 'enumeração' (Enum.3).</DESCRIPTION>
+    <FUNCTION>tinyxml2::XMLText::ParseDeep</FUNCTION>
+    <DECORATED>?ParseDeep@XMLText@tinyxml2@@MAEPADPADPAVStrPair@2@PAH@Z</DECORATED>
+    <FUNCLINE>1201</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\src\</FILEPATH>
+      <FILENAME>tinyxml2.cpp</FILENAME>
+      <LINE>2496</LINE>
+      <COLUMN>47</COLUMN>
+    </SFA>
+    <DEFECTCODE>33010</DEFECTCODE>
+    <DESCRIPTION>Limite inferior desmarcado para a enumeração errorID usada como índice.</DESCRIPTION>
+    <FUNCTION>tinyxml2::XMLDocument::ErrorIDToName</FUNCTION>
+    <DECORATED>?ErrorIDToName@XMLDocument@tinyxml2@@SAPBDW4XMLError@2@@Z</DECORATED>
+    <FUNCLINE>2493</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\inc\</FILEPATH>
+      <FILENAME>tinyxml2.h</FILENAME>
+      <LINE>209</LINE>
+      <COLUMN>4</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>A variável 'tinyxml2::DynArray&lt;char,20&gt;::_pool' não foi inicializada. Sempre inicialize uma variável de membro (type.6).</DESCRIPTION>
+    <FUNCTION>tinyxml2::DynArray&lt;char,20&gt;::{ctor}</FUNCTION>
+    <DECORATED>??0?$DynArray@D$0BE@@tinyxml2@@QAE@XZ</DECORATED>
+    <FUNCLINE>209</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>tinyxml2::DynArray&lt;char,20&gt;::_pool</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\inc\</FILEPATH>
+      <FILENAME>tinyxml2.h</FILENAME>
+      <LINE>209</LINE>
+      <COLUMN>4</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>A variável 'tinyxml2::DynArray&lt;char const *,10&gt;::_pool' não foi inicializada. Sempre inicialize uma variável de membro (type.6).</DESCRIPTION>
+    <FUNCTION>tinyxml2::DynArray&lt;char const *,10&gt;::{ctor}</FUNCTION>
+    <DECORATED>??0?$DynArray@PBD$09@tinyxml2@@QAE@XZ</DECORATED>
+    <FUNCLINE>209</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>tinyxml2::DynArray&lt;char const *,10&gt;::_pool</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\inc\</FILEPATH>
+      <FILENAME>tinyxml2.h</FILENAME>
+      <LINE>209</LINE>
+      <COLUMN>4</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>A variável 'tinyxml2::DynArray&lt;tinyxml2::XMLNode *,10&gt;::_pool' não foi inicializada. Sempre inicialize uma variável de membro (type.6).</DESCRIPTION>
+    <FUNCTION>tinyxml2::DynArray&lt;tinyxml2::XMLNode *,10&gt;::{ctor}</FUNCTION>
+    <DECORATED>??0?$DynArray@PAVXMLNode@tinyxml2@@$09@tinyxml2@@QAE@XZ</DECORATED>
+    <FUNCLINE>209</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>tinyxml2::DynArray&lt;tinyxml2::XMLNode *,10&gt;::_pool</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\inc\</FILEPATH>
+      <FILENAME>tinyxml2.h</FILENAME>
+      <LINE>209</LINE>
+      <COLUMN>4</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>A variável 'tinyxml2::DynArray&lt;tinyxml2::MemPoolT&lt;52&gt;::Block *,10&gt;::_pool' não foi inicializada. Sempre inicialize uma variável de membro (type.6).</DESCRIPTION>
+    <FUNCTION>tinyxml2::DynArray&lt;tinyxml2::MemPoolT&lt;52&gt;::Block *,10&gt;::{ctor}</FUNCTION>
+    <DECORATED>??0?$DynArray@PAUBlock@?$MemPoolT@$0DE@@tinyxml2@@$09@tinyxml2@@QAE@XZ</DECORATED>
+    <FUNCLINE>209</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>tinyxml2::DynArray&lt;tinyxml2::MemPoolT&lt;52&gt;::Block *,10&gt;::_pool</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\inc\</FILEPATH>
+      <FILENAME>tinyxml2.h</FILENAME>
+      <LINE>209</LINE>
+      <COLUMN>4</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>A variável 'tinyxml2::DynArray&lt;tinyxml2::MemPoolT&lt;56&gt;::Block *,10&gt;::_pool' não foi inicializada. Sempre inicialize uma variável de membro (type.6).</DESCRIPTION>
+    <FUNCTION>tinyxml2::DynArray&lt;tinyxml2::MemPoolT&lt;56&gt;::Block *,10&gt;::{ctor}</FUNCTION>
+    <DECORATED>??0?$DynArray@PAUBlock@?$MemPoolT@$0DI@@tinyxml2@@$09@tinyxml2@@QAE@XZ</DECORATED>
+    <FUNCLINE>209</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>tinyxml2::DynArray&lt;tinyxml2::MemPoolT&lt;56&gt;::Block *,10&gt;::_pool</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\inc\</FILEPATH>
+      <FILENAME>tinyxml2.h</FILENAME>
+      <LINE>209</LINE>
+      <COLUMN>4</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>A variável 'tinyxml2::DynArray&lt;tinyxml2::MemPoolT&lt;40&gt;::Block *,10&gt;::_pool' não foi inicializada. Sempre inicialize uma variável de membro (type.6).</DESCRIPTION>
+    <FUNCTION>tinyxml2::DynArray&lt;tinyxml2::MemPoolT&lt;40&gt;::Block *,10&gt;::{ctor}</FUNCTION>
+    <DECORATED>??0?$DynArray@PAUBlock@?$MemPoolT@$0CI@@tinyxml2@@$09@tinyxml2@@QAE@XZ</DECORATED>
+    <FUNCLINE>209</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>tinyxml2::DynArray&lt;tinyxml2::MemPoolT&lt;40&gt;::Block *,10&gt;::_pool</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\inc\</FILEPATH>
+      <FILENAME>tinyxml2.h</FILENAME>
+      <LINE>209</LINE>
+      <COLUMN>4</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>A variável 'tinyxml2::DynArray&lt;tinyxml2::MemPoolT&lt;60&gt;::Block *,10&gt;::_pool' não foi inicializada. Sempre inicialize uma variável de membro (type.6).</DESCRIPTION>
+    <FUNCTION>tinyxml2::DynArray&lt;tinyxml2::MemPoolT&lt;60&gt;::Block *,10&gt;::{ctor}</FUNCTION>
+    <DECORATED>??0?$DynArray@PAUBlock@?$MemPoolT@$0DM@@tinyxml2@@$09@tinyxml2@@QAE@XZ</DECORATED>
+    <FUNCLINE>209</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>tinyxml2::DynArray&lt;tinyxml2::MemPoolT&lt;60&gt;::Block *,10&gt;::_pool</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

@@ -46,7 +46,6 @@ void GroupBuilder::loadGroups(ifstream &file, list<Group*> &groups) {
 	//read each group in:
 	while (!file.eof())
 	{
-
 		//first, get the next line out of the file
 		int positionBeforeRead = file.tellg();
 		string line;

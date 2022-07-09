@@ -12,6 +12,7 @@ public:
 	SDL_Texture* whiteSpriteSheet = NULL; // show damage
 	list<Animation> animations;
 
+	AnimationSet();
 	~AnimationSet(); // destructor - properly cleans up dynamic memory
 
 	Animation* getAnimation(string name);

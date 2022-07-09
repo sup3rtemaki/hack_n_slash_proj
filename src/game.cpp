@@ -230,8 +230,8 @@ Game::Game() {
 	//setup camera
 	Globals::camera.x = 0;
 	Globals::camera.y = 0;
-	Globals::camera.w = Globals::ScreenWidth;
-	Globals::camera.h = Globals::ScreenHeight;
+	Globals::camera.w = 640;//Globals::ScreenWidth;
+	Globals::camera.h = 360;//Globals::ScreenHeight;
 
 	//loadup sounds
 	SoundManager::soundManager.loadSound("hit", resPath + "Randomize2.wav");
@@ -527,7 +527,6 @@ void Game::update() {
 		//spawn enemies
 		if (hero->hp > 0 && !splashShowing) {
 			if (currentMapEnemies.size() <= 0 && mustSpawnEnemies) {
-				//TODO: Encapsular spawn
 				spawnEnemies(enemiesToBuild);
 			}
 			/*if (enemiesToBuild == enemiesBuilt && currentMapEnemies.size() <= 0) {

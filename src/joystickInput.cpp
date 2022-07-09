@@ -25,6 +25,10 @@ void JoystickInput::update(SDL_Event* e) {
 			hero->dash();
 		}
 
+		if (e->jbutton.button == JOY_X) {
+			hero->useSelectedItem();
+		}
+
 		if (e->jbutton.button == JOY_RB) {
 			hero->slash();
 		}

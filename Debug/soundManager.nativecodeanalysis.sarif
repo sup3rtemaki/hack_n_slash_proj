@@ -1,0 +1,833 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "A variável 'soundListing::sound' não foi inicializada. Sempre inicialize uma variável de membro (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Workspaces/Cpp/aula_sdl2/inc/soundManager.h"
+                },
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 1,
+                  "endLine": 13,
+                  "endColumn": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "decoratedName": "??0soundListing@@QAE@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "soundListing::sound"
+          }
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.29.30145.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "commandLine": "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX86\\x86\\c1xx.dll\" -ACf{1F7B090C-16DB-4822-966A-A93D26ED4681} -ACpmspft140.dll -Alint -D_PREFAST_ -D_AST_FE_ -Analyze -zm0x00BCD1C0 -il C:\\Users\\Celso\\AppData\\Local\\Temp\\_CL_20572d41ast -typedil -f src\\soundManager.cpp -Ze -D_MSC_EXTENSIONS -Zp8 -Gs -pc \\:/ -D_MSC_VER=1929 -D_MSC_FULL_VER=192930145 -D_MSC_BUILD=0 -D_WIN32 -D_M_IX86=600 -D_M_IX86_FP=2 -GR -D_CPPRTTI -I D:\\Workspaces\\Cpp\\aula_sdl2\\src\\inventory -I D:\\Workspaces\\Cpp\\aula_sdl2\\inc\\inventory -I D:\\Workspaces\\Cpp\\aula_sdl2\\src -I D:\\Workspaces\\Cpp\\aula_sdl2\\inc -I C:\\sdl2\\include -nologo -W 3 -diagnostics:column -D_GUARDOVERFLOW_CRT_ALLOCATORS=1 -Ot -DCODE_ANALYSIS -DWIN32 -D_DEBUG -D_CONSOLE -D_UNICODE -DUNICODE -EHs -D_CPPUNWIND -EHc -D__MSVC_RUNTIME_CHECKS -RTCs -RTCu -MDd -D_DEBUG -D_MT -D_DLL -GS -D_M_FP_PRECISE -permissive- -Zc:wchar_t -Zc:forScope -FoDebug\\soundManager.obj -FdDebug\\vc142.pdb -external:W 3 -Gd -analyze:projectdirectory D:\\Workspaces\\Cpp\\aula_sdl2 -analyze:rulesetdirectory ;C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\Team Tools\\Static Analysis Tools\\\\Rule Sets; -analyze:ruleset C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\Team Tools\\Static Analysis Tools\\Rule Sets\\NativeRecommendedRules.ruleset -analyze:quiet -analyze:plugin C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX86\\x86\\EspXEngine.dll -FC -errorreport:prompt -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\atlmfc\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\VS\\include -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\ucrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\um -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\shared -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\winrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\cppwinrt -I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.8\\Include\\um -external:I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\include -external:I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\atlmfc\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\atlmfc\\include -external:I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\VS\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\VS\\include -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\ucrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\ucrt -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\um -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\um -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\shared -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\shared -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\winrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\winrt -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\cppwinrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\cppwinrt -external:I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.8\\Include\\um -I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.8\\Include\\um",
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///C:/sdl2/include/SDL_rect.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "md5": "7ee2438237fb4a8b4d42ffafeba34364"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///D:/Workspaces/Cpp/aula_sdl2/inc/dataGroupType.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "md5": "68edefb22ff4dee31937aaf1171071b6"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/src/livingentity.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "324166ccb20cabecce1db6122ba582d7"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/livingentity.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "md5": "f001928dc177f3902a877c2a3b832a40"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/entity.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "md5": "5c64751cd00429b459d3bf790e4d6662"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/globals.h"
+          },
+          "hashes": {
+            "md5": "47df4d371dbbf67feef0bb1fc80d72e8"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl.h"
+          },
+          "hashes": {
+            "md5": "2a10967ca8f0ad2fb7b52d27ec015c16"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_main.h"
+          },
+          "hashes": {
+            "md5": "181fca246ce6109b1446baa9011e60ce"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_stdinc.h"
+          },
+          "hashes": {
+            "md5": "b4a1f9880e6152de9a537a804ffca34b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_config.h"
+          },
+          "hashes": {
+            "md5": "90bb1158eb68007b2e5365630105aef2"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_platform.h"
+          },
+          "hashes": {
+            "md5": "793e46c366da1a5ace8b9bbffe9020b5"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/begin_code.h"
+          },
+          "hashes": {
+            "md5": "ffec60a523884e8d3390fd7eb80b77ac"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/close_code.h"
+          },
+          "hashes": {
+            "md5": "bf69ef1b3efcf0b6c7033efb4d1d9f48"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_assert.h"
+          },
+          "hashes": {
+            "md5": "91322c1dc71340f6dfd085b3d7804788"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_atomic.h"
+          },
+          "hashes": {
+            "md5": "3818208aa65e6cfa5f0121f54ae5159b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_audio.h"
+          },
+          "hashes": {
+            "md5": "c4d733376fc42d0ff72288bfcdf01ac7"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_error.h"
+          },
+          "hashes": {
+            "md5": "3ece74e1eb02a7288932846629adc6cf"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_endian.h"
+          },
+          "hashes": {
+            "md5": "9480d1eceda3f0a8db5a3903f7250665"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_mutex.h"
+          },
+          "hashes": {
+            "md5": "f4fd836cd26e428c1d8495dba7d5bb58"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_thread.h"
+          },
+          "hashes": {
+            "md5": "2bf57d36eb4d58b2be841fdd46acc9be"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_rwops.h"
+          },
+          "hashes": {
+            "md5": "36e36144bc97d55531179bdb9307da35"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_clipboard.h"
+          },
+          "hashes": {
+            "md5": "fe8cf5a6b565ca27de5baa6d6e7fec43"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_cpuinfo.h"
+          },
+          "hashes": {
+            "md5": "b766f2eaf7cb10120b2e799b77f0d127"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_events.h"
+          },
+          "hashes": {
+            "md5": "0f4c4d2c5c938f4c1f3bf2e4b73e1fce"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_video.h"
+          },
+          "hashes": {
+            "md5": "eec8da6cc41565d41a8f22451f4dbe14"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_pixels.h"
+          },
+          "hashes": {
+            "md5": "ce0b0ddd5894bbcfd49ffc5f96034f7e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_surface.h"
+          },
+          "hashes": {
+            "md5": "8ebc51fe43a91f871f15920ae131e681"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_blendmode.h"
+          },
+          "hashes": {
+            "md5": "af62be68871d452dd2968ea3ec35e173"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_keyboard.h"
+          },
+          "hashes": {
+            "md5": "a74e9de5db81c16c7fb8990dc662d4c7"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_keycode.h"
+          },
+          "hashes": {
+            "md5": "6aea11f4382c599108aab835a9d6d4bb"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_scancode.h"
+          },
+          "hashes": {
+            "md5": "15e9012dfd4ed319d243866a2dded935"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_mouse.h"
+          },
+          "hashes": {
+            "md5": "ac3dc146df5fd33914a744d82e593ddd"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_joystick.h"
+          },
+          "hashes": {
+            "md5": "8b2bba0a77dbd996e7f27f3b84f05e09"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_gamecontroller.h"
+          },
+          "hashes": {
+            "md5": "2e59883c38c42ac160aaa593a00ea8a0"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_quit.h"
+          },
+          "hashes": {
+            "md5": "b895abf8110570a1f0fc9854cf77cc26"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_gesture.h"
+          },
+          "hashes": {
+            "md5": "1750aae44688db7a296002dfdc1f3047"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_touch.h"
+          },
+          "hashes": {
+            "md5": "8447b6d61e303b6230964f7b90e9f1b3"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_filesystem.h"
+          },
+          "hashes": {
+            "md5": "611720e9dbdf1582bebf37bfa40e7196"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_haptic.h"
+          },
+          "hashes": {
+            "md5": "d674d132d29dafd4bc43ec570d28f4df"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_hints.h"
+          },
+          "hashes": {
+            "md5": "159c86862501f92b02c6f61d0c3a159a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_loadso.h"
+          },
+          "hashes": {
+            "md5": "f3dcb8ed5c657c01e87d4695842e5b48"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_log.h"
+          },
+          "hashes": {
+            "md5": "2db1a2628ce56b6f61df5380d9e2f953"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_messagebox.h"
+          },
+          "hashes": {
+            "md5": "e2ed09e6066d4fc1339b7f042b64da4f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_power.h"
+          },
+          "hashes": {
+            "md5": "775ca71e3c087e721b6777a9eafc67b2"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_render.h"
+          },
+          "hashes": {
+            "md5": "0cc8ef26b364480fd8a63b2e10ba71a0"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_system.h"
+          },
+          "hashes": {
+            "md5": "338fa1e0be339b3e155ae246ce524e1d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_timer.h"
+          },
+          "hashes": {
+            "md5": "12377080b96534996830d8bf0c2f7c11"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_version.h"
+          },
+          "hashes": {
+            "md5": "19e706f31f762634af44d48be1c3b565"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/randomnumber.h"
+          },
+          "hashes": {
+            "md5": "028052530ca683b70c909834ee3a2491"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/timecontroller.h"
+          },
+          "hashes": {
+            "md5": "58ab024b05496fabff64b5e449c23835"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/animationset.h"
+          },
+          "hashes": {
+            "md5": "ab3b30368a9ccf6511e594d6ce586137"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/animation.h"
+          },
+          "hashes": {
+            "md5": "1df813da18a1a436f8a23c87097b03b8"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/frame.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "md5": "e5085c7860c611a70970ebbac1eb9ab0"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/drawing_functions.h"
+          },
+          "hashes": {
+            "md5": "432a38625b385fe91636e39b816e9621"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_image.h"
+          },
+          "hashes": {
+            "md5": "e9fcdec03a185807c3792b9441269cfb"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_ttf.h"
+          },
+          "hashes": {
+            "md5": "3ddf68126e6921be918ccfcc4805dda5"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/res_path.h"
+          },
+          "hashes": {
+            "md5": "d4e20a4bb1abf7190fa4e488814f7c71"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/cleanup.h"
+          },
+          "hashes": {
+            "md5": "c887840bddbb2758bdf1f86d4c5e0eab"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/groupbuilder.h"
+          },
+          "hashes": {
+            "md5": "067f2db73e11d381c19cbf3e5e42e4eb"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/group.h"
+          },
+          "hashes": {
+            "md5": "cf37468b4d30a37abf395c0321f39a69"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/groupbox.h"
+          },
+          "hashes": {
+            "md5": "fde9b977b41a84b15dbedcaa65a2e033"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/groupposition.h"
+          },
+          "hashes": {
+            "md5": "e078ec89f1cc7eea04e2681da96a1e37"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/groupnumber.h"
+          },
+          "hashes": {
+            "md5": "e324e13f94ad05d7aad516bd149b6d96"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/groupstring.h"
+          },
+          "hashes": {
+            "md5": "c49a3c888a959dd31fe998569e60ab5e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/src/hpbar.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "ef15a69599530cc79ff0c961a805d6be"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/hpbar.h"
+          },
+          "hashes": {
+            "md5": "090971cf10b9df8e40e5949168622158"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/src/groupbuilder.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "e5edb9dada3e90aad64c7c9a1da334b2"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/src/grob.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "be80f08cd518bb6bcec6dd04f8891475"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/grob.h"
+          },
+          "hashes": {
+            "md5": "eb67dad23d0211f289a6473367c8f3e2"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/soundmanager.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "md5": "415b958587d0069e9b959ab0cc616a06"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/sdl2/include/sdl_mixer.h"
+          },
+          "hashes": {
+            "md5": "fcdcb61eb675500bb53d476c6116c903"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/src/globals.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "9e546075b0eb03cb3c099163832f5b6a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/src/glob.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "46aa59bb6ef7bc9d0b54e955c878182a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/glob.h"
+          },
+          "hashes": {
+            "md5": "72bf638ddac8c5edb90104c8c979bb5b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/src/frame.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "4996f8b0efe11ab5ee5c0204f5718f80"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/src/entity.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "16f98f9afa5ab5763c5de199b81c3188"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/src/drawing_functions.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "496fd5b32bd35a1d75fb02a2a2a368fb"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/src/cleanup.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "d8566ea1d729fa9617dacb3633e36689"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/src/bullet.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "c4834b07e89857d9cc80bbacfb23bc8f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/bullet.h"
+          },
+          "hashes": {
+            "md5": "0804749362dbc4fce04f769bfeda7d26"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/src/animationset.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "4ab6fc2a3285144d3f4ae1b2b1c5ba17"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/src/animation.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "5815bec7f9e0614d4451fa633398be9e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/src/wall.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "bd64353436278d71303b78e5b36f194c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/inc/wall.h"
+          },
+          "hashes": {
+            "md5": "a490f37fe03f9293f5354985f2fac6a9"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///D:/Workspaces/Cpp/aula_sdl2/inc/tinyxml2.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "md5": "09024beea82c822d1960d736130ac336"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///D:/Workspaces/Cpp/aula_sdl2/src/tinyxml2.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "md5": "750ddb320c3e96cd4ab5428dc2a03cd6"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/src/timecontroller.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "5f2f50a4db4c9f9f9be07d0089a42fc1"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/workspaces/cpp/aula_sdl2/src/soundmanager.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "74ed65163f1fe68243ec3e05086c5c1a"
+          }
+        }
+      ]
+    }
+  ]
+}

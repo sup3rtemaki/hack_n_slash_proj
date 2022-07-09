@@ -31,7 +31,7 @@ void Entity::updateMovement() {
 	updateCollisionBox();
 	lastCollisionBox = collisionBox; //store collision box before move
 
-	//resert totasl moves
+	//resert total moves
 	totalXMove = 0;
 	totalYMove = 0;
 
@@ -126,7 +126,7 @@ void Entity::updateCollisions() {
 
 			//if there was a collision, slide off of it
 			if (collisionTime < 1.0f) {
-				//if die on solids, run ctash function
+				//if die on solids, run crash function
 				if (dieOnSolids) {
 					crashOntoSolid();
 				}

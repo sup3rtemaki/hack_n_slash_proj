@@ -43,9 +43,19 @@ Hero::Hero(AnimationSet* animSet) {
 	collisionBoxH = 24;
 	collisionBoxYOffset = -20;
 	direction = DIR_DOWN;
-
+	honeydewQty = 3;
+	
 	changeAnimation(HERO_STATE_IDLE, true);
 	updateCollisionBox();
+	Item* honeydewPotion = new Item(); // TODO: Inicializar item com os valores
+	honeydewPotion->id = 0;
+	honeydewPotion->quantity = honeydewQty;
+	honeydewPotion->name = "Honeydew Potion";
+	honeydewPotion->isOnGround = false;
+	addItemToInventory(honeydewPotion);
+}
+
+Hero::~Hero(){
 }
 
 void Hero::update() {
@@ -54,6 +64,10 @@ void Hero::update() {
 		changeAnimation(HERO_STATE_DEAD, true);
 		moving = false;
 		die();
+	}
+
+	if (hp > hpMax) {
+		hp = hpMax;
 	}
 	
 	updateCollisionBox();
@@ -238,6 +252,44 @@ void Hero::updateDamages() {
 					slideAmount = 200;
 				}
 			}
+		}
+	}
+}
+
+void Hero::addItemToInventory(Item* item){
+	auto itemMap = std::make_pair(item->id, item);
+	cout << "Adicionando item: " << itemMap.first << " " << itemMap.second << "\n";
+	for (multimap<int, Item*>::iterator it = inventory.begin(); it != inventory.end(); it++) {
+		if (it->first == item->id) {
+			it->second->quantity++;
+			cout << "Item qtd++:" << it->second->quantity << "\n";
+			return;
+		}
+	}
+
+	inventory.emplace(itemMap);
+	cout << "Item inserido: " << inventory[inventoryIndex]->name << "\n";
+}
+
+void Hero::useSelectedItem(){
+	auto item = inventory.find(inventoryIndex);
+	if (item == inventory.end()) {
+		cout << "Item na posicao " << inventoryIndex << " não encontrado\n";
+		return;
+	}
+
+	if (item->second->quantity == 0) {
+		cout << "Item " << item->second->name << " zerado\n";
+		return;
+	}
+
+	item->second->applyEffect(this);
+	item->second->quantity--;
+	cout << "Quantidade items " << item->second->name << ": " << item->second->quantity << "\n";
+	if ((item->first != Item::HONEYDEW_POTION_ID) && (item->second->quantity <= 0)) {
+		inventory.erase(item);
+		if (inventory.empty()) {
+			inventory.clear();
 		}
 	}
 }
