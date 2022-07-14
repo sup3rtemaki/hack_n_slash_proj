@@ -22,6 +22,11 @@ void KeyboardInput::update(SDL_Event* e){
 		if (e->key.keysym.scancode == SDL_SCANCODE_A) {
 			hero->useSelectedItemQuickAccess();
 		}
+		if (e->key.keysym.scancode == SDL_SCANCODE_S) {
+			if (hero->nearItem) {
+				hero->pickNearItemFromGround();
+			}
+		}
 	}
 
 	//button holds

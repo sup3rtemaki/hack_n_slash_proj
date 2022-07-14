@@ -5,7 +5,7 @@ const int Entity::DIR_UP = 0, Entity::DIR_DOWN = 1, Entity::DIR_LEFT = 2, Entity
 void Entity::update() { ; } // override me to do something
 void Entity::draw() {
 	//draws current frame
-	if (currentFrame != NULL && active) {
+	if (currentFrame != NULL && animSet != NULL && active) {
 		currentFrame->Draw(animSet->spriteSheet, x - Globals::camera.x, y - Globals::camera.y);
 	}
 	//draw collision box

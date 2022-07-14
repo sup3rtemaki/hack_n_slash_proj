@@ -9,7 +9,6 @@ HoneydewPotion::HoneydewPotion(AnimationSet* animSet, bool isOnGround, int quant
 	type = "";
 	description = "Sweet honeydew harvested from aphids";
 	this->isOnGround = isOnGround;
-	solid = true;
 
 	collisionBoxW = 8;
 	collisionBoxH = 8;
@@ -48,6 +47,11 @@ void HoneydewPotion::changeAnimation(int newState, bool resetFrameToBeginning, s
 	currentFrame = currentAnim->getFrame(0);
 }
 
-void HoneydewPotion::applyEffect(LivingEntity* heroEntity)
-{
+void HoneydewPotion::applyEffect(LivingEntity* heroEntity){
+	heroEntity->hp += 5;
+	/*if (dynamic_cast<Hero*>((heroEntity)) != nullptr) {
+		Hero* h = (Hero*)heroEntity;
+		h->hp += 5;
+		cout << "Aplicou efeito: " << h->hp << "\n";
+	}*/
 }

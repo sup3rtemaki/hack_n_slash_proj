@@ -1,7 +1,5 @@
 #include "item.h"
 
-#include "hero.h"
-
 const int Item::HONEYDEW_POTION_ID = 0;
 
 const string Item::ITEM_CONSUMABLE = "consumable";
@@ -55,8 +53,4 @@ void Item::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 
 // TODO: Teste, tornar esse método virtual
 //void Item::applyEffect(LivingEntity* heroEntity) {
-//	if (dynamic_cast<Hero*>((heroEntity)) != nullptr) {
-//		Hero* h = (Hero*)heroEntity;
-//		h->hp += 3;
-//	}
 //}

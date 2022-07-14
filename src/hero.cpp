@@ -259,15 +259,15 @@ void Hero::updateDamages() {
 	}
 }
 
-bool Hero::isNearItem(Item* item){
-	//float distance = distanceBetweenTwoEntities(this, item);
+void Hero::checkNearItem(Item* item){
 	float distance = distanceBetweenTwoPoints(x, y + (collisionBoxYOffset / 2), item->x, item->y);
-	cout << "Distancia: " << distance << "\n";
 	if (distance < 30.0) {
-		cout << "PERTO DO ITEM!\n";
-		return true;
+		currentNearItem = item;
+		nearItem = true;
+		return;
 	}
-	return false;
+	currentNearItem = nullptr;
+	nearItem = false;
 }
 
 void Hero::addItemToInventory(Item* item) {
@@ -298,6 +298,24 @@ void Hero::useSelectedItemQuickAccess() {
 	useSelectedItem(id);
 }
 
+void Hero::pickNearItemFromGround(){
+	if (currentNearItem == nullptr) {
+		cout << "currentNearItem nulo\n";
+		return;
+	}
+
+	if (!nearItem) {
+		cout << "Nao esta proximo do item\n";
+		return;
+	}
+
+	//currentNearItem->animSet = NULL;
+	currentNearItem->active = false;
+	addItemToInventory(currentNearItem);
+	// TODO: Teste, adicionar somente ao inventario
+	addItemToQuickAccess(currentNearItem->id);
+}
+
 void Hero::useSelectedItem(int invIndex) {
 	auto item = inventory.find(invIndex);
 	if (item == inventory.end()) {
@@ -310,7 +328,7 @@ void Hero::useSelectedItem(int invIndex) {
 		return;
 	}
 
-	item->second->applyEffect(this);
+	item->second->applyEffect(dynamic_cast<LivingEntity*>((this)));
 	item->second->quantity--;
 	cout << "Quantidade items " << item->second->name << ": " << item->second->quantity << "\n";
 	if ((item->first != Item::HONEYDEW_POTION_ID) && (item->second->quantity <= 0)) {

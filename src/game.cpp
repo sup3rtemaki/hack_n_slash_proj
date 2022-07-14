@@ -633,7 +633,7 @@ void Game::update() {
 		}
 
 		for (list<Item*>::iterator item = itemsOnMap.begin(); item != itemsOnMap.end(); item++) {
-			hero->isNearItem(*item);
+			hero->checkNearItem(*item);
 		}
 
 		//update camera position

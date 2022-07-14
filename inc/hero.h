@@ -59,11 +59,15 @@ public:
 	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");
 	void updateAnimation();
 	void updateDamages();
-	bool isNearItem(Item* item);
+	void checkNearItem(Item* item);
 	void addItemToInventory(Item* item);
 	void addItemToQuickAccess(int itemId);
 	void useSelectedItem(int invIndex);
 	void useSelectedItemQuickAccess();
+	void pickNearItemFromGround();
+
+private:
+	Item* currentNearItem;
 };
 
 #endif
