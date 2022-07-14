@@ -12,6 +12,8 @@ void Entity::draw() {
 	if (solid && Globals::debugging) {
 		SDL_SetRenderDrawColor(Globals::renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 		SDL_RenderDrawRect(Globals::renderer, &collisionBox);
+		SDL_SetRenderDrawColor(Globals::renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+		SDL_RenderDrawPoint(Globals::renderer, x, y);
 	}
 } 
 
@@ -27,6 +29,7 @@ void Entity::move(float angle) {
 		changeAnimation(state, false);
 	}
 }
+
 void Entity::updateMovement() {
 	updateCollisionBox();
 	lastCollisionBox = collisionBox; //store collision box before move
@@ -273,7 +276,7 @@ float Entity::distanceBetweenTwoEntities(Entity* e1, Entity* e2) {
 	return d;
 }
 
-float Entity::distaceBettweenTwoPoints(float cx1, float cy1, float cx2, float cy2) {
+float Entity::distanceBetweenTwoPoints(float cx1, float cy1, float cx2, float cy2) {
 	float d = abs(sqrt(pow(cx2 - cx1, 2) + pow(cy2 - cy1, 2)));
 	return d;
 }

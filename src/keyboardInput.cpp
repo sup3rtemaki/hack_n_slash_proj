@@ -20,7 +20,7 @@ void KeyboardInput::update(SDL_Event* e){
 			hero->slash();
 		}
 		if (e->key.keysym.scancode == SDL_SCANCODE_A) {
-			hero->useSelectedItem();
+			hero->useSelectedItemQuickAccess();
 		}
 	}
 

@@ -7,7 +7,7 @@ class Wall : public Entity {
 public:
 	Wall(AnimationSet* animSet);
 	void update();
-	void changeAnimation(int newState, bool resetFrameToBeginning);
+	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");
 	void updateCollisions() {
 		//dont do anything
 	}

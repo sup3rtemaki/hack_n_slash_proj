@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -90,7 +90,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\src\inventory;D:\Workspaces\Cpp\aula_sdl2\inc\inventory;D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\src\item;D:\Workspaces\Cpp\aula_sdl2\inc\item;D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,7 +107,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\src\inventory;D:\Workspaces\Cpp\aula_sdl2\inc\inventory;D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\src\item;D:\Workspaces\Cpp\aula_sdl2\inc\item;D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -169,6 +169,7 @@
     <ClCompile Include="src\hero.cpp" />
     <ClCompile Include="src\hpBar.cpp" />
     <ClCompile Include="src\item.cpp" />
+    <ClCompile Include="src\item\honeydewPotion.cpp" />
     <ClCompile Include="src\joystickInput.cpp" />
     <ClCompile Include="src\keyboardInput.cpp" />
     <ClCompile Include="src\livingEntity.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="inc\hero.h" />
     <ClInclude Include="inc\hpBar.h" />
     <ClInclude Include="inc\item.h" />
+    <ClInclude Include="inc\item\honeydewPotion.h" />
     <ClInclude Include="inc\joystickInput.h" />
     <ClInclude Include="inc\keyboardInput.h" />
     <ClInclude Include="inc\livingEntity.h" />

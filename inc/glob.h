@@ -48,7 +48,7 @@ public:
 	void attack();
 	void die();
 	void findNearestTarget();
-	void changeAnimation(int newState, bool resetFrameToBeginning);
+	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");
 	void updateAnimation();
 	void updateDamages();
 

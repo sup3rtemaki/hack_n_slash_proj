@@ -230,8 +230,8 @@ Game::Game() {
 	//setup camera
 	Globals::camera.x = 0;
 	Globals::camera.y = 0;
-	Globals::camera.w = 640;//Globals::ScreenWidth;
-	Globals::camera.h = 360;//Globals::ScreenHeight;
+	Globals::camera.w = Globals::ScreenWidth;
+	Globals::camera.h = Globals::ScreenHeight;
 
 	//loadup sounds
 	SoundManager::soundManager.loadSound("hit", resPath + "Randomize2.wav");
@@ -274,6 +274,11 @@ Game::Game() {
 	dataGroupTypes.push_back(hitBoxType);
 	dataGroupTypes.push_back(dmgType);
 
+	//TODO: Remover daqui
+	AnimationSet* hDewPotionAnimSet = new AnimationSet();
+	hDewPotionAnimSet->loadAnimationSet("groundConsumableItem.fdset", dataGroupTypes);
+	//////////////////////
+
 	heroAnimSet = new AnimationSet();
 	heroAnimSet->loadAnimationSet("antHero.fdset", dataGroupTypes, true, 0, true);//"udemyCyborg.fdset", dataGroupTypes, true, 0, true);
 
@@ -292,6 +297,12 @@ Game::Game() {
 	bulletAnimSet = new AnimationSet();
 	bulletAnimSet->loadAnimationSet("bullet.fdset", dataGroupTypes, true, 0, true);
 
+	HoneydewPotion* honeydewPotion = new HoneydewPotion(hDewPotionAnimSet, true, 1);
+	honeydewPotion->x = 100;
+	honeydewPotion->y = 100;
+
+	itemsOnMap.push_back(honeydewPotion);
+
 	// build hero entity
 	hero = new Hero(heroAnimSet);
 	hero->invincibleTimer = 0;
@@ -301,6 +312,8 @@ Game::Game() {
 	heroJoystickInput.hero = hero;
 	heroHpBar.entity = hero;
 	Entity::entities.push_back(hero);
+
+	Entity::entities.push_back(honeydewPotion);
 
 	//get camera to follow hero
 	camController.target = hero;
@@ -617,6 +630,10 @@ void Game::update() {
 		else {
 			isFading = false;
 			nextMap = NextMap::NONE;
+		}
+
+		for (list<Item*>::iterator item = itemsOnMap.begin(); item != itemsOnMap.end(); item++) {
+			hero->isNearItem(*item);
 		}
 
 		//update camera position

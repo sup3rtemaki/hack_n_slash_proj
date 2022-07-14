@@ -26,7 +26,7 @@ void Wall::update() {
 	}
 }
 
-void Wall::changeAnimation(int newState, bool resetFrameToBeginning) {
+void Wall::changeAnimation(int newState, bool resetFrameToBeginning, string animName) {
 	currentAnim = animSet->getAnimation("wall");
 	currentFrame = currentAnim->getFrame(0);
 }

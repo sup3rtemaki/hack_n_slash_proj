@@ -158,7 +158,7 @@ void Grob::findNearestTarget() {
 	}
 }
 
-void Grob::changeAnimation(int newState, bool resetFrameToBeginning) {
+void Grob::changeAnimation(int newState, bool resetFrameToBeginning, string animName) {
 	state = newState;
 	if (state == GROB_STATE_IDLE) {
 		if (direction == DIR_DOWN) {

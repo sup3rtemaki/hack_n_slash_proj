@@ -6,6 +6,8 @@
 #include "soundManager.h"
 #include "item.h"
 #include <map>
+#include <unordered_map>
+#include <vector>
 
 class Hero : public LivingEntity {
 public:
@@ -40,7 +42,11 @@ public:
 	int inventoryIndex = 0;
 	int honeydewQty;
 
+	bool nearItem;
+
 	map<int, Item*> inventory;
+	vector<int> quickAccessInventory = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+	unordered_map<int, Item*> passiveSlots;
 
 	Hero(AnimationSet* animSet);
 	~Hero();
@@ -50,11 +56,14 @@ public:
 	void dash();
 	void die();
 	void revive();
-	void changeAnimation(int newState, bool resetFrameToBeginning);
+	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");
 	void updateAnimation();
 	void updateDamages();
+	bool isNearItem(Item* item);
 	void addItemToInventory(Item* item);
-	void useSelectedItem();
+	void addItemToQuickAccess(int itemId);
+	void useSelectedItem(int invIndex);
+	void useSelectedItemQuickAccess();
 };
 
 #endif

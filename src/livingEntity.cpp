@@ -47,7 +47,16 @@ void LivingEntity::draw() {
 
 		SDL_SetRenderDrawColor(Globals::renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
 		SDL_RenderDrawRect(Globals::renderer, &hitBox);
+
+		SDL_SetRenderDrawColor(Globals::renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+		SDL_RenderDrawPoint(Globals::renderer, x, y + (collisionBoxYOffset / 2));
+
+		SDL_SetRenderDrawColor(Globals::renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+		SDL_RenderDrawPoint(Globals::renderer, x, y);
 	}
+}
+
+void LivingEntity::changeAnimation(int newState, bool resetFrameToBeginning, string animName){
 }
 
 void LivingEntity::saveDeadEnemiesIds(list<Entity*> entityList, list<int>& enemiesIdList){

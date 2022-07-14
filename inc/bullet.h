@@ -12,7 +12,7 @@ public:
 	Bullet(AnimationSet* animSet, int x, int y);
 	void update();
 	void die() {};
-	void changeAnimation(int newState, bool resetFrameToBeginning);
+	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");
 	void updateAnimation();
 	void updateDamages() { ; }
 	void hitLanded(LivingEntity* entity);

@@ -6,6 +6,7 @@
 #include "wall.h"
 #include "glob.h"
 #include "grob.h"
+#include "honeydewPotion.h"
 #include "keyboardInput.h"
 #include "joystickInput.h"
 #include "drawing_functions.h"
@@ -67,6 +68,7 @@ public:
 	list<Entity*> currentMapEnemies;
 	list<Entity*> walls;
 	list<int> deadEnemiesIds;
+	list<Item*> itemsOnMap;
 
 	int enemyWavesTillBoss = 3;
 	bool buildBossNext = false;

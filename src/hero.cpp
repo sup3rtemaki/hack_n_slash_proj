@@ -1,4 +1,5 @@
 #include "hero.h"
+#include "honeydewPotion.h"
 
 const string Hero::HERO_ANIM_UP = "up";
 const string Hero::HERO_ANIM_DOWN = "down";
@@ -44,18 +45,20 @@ Hero::Hero(AnimationSet* animSet) {
 	collisionBoxYOffset = -20;
 	direction = DIR_DOWN;
 	honeydewQty = 3;
-	
+
 	changeAnimation(HERO_STATE_IDLE, true);
 	updateCollisionBox();
-	Item* honeydewPotion = new Item(); // TODO: Inicializar item com os valores
-	honeydewPotion->id = 0;
-	honeydewPotion->quantity = honeydewQty;
-	honeydewPotion->name = "Honeydew Potion";
-	honeydewPotion->isOnGround = false;
-	addItemToInventory(honeydewPotion);
+
+	//Item* honeydewPotion = new Item(); // TODO: Inicializar item com os valores
+	//honeydewPotion->id = 0;
+	//honeydewPotion->quantity = honeydewQty;
+	//honeydewPotion->name = "Honeydew Potion";
+	//honeydewPotion->isOnGround = false;
+	//addItemToInventory(honeydewPotion);
+	//addItemToQuickAccess(0);
 }
 
-Hero::~Hero(){
+Hero::~Hero() {
 }
 
 void Hero::update() {
@@ -69,7 +72,7 @@ void Hero::update() {
 	if (hp > hpMax) {
 		hp = hpMax;
 	}
-	
+
 	updateCollisionBox();
 	updateMovement();
 	updateCollisions();
@@ -97,7 +100,7 @@ void Hero::dash() {
 		slideAngle = angle;
 		slideAmount = 200;
 		invincibleTimer = 0.1;
-		
+
 		changeAnimation(HERO_STATE_DASH, true);
 
 		SoundManager::soundManager.playSound("dash");
@@ -118,7 +121,7 @@ void Hero::revive() {
 	slideAmount = 0;
 }
 
-void Hero::changeAnimation(int newState, bool resetFrameToBeginning) {
+void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string animName) {
 	state = newState;
 
 	if (state == HERO_STATE_IDLE) {
@@ -238,7 +241,7 @@ void Hero::updateDamages() {
 				/*if ((*entity)->animSet->imageName == "grob.png"){
 
 				}*/
-				
+
 				if (enemy->damage > 0 && Entity::checkCollision(collisionBox, enemy->hitBox)) {
 					enemy->hitLanded(this); // let attacker know they hit
 					hp -= enemy->damage;
@@ -256,25 +259,49 @@ void Hero::updateDamages() {
 	}
 }
 
-void Hero::addItemToInventory(Item* item){
-	auto itemMap = std::make_pair(item->id, item);
-	cout << "Adicionando item: " << itemMap.first << " " << itemMap.second << "\n";
-	for (multimap<int, Item*>::iterator it = inventory.begin(); it != inventory.end(); it++) {
+bool Hero::isNearItem(Item* item){
+	//float distance = distanceBetweenTwoEntities(this, item);
+	float distance = distanceBetweenTwoPoints(x, y + (collisionBoxYOffset / 2), item->x, item->y);
+	cout << "Distancia: " << distance << "\n";
+	if (distance < 30.0) {
+		cout << "PERTO DO ITEM!\n";
+		return true;
+	}
+	return false;
+}
+
+void Hero::addItemToInventory(Item* item) {
+	for (map<int, Item*>::iterator it = inventory.begin(); it != inventory.end(); it++) {
 		if (it->first == item->id) {
 			it->second->quantity++;
-			cout << "Item qtd++:" << it->second->quantity << "\n";
+			cout << "Item qtd++: " << it->second->quantity << "\n";
 			return;
 		}
 	}
 
+	auto itemMap = std::make_pair(item->id, item);
+	cout << "Adicionando item: " << itemMap.first << " " << itemMap.second << "\n";
 	inventory.emplace(itemMap);
-	cout << "Item inserido: " << inventory[inventoryIndex]->name << "\n";
+	cout << "Item inserido: " << itemMap.second->name << "\n";
 }
 
-void Hero::useSelectedItem(){
-	auto item = inventory.find(inventoryIndex);
+void Hero::addItemToQuickAccess(int itemId) {
+	quickAccessInventory[inventoryIndex] = itemId;
+}
+
+void Hero::useSelectedItemQuickAccess() {
+	int id = quickAccessInventory[inventoryIndex];
+	if (id < 0) {
+		return;
+	}
+
+	useSelectedItem(id);
+}
+
+void Hero::useSelectedItem(int invIndex) {
+	auto item = inventory.find(invIndex);
 	if (item == inventory.end()) {
-		cout << "Item na posicao " << inventoryIndex << " não encontrado\n";
+		cout << "Item na posicao " << invIndex << " não encontrado\n";
 		return;
 	}
 
@@ -288,8 +315,5 @@ void Hero::useSelectedItem(){
 	cout << "Quantidade items " << item->second->name << ": " << item->second->quantity << "\n";
 	if ((item->first != Item::HONEYDEW_POTION_ID) && (item->second->quantity <= 0)) {
 		inventory.erase(item);
-		if (inventory.empty()) {
-			inventory.clear();
-		}
 	}
 }

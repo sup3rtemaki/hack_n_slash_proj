@@ -42,7 +42,7 @@ public:
 	virtual void move(float angle);
 	virtual void updateMovement();
 	virtual void updateCollisionBox();
-	virtual void changeAnimation(int newState, bool resetFrameToBeginning) = 0; // abstract function
+	virtual void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "") = 0; // abstract function
 	virtual void updateCollisions();
 	virtual void crashOntoSolid() { ; }; //if die on solids, then this will deal with dying
 
@@ -50,7 +50,7 @@ public:
 	static float SweptAABB(SDL_Rect movingBox, float vx, float vy, SDL_Rect otherBox, float &normalX, float &normalY);
 	static float distanceBetweenTwoRects(SDL_Rect& r1, SDL_Rect& r2);
 	static float distanceBetweenTwoEntities(Entity* e1, Entity* e2);
-	static float distaceBettweenTwoPoints(float cx1, float cy1, float cx2, float cy2);
+	static float distanceBetweenTwoPoints(float cx1, float cy1, float cx2, float cy2);
 	static float angleBetweenTwoEntities(Entity* e1, Entity* e2);
 	static bool checkCollision(SDL_Rect cbox1, SDL_Rect cbox2);
 	static int angleToDirection(float angle);

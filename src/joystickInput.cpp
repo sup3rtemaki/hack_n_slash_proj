@@ -26,7 +26,7 @@ void JoystickInput::update(SDL_Event* e) {
 		}
 
 		if (e->jbutton.button == JOY_X) {
-			hero->useSelectedItem();
+			hero->useSelectedItemQuickAccess();
 		}
 
 		if (e->jbutton.button == JOY_RB) {

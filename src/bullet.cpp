@@ -38,7 +38,7 @@ void Bullet::update() {
 	updateAnimation();
 }
 
-void Bullet::changeAnimation(int newState, bool resetFrameToBeginning) {
+void Bullet::changeAnimation(int newState, bool resetFrameToBeginning, string animName) {
 	state = newState;
 	currentAnim = animSet->getAnimation(BULLET_ANIM_BULLET);
 

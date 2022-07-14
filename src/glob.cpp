@@ -158,7 +158,7 @@ void Glob::findNearestTarget() {
 	}
 }
 
-void Glob::changeAnimation(int newState, bool resetFrameToBeginning) {
+void Glob::changeAnimation(int newState, bool resetFrameToBeginning, string animName) {
 	state = newState;
 	if (state == GLOB_STATE_IDLE) {
 		if (direction == DIR_DOWN) {

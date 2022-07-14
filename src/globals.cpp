@@ -3,7 +3,7 @@
 const float Globals::PI = 3.14159;
 
 //useful as a dev
-bool Globals::debugging = false;
+bool Globals::debugging = true;
 
 //sdl
 int Globals::ScreenWidth = 640, Globals::ScreenHeight = 360, Globals::ScreenScale = 3;
