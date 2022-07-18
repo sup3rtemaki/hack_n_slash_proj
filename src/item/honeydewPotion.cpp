@@ -37,13 +37,13 @@ void HoneydewPotion::update() {
 }
 
 void HoneydewPotion::changeAnimation(int newState, bool resetFrameToBeginning, string animName) {
-	//if (!animName.empty()) {
-	//	currentAnim = animSet->getAnimation(animName);
-	//}
-	//else {
-	//	currentAnim = animSet->getAnimation("idle");
-	//}
-	currentAnim = animSet->getAnimation("idle");
+	if (!animName.empty()) {
+		currentAnim = animSet->getAnimation(animName);
+	}
+	else {
+		currentAnim = animSet->getAnimation("idle");
+	}
+	//currentAnim = animSet->getAnimation("idle");
 	currentFrame = currentAnim->getFrame(0);
 }
 

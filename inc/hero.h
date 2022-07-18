@@ -49,7 +49,6 @@ public:
 	unordered_map<int, Item*> passiveSlots;
 
 	Hero(AnimationSet* animSet);
-	~Hero();
 
 	void update();
 	void slash();

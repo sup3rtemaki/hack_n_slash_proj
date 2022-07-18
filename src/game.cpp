@@ -12,6 +12,7 @@
 using namespace std;
 
 Game::Game() {
+	//TODO: Criar método initialConfigs ou algo do tipo pra encapsular tudo isso
 
 	string resPath = getResourcePath();
 
@@ -251,57 +252,7 @@ Game::Game() {
 	//	Mix_Volume(-1, 50);
 	//}
 
-	list<DataGroupType> dataGroupTypes; //describes the types of groups the data can have
-
-	// what data can the frame have?
-	// collisionBoxes
-	DataGroupType colBoxType; 
-	colBoxType.groupName = "collisionBox";
-	colBoxType.dataType = DataGroupType::DATATYPE_BOX;
-
-	// hitboxes
-	DataGroupType hitBoxType;
-	hitBoxType.groupName = "hitBox";
-	hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
-
-	// damage
-	DataGroupType dmgType;
-	dmgType.groupName = "damage";
-	dmgType.dataType = DataGroupType::DATATYPE_NUMBER;
-
-	// add all of these to the list
-	dataGroupTypes.push_back(colBoxType);
-	dataGroupTypes.push_back(hitBoxType);
-	dataGroupTypes.push_back(dmgType);
-
-	//TODO: Remover daqui
-	AnimationSet* hDewPotionAnimSet = new AnimationSet();
-	hDewPotionAnimSet->loadAnimationSet("groundConsumableItem.fdset", dataGroupTypes);
-	//////////////////////
-
-	heroAnimSet = new AnimationSet();
-	heroAnimSet->loadAnimationSet("antHero.fdset", dataGroupTypes, true, 0, true);//"udemyCyborg.fdset", dataGroupTypes, true, 0, true);
-
-	globAnimSet = new AnimationSet();
-	globAnimSet->loadAnimationSet("glob.fdset", dataGroupTypes, true, 0, true);
-
-	grobAnimSet = new AnimationSet();
-	grobAnimSet->loadAnimationSet("grob.fdset", dataGroupTypes, true, 0, true);
-
-	wallAnimSet = new AnimationSet();
-	wallAnimSet->loadAnimationSet("wall.fdset", dataGroupTypes);
-
-	roundKingAnimSet = new AnimationSet();
-	roundKingAnimSet->loadAnimationSet("roundKing.fdset", dataGroupTypes, true, 0, true);
-
-	bulletAnimSet = new AnimationSet();
-	bulletAnimSet->loadAnimationSet("bullet.fdset", dataGroupTypes, true, 0, true);
-
-	HoneydewPotion* honeydewPotion = new HoneydewPotion(hDewPotionAnimSet, true, 1);
-	honeydewPotion->x = 100;
-	honeydewPotion->y = 100;
-
-	itemsOnMap.push_back(honeydewPotion);
+	loadAnimationSets();
 
 	// build hero entity
 	hero = new Hero(heroAnimSet);
@@ -313,7 +264,8 @@ Game::Game() {
 	heroHpBar.entity = hero;
 	Entity::entities.push_back(hero);
 
-	Entity::entities.push_back(honeydewPotion);
+	//TODO: Fazer método para spawnar itens de acordo com mapa
+	spawnItem(Item::HONEYDEW_POTION_ID, 1);
 
 	//get camera to follow hero
 	camController.target = hero;
@@ -403,7 +355,7 @@ Game::Game() {
 	heroHpBar.x = 10;
 	heroHpBar.y = 10;
 	heroHpBar.barHeight = 10;
-	heroHpBar.barWidth = 100;
+	heroHpBar.barWidth = hero->hpMax * 10;
 	bossHpBar.x = Globals::ScreenWidth / 2.0f - (bossHpBar.barWidth / 2.0f); // centered horizontally
 	bossHpBar.y = Globals::ScreenHeight - bossHpBar.barHeight - 20; // 20 pixels off the bottom
 
@@ -533,6 +485,12 @@ void Game::update() {
 		for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
 			// update all entites in world at once (polymorphism)
 			(*entity)->update();
+
+			// checks if entity is an item, and if we are close to it
+			if (dynamic_cast<Item*>((*entity)) != nullptr) {
+				Item* i = (Item*)(*entity);
+				hero->checkNearItem(i);
+			}
 		}
 
 		enemiesToBuild = currentMap.qtEnemies;
@@ -630,10 +588,6 @@ void Game::update() {
 		else {
 			isFading = false;
 			nextMap = NextMap::NONE;
-		}
-
-		for (list<Item*>::iterator item = itemsOnMap.begin(); item != itemsOnMap.end(); item++) {
-			hero->checkNearItem(*item);
 		}
 
 		//update camera position
@@ -816,4 +770,57 @@ void Game::spawnEnemies(int enemiesToBuild) {
 		i++;
 	}
 	mustSpawnEnemies = false;
+}
+
+void Game::spawnItem(int itemId, int quant){
+	HoneydewPotion* honeydewPotion = new HoneydewPotion(hDewPotionAnimSet, true, quant);
+	honeydewPotion->x = 100;
+	honeydewPotion->y = 100;
+	Entity::entities.push_back(honeydewPotion);
+}
+
+void Game::loadAnimationSets(){
+	list<DataGroupType> dataGroupTypes; //describes the types of groups the data can have
+
+// what data can the frame have?
+// collisionBoxes
+	DataGroupType colBoxType;
+	colBoxType.groupName = "collisionBox";
+	colBoxType.dataType = DataGroupType::DATATYPE_BOX;
+
+	// hitboxes
+	DataGroupType hitBoxType;
+	hitBoxType.groupName = "hitBox";
+	hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
+
+	// damage
+	DataGroupType dmgType;
+	dmgType.groupName = "damage";
+	dmgType.dataType = DataGroupType::DATATYPE_NUMBER;
+
+	// add all of these to the list
+	dataGroupTypes.push_back(colBoxType);
+	dataGroupTypes.push_back(hitBoxType);
+	dataGroupTypes.push_back(dmgType);
+
+	hDewPotionAnimSet = new AnimationSet();
+	hDewPotionAnimSet->loadAnimationSet("groundConsumableItem.fdset", dataGroupTypes);
+
+	heroAnimSet = new AnimationSet();
+	heroAnimSet->loadAnimationSet("antHero.fdset", dataGroupTypes, true, 0, true);//"udemyCyborg.fdset", dataGroupTypes, true, 0, true);
+
+	globAnimSet = new AnimationSet();
+	globAnimSet->loadAnimationSet("glob.fdset", dataGroupTypes, true, 0, true);
+
+	grobAnimSet = new AnimationSet();
+	grobAnimSet->loadAnimationSet("grob.fdset", dataGroupTypes, true, 0, true);
+
+	wallAnimSet = new AnimationSet();
+	wallAnimSet->loadAnimationSet("wall.fdset", dataGroupTypes);
+
+	roundKingAnimSet = new AnimationSet();
+	roundKingAnimSet->loadAnimationSet("roundKing.fdset", dataGroupTypes, true, 0, true);
+
+	bulletAnimSet = new AnimationSet();
+	bulletAnimSet->loadAnimationSet("bullet.fdset", dataGroupTypes, true, 0, true);
 }

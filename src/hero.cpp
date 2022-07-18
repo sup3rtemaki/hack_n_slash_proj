@@ -58,9 +58,6 @@ Hero::Hero(AnimationSet* animSet) {
 	//addItemToQuickAccess(0);
 }
 
-Hero::~Hero() {
-}
-
 void Hero::update() {
 	// check if dead
 	if (hp < 1 && state != HERO_STATE_DEAD) {
@@ -260,8 +257,8 @@ void Hero::updateDamages() {
 }
 
 void Hero::checkNearItem(Item* item){
-	float distance = distanceBetweenTwoPoints(x, y + (collisionBoxYOffset / 2), item->x, item->y);
-	if (distance < 30.0) {
+	if (item->isOnGround &&
+		(distanceBetweenTwoPoints(x, y + (collisionBoxYOffset / 2), item->x, item->y) < 30.0)) {
 		currentNearItem = item;
 		nearItem = true;
 		return;
@@ -309,8 +306,8 @@ void Hero::pickNearItemFromGround(){
 		return;
 	}
 
-	//currentNearItem->animSet = NULL;
 	currentNearItem->active = false;
+	currentNearItem->isOnGround = false;
 	addItemToInventory(currentNearItem);
 	// TODO: Teste, adicionar somente ao inventario
 	addItemToQuickAccess(currentNearItem->id);

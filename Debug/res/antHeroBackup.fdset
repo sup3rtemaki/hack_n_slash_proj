@@ -1,5 +1,5 @@
 AntHero.png
-animations: 18
+animations: 17
 up
 frames: 4
 frame
@@ -270,35 +270,3 @@ offset: 20 50
 duration: 0.1
 index: 0
 collisionBox: 15 15 16 38
-consumeItemLeft
-frames: 6
-frame
-clip: 9 178 39 56
-offset: 19 49
-duration: 0.3
-index: 0
-frame
-clip: 425 218 49 55
-offset: 27 47
-duration: 0.1
-index: 1
-frame
-clip: 481 218 44 55
-offset: 24 48
-duration: 0.1
-index: 2
-frame
-clip: 534 214 41 59
-offset: 21 53
-duration: 0.5
-index: 3
-frame
-clip: 582 218 41 54
-offset: 22 49
-duration: 0.1
-index: 4
-frame
-clip: 9 179 38 55
-offset: 19 49
-duration: 0.1
-index: 5

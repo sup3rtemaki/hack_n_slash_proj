@@ -29,6 +29,12 @@ void JoystickInput::update(SDL_Event* e) {
 			hero->useSelectedItemQuickAccess();
 		}
 
+		if (e->jbutton.button == JOY_A) {
+			if (hero->nearItem) {
+				hero->pickNearItemFromGround();
+			}
+		}
+
 		if (e->jbutton.button == JOY_RB) {
 			hero->slash();
 		}

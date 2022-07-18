@@ -27,6 +27,7 @@ public:
 	AnimationSet* wallAnimSet;
 	AnimationSet* roundKingAnimSet;
 	AnimationSet* bulletAnimSet;
+	AnimationSet* hDewPotionAnimSet;
 
 	SDL_Texture* backGroundImage;
 	SDL_Texture* fadeImage;
@@ -92,6 +93,8 @@ public:
 private:
 	void updateMaps();
 	void spawnEnemies(int enemiesToBuild);
+	void spawnItem(int itemId, int quant);
+	void loadAnimationSets();
 };
 
 #endif // !GAME

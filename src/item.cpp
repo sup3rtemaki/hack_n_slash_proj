@@ -13,14 +13,9 @@ Item::Item(AnimationSet* animSet) {
 	collisionBoxW = 8;
 	collisionBoxH = 8;
 	collisionBoxYOffset = -4;
-
-	//updateCollisionBox();
-	//changeAnimation();
-	//changeAnimation(0, false, "itemOnGround");
 }
 
 Item::~Item(){
-
 }
 
 void Item::update() {
@@ -50,7 +45,3 @@ void Item::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 	}
 	currentFrame = currentAnim->getFrame(0);
 }
-
-// TODO: Teste, tornar esse método virtual
-//void Item::applyEffect(LivingEntity* heroEntity) {
-//}
