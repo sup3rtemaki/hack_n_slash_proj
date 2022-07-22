@@ -265,7 +265,7 @@ Game::Game() {
 	Entity::entities.push_back(hero);
 
 	//TODO: Fazer método para spawnar itens de acordo com mapa
-	spawnItem(Item::HONEYDEW_POTION_ID, 1);
+	spawnItem(Item::HONEYDEW_POTION_ID, 5);
 
 	//get camera to follow hero
 	camController.target = hero;

@@ -1,5 +1,5 @@
 AntHero.png
-animations: 18
+animations: 21
 up
 frames: 4
 frame
@@ -274,31 +274,151 @@ consumeItemLeft
 frames: 6
 frame
 clip: 9 178 39 56
-offset: 19 49
-duration: 0.3
+offset: 19 50
+duration: 0.1
 index: 0
+collisionBox: 9 6 24 48
 frame
 clip: 425 218 49 55
-offset: 27 47
+offset: 28 49
 duration: 0.1
 index: 1
+collisionBox: 13 4 31 49
 frame
 clip: 481 218 44 55
-offset: 24 48
+offset: 24 49
 duration: 0.1
 index: 2
+collisionBox: 13 6 25 46
 frame
-clip: 534 214 41 59
-offset: 21 53
+clip: 537 218 34 53
+offset: 18 49
 duration: 0.5
 index: 3
+collisionBox: 5 2 27 50
 frame
 clip: 582 218 41 54
 offset: 22 49
 duration: 0.1
 index: 4
+collisionBox: 8 5 29 48
 frame
 clip: 9 179 38 55
 offset: 19 49
 duration: 0.1
 index: 5
+collisionBox: 6 4 28 48
+consumeItemRight
+frames: 6
+frame
+clip: 9 61 36 50
+offset: 17 46
+duration: 0.1
+index: 0
+collisionBox: 6 3 24 47
+frame
+clip: 429 121 40 51
+offset: 18 47
+duration: 0.1
+index: 1
+collisionBox: 7 3 25 48
+frame
+clip: 485 120 37 51
+offset: 17 48
+duration: 0.1
+index: 2
+collisionBox: 7 4 22 47
+frame
+clip: 537 117 41 54
+offset: 18 51
+duration: 0.5
+index: 3
+collisionBox: 6 5 21 50
+frame
+clip: 586 117 36 55
+offset: 18 51
+duration: 0.1
+index: 4
+collisionBox: 8 6 20 50
+frame
+clip: 9 59 32 52
+offset: 17 48
+duration: 0.1
+index: 5
+collisionBox: 6 4 20 49
+consumeItemUp
+frames: 6
+frame
+clip: 4 117 42 48
+offset: 17 45
+duration: 0.1
+index: 0
+collisionBox: 7 0 28 47
+frame
+clip: 434 171 35 48
+offset: 12 45
+duration: 0.1
+index: 1
+collisionBox: 4 1 24 46
+frame
+clip: 488 171 35 48
+offset: 13 45
+duration: 0.1
+index: 2
+collisionBox: 3 1 24 44
+frame
+clip: 540 170 35 48
+offset: 12 46
+duration: 0.5
+index: 3
+collisionBox: 6 2 20 45
+frame
+clip: 593 171 33 47
+offset: 11 45
+duration: 0.1
+index: 4
+collisionBox: 4 1 23 45
+frame
+clip: 8 117 35 47
+offset: 13 45
+duration: 0.1
+index: 5
+collisionBox: 3 1 24 45
+consumeItemDown
+frames: 6
+frame
+clip: 6 5 40 51
+offset: 22 46
+duration: 0.1
+index: 0
+collisionBox: 10 4 28 46
+frame
+clip: 430 68 39 49
+offset: 21 44
+duration: 0.1
+index: 1
+collisionBox: 9 0 26 48
+frame
+clip: 485 68 38 48
+offset: 20 44
+duration: 0.1
+index: 2
+collisionBox: 11 3 21 44
+frame
+clip: 537 62 38 55
+offset: 20 50
+duration: 0.5
+index: 3
+collisionBox: 9 7 24 47
+frame
+clip: 588 65 39 51
+offset: 20 47
+duration: 0.1
+index: 4
+collisionBox: 6 6 29 44
+frame
+clip: 8 7 38 50
+offset: 20 44
+duration: 0.1
+index: 5
+collisionBox: 11 2 22 46

@@ -31,11 +31,14 @@ void KeyboardInput::update(SDL_Event* e){
 
 	//button holds
 	const Uint8* keystates = SDL_GetKeyboardState(NULL); //check for keys still being held
-	if ((hero->state != Hero::HERO_STATE_MOVE && hero->state != Hero::HERO_STATE_IDLE) ||
-		(!keystates[UP] && !keystates[DOWN] && !keystates[RIGHT] && !keystates[LEFT])) {
+	if (((hero->state != Hero::HERO_STATE_MOVE && hero->state != Hero::HERO_STATE_IDLE) ||
+		(!keystates[UP] && !keystates[DOWN] && !keystates[RIGHT] && !keystates[LEFT])) &&
+		hero->isMovingMethod != 2) {
 		hero->moving = false;
+		hero->isMovingMethod = 0;
 	}
 	else {
+		hero->isMovingMethod = 1;
 		//up
 		if (keystates[UP]) {
 			if (keystates[RIGHT]) {

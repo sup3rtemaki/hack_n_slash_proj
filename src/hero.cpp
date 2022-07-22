@@ -21,6 +21,11 @@ const string Hero::HERO_DASH_ANIM_DOWN = "dashDown";
 const string Hero::HERO_DASH_ANIM_LEFT = "dashLeft";
 const string Hero::HERO_DASH_ANIM_RIGHT = "dashRight";
 
+const string Hero::HERO_CONSUMING_ANIM_UP = "consumeItemUp";
+const string Hero::HERO_CONSUMING_ANIM_DOWN = "consumeItemDown";
+const string Hero::HERO_CONSUMING_ANIM_LEFT = "consumeItemLeft";
+const string Hero::HERO_CONSUMING_ANIM_RIGHT = "consumeItemRight";
+
 const string Hero::HERO_ANIM_DIE = "die";
 
 const int Hero::HERO_STATE_IDLE = 0;
@@ -28,6 +33,7 @@ const int Hero::HERO_STATE_MOVE = 1;
 const int Hero::HERO_STATE_SLASH = 2;
 const int Hero::HERO_STATE_DASH = 3;
 const int Hero::HERO_STATE_DEAD = 4;
+const int Hero::HERO_STATE_CONSUMING_ITEM = 5;
 
 Hero::Hero(AnimationSet* animSet) {
 	this->animSet = animSet;
@@ -37,7 +43,7 @@ Hero::Hero(AnimationSet* animSet) {
 	x = Globals::ScreenWidth / 2;
 	y = Globals::ScreenHeight / 2;
 	moveSpeed = 0;
-	moveSpeedMax = 80;
+	moveSpeedMax = 65;
 	hp = hpMax = 20;
 	damage = 0;
 	collisionBoxW = 20;
@@ -48,14 +54,6 @@ Hero::Hero(AnimationSet* animSet) {
 
 	changeAnimation(HERO_STATE_IDLE, true);
 	updateCollisionBox();
-
-	//Item* honeydewPotion = new Item(); // TODO: Inicializar item com os valores
-	//honeydewPotion->id = 0;
-	//honeydewPotion->quantity = honeydewQty;
-	//honeydewPotion->name = "Honeydew Potion";
-	//honeydewPotion->isOnGround = false;
-	//addItemToInventory(honeydewPotion);
-	//addItemToQuickAccess(0);
 }
 
 void Hero::update() {
@@ -177,6 +175,20 @@ void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 			currentAnim = animSet->getAnimation(HERO_DASH_ANIM_RIGHT);
 		}
 	}
+	else if (state == HERO_STATE_CONSUMING_ITEM) {
+		if (direction == DIR_DOWN) {
+			currentAnim = animSet->getAnimation(HERO_CONSUMING_ANIM_DOWN);
+		}
+		else if (direction == DIR_UP) {
+			currentAnim = animSet->getAnimation(HERO_CONSUMING_ANIM_UP);
+		}
+		else if (direction == DIR_LEFT) {
+			currentAnim = animSet->getAnimation(HERO_CONSUMING_ANIM_LEFT);
+		}
+		else if (direction == DIR_RIGHT) {
+			currentAnim = animSet->getAnimation(HERO_CONSUMING_ANIM_RIGHT);
+		}
+	}
 	else if (state == HERO_STATE_DEAD) {
 		currentAnim = animSet->getAnimation(HERO_ANIM_DIE);
 	}
@@ -198,7 +210,7 @@ void Hero::updateAnimation() {
 		changeAnimation(HERO_STATE_IDLE, true);
 	}
 
-	if (state != HERO_STATE_MOVE && moving) {
+	if (state != HERO_STATE_MOVE && state != HERO_STATE_CONSUMING_ITEM && moving) {
 		changeAnimation(HERO_STATE_MOVE, true);
 	}
 
@@ -215,12 +227,19 @@ void Hero::updateAnimation() {
 				//was dead but now have more hp, get back up
 				changeAnimation(HERO_STATE_MOVE, true);
 			}
+			else if (state == HERO_STATE_CONSUMING_ITEM) {
+				changeAnimation(HERO_STATE_IDLE, true);
+			}
 			else {
 				// reset animation (loops it)
 				currentFrame = currentAnim->getFrame(0);
 			}
 		}
 		else {
+			if (state == HERO_STATE_CONSUMING_ITEM) {
+				moving = false;
+			}
+
 			// just move to next frame in this animation
 			currentFrame = currentAnim->getNextFrame(currentFrame);
 		}
@@ -256,7 +275,7 @@ void Hero::updateDamages() {
 	}
 }
 
-void Hero::checkNearItem(Item* item){
+void Hero::checkNearItem(Item* item) {
 	if (item->isOnGround &&
 		(distanceBetweenTwoPoints(x, y + (collisionBoxYOffset / 2), item->x, item->y) < 30.0)) {
 		currentNearItem = item;
@@ -314,21 +333,27 @@ void Hero::pickNearItemFromGround(){
 }
 
 void Hero::useSelectedItem(int invIndex) {
-	auto item = inventory.find(invIndex);
-	if (item == inventory.end()) {
-		cout << "Item na posicao " << invIndex << " não encontrado\n";
-		return;
-	}
+	if (hp > 0 && (state == HERO_STATE_MOVE || state == HERO_STATE_IDLE)) {
+		auto item = inventory.find(invIndex);
+		if (item == inventory.end()) {
+			cout << "Item na posicao " << invIndex << " não encontrado\n";
+			return;
+		}
 
-	if (item->second->quantity == 0) {
-		cout << "Item " << item->second->name << " zerado\n";
-		return;
-	}
+		if (item->second->quantity == 0) {
+			cout << "Item " << item->second->name << " zerado\n";
+			return;
+		}
 
-	item->second->applyEffect(dynamic_cast<LivingEntity*>((this)));
-	item->second->quantity--;
-	cout << "Quantidade items " << item->second->name << ": " << item->second->quantity << "\n";
-	if ((item->first != Item::HONEYDEW_POTION_ID) && (item->second->quantity <= 0)) {
-		inventory.erase(item);
+		item->second->applyEffect(dynamic_cast<LivingEntity*>((this)));
+		item->second->quantity--;
+		cout << "Quantidade items " << item->second->name << ": " << item->second->quantity << "\n";
+		if ((item->first != Item::HONEYDEW_POTION_ID) && (item->second->quantity <= 0)) {
+			inventory.erase(item);
+		}
+
+		moving = false;
+		frameTimer = 0;
+		changeAnimation(HERO_STATE_CONSUMING_ITEM, true);
 	}
 }
