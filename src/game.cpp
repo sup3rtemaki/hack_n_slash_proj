@@ -265,7 +265,7 @@ Game::Game() {
 	Entity::entities.push_back(hero);
 
 	//TODO: Fazer método para spawnar itens de acordo com mapa
-	spawnItem(Item::HONEYDEW_POTION_ID, 5);
+	spawnItem(Item::HONEYDEW_POTION_ID, 5, 200, 200);
 
 	//get camera to follow hero
 	camController.target = hero;
@@ -485,6 +485,12 @@ void Game::update() {
 		for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
 			// update all entites in world at once (polymorphism)
 			(*entity)->update();
+
+			if ((*entity)->dropItemFlag) {
+				spawnItem((*entity)->dropItemId, (*entity)->dropItemQty,
+					(*entity)->dropItemXPos, (*entity)->dropItemYPos);
+				(*entity)->dropItemFlag = false; // Failsafe
+			}
 
 			// checks if entity is an item, and if we are close to it
 			if (dynamic_cast<Item*>((*entity)) != nullptr) {
@@ -772,18 +778,19 @@ void Game::spawnEnemies(int enemiesToBuild) {
 	mustSpawnEnemies = false;
 }
 
-void Game::spawnItem(int itemId, int quant){
+void Game::spawnItem(int itemId, int quant, int xPos, int yPos){
+	//TODO: Criar switch case com enums do itemId
 	HoneydewPotion* honeydewPotion = new HoneydewPotion(hDewPotionAnimSet, true, quant);
-	honeydewPotion->x = 100;
-	honeydewPotion->y = 100;
+	honeydewPotion->x = xPos;
+	honeydewPotion->y = yPos;
 	Entity::entities.push_back(honeydewPotion);
 }
 
 void Game::loadAnimationSets(){
 	list<DataGroupType> dataGroupTypes; //describes the types of groups the data can have
 
-// what data can the frame have?
-// collisionBoxes
+	// what data can the frame have?
+	// collisionBoxes
 	DataGroupType colBoxType;
 	colBoxType.groupName = "collisionBox";
 	colBoxType.dataType = DataGroupType::DATATYPE_BOX;

@@ -36,6 +36,12 @@ public:
 	Frame* currentFrame;
 	float frameTimer;
 
+	int dropItemXPos;
+	int dropItemYPos;
+	int dropItemId;
+	int dropItemQty;
+	bool dropItemFlag;
+
 	// virtual functions
 	virtual void update();
 	virtual void draw();
@@ -45,6 +51,7 @@ public:
 	virtual void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "") = 0; // abstract function
 	virtual void updateCollisions();
 	virtual void crashOntoSolid() { ; }; //if die on solids, then this will deal with dying
+	virtual void dropItem(int itemId, int quant, int xPos, int yPos) { ; }
 
 	// help functions
 	static float SweptAABB(SDL_Rect movingBox, float vx, float vy, SDL_Rect otherBox, float &normalX, float &normalY);

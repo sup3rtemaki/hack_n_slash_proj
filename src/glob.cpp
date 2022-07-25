@@ -261,6 +261,15 @@ void Glob::updateAnimation() {
 				}
 				else {
 					active = false;
+
+					// TODO: Adicionar drop rate para cada item de cada inimigo
+					int dropChance = rand() % 100;
+
+					//TODO: Adicionar lista de itens para cada inimigo
+					//Sinaliza que, caso chance > x%, spawna item
+					if (dropChance > 50) {
+						dropItem(0, 1, x, y); // dropItemId = HONEYDEW_POTION_ID;
+					}
 				}
 			}
 			else {
@@ -300,4 +309,13 @@ void Glob::updateDamages() {
 			}
 		}
 	}
+}
+
+void Glob::dropItem(int itemId, int quant, int xPos, int yPos) {
+	dropItemFlag = true;
+	//TODO: colocar enums de itens fora do item.h para pode ser importado pelos livingEntities
+	dropItemId = itemId;
+	dropItemXPos = xPos;
+	dropItemYPos = yPos;
+	dropItemQty = quant;
 }

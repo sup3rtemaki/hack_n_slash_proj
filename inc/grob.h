@@ -51,6 +51,7 @@ public:
 	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");
 	void updateAnimation();
 	void updateDamages();
+	void dropItem(int itemId, int quant, int xPos, int yPos);
 
 };
 

@@ -93,7 +93,7 @@ public:
 private:
 	void updateMaps();
 	void spawnEnemies(int enemiesToBuild);
-	void spawnItem(int itemId, int quant);
+	void spawnItem(int itemId, int quant, int xPos, int yPos);
 	void loadAnimationSets();
 };
 
