@@ -166,6 +166,41 @@ void Entity::updateCollisions() {
 	}
 }
 
+void Entity::dropItem(int itemId, int quant, int xPos, int yPos){
+	dropItemFlag = true;
+	dropItemId = itemId;
+	dropItemXPos = xPos;
+	dropItemYPos = yPos;
+	dropItemQty = quant;
+}
+
+void Entity::checkIfDropsItem(){
+	if (possibleDropItemsMap.empty()) {
+		return;
+	}
+
+	int dropChance = rand() % 100;
+	int itemId = -1;
+	int quant = -1;
+
+	for (auto it = possibleDropItemsMap.begin(); it != possibleDropItemsMap.end(); it++) {
+		if ((dropChance >= it->second.first.first) && (dropChance < it->second.first.second)) {
+			itemId = it->first;
+			quant = 1 + rand() % it->second.second;
+		}
+	}
+
+	if (itemId < 0) {
+		return;
+	}
+
+	if (quant < 1) {
+		return;
+	}
+
+	dropItem(itemId, quant, x, y);
+}
+
 // help functions
 //return type: gives 0 -1 depending on where collision is. 1 = no collision, 0 = collide immediately, 0.5 = halfway through, etc
 //params: movingBox = entity being checked

@@ -16,6 +16,7 @@ public:
 	string itemType;
 	string description;
 	bool isOnGround;
+	bool isNearHero;
 
 	Item(AnimationSet* animSet = nullptr);
 	~Item();

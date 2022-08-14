@@ -207,6 +207,7 @@
     <ClInclude Include="inc\hpBar.h" />
     <ClInclude Include="inc\item.h" />
     <ClInclude Include="inc\item\honeydewPotion.h" />
+    <ClInclude Include="inc\item\itemsHub.h" />
     <ClInclude Include="inc\joystickInput.h" />
     <ClInclude Include="inc\keyboardInput.h" />
     <ClInclude Include="inc\livingEntity.h" />

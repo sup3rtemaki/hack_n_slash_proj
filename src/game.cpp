@@ -486,16 +486,25 @@ void Game::update() {
 			// update all entites in world at once (polymorphism)
 			(*entity)->update();
 
-			if ((*entity)->dropItemFlag) {
-				spawnItem((*entity)->dropItemId, (*entity)->dropItemQty,
-					(*entity)->dropItemXPos, (*entity)->dropItemYPos);
-				(*entity)->dropItemFlag = false; // Failsafe
-			}
-
 			// checks if entity is an item, and if we are close to it
 			if (dynamic_cast<Item*>((*entity)) != nullptr) {
 				Item* i = (Item*)(*entity);
-				hero->checkNearItem(i);
+				if (i->isOnGround &&
+					(Entity::distanceBetweenTwoPoints(hero->x, hero->y + (hero->collisionBoxYOffset / 2), i->x, i->y) < 40.0)) {
+					if (!i->isNearHero) {
+						i->isNearHero = true;
+						hero->nearItems.push_back(i);
+					}
+				}
+				else {
+					i->isNearHero = false;
+					hero->nearItems.remove(i);
+				}
+			}
+
+			if ((*entity)->type == "enemy" && (*entity)->dropItemFlag) {
+				spawnItem((*entity)->dropItemId, (*entity)->dropItemQty, (*entity)->dropItemXPos, (*entity)->dropItemYPos);
+				(*entity)->dropItemFlag = false; // Failsafe
 			}
 		}
 
@@ -780,10 +789,10 @@ void Game::spawnEnemies(int enemiesToBuild) {
 
 void Game::spawnItem(int itemId, int quant, int xPos, int yPos){
 	//TODO: Criar switch case com enums do itemId
-	HoneydewPotion* honeydewPotion = new HoneydewPotion(hDewPotionAnimSet, true, quant);
-	honeydewPotion->x = xPos;
-	honeydewPotion->y = yPos;
-	Entity::entities.push_back(honeydewPotion);
+	Item* spawnItem = new HoneydewPotion(hDewPotionAnimSet, true, quant);
+	spawnItem->x = xPos;
+	spawnItem->y = yPos;
+	Entity::entities.push_back(spawnItem);
 }
 
 void Game::loadAnimationSets(){

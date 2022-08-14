@@ -30,9 +30,7 @@ void JoystickInput::update(SDL_Event* e) {
 		}
 
 		if (e->jbutton.button == JOY_A) {
-			if (hero->nearItem) {
-				hero->pickNearItemFromGround();
-			}
+			hero->pickNearItemFromGround();
 		}
 
 		if (e->jbutton.button == JOY_RB) {

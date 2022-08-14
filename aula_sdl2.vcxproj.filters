@@ -209,6 +209,9 @@
     <ClInclude Include="inc\item\honeydewPotion.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="inc\item\itemsHub.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="aula_sdl2.rc">

@@ -1,4 +1,5 @@
 #include "glob.h"
+#include "itemsHub.h"
 
 const string Glob::GLOB_ANIM_UP = "up";
 const string Glob::GLOB_ANIM_DOWN = "down";
@@ -44,6 +45,7 @@ Glob::Glob(AnimationSet* animSet) {
 	collisionBox.h = collisionBoxH;
 	collisionBoxYOffset = -14;
 	direction = DIR_DOWN;
+	populatePossibleDropItemsMap();
 	changeAnimation(GLOB_STATE_IDLE, true);
 	updateCollisionBox();
 }
@@ -262,14 +264,7 @@ void Glob::updateAnimation() {
 				else {
 					active = false;
 
-					// TODO: Adicionar drop rate para cada item de cada inimigo
-					int dropChance = rand() % 100;
-
-					//TODO: Adicionar lista de itens para cada inimigo
-					//Sinaliza que, caso chance > x%, spawna item
-					if (dropChance > 50) {
-						dropItem(0, 1, x, y); // dropItemId = HONEYDEW_POTION_ID;
-					}
+					checkIfDropsItem();
 				}
 			}
 			else {
@@ -311,11 +306,7 @@ void Glob::updateDamages() {
 	}
 }
 
-void Glob::dropItem(int itemId, int quant, int xPos, int yPos) {
-	dropItemFlag = true;
-	//TODO: colocar enums de itens fora do item.h para pode ser importado pelos livingEntities
-	dropItemId = itemId;
-	dropItemXPos = xPos;
-	dropItemYPos = yPos;
-	dropItemQty = quant;
+void Glob::populatePossibleDropItemsMap(){
+	//TODO: Popular de verdade
+	possibleDropItemsMap.insert({Item::HONEYDEW_POTION_ID, {{0, 50}, 3}});
 }

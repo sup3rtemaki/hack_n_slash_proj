@@ -9,6 +9,7 @@ const string Item::ITEM_KEY = "key";
 Item::Item(AnimationSet* animSet) {
 	this->animSet = animSet;
 	solid = false;
+	isNearHero = false;
 	type = "item";
 	collisionBoxW = 8;
 	collisionBoxH = 8;

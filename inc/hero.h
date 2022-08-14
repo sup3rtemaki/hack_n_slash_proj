@@ -4,7 +4,7 @@
 #include "globals.h"
 #include "livingEntity.h"
 #include "soundManager.h"
-#include "item.h"
+#include "itemsHub.h"
 #include <map>
 #include <unordered_map>
 #include <vector>
@@ -49,11 +49,10 @@ public:
 	int inventoryIndex = 0;
 	int honeydewQty;
 
-	bool nearItem;
-
 	map<int, Item*> inventory;
 	vector<int> quickAccessInventory = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 	unordered_map<int, Item*> passiveSlots;
+	list<Item*> nearItems;
 
 	Hero(AnimationSet* animSet);
 
@@ -65,7 +64,7 @@ public:
 	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");
 	void updateAnimation();
 	void updateDamages();
-	void checkNearItem(Item* item);
+	//void checkNearItem(Item* item);
 	void addItemToInventory(Item* item);
 	void addItemToQuickAccess(int itemId);
 	void useSelectedItem(int invIndex);
@@ -73,6 +72,7 @@ public:
 	void pickNearItemFromGround();
 
 private:
+	void findNearestItem();
 	Item* currentNearItem;
 };
 

@@ -254,10 +254,6 @@ void Hero::updateDamages() {
 			if ((*entity)->active && (*entity)->type == "enemy") {
 				LivingEntity* enemy = (LivingEntity*)(*entity); //enemies are living entites
 
-				/*if ((*entity)->animSet->imageName == "grob.png"){
-
-				}*/
-
 				if (enemy->damage > 0 && Entity::checkCollision(collisionBox, enemy->hitBox)) {
 					enemy->hitLanded(this); // let attacker know they hit
 					hp -= enemy->damage;
@@ -275,21 +271,10 @@ void Hero::updateDamages() {
 	}
 }
 
-void Hero::checkNearItem(Item* item) {
-	if (item->isOnGround &&
-		(distanceBetweenTwoPoints(x, y + (collisionBoxYOffset / 2), item->x, item->y) < 30.0)) {
-		currentNearItem = item;
-		nearItem = true;
-		return;
-	}
-	currentNearItem = nullptr;
-	nearItem = false;
-}
-
 void Hero::addItemToInventory(Item* item) {
 	for (map<int, Item*>::iterator it = inventory.begin(); it != inventory.end(); it++) {
 		if (it->first == item->id) {
-			it->second->quantity++;
+			it->second->quantity += item->quantity;
 			cout << "Item qtd++: " << it->second->quantity << "\n";
 			return;
 		}
@@ -314,22 +299,43 @@ void Hero::useSelectedItemQuickAccess() {
 	useSelectedItem(id);
 }
 
-void Hero::pickNearItemFromGround(){
-	if (currentNearItem == nullptr) {
-		cout << "currentNearItem nulo\n";
+void Hero::pickNearItemFromGround() {
+	if (nearItems.empty()) {
+		cout << "Nenhum item proximo!\n";
 		return;
 	}
 
-	if (!nearItem) {
-		cout << "Nao esta proximo do item\n";
+	findNearestItem();
+
+	if (currentNearItem == nullptr) {
+		cout << "currentNearItem nulo!\n";
 		return;
 	}
 
 	currentNearItem->active = false;
 	currentNearItem->isOnGround = false;
 	addItemToInventory(currentNearItem);
-	// TODO: Teste, adicionar somente ao inventario
 	addItemToQuickAccess(currentNearItem->id);
+	currentNearItem = nullptr;
+}
+
+void Hero::findNearestItem() {
+	if (nearItems.size() == 1) {
+		currentNearItem = (*nearItems.begin());
+		return;
+	}
+
+	int prevDistance = 40;
+	int distance;
+	for (auto const& i : nearItems) {
+		distance = distanceBetweenTwoPoints(x, y + (collisionBoxYOffset / 2), i->x, i->y);
+		if (distance <= prevDistance){
+			currentNearItem = i;
+			prevDistance = distance;
+		}
+	}
+
+	nearItems.remove(currentNearItem);
 }
 
 void Hero::useSelectedItem(int invIndex) {
