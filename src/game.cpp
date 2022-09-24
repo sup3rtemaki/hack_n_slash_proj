@@ -23,24 +23,20 @@ Game::Game() {
 	currentMapId = 0;
 	mapToDrawCount = 0;
 
-	tinyxml2::XMLDocument xml_doc;
-
 	tinyxml2::XMLError mResult = xml_doc.LoadFile("mapsPositions.xml");
 
 	if (mResult == tinyxml2::XML_SUCCESS) {
 		tinyxml2::XMLNode* root = xml_doc.FirstChildElement("maps");
 
 		tinyxml2::XMLElement* element = root->FirstChildElement("map_count");
-		int xml_count;
-		mResult = element->QueryIntText(&xml_count);
-		//cout << element->GetText() << "\n";
+		mResult = element->QueryIntText(&mapQty);
 
 		//list<Map> mapList;
 
 		element = root->FirstChildElement("map");
 		int i = 0;
 		
-		while (element != nullptr && i < xml_count)
+		while (element != nullptr && i < mapQty)
 		{
 			tinyxml2::XMLElement* item = element->FirstChildElement("file");
 			string f = item->GetText();
@@ -157,9 +153,49 @@ Game::Game() {
 					j++;
 				}
 			}
+
+			int qt_items;
+			vector<pair<bool, tuple<int, int, int>>> itemsInMapVector;
+			item = element->FirstChildElement("qt_items");
+			mResult = item->QueryIntText(&qt_items);
+
+			if (qt_items > 0) {
+				tinyxml2::XMLElement* items_element = element->FirstChildElement("item");
+				int j = 0;
+
+				while (items_element != nullptr && j < qt_items) {
+					int isPickedUpInt;
+					item = items_element->FirstChildElement("is_picked");
+					mResult = item->QueryIntText(&isPickedUpInt);
+					bool isPickedUp;
+					if (isPickedUpInt == 0) {
+						isPickedUp = false;
+					}
+					else {
+						isPickedUp = true;
+					}
+
+					int itemId;
+					item = items_element->FirstChildElement("item_id");
+					mResult = item->QueryIntText(&itemId);
+
+					int itemX;
+					item = items_element->FirstChildElement("item_x");
+					mResult = item->QueryIntText(&itemX);
+
+					int itemY;
+					item = items_element->FirstChildElement("item_y");
+					mResult = item->QueryIntText(&itemY);
+
+					itemsInMapVector.push_back(std::make_pair(isPickedUp, std::make_tuple(itemId, itemX, itemY)));
+
+					items_element = items_element->NextSiblingElement("item");
+					j++;
+				}
+			}
 			
 			Map m = Map(mId, f, l_x1, l_y1, l_x2, l_y2, r_x1, r_y1, r_x2, r_y2, t_x1, t_y1, t_x2, t_y2, b_x1, b_y1, b_x2, b_y2, l_map, r_map, t_map, b_map, qt_enemies, mapEnemies);
-
+			m.itemsInMap = itemsInMapVector;
 			mapList.push_back(m);
 
 			cout << m.id << " " << m.file << " " << 
@@ -178,7 +214,7 @@ Game::Game() {
 		cout << "Error opening XML";
 	}
 
-	currentMap = *std::next(mapList.begin(), currentMapId);
+	currentMap = &(*std::next(mapList.begin(), currentMapId));
 
 	//auto tempMap = std::next(mapList.begin(), currentMapId); //Get the current map based on currentMapId
 
@@ -190,9 +226,8 @@ Game::Game() {
 		);*/
 
 	//Pre-load current and surroundings maps images
-	backGroundImage = loadTexture(resPath + currentMap.file, Globals::renderer);
+	backGroundImage = loadTexture(resPath + currentMap->file, Globals::renderer);
 	mustSpawnEnemies = true;
-	cout << currentMap.file << "\n";
 
 	/*int enemyId, enemyX, enemyY;
 	std::tie(enemyId, enemyX, enemyY) = currentMap.enemies.empty();
@@ -262,10 +297,12 @@ Game::Game() {
 	heroKeyboardInput.hero = hero;
 	heroJoystickInput.hero = hero;
 	heroHpBar.entity = hero;
+	hero->currentMap = currentMap;
 	Entity::entities.push_back(hero);
 
 	//TODO: Fazer método para spawnar itens de acordo com mapa
-	spawnItem(Item::HONEYDEW_POTION_ID, 5, 200, 200);
+	//spawnItem(Item::HONEYDEW_POTION_ID, 5, 200, 200);
+	loadItems();
 
 	//get camera to follow hero
 	camController.target = hero;
@@ -393,10 +430,11 @@ Game::~Game() {
 	Entity::removeAllFromList(&walls, true);
 	Entity::removeAllFromList(&currentMapEnemies, true);
 	deadEnemiesIds.clear();
+	xml_doc.~XMLDocument();
 }
 
 void Game::update() {
-	int enemiesToBuild = currentMap.qtEnemies;
+	int enemiesToBuild = currentMap->qtEnemies;
 	int enemiesBuilt = 0;
 	float enemyBuildTimer = 1;
 	bool quit = false;
@@ -436,7 +474,7 @@ void Game::update() {
 
 					if (overlayTimer <= 0 && hero->hp < 1) {
 						//cleanup and restart game
-						enemiesToBuild = currentMap.qtEnemies;
+						enemiesToBuild = currentMap->qtEnemies;
 						enemiesBuilt = 0;
 						enemyBuildTimer = 3;
 						overlayTimer = 2;
@@ -508,7 +546,7 @@ void Game::update() {
 			}
 		}
 
-		enemiesToBuild = currentMap.qtEnemies;
+		enemiesToBuild = currentMap->qtEnemies;
 
 		//spawn enemies
 		if (hero->hp > 0 && !splashShowing) {
@@ -580,22 +618,22 @@ void Game::update() {
 		}
 
 		//If hero is in change map region, fade to change map
-		if ((hero->x > currentMap.leftX1) && (hero->x < currentMap.leftX2) && (hero->y > currentMap.leftY1) && (hero->y < currentMap.leftY2)) {
+		if ((hero->x > currentMap->leftX1) && (hero->x < currentMap->leftX2) && (hero->y > currentMap->leftY1) && (hero->y < currentMap->leftY2)) {
 			isFading = true;
 			fadeIn = true;
 			nextMap = NextMap::LEFT;
 		}
-		else if ((hero->x >= currentMap.topX1) && (hero->x < currentMap.topX2) && (hero->y >= currentMap.topY1) && (hero->y < currentMap.topY2)) {
+		else if ((hero->x >= currentMap->topX1) && (hero->x < currentMap->topX2) && (hero->y >= currentMap->topY1) && (hero->y < currentMap->topY2)) {
 			isFading = true;
 			fadeIn = true;
 			nextMap = NextMap::TOP;
 		}
-		else if ((hero->x >= currentMap.rightX1) && (hero->x < currentMap.rightX2) && (hero->y >= currentMap.rightY1) && (hero->y < currentMap.rightY2)) {
+		else if ((hero->x >= currentMap->rightX1) && (hero->x < currentMap->rightX2) && (hero->y >= currentMap->rightY1) && (hero->y < currentMap->rightY2)) {
 			isFading = true;
 			fadeIn = true;
 			nextMap = NextMap::RIGHT;
 		}
-		else if ((hero->x >= currentMap.bottomX1) && (hero->x < currentMap.bottomX2) && (hero->y >= currentMap.bottomY1) && (hero->y < currentMap.bottomY2)) {
+		else if ((hero->x >= currentMap->bottomX1) && (hero->x < currentMap->bottomX2) && (hero->y >= currentMap->bottomY1) && (hero->y < currentMap->bottomY2)) {
 			isFading = true;
 			fadeIn = true;
 			nextMap = NextMap::BOTTOM;
@@ -627,44 +665,102 @@ void Game::updateMaps() {
 			if (alpha > 254) {
 				camController.isLerping = false;
 
+				//TODO Remover itens ja pegos do mapa
+				inctivateCurrentMapItems();
+
+				int cont = 0;
+				for (auto const& i : currentMap->itemsInMap) {
+					if (i.first){
+						tinyxml2::XMLNode* root = xml_doc.FirstChildElement("maps");
+						tinyxml2::XMLElement* element = root->FirstChildElement("map");
+						int xmlCont = 0;
+
+						while (element != nullptr && xmlCont < mapQty) {
+							int mapId;
+							tinyxml2::XMLElement* map_id = element->FirstChildElement("id");
+							map_id->QueryIntText(&mapId);
+
+							if (currentMap->id == mapId) {
+								int qt_items;
+								tinyxml2::XMLElement* item = element->FirstChildElement("qt_items");
+								item->QueryIntText(&qt_items);
+
+								if (qt_items > 0) {
+									tinyxml2::XMLElement* items_element = element->FirstChildElement("item");
+									int itemCont = 0;
+
+									while (items_element != nullptr && itemCont < qt_items) {
+										int itemId;
+										item = items_element->FirstChildElement("item_id");
+										item->QueryIntText(&itemId);
+
+										int itemX;
+										item = items_element->FirstChildElement("item_x");
+										item->QueryIntText(&itemX);
+
+										int itemY;
+										item = items_element->FirstChildElement("item_y");
+										item->QueryIntText(&itemY);
+
+										if (itemId == get<0>(i.second) &&
+											itemX == get<1>(i.second) &&
+											itemY == get<2>(i.second)) {
+											item = items_element->FirstChildElement("is_picked");
+											item->SetText(1);
+											int error = xml_doc.SaveFile("mapsPositions.xml");
+											if (error) {
+												cout << "Nao foi possivel salvar arquivo! Erro: " << error << "\n";
+											}
+										}
+
+										items_element = items_element->NextSiblingElement("item");
+										itemCont++;
+									}
+								}
+							}
+							
+							element = element->NextSiblingElement("map");
+							xmlCont++;
+						}
+					}
+					cont++;
+				}
+
 				if (nextMap == NextMap::LEFT) {
-					auto tempMap = std::next(mapList.begin(), currentMap.leftMapId);
-					currentMap = *tempMap;
-					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
+					auto tempMap = std::next(mapList.begin(), currentMap->leftMapId);
+					currentMap = &(*tempMap);
+					backGroundImage = loadTexture(getResourcePath() + currentMap->file, Globals::renderer);
 					hero->x = (hero->x - 960) + 32;
-					fadeIn = false;
-					fadeOut = true;
 				}
 				else if (nextMap == NextMap::RIGHT) {
-					auto tempMap = std::next(mapList.begin(), currentMap.rightMapId);
-					currentMap = *tempMap;
-					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
+					auto tempMap = std::next(mapList.begin(), currentMap->rightMapId);
+					currentMap = &(*tempMap);
+					backGroundImage = loadTexture(getResourcePath() + currentMap->file, Globals::renderer);
 					hero->x = (hero->x + 960) - 32;
-					fadeIn = false;
-					fadeOut = true;
 				}
 				else if (nextMap == NextMap::TOP) {
-					auto tempMap = std::next(mapList.begin(), currentMap.topMapId);
-					currentMap = *tempMap;
-					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);
+					auto tempMap = std::next(mapList.begin(), currentMap->topMapId);
+					currentMap = &(*tempMap);
+					backGroundImage = loadTexture(getResourcePath() + currentMap->file, Globals::renderer);
 					hero->y = (hero->y - 960) + 32;
-					fadeIn = false;
-					fadeOut = true;
 				}
 				else if (nextMap == NextMap::BOTTOM) {
-					auto tempMap = std::next(mapList.begin(), currentMap.bottomMapId);
-					currentMap = *tempMap;
-					backGroundImage = loadTexture(getResourcePath() + currentMap.file, Globals::renderer);			
+					auto tempMap = std::next(mapList.begin(), currentMap->bottomMapId);
+					currentMap = &(*tempMap);
+					backGroundImage = loadTexture(getResourcePath() + currentMap->file, Globals::renderer);			
 					hero->y = (hero->y + 960) - 32;
-					fadeIn = false;
-					fadeOut = true;
 				}
+
+				fadeIn = false;
+				fadeOut = true;
 
 				for (list<Entity*>::iterator enemy = currentMapEnemies.begin(); enemy != currentMapEnemies.end(); enemy++) {
 					(*enemy)->active = false;
 				}
 
 				mustSpawnEnemies = true;
+				hero->currentMap = currentMap;
+				loadItems();
 				camController.update();
 			}
 		}
@@ -684,7 +780,6 @@ void Game::updateMaps() {
 			fadeIn = false;
 			fadeOut = false;
 		}
-		//cout << alpha << "\n";
 	}
 	else {
 		camController.isLerping = true;
@@ -750,10 +845,10 @@ void Game::spawnEnemies(int enemiesToBuild) {
 	int enemyPosX, enemyPosY;
 	int uniqueId;
 	while (i < enemiesToBuild) {
-		enemyId = std::get<0>(currentMap.enemies[i]);
-		enemyPosX = std::get<1>(currentMap.enemies[i]);
-		enemyPosY = std::get<2>(currentMap.enemies[i]);
-		uniqueId = (currentMap.id * 100) + (enemyId * 10) + i;
+		enemyId = std::get<0>(currentMap->enemies[i]);
+		enemyPosX = std::get<1>(currentMap->enemies[i]);
+		enemyPosY = std::get<2>(currentMap->enemies[i]);
+		uniqueId = (currentMap->id * 100) + (enemyId * 10) + i;
 		switch (enemyId) {
 		case 0:
 			if (deadEnemiesIds.empty() ||
@@ -787,11 +882,23 @@ void Game::spawnEnemies(int enemiesToBuild) {
 	mustSpawnEnemies = false;
 }
 
-void Game::spawnItem(int itemId, int quant, int xPos, int yPos){
+void Game::spawnItem(int itemId, int quant, int xPos, int yPos) {
+	//TODO: Spawnar itens usando a lista currentMap->itemsInMap
 	//TODO: Criar switch case com enums do itemId
-	Item* spawnItem = new HoneydewPotion(hDewPotionAnimSet, true, quant);
+	Item* spawnItem;
+	bool canSpawn = true;
+
+	switch (itemId) {
+	case Item::HONEYDEW_POTION_ID:
+		spawnItem = new HoneydewPotion(hDewPotionAnimSet, true, quant);
+		break;
+	default:
+		return;
+	}
+	
 	spawnItem->x = xPos;
 	spawnItem->y = yPos;
+	spawnItem->active = true;
 	Entity::entities.push_back(spawnItem);
 }
 
@@ -839,4 +946,22 @@ void Game::loadAnimationSets(){
 
 	bulletAnimSet = new AnimationSet();
 	bulletAnimSet->loadAnimationSet("bullet.fdset", dataGroupTypes, true, 0, true);
+}
+
+void Game::loadItems(){
+	for (auto const& i : currentMap->itemsInMap) {
+		//TODO: Acrescentar quantidade de itens no maps.xml e no itemsInMap
+		if (!i.first) {
+			spawnItem(get<0>(i.second), 1, get<1>(i.second), get<2>(i.second));
+		}
+	}
+}
+
+void Game::inctivateCurrentMapItems(){
+	for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
+		if (dynamic_cast<Item*>((*entity)) != nullptr) {
+			Item* i = (Item*)(*entity);
+			i->active = false;
+		}
+	}
 }

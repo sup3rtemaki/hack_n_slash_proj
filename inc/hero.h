@@ -5,6 +5,7 @@
 #include "livingEntity.h"
 #include "soundManager.h"
 #include "itemsHub.h"
+#include "map.h"
 #include <map>
 #include <unordered_map>
 #include <vector>
@@ -53,6 +54,8 @@ public:
 	vector<int> quickAccessInventory = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 	unordered_map<int, Item*> passiveSlots;
 	list<Item*> nearItems;
+
+	Map* currentMap;
 
 	Hero(AnimationSet* animSet);
 

@@ -1,6 +1,6 @@
 #include "item.h"
 
-const int Item::HONEYDEW_POTION_ID = 0;
+//const int Item::HONEYDEW_POTION_ID = 0;
 
 const string Item::ITEM_CONSUMABLE = "consumable";
 const string Item::ITEM_PASSIVE = "passive";

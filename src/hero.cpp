@@ -1,5 +1,5 @@
 #include "hero.h"
-#include "honeydewPotion.h"
+#include "honeydewPotion.h" 
 
 const string Hero::HERO_ANIM_UP = "up";
 const string Hero::HERO_ANIM_DOWN = "down";
@@ -311,17 +311,41 @@ void Hero::pickNearItemFromGround() {
 		cout << "currentNearItem nulo!\n";
 		return;
 	}
-
 	currentNearItem->active = false;
 	currentNearItem->isOnGround = false;
 	addItemToInventory(currentNearItem);
 	addItemToQuickAccess(currentNearItem->id);
+	int cont = 0;
+	for (auto const& i : currentMap->itemsInMap) {
+		cout << "Dentro for hero ";
+		cout << i.first << " " 
+			<< (currentNearItem->id == get<0>(i.second)) << " " 
+			<< currentNearItem->id << " - " << get<0>(i.second) << " "
+			<< (currentNearItem->x == get<1>(i.second)) << " " 
+			<< currentNearItem->x << " - " << get<1>(i.second) << " "
+			<< (currentNearItem->y == get<2>(i.second)) << " "
+			<< currentNearItem->y << " - " << get<2>(i.second) << "\n";
+		if (!i.first && 
+			currentNearItem->id == get<0>(i.second) &&
+			currentNearItem->x == get<1>(i.second) &&
+			currentNearItem->y == get<2>(i.second)) {
+			cout << "-Achou item hero\n";
+			currentMap->itemsInMap[cont].first = true;
+			break;
+		}
+		else {
+			cont++;
+		}
+	}
+	
 	currentNearItem = nullptr;
 }
 
 void Hero::findNearestItem() {
 	if (nearItems.size() == 1) {
+		cout << "Só um " << (*nearItems.begin())->x << " " << (*nearItems.begin())->y << "\n";
 		currentNearItem = (*nearItems.begin());
+		cout << currentNearItem->x << " " << currentNearItem->y << "\n";
 		return;
 	}
 

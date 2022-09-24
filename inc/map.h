@@ -1,21 +1,6 @@
 #ifndef MAP
 #define MAP
 
-/*
-* 00000
-* 01110
-* 01x10
-* 01110
-* 00000
-*
-* Based on distance to the player: If map is location is < distance render map
-* else discard/unrender map
-*
-* 0 - map NOT to render
-* 1 - map to render
-* x - map where player is
-*/
-
 #include <string>
 #include <tuple>
 #include <vector>
@@ -25,7 +10,7 @@
 class Map {
 public:
 	int id;
-	std::string file;
+	string file;
 	int leftX1, leftY1, leftX2, leftY2;
 	int rightX1, rightY1, rightX2, rightY2;
 	int topX1, topY1, topX2, topY2;
@@ -33,18 +18,19 @@ public:
 	int leftMapId, rightMapId, topMapId, bottomMapId;
 	int qtEnemies;
 
-	std::vector<std::tuple<int, int, int>> enemies;
+	vector<tuple<int, int, int>> enemies; // <id, x, y>
+	vector<pair<bool, tuple<int, int, int>>> itemsInMap; // <isPickedUp, <id, x, y>>
 	
 	//EXEMPLO
 	//std::tie(enemyId, enemyX, enemyY) = enemies[0];
 
 	Map();
-	Map(int id, std::string file, int leftX1, int leftY1, int leftX2, int leftY2,
+	Map(int id, string file, int leftX1, int leftY1, int leftX2, int leftY2,
 		int rightX1, int rightY1, int rightX2, int rightY2,
 		int topX1, int topY1, int topX2, int topY2,
 		int bottomX1, int bottomY1, int bottomX2, int bottomY2,
 		int leftMapId, int rightMapId, int topMapId, int bottomMapId, int qtEnemies,
-		std::vector<std::tuple<int, int, int>> enemies);
+		vector<tuple<int, int, int>> enemies);
 };
 
 #endif // !MAP

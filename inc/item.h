@@ -5,7 +5,7 @@
 
 class Item : public Entity {
 public:
-	static const int HONEYDEW_POTION_ID;
+	static const int HONEYDEW_POTION_ID = 0;
 	static const string ITEM_CONSUMABLE;
 	static const string ITEM_PASSIVE;
 	static const string ITEM_KEY;

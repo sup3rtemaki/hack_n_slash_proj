@@ -1,4 +1,9 @@
 #include "map.h"
+#include "cJSON.h"
+
+#include <iostream>
+#include <fstream>
+#include <string>
 
 //=================================================================
 
@@ -40,6 +45,7 @@ Map::Map(int id, std::string file, int leftX1, int leftY1, int leftX2, int leftY
 	this->qtEnemies = qtEnemies;
 	this->enemies = enemies;
 }
+
 
 Map::Map() {
 	this->id = 0;

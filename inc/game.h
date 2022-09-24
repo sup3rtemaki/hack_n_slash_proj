@@ -15,6 +15,7 @@
 #include "roundKing.h"
 #include "hpBar.h"
 #include "map.h"
+#include "tinyxml2.h"
 #include<thread>
 
 class Game {
@@ -51,7 +52,7 @@ public:
 
 	int currentMapId, lastMapId;
 	int mapToDrawCount;
-	Map currentMap;
+	Map* currentMap;
 	list<Map> mapList;
 	enum class NextMap {
 		NONE,
@@ -84,6 +85,9 @@ public:
 
 	CameraController camController;
 
+	tinyxml2::XMLDocument xml_doc;
+	int mapQty;
+
 	Game();
 	~Game();
 
@@ -95,6 +99,8 @@ private:
 	void spawnEnemies(int enemiesToBuild);
 	void spawnItem(int itemId, int quant, int xPos, int yPos);
 	void loadAnimationSets();
+	void loadItems();
+	void inctivateCurrentMapItems();
 };
 
 #endif // !GAME
