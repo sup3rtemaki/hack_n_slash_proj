@@ -16,6 +16,8 @@
 #include "hpBar.h"
 #include "map.h"
 #include "tinyxml2.h"
+#include "helpers/saveHandler.h"
+
 #include<thread>
 
 class Game {
@@ -87,6 +89,8 @@ public:
 
 	tinyxml2::XMLDocument xml_doc;
 	int mapQty;
+
+	SaveHandler saveHandler;
 
 	Game();
 	~Game();

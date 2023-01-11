@@ -289,11 +289,17 @@ Game::Game() {
 
 	loadAnimationSets();
 
+	saveHandler.load();
+
 	// build hero entity
 	hero = new Hero(heroAnimSet);
 	hero->invincibleTimer = 0;
-	hero->x = Globals::ScreenWidth / 2;
-	hero->y = Globals::ScreenHeight / 2;
+	//hero->x = Globals::ScreenWidth / 2;
+	//hero->y = Globals::ScreenHeight / 2;
+	//teste save
+	hero->hp = saveHandler.getHeroHp();
+	hero->x = saveHandler.getHeroX();
+	hero->y = saveHandler.getHeroY();
 	heroKeyboardInput.hero = hero;
 	heroJoystickInput.hero = hero;
 	heroHpBar.entity = hero;
@@ -762,6 +768,7 @@ void Game::updateMaps() {
 				hero->currentMap = currentMap;
 				loadItems();
 				camController.update();
+				saveHandler.save(hero->hp, hero->x, hero->y, currentMap->id);
 			}
 		}
 		else if (alpha >= 0 && fadeOut) {

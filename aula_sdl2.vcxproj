@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="saveHandler.cpp" />
     <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\animationSet.cpp" />
     <ClCompile Include="src\bullet.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="inc\groupNumber.h" />
     <ClInclude Include="inc\groupPosition.h" />
     <ClInclude Include="inc\groupString.h" />
+    <ClInclude Include="inc\helpers\saveHandler.h" />
     <ClInclude Include="inc\hero.h" />
     <ClInclude Include="inc\hpBar.h" />
     <ClInclude Include="inc\item.h" />
