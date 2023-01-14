@@ -64,7 +64,7 @@
             <item_y>420</item_y>
         </item>
         <item>
-            <is_picked>0</is_picked>
+            <is_picked>1</is_picked>
             <item_id>0</item_id>
             <item_x>100</item_x>
             <item_y>600</item_y>

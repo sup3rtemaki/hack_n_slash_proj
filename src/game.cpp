@@ -296,10 +296,15 @@ Game::Game() {
 	hero->invincibleTimer = 0;
 	//hero->x = Globals::ScreenWidth / 2;
 	//hero->y = Globals::ScreenHeight / 2;
-	//teste save
+	//TODO: Levar essa rotina pro loadGame
 	hero->hp = saveHandler.getHeroHp();
 	hero->x = saveHandler.getHeroX();
 	hero->y = saveHandler.getHeroY();
+	hero->inventory.clear();
+	hero->inventory = loadInventoryItems(saveHandler.getItems());
+	for (auto i : hero->inventory) {
+		hero->addItemToQuickAccess(i.first);
+	}
 	heroKeyboardInput.hero = hero;
 	heroJoystickInput.hero = hero;
 	heroHpBar.entity = hero;
@@ -308,7 +313,7 @@ Game::Game() {
 
 	//TODO: Fazer método para spawnar itens de acordo com mapa
 	//spawnItem(Item::HONEYDEW_POTION_ID, 5, 200, 200);
-	loadItems();
+	spawnItemsFromCurrentMap();
 
 	//get camera to follow hero
 	camController.target = hero;
@@ -672,7 +677,7 @@ void Game::updateMaps() {
 				camController.isLerping = false;
 
 				//TODO Remover itens ja pegos do mapa
-				inctivateCurrentMapItems();
+				inactivateCurrentMapItems();
 
 				int cont = 0;
 				for (auto const& i : currentMap->itemsInMap) {
@@ -766,9 +771,10 @@ void Game::updateMaps() {
 
 				mustSpawnEnemies = true;
 				hero->currentMap = currentMap;
-				loadItems();
+				spawnItemsFromCurrentMap();
 				camController.update();
-				saveHandler.save(hero->hp, hero->x, hero->y, currentMap->id);
+				saveGame();
+				
 			}
 		}
 		else if (alpha >= 0 && fadeOut) {
@@ -897,7 +903,7 @@ void Game::spawnItem(int itemId, int quant, int xPos, int yPos) {
 
 	switch (itemId) {
 	case Item::HONEYDEW_POTION_ID:
-		spawnItem = new HoneydewPotion(hDewPotionAnimSet, true, quant);
+		spawnItem = new HoneydewPotion(hDewPotionAnimSet, canSpawn, quant);
 		break;
 	default:
 		return;
@@ -955,7 +961,7 @@ void Game::loadAnimationSets(){
 	bulletAnimSet->loadAnimationSet("bullet.fdset", dataGroupTypes, true, 0, true);
 }
 
-void Game::loadItems(){
+void Game::spawnItemsFromCurrentMap(){
 	for (auto const& i : currentMap->itemsInMap) {
 		//TODO: Acrescentar quantidade de itens no maps.xml e no itemsInMap
 		if (!i.first) {
@@ -964,11 +970,52 @@ void Game::loadItems(){
 	}
 }
 
-void Game::inctivateCurrentMapItems(){
+void Game::inactivateCurrentMapItems(){
 	for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
 		if (dynamic_cast<Item*>((*entity)) != nullptr) {
 			Item* i = (Item*)(*entity);
 			i->active = false;
 		}
 	}
+}
+
+map<int, Item*> Game::loadInventoryItems(std::vector<std::pair<int, int>> items) {
+	map<int, Item*> loadedItems;
+
+	if (!items.empty()) {
+		for (auto item : items) {
+			Item* loadItem = nullptr;
+			switch (item.first) {
+			case Item::HONEYDEW_POTION_ID:
+				loadItem = new HoneydewPotion(hDewPotionAnimSet, false, item.second);
+				loadItem->active = false;
+				break;
+			default:
+				cout << "Item " << item.first << " nao mapeado\n";
+				break;
+			}
+
+			if (loadItem != nullptr) {
+				loadedItems.emplace(std::make_pair(loadItem->id, loadItem));
+			}
+		}
+	}
+	else {
+		cout << "Vetor de items vazio!\n";
+	}
+	
+
+	return loadedItems;
+}
+
+void Game::saveGame() {
+	std::vector<std::pair<int, int>> inventory;
+	for (auto itemMap : hero->inventory) {
+		inventory.push_back(std::make_pair(itemMap.first, itemMap.second->quantity));
+	}
+	saveHandler.save(hero->hp, hero->x, hero->y, currentMap->id, inventory);
+}
+
+void Game::loadGame() {
+	//TODO: Trazer rotina de carregamento
 }

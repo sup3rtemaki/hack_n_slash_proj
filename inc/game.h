@@ -103,8 +103,11 @@ private:
 	void spawnEnemies(int enemiesToBuild);
 	void spawnItem(int itemId, int quant, int xPos, int yPos);
 	void loadAnimationSets();
-	void loadItems();
-	void inctivateCurrentMapItems();
+	void spawnItemsFromCurrentMap();
+	void inactivateCurrentMapItems();
+	map<int, Item*> loadInventoryItems(std::vector<std::pair<int, int>> items);
+	void saveGame();
+	void loadGame();
 };
 
 #endif // !GAME
