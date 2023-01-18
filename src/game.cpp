@@ -19,6 +19,7 @@ Game::Game() {
 	//teste
 	backGroundImage = loadTexture(resPath + "map.png", Globals::renderer);
 	fadeImage = loadTexture(resPath + "blackBG.png", Globals::renderer);
+	itemUi = loadTexture(resPath + "itemFrame.png", Globals::renderer);
 
 	currentMapId = 0;
 	mapToDrawCount = 0;
@@ -304,7 +305,10 @@ Game::Game() {
 	hero->inventory = loadInventoryItems(saveHandler.getItems());
 	for (auto i : hero->inventory) {
 		hero->addItemToQuickAccess(i.first);
+		hero->inventoryIndex++;
 	}
+	hero->inventoryIndex = 0;
+
 	heroKeyboardInput.hero = hero;
 	heroJoystickInput.hero = hero;
 	heroHpBar.entity = hero;
@@ -803,6 +807,7 @@ void Game::updateMaps() {
 
 	renderTexture(backGroundImage, Globals::renderer, 0 - Globals::camera.x, 0 - Globals::camera.y);
 	renderTexture(fadeImage, Globals::renderer, (-200) - Globals::camera.x, (-200) - Globals::camera.y);
+	
 }
 
 void Game::draw() {
@@ -820,6 +825,10 @@ void Game::draw() {
 
 		// sort all entities based on y (depth)
 		Entity::entities.sort(Entity::EntityCompare);
+
+		//TODO: Encapsular desenho de UI
+		renderTexture(itemUi, Globals::renderer, 20, 300);
+		renderTexture(hero->inventory.find(hero->inventoryIndex)->second->image, Globals::renderer, 24, 304);
 
 		// draw all of the entities
 		for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
@@ -905,6 +914,9 @@ void Game::spawnItem(int itemId, int quant, int xPos, int yPos) {
 	case Item::HONEYDEW_POTION_ID:
 		spawnItem = new HoneydewPotion(hDewPotionAnimSet, canSpawn, quant);
 		break;
+	case Item::GREEN_BERRY_ID:
+		spawnItem = new GreenBerry(hDewPotionAnimSet, canSpawn, quant);
+		break;
 	default:
 		return;
 	}
@@ -988,6 +1000,10 @@ map<int, Item*> Game::loadInventoryItems(std::vector<std::pair<int, int>> items)
 			switch (item.first) {
 			case Item::HONEYDEW_POTION_ID:
 				loadItem = new HoneydewPotion(hDewPotionAnimSet, false, item.second);
+				loadItem->active = false;
+				break;
+			case Item::GREEN_BERRY_ID:
+				loadItem = new GreenBerry(hDewPotionAnimSet, false, item.second);
 				loadItem->active = false;
 				break;
 			default:

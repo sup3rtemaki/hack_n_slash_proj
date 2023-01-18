@@ -1,17 +1,17 @@
-#include "honeydewPotion.h"
+#include "greenBerry.h"
 
-HoneydewPotion::HoneydewPotion(AnimationSet* animSet, bool isOnGround, int quant) {
+GreenBerry::GreenBerry(AnimationSet* animSet, bool isOnGround, int quant) {
 	this->animSet = animSet;
-	id = HONEYDEW_POTION_ID;
+	id = GREEN_BERRY_ID;
 	quantity = quant;
-	name = "Honeydew Potion";
+	name = "Green Berry";
 	itemType = ITEM_CONSUMABLE;
 	type = "cItem";
-	description = "Sweet honeydew harvested from aphids";
+	description = "Green berry, rich in water";
 	this->isOnGround = isOnGround;
 
 	string resPath = getResourcePath();
-	this->image = loadTexture(resPath + "honeyDewPotion.png", Globals::renderer);
+	this->image = loadTexture(resPath + "greenBerry.png", Globals::renderer);
 
 	collisionBoxW = 8;
 	collisionBoxH = 8;
@@ -21,10 +21,11 @@ HoneydewPotion::HoneydewPotion(AnimationSet* animSet, bool isOnGround, int quant
 	changeAnimation(0, false, "idle");
 }
 
-HoneydewPotion::~HoneydewPotion(){
+GreenBerry::~GreenBerry()
+{
 }
 
-void HoneydewPotion::update() {
+void GreenBerry::update() {
 	updateCollisionBox();
 
 	if (currentFrame == NULL || currentAnim == NULL) {
@@ -39,7 +40,7 @@ void HoneydewPotion::update() {
 	}
 }
 
-void HoneydewPotion::changeAnimation(int newState, bool resetFrameToBeginning, string animName) {
+void GreenBerry::changeAnimation(int newState, bool resetFrameToBeginning, string animName) {
 	if (!animName.empty()) {
 		currentAnim = animSet->getAnimation(animName);
 	}
@@ -50,11 +51,6 @@ void HoneydewPotion::changeAnimation(int newState, bool resetFrameToBeginning, s
 	currentFrame = currentAnim->getFrame(0);
 }
 
-void HoneydewPotion::applyEffect(LivingEntity* heroEntity){
-	heroEntity->hp += 5;
-	/*if (dynamic_cast<Hero*>((heroEntity)) != nullptr) {
-		Hero* h = (Hero*)heroEntity;
-		h->hp += 5;
-		cout << "Aplicou efeito: " << h->hp << "\n";
-	}*/
+void GreenBerry::applyEffect(LivingEntity* heroEntity) {
+	heroEntity->hp += 2;
 }

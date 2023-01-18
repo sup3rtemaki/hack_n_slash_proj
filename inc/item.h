@@ -6,6 +6,7 @@
 class Item : public Entity {
 public:
 	static const int HONEYDEW_POTION_ID = 0;
+	static const int GREEN_BERRY_ID = 1;
 	static const string ITEM_CONSUMABLE;
 	static const string ITEM_PASSIVE;
 	static const string ITEM_KEY;
@@ -17,8 +18,9 @@ public:
 	string description;
 	bool isOnGround;
 	bool isNearHero;
+	SDL_Texture* image;
 
-	Item(AnimationSet* animSet = nullptr);
+	Item(SDL_Texture* image = nullptr, AnimationSet* animSet = nullptr);
 	~Item();
 	void update();
 	void changeAnimation(int newState = 0, bool resetFrameToBeginning = true, string animName = "");

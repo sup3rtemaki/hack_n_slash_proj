@@ -25,6 +25,15 @@ void KeyboardInput::update(SDL_Event* e){
 		if (e->key.keysym.scancode == SDL_SCANCODE_S) {
 			hero->pickNearItemFromGround();
 		}
+
+		if (e->key.keysym.scancode == SDL_SCANCODE_F) {
+			hero->inventoryIndex++;
+			if (hero->quickAccessInventory[hero->inventoryIndex] == -1) {
+				hero->inventoryIndex = 0;
+			}
+
+			cout << hero->inventoryIndex << "\n";
+		}
 	}
 
 	//button holds

@@ -1,5 +1,4 @@
 #include "hero.h"
-#include "honeydewPotion.h" 
 
 const string Hero::HERO_ANIM_UP = "up";
 const string Hero::HERO_ANIM_DOWN = "down";
@@ -51,6 +50,7 @@ Hero::Hero(AnimationSet* animSet) {
 	collisionBoxYOffset = -20;
 	direction = DIR_DOWN;
 	honeydewQty = 3;
+	inventoryIndex = 0;
 
 	changeAnimation(HERO_STATE_IDLE, true);
 	updateCollisionBox();
@@ -293,6 +293,7 @@ void Hero::addItemToQuickAccess(int itemId) {
 void Hero::useSelectedItemQuickAccess() {
 	int id = quickAccessInventory[inventoryIndex];
 	if (id < 0) {
+		cout << "ID < 0!" << id << "\n";
 		return;
 	}
 
@@ -378,8 +379,9 @@ void Hero::useSelectedItem(int invIndex) {
 		item->second->applyEffect(dynamic_cast<LivingEntity*>((this)));
 		item->second->quantity--;
 		cout << "Quantidade items " << item->second->name << ": " << item->second->quantity << "\n";
-		if ((item->first != Item::HONEYDEW_POTION_ID) && (item->second->quantity <= 0)) {
-			inventory.erase(item);
+		if ((item->first == -1) || (item->second->quantity <= 0)) {
+			//inventory.erase(item);
+			return;
 		}
 
 		moving = false;

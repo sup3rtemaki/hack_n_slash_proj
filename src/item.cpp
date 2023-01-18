@@ -6,7 +6,8 @@ const string Item::ITEM_CONSUMABLE = "consumable";
 const string Item::ITEM_PASSIVE = "passive";
 const string Item::ITEM_KEY = "key";
 
-Item::Item(AnimationSet* animSet) {
+Item::Item(SDL_Texture* image, AnimationSet* animSet) {
+	this->image = image;
 	this->animSet = animSet;
 	solid = false;
 	isNearHero = false;
@@ -14,6 +15,7 @@ Item::Item(AnimationSet* animSet) {
 	collisionBoxW = 8;
 	collisionBoxH = 8;
 	collisionBoxYOffset = -4;
+
 }
 
 Item::~Item(){

@@ -45,6 +45,8 @@ public:
 	SDL_Texture* splashImage;
 	SDL_Texture* overlayImage;
 
+	SDL_Texture* itemUi;
+
 	SDL_Texture* scoreTexture = NULL; //draw string to screen
 
 	bool isFading = false;
