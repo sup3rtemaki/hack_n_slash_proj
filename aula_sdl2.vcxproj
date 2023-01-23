@@ -183,6 +183,8 @@
     <ClCompile Include="src\soundManager.cpp" />
     <ClCompile Include="src\timeController.cpp" />
     <ClCompile Include="src\tinyxml2.cpp" />
+    <ClCompile Include="src\ui\quickItemUi.cpp" />
+    <ClCompile Include="src\ui\ui.cpp" />
     <ClCompile Include="src\wall.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +224,8 @@
     <ClInclude Include="inc\soundManager.h" />
     <ClInclude Include="inc\timeController.h" />
     <ClInclude Include="inc\tinyxml2.h" />
+    <ClInclude Include="inc\ui\quickItemUi.h" />
+    <ClInclude Include="inc\ui\ui.h" />
     <ClInclude Include="inc\wall.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

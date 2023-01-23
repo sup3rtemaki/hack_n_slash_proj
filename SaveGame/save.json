@@ -1,16 +1,16 @@
 {
-    "currentMapId": 1,
-    "heroHp": 18,
-    "heroX": 83,
-    "heroY": 206,
+    "currentMapId": 0,
+    "heroHp": 16,
+    "heroX": 937,
+    "heroY": 197,
     "inventory": [
-      {
-        "id": 0,
-        "itemQty": 8
-      },
-      {
-        "id": 1,
-        "itemQty": 3
-      }
+        {
+            "id": 0,
+            "itemQty": 12
+        },
+        {
+            "id": 1,
+            "itemQty": 3
+        }
     ]
 }

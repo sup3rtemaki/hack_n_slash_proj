@@ -19,7 +19,6 @@ Game::Game() {
 	//teste
 	backGroundImage = loadTexture(resPath + "map.png", Globals::renderer);
 	fadeImage = loadTexture(resPath + "blackBG.png", Globals::renderer);
-	itemUi = loadTexture(resPath + "itemFrame.png", Globals::renderer);
 
 	currentMapId = 0;
 	mapToDrawCount = 0;
@@ -321,6 +320,8 @@ Game::Game() {
 
 	//get camera to follow hero
 	camController.target = hero;
+
+	quickItemUi = new QuickItemUi(hero);
 
 	// build the outer walls
 	int tileSize = 32;
@@ -826,14 +827,13 @@ void Game::draw() {
 		// sort all entities based on y (depth)
 		Entity::entities.sort(Entity::EntityCompare);
 
-		//TODO: Encapsular desenho de UI
-		renderTexture(itemUi, Globals::renderer, 20, 300);
-		renderTexture(hero->inventory.find(hero->inventoryIndex)->second->image, Globals::renderer, 24, 304);
-
 		// draw all of the entities
 		for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
 			(*entity)->draw();
 		}
+
+		//TODO: Encapsular desenho de UI
+		quickItemUi->draw();
 
 		//draw UI stuff
 		heroHpBar.draw();

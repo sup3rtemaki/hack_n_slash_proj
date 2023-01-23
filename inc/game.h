@@ -16,7 +16,10 @@
 #include "hpBar.h"
 #include "map.h"
 #include "tinyxml2.h"
+
 #include "helpers/saveHandler.h"
+
+#include "ui/quickItemUi.h"
 
 #include<thread>
 
@@ -44,8 +47,6 @@ public:
 	SDL_Texture* backGroundImageNE;
 	SDL_Texture* splashImage;
 	SDL_Texture* overlayImage;
-
-	SDL_Texture* itemUi;
 
 	SDL_Texture* scoreTexture = NULL; //draw string to screen
 
@@ -93,6 +94,8 @@ public:
 	int mapQty;
 
 	SaveHandler saveHandler;
+
+	QuickItemUi* quickItemUi;
 
 	Game();
 	~Game();
