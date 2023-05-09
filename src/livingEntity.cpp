@@ -1,5 +1,7 @@
 #include "livingEntity.h"
 
+const float LivingEntity::TIME_TICK = 60.0f;
+
 void LivingEntity::updateHitBox() {
 	// assume damage is 0
 	damage = 0;

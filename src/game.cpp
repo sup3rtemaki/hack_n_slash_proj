@@ -535,6 +535,8 @@ void Game::update() {
 			overlayTimer -= TimeController::timeController.dT;
 		}
 
+		hero->statusTimerTick();
+
 		// update all entites
 		for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
 			// update all entites in world at once (polymorphism)

@@ -1,5 +1,8 @@
 #include "greenBerry.h"
 
+const float HEAL_TIME = 1.0f;
+const float HEAL_AMOUNT = 5.0f;
+
 GreenBerry::GreenBerry(AnimationSet* animSet, bool isOnGround, int quant) {
 	this->animSet = animSet;
 	id = GREEN_BERRY_ID;
@@ -52,5 +55,6 @@ void GreenBerry::changeAnimation(int newState, bool resetFrameToBeginning, strin
 }
 
 void GreenBerry::applyEffect(LivingEntity* heroEntity) {
-	heroEntity->hp += 2;
+		heroEntity->healStatusTimer += HEAL_TIME;
+		heroEntity->healStatusAmount = HEAL_AMOUNT / LivingEntity::TIME_TICK;
 }

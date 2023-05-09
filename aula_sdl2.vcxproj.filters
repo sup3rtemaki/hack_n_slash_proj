@@ -102,9 +102,6 @@
     <ClCompile Include="src\item\honeydewPotion.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="saveHandler.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
     <ClCompile Include="src\item\greenBerry.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
@@ -112,6 +109,9 @@
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="src\ui\quickItemUi.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\helpers\saveHandler.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>

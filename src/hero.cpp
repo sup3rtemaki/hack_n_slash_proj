@@ -342,6 +342,21 @@ void Hero::pickNearItemFromGround() {
 	currentNearItem = nullptr;
 }
 
+void Hero::statusTimerTick() {
+	healTimerTick();
+}
+
+void Hero::healTimerTick() {
+	if (healStatusTimer <= 0) {
+		healStatusTimer = 0;
+		healStatusAmount = 0;
+	}
+	else {
+		hp += healStatusAmount;
+		healStatusTimer -= TimeController::timeController.dT;
+	}
+}
+
 void Hero::findNearestItem() {
 	if (nearItems.size() == 1) {
 		cout << "Só um " << (*nearItems.begin())->x << " " << (*nearItems.begin())->y << "\n";

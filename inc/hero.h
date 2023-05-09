@@ -74,6 +74,9 @@ public:
 	void useSelectedItemQuickAccess();
 	void pickNearItemFromGround();
 
+	void statusTimerTick();
+	void healTimerTick();
+
 private:
 	void findNearestItem();
 	Item* currentNearItem;

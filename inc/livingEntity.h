@@ -6,11 +6,18 @@
 //abstract class
 class LivingEntity : public Entity {
 public:
-	int hp, hpMax;
+	static const float TIME_TICK;
+
+	float hp, hpMax;
 	int damage = 0;
 	int enemyId;
 	SDL_Rect hitBox;
 	float invincibleTimer = 0;
+
+	float healStatusTimer;
+	float healStatusTimerAux;
+	float healRate;
+	float healStatusAmount;
 
 	virtual void updateHitBox();
 	virtual void updateDamages() = 0; // how we get damaged by other things
