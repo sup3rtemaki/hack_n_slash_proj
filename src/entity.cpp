@@ -179,22 +179,20 @@ void Entity::checkIfDropsItem(){
 		return;
 	}
 
-	int dropChance = rand() % 100;
+	int dropChance = -1;
 	int itemId = -1;
 	int quant = -1;
 
 	for (auto it = possibleDropItemsMap.begin(); it != possibleDropItemsMap.end(); it++) {
+		dropChance = rand() % 100;
 		if ((dropChance >= it->second.first.first) && (dropChance < it->second.first.second)) {
 			itemId = it->first;
 			quant = 1 + rand() % it->second.second;
+			break;
 		}
 	}
 
-	if (itemId < 0) {
-		return;
-	}
-
-	if (quant < 1) {
+	if (itemId < 0 || quant < 1) {
 		return;
 	}
 

@@ -308,5 +308,6 @@ void Glob::updateDamages() {
 
 void Glob::populatePossibleDropItemsMap(){
 	//TODO: Popular de verdade
-	possibleDropItemsMap.insert({Item::HONEYDEW_POTION_ID, {{0, 50}, 3}});
+	possibleDropItemsMap.insert({ Item::HONEYDEW_POTION_ID, {{0, 15}, 3} });
+	possibleDropItemsMap.insert({ Item::GREEN_BERRY_ID, {{0, 50}, 3} });
 }
