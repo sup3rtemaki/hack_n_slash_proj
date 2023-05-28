@@ -20,6 +20,7 @@
 #include "helpers/saveHandler.h"
 
 #include "ui/quickItemUi.h"
+#include "ui/itemPickMessageUi.h"
 
 #include<thread>
 
@@ -96,6 +97,7 @@ public:
 	SaveHandler saveHandler;
 
 	QuickItemUi* quickItemUi;
+	ItemPickMessageUi* itemPickMessageUi;
 
 	Game();
 	~Game();

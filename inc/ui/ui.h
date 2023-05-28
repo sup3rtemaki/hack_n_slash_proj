@@ -1,6 +1,9 @@
 #ifndef UI
 #define UI
 
+#include "drawing_functions.h"
+#include "res_path.h"
+
 class Ui {
 public:
 	Ui();

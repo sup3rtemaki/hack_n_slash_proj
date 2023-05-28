@@ -68,6 +68,7 @@ void Hero::update() {
 		hp = hpMax;
 	}
 
+	statusTimerTick();
 	updateCollisionBox();
 	updateMovement();
 	updateCollisions();
@@ -272,6 +273,9 @@ void Hero::updateDamages() {
 }
 
 void Hero::addItemToInventory(Item* item) {
+	addedItemName = item->name;
+	qtyItemsPicked = item->quantity;
+
 	for (map<int, Item*>::iterator it = inventory.begin(); it != inventory.end(); it++) {
 		if (it->first == item->id) {
 			it->second->quantity += item->quantity;

@@ -49,11 +49,13 @@ public:
 	int isMovingMethod = 0; // TODO: Paliativo, mudar depois 0 = not moving, 1 = keyboard, 2 = joystick
 	int inventoryIndex = 0;
 	int honeydewQty;
+	int qtyItemsPicked;
 
 	map<int, Item*> inventory;
 	vector<int> quickAccessInventory = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 	unordered_map<int, Item*> passiveSlots;
 	list<Item*> nearItems;
+	string addedItemName;
 
 	Map* currentMap;
 

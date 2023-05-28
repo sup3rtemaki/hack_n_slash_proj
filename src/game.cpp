@@ -322,6 +322,7 @@ Game::Game() {
 	camController.target = hero;
 
 	quickItemUi = new QuickItemUi(hero);
+	itemPickMessageUi = new ItemPickMessageUi(hero);
 
 	// build the outer walls
 	int tileSize = 32;
@@ -534,8 +535,6 @@ void Game::update() {
 		if (hero->hp < 1 && overlayTimer > 0) {
 			overlayTimer -= TimeController::timeController.dT;
 		}
-
-		hero->statusTimerTick();
 
 		// update all entites
 		for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
@@ -836,6 +835,7 @@ void Game::draw() {
 
 		//TODO: Encapsular desenho de UI
 		quickItemUi->draw();
+		itemPickMessageUi->draw();
 
 		//draw UI stuff
 		heroHpBar.draw();
