@@ -440,6 +440,7 @@ Game::~Game() {
 	delete heroAnimSet;
 	delete globAnimSet;
 	delete grobAnimSet;
+	delete termiteMinerAnimSet;
 	delete wallAnimSet;
 	delete roundKingAnimSet;
 	delete bulletAnimSet;
@@ -890,13 +891,21 @@ void Game::spawnEnemies(int enemiesToBuild) {
 		case 1:
 			if (deadEnemiesIds.empty() ||
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
-				Grob* enemy = new Grob(grobAnimSet);
+				TermiteMiner* enemy = new TermiteMiner(termiteMinerAnimSet);
 				enemy->x = enemyPosX;
 				enemy->y = enemyPosY;
 				enemy->invincibleTimer = 0.1;
 				enemy->enemyId = uniqueId;
 				currentMapEnemies.push_back(enemy);
 				Entity::entities.push_back(enemy);
+
+				//Grob* enemy = new Grob(grobAnimSet);
+				//enemy->x = enemyPosX;
+				//enemy->y = enemyPosY;
+				//enemy->invincibleTimer = 0.1;
+				//enemy->enemyId = uniqueId;
+				//currentMapEnemies.push_back(enemy);
+				//Entity::entities.push_back(enemy);
 			}
 			break;
 		}
@@ -964,6 +973,9 @@ void Game::loadAnimationSets(){
 
 	grobAnimSet = new AnimationSet();
 	grobAnimSet->loadAnimationSet("grob.fdset", dataGroupTypes, true, 0, true);
+
+	termiteMinerAnimSet = new AnimationSet();
+	termiteMinerAnimSet->loadAnimationSet("termiteMiner.fdset", dataGroupTypes, true, 0, true);
 
 	wallAnimSet = new AnimationSet();
 	wallAnimSet->loadAnimationSet("wall.fdset", dataGroupTypes);

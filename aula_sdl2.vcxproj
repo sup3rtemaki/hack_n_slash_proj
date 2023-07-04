@@ -181,6 +181,7 @@
     <ClCompile Include="src\res_path.cpp" />
     <ClCompile Include="src\roundKing.cpp" />
     <ClCompile Include="src\soundManager.cpp" />
+    <ClCompile Include="src\termiteMiner.cpp" />
     <ClCompile Include="src\timeController.cpp" />
     <ClCompile Include="src\tinyxml2.cpp" />
     <ClCompile Include="src\ui\itemPickMessageUi.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="inc\res_path.h" />
     <ClInclude Include="inc\roundKing.h" />
     <ClInclude Include="inc\soundManager.h" />
+    <ClInclude Include="inc\termiteMiner.h" />
     <ClInclude Include="inc\timeController.h" />
     <ClInclude Include="inc\tinyxml2.h" />
     <ClInclude Include="inc\ui\itemPickMessageUi.h" />

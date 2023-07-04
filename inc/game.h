@@ -6,6 +6,7 @@
 #include "wall.h"
 #include "glob.h"
 #include "grob.h"
+#include "termiteMiner.h"
 #include "honeydewPotion.h"
 #include "keyboardInput.h"
 #include "joystickInput.h"
@@ -31,6 +32,7 @@ public:
 	AnimationSet* heroAnimSet;
 	AnimationSet* globAnimSet;
 	AnimationSet* grobAnimSet;
+	AnimationSet* termiteMinerAnimSet;
 	AnimationSet* wallAnimSet;
 	AnimationSet* roundKingAnimSet;
 	AnimationSet* bulletAnimSet;
