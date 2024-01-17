@@ -8,6 +8,7 @@
 #include "grob.h"
 #include "termiteMiner.h"
 #include "honeydewPotion.h"
+#include "stone.h"
 #include "keyboardInput.h"
 #include "joystickInput.h"
 #include "drawing_functions.h"
@@ -37,6 +38,7 @@ public:
 	AnimationSet* roundKingAnimSet;
 	AnimationSet* bulletAnimSet;
 	AnimationSet* hDewPotionAnimSet;
+	AnimationSet* stoneProjectileAnimSet;
 
 	SDL_Texture* backGroundImage;
 	SDL_Texture* fadeImage;

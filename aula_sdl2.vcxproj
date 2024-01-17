@@ -172,11 +172,13 @@
     <ClCompile Include="src\item.cpp" />
     <ClCompile Include="src\item\greenBerry.cpp" />
     <ClCompile Include="src\item\honeydewPotion.cpp" />
+    <ClCompile Include="src\item\stone.cpp" />
     <ClCompile Include="src\joystickInput.cpp" />
     <ClCompile Include="src\keyboardInput.cpp" />
     <ClCompile Include="src\livingEntity.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\map.cpp" />
+    <ClCompile Include="src\projectiles\stoneProjectile.cpp" />
     <ClCompile Include="src\randomNumber.cpp" />
     <ClCompile Include="src\res_path.cpp" />
     <ClCompile Include="src\roundKing.cpp" />
@@ -216,10 +218,12 @@
     <ClInclude Include="inc\item\greenBerry.h" />
     <ClInclude Include="inc\item\honeydewPotion.h" />
     <ClInclude Include="inc\item\itemsHub.h" />
+    <ClInclude Include="inc\item\stone.h" />
     <ClInclude Include="inc\joystickInput.h" />
     <ClInclude Include="inc\keyboardInput.h" />
     <ClInclude Include="inc\livingEntity.h" />
     <ClInclude Include="inc\map.h" />
+    <ClInclude Include="inc\projectiles\stoneProjectile.h" />
     <ClInclude Include="inc\randomNumber.h" />
     <ClInclude Include="inc\res_path.h" />
     <ClInclude Include="inc\roundKing.h" />

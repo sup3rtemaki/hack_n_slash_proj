@@ -78,6 +78,7 @@ public:
 
 	void statusTimerTick();
 	void healTimerTick();
+	void shoot();
 
 private:
 	void findNearestItem();

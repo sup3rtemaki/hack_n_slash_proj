@@ -284,7 +284,7 @@ void Glob::updateAnimation() {
 void Glob::updateDamages() {
 	if (active && hp > 0 && invincibleTimer <= 0) {
 		for (auto entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
-			if ((*entity)->active && (*entity)->type == "hero") {
+			if ((*entity)->active && ((*entity)->type == "hero" || (*entity)->type == "projectile")) {
 				//refrence as living entity, so we can access hitbox/damage
 				LivingEntity* enemy = (LivingEntity*)(*entity);
 

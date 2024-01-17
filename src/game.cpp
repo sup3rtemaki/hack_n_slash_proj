@@ -444,6 +444,7 @@ Game::~Game() {
 	delete wallAnimSet;
 	delete roundKingAnimSet;
 	delete bulletAnimSet;
+	delete stoneProjectileAnimSet;
 	delete hero;
 	Entity::removeAllFromList(&walls, true);
 	Entity::removeAllFromList(&currentMapEnemies, true);
@@ -928,6 +929,10 @@ void Game::spawnItem(int itemId, int quant, int xPos, int yPos) {
 	case Item::GREEN_BERRY_ID:
 		spawnItem = new GreenBerry(hDewPotionAnimSet, canSpawn, quant);
 		break;
+	case Item::STONE_ID:
+		spawnItem = new Stone(hDewPotionAnimSet, canSpawn, quant);
+		spawnItem->projectileAnimSet = stoneProjectileAnimSet;
+		break;
 	default:
 		return;
 	}
@@ -938,7 +943,7 @@ void Game::spawnItem(int itemId, int quant, int xPos, int yPos) {
 	Entity::entities.push_back(spawnItem);
 }
 
-void Game::loadAnimationSets(){
+void Game::loadAnimationSets() {
 	list<DataGroupType> dataGroupTypes; //describes the types of groups the data can have
 
 	// what data can the frame have?
@@ -985,6 +990,9 @@ void Game::loadAnimationSets(){
 
 	bulletAnimSet = new AnimationSet();
 	bulletAnimSet->loadAnimationSet("bullet.fdset", dataGroupTypes, true, 0, true);
+
+	stoneProjectileAnimSet = new AnimationSet();
+	stoneProjectileAnimSet->loadAnimationSet("stoneProjectile.fdset", dataGroupTypes, true, 0, true);
 }
 
 void Game::spawnItemsFromCurrentMap(){
@@ -1018,6 +1026,11 @@ map<int, Item*> Game::loadInventoryItems(std::vector<std::pair<int, int>> items)
 				break;
 			case Item::GREEN_BERRY_ID:
 				loadItem = new GreenBerry(hDewPotionAnimSet, false, item.second);
+				loadItem->active = false;
+				break;
+			case Item::STONE_ID:
+				loadItem = new Stone(hDewPotionAnimSet, false, item.second);
+				loadItem->projectileAnimSet = stoneProjectileAnimSet;
 				loadItem->active = false;
 				break;
 			default:

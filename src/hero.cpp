@@ -363,7 +363,7 @@ void Hero::healTimerTick() {
 
 void Hero::findNearestItem() {
 	if (nearItems.size() == 1) {
-		cout << "Só um " << (*nearItems.begin())->x << " " << (*nearItems.begin())->y << "\n";
+		cout << "So um " << (*nearItems.begin())->x << " " << (*nearItems.begin())->y << "\n";
 		currentNearItem = (*nearItems.begin());
 		cout << currentNearItem->x << " " << currentNearItem->y << "\n";
 		return;

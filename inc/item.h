@@ -7,6 +7,7 @@ class Item : public Entity {
 public:
 	static const int HONEYDEW_POTION_ID = 0;
 	static const int GREEN_BERRY_ID = 1;
+	static const int STONE_ID = 2;
 	static const string ITEM_CONSUMABLE;
 	static const string ITEM_PASSIVE;
 	static const string ITEM_KEY;
@@ -19,6 +20,7 @@ public:
 	bool isOnGround;
 	bool isNearHero;
 	SDL_Texture* image;
+	AnimationSet* projectileAnimSet; // Apenas para itens projéteis
 
 	Item(SDL_Texture* image = nullptr, AnimationSet* animSet = nullptr);
 	~Item();

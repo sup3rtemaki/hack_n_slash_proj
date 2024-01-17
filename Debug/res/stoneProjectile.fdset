@@ -1,0 +1,78 @@
+stone_projectile.png
+animations: 3
+throwUpLeft
+frames: 3
+frame
+clip: 0 0 7 7
+offset: 4 4
+duration: 0.1
+index: 0
+hitBox: 0 0 7 7
+damage: 10
+frame
+clip: 8 0 7 7
+offset: 4 4
+duration: 0.1
+index: 1
+hitBox: 0 0 7 7
+damage: 10
+frame
+clip: 16 0 7 7
+offset: 4 4
+duration: 0.1
+index: 2
+hitBox: 0 0 7 7
+damage: 10
+throwDownRight
+frames: 3
+frame
+clip: 16 0 7 7
+offset: 4 4
+duration: 0.1
+index: 0
+hitBox: 0 0 7 7
+damage: 10
+frame
+clip: 8 0 7 7
+offset: 4 4
+duration: 0.1
+index: 1
+hitBox: 0 0 7 7
+damage: 10
+frame
+clip: 0 0 7 7
+offset: 4 4
+duration: 0.1
+index: 2
+hitBox: 0 0 7 7
+damage: 10
+destroy
+frames: 4
+frame
+clip: 24 0 7 7
+offset: 4 4
+duration: 0.1
+index: 0
+hitBox: 0 0 7 7
+damage: 0
+frame
+clip: 32 0 7 7
+offset: 4 4
+duration: 0.1
+index: 1
+hitBox: 0 0 7 7
+damage: 0
+frame
+clip: 40 0 7 7
+offset: 4 4
+duration: 0.1
+index: 2
+hitBox: 0 0 7 7
+damage: 0
+frame
+clip: 48 0 7 7
+offset: 4 4
+duration: 0.1
+index: 3
+hitBox: 0 0 7 7
+damage: 0
