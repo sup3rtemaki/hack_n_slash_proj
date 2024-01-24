@@ -25,6 +25,11 @@ const string Hero::HERO_CONSUMING_ANIM_DOWN = "consumeItemDown";
 const string Hero::HERO_CONSUMING_ANIM_LEFT = "consumeItemLeft";
 const string Hero::HERO_CONSUMING_ANIM_RIGHT = "consumeItemRight";
 
+const string Hero::HERO_SHOOT_ANIM_UP = "shootUp";
+const string Hero::HERO_SHOOT_ANIM_DOWN = "shootDown";
+const string Hero::HERO_SHOOT_ANIM_LEFT = "shootLeft";
+const string Hero::HERO_SHOOT_ANIM_RIGHT = "shootRight";
+
 const string Hero::HERO_ANIM_DIE = "die";
 
 const int Hero::HERO_STATE_IDLE = 0;
@@ -33,6 +38,7 @@ const int Hero::HERO_STATE_SLASH = 2;
 const int Hero::HERO_STATE_DASH = 3;
 const int Hero::HERO_STATE_DEAD = 4;
 const int Hero::HERO_STATE_CONSUMING_ITEM = 5;
+const int Hero::HERO_STATE_SHOOTING = 6;
 
 Hero::Hero(AnimationSet* animSet) {
 	this->animSet = animSet;
@@ -190,6 +196,20 @@ void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 			currentAnim = animSet->getAnimation(HERO_CONSUMING_ANIM_RIGHT);
 		}
 	}
+	else if (state == HERO_STATE_SHOOTING) {
+		if (direction == DIR_DOWN) {
+			currentAnim = animSet->getAnimation(HERO_SHOOT_ANIM_DOWN);
+		}
+		else if (direction == DIR_UP) {
+			currentAnim = animSet->getAnimation(HERO_SHOOT_ANIM_UP);
+		}
+		else if (direction == DIR_LEFT) {
+			currentAnim = animSet->getAnimation(HERO_SHOOT_ANIM_LEFT);
+		}
+		else if (direction == DIR_RIGHT) {
+			currentAnim = animSet->getAnimation(HERO_SHOOT_ANIM_RIGHT);
+		}
+	}
 	else if (state == HERO_STATE_DEAD) {
 		currentAnim = animSet->getAnimation(HERO_ANIM_DIE);
 	}
@@ -228,7 +248,7 @@ void Hero::updateAnimation() {
 				//was dead but now have more hp, get back up
 				changeAnimation(HERO_STATE_MOVE, true);
 			}
-			else if (state == HERO_STATE_CONSUMING_ITEM) {
+			else if (state == HERO_STATE_CONSUMING_ITEM || state == HERO_STATE_SHOOTING) {
 				changeAnimation(HERO_STATE_IDLE, true);
 			}
 			else {
@@ -405,6 +425,11 @@ void Hero::useSelectedItem(int invIndex) {
 
 		moving = false;
 		frameTimer = 0;
-		changeAnimation(HERO_STATE_CONSUMING_ITEM, true);
+		if (item->second->type == "cProjectileItem") {
+			changeAnimation(HERO_STATE_SHOOTING, true);
+		}
+		else {
+			changeAnimation(HERO_STATE_CONSUMING_ITEM, true);
+		}
 	}
 }

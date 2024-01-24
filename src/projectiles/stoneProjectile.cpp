@@ -41,7 +41,9 @@ void StoneProjectile::update() {
 
 	if ((hp < 1 && state != STONE_PROJECTILE_STATE_DESTROY) || 
 		(lifetimeTimer > lifetime)) {
-		hp = 0;
+		// Descomentar linha abaixo caso queira que o item pare de se mover ao 
+		// ser destruído pela distancia
+		// hp = 0;
 		lifetimeTimer = 0;
 		moving = false;
 		die();

@@ -1,5 +1,5 @@
 AntHero.png
-animations: 21
+animations: 25
 up
 frames: 4
 frame
@@ -422,3 +422,83 @@ offset: 20 44
 duration: 0.1
 index: 5
 collisionBox: 11 2 22 46
+shootDown
+frames: 3
+frame
+clip: 428 281 48 49
+offset: 25 47
+duration: 0.1
+index: 0
+collisionBox: 12 2 26 45
+frame
+clip: 483 280 46 50
+offset: 23 48
+duration: 0.1
+index: 1
+collisionBox: 12 4 24 43
+frame
+clip: 536 277 41 54
+offset: 23 51
+duration: 0.1
+index: 2
+collisionBox: 14 6 19 46
+shootUp
+frames: 3
+frame
+clip: 432 439 41 47
+offset: 19 46
+duration: 0.1
+index: 0
+collisionBox: 9 2 23 45
+frame
+clip: 495 437 36 52
+offset: 13 48
+duration: 0.1
+index: 1
+collisionBox: 4 2 23 46
+frame
+clip: 545 439 37 49
+offset: 14 46
+duration: 0.1
+index: 2
+collisionBox: 7 2 18 46
+shootRight
+frames: 3
+frame
+clip: 428 331 41 53
+offset: 18 49
+duration: 0.1
+index: 0
+collisionBox: 9 4 25 47
+frame
+clip: 485 329 47 55
+offset: 18 51
+duration: 0.1
+index: 1
+collisionBox: 9 3 25 50
+frame
+clip: 538 331 37 53
+offset: 18 49
+duration: 0.1
+index: 2
+collisionBox: 11 4 20 45
+shootLeft
+frames: 3
+frame
+clip: 433 384 42 53
+offset: 24 49
+duration: 0.1
+index: 0
+collisionBox: 12 2 25 48
+frame
+clip: 480 385 48 52
+offset: 30 49
+duration: 0.1
+index: 1
+collisionBox: 15 3 30 48
+frame
+clip: 543 385 35 52
+offset: 18 49
+duration: 0.1
+index: 2
+collisionBox: 4 3 28 48

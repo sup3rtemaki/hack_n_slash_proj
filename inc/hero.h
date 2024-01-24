@@ -37,6 +37,11 @@ public:
 	static const string HERO_CONSUMING_ANIM_LEFT;
 	static const string HERO_CONSUMING_ANIM_RIGHT;
 
+	static const string HERO_SHOOT_ANIM_UP;
+	static const string HERO_SHOOT_ANIM_DOWN;
+	static const string HERO_SHOOT_ANIM_LEFT;
+	static const string HERO_SHOOT_ANIM_RIGHT;
+
 	static const string HERO_ANIM_DIE;
 
 	static const int HERO_STATE_IDLE;
@@ -45,6 +50,7 @@ public:
 	static const int HERO_STATE_DASH;
 	static const int HERO_STATE_DEAD;
 	static const int HERO_STATE_CONSUMING_ITEM;
+	static const int HERO_STATE_SHOOTING;
 
 	int isMovingMethod = 0; // TODO: Paliativo, mudar depois 0 = not moving, 1 = keyboard, 2 = joystick
 	int inventoryIndex = 0;

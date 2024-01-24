@@ -8,7 +8,7 @@ Stone::Stone(AnimationSet* animSet, bool isOnGround, int quant) {
 	quantity = quant;
 	name = "Throwing Stone";
 	itemType = ITEM_CONSUMABLE;
-	type = "cItem";
+	type = "cProjectileItem";
 	description = "Small throwing stone, good to scare small predators";
 	this->isOnGround = isOnGround;
 
