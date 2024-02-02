@@ -1,0 +1,15 @@
+{
+  "columns": 8,
+  "image": "..\\Textures\\TX_Tileset_Grass.png",
+  "imageheight": 256,
+  "imagewidth": 256,
+  "margin": 0,
+  "name": "Grass",
+  "spacing": 0,
+  "tilecount": 64,
+  "tiledversion": "1.10.2",
+  "tileheight": 32,
+  "tilewidth": 32,
+  "type": "tileset",
+  "version": "1.10"
+}

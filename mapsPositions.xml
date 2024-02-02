@@ -3,7 +3,7 @@
     <map_count>2</map_count>
     <map>
         <id>0</id>
-        <file>mapTest.png</file>
+        <file>mapTest1.json</file>
         <l_x1>988</l_x1>
         <l_y1>150</l_y1>
         <l_x2>1024</l_x2>
@@ -72,7 +72,7 @@
     </map>
     <map>
         <id>1</id>
-        <file>map2.png</file>
+        <file>mapTest2.json</file>
         <l_x1>-1</l_x1>
         <l_y1>-1</l_y1>
         <l_x2>-1</l_x2>

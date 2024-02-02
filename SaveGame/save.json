@@ -1,8 +1,8 @@
 {
     "currentMapId": 0,
-    "heroHp": 20,
-    "heroX": 941,
-    "heroY": 153,
+    "heroHp": 5,
+    "heroX": 935,
+    "heroY": 195,
     "inventory": [
         {
             "id": 0,

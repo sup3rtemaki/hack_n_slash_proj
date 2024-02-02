@@ -5,9 +5,15 @@
 #include <fstream>
 #include <string>
 
+#include "tileson/tileson.hpp"
+
 #define MAP1_X 1025
 #define MAP1_Y 0
 #define MAP_DISTANCE 2000
+
+tson::Tileson tileson; // Tileson global instance
+std::unique_ptr<tson::Map> tiledMap; // Tiled map
+std::map<std::tuple<int, int>, tson::Tile*> tileData;
 
 using namespace std;
 
@@ -226,7 +232,7 @@ Game::Game() {
 		);*/
 
 	//Pre-load current and surroundings maps images
-	backGroundImage = loadTexture(resPath + currentMap->file, Globals::renderer);
+	loadTiledMap(resPath + currentMap->file);
 	mustSpawnEnemies = true;
 
 	/*int enemyId, enemyX, enemyY;
@@ -414,6 +420,9 @@ Game::Game() {
 	bossHpBar.y = Globals::ScreenHeight - bossHpBar.barHeight - 20; // 20 pixels off the bottom
 
 	camController.isLerping = true;
+
+	updateMaps();
+
 }
 
 Game::~Game() {
@@ -433,6 +442,8 @@ Game::~Game() {
 		cleanup(scoreTexture);
 	}
 
+	texturesCache.clear();
+
 	Mix_PausedMusic();
 	Mix_FreeMusic(song);
 
@@ -446,6 +457,7 @@ Game::~Game() {
 	delete bulletAnimSet;
 	delete stoneProjectileAnimSet;
 	delete hero;
+
 	Entity::removeAllFromList(&walls, true);
 	Entity::removeAllFromList(&currentMapEnemies, true);
 	deadEnemiesIds.clear();
@@ -745,28 +757,30 @@ void Game::updateMaps() {
 					cont++;
 				}
 
+				const string& resPath = getResourcePath();
+
 				if (nextMap == NextMap::LEFT) {
 					auto tempMap = std::next(mapList.begin(), currentMap->leftMapId);
 					currentMap = &(*tempMap);
-					backGroundImage = loadTexture(getResourcePath() + currentMap->file, Globals::renderer);
+					loadTiledMap(resPath + currentMap->file);
 					hero->x = (hero->x - 960) + 32;
 				}
 				else if (nextMap == NextMap::RIGHT) {
 					auto tempMap = std::next(mapList.begin(), currentMap->rightMapId);
 					currentMap = &(*tempMap);
-					backGroundImage = loadTexture(getResourcePath() + currentMap->file, Globals::renderer);
+					loadTiledMap(resPath + currentMap->file);
 					hero->x = (hero->x + 960) - 32;
 				}
 				else if (nextMap == NextMap::TOP) {
 					auto tempMap = std::next(mapList.begin(), currentMap->topMapId);
 					currentMap = &(*tempMap);
-					backGroundImage = loadTexture(getResourcePath() + currentMap->file, Globals::renderer);
+					loadTiledMap(resPath + currentMap->file);
 					hero->y = (hero->y - 960) + 32;
 				}
 				else if (nextMap == NextMap::BOTTOM) {
 					auto tempMap = std::next(mapList.begin(), currentMap->bottomMapId);
 					currentMap = &(*tempMap);
-					backGroundImage = loadTexture(getResourcePath() + currentMap->file, Globals::renderer);			
+					loadTiledMap(resPath + currentMap->file);
 					hero->y = (hero->y + 960) - 32;
 				}
 
@@ -809,9 +823,85 @@ void Game::updateMaps() {
 		alphaCalc = 0.0f;
 	}
 
-	renderTexture(backGroundImage, Globals::renderer, 0 - Globals::camera.x, 0 - Globals::camera.y);
+	renderTiles();
 	renderTexture(fadeImage, Globals::renderer, (-200) - Globals::camera.x, (-200) - Globals::camera.y);
-	
+}
+
+void Game::loadTiledMap(const string& mapFile) {
+	tiledMap = tileson.parse(fs::path(mapFile));
+	if (tiledMap->getStatus() != tson::ParseStatus::OK) {
+		cout << tiledMap->getStatusMessage() << endl;
+	}
+}
+
+void Game::renderTiles() {
+	auto currentMap = tiledMap.get();
+	if (currentMap == nullptr) {
+		cout << "Mapa nulo" << endl;
+		return;
+	}
+
+	const string resPath = getResourcePath();
+	string tilesetName;
+	string tilesetPath;
+	int x = 0;
+	int y = 0;
+	int cont = 0;
+	SDL_Texture* texture = nullptr;
+	for (auto layer : currentMap->getLayers()) {
+		if (&layer == nullptr) return;
+
+		for (auto& [pos, tileObject] : layer.getTileObjects()) //Loops through absolutely all existing tiles
+		{
+			if (tileObject.getTile() == nullptr) return;
+
+			if (layer.getType() == tson::LayerType::TileLayer) {
+				//Set sprite data to draw the tile
+				tson::Tileset* tileset = tileObject.getTile()->getTileset();
+				bool hasAnimation = tileObject.getTile()->getAnimation().any();
+				tson::Rect drawingRect;
+
+				if (!hasAnimation) {
+					drawingRect = tileObject.getDrawingRect();
+				}
+
+				tilesetName = tileset->getImage().filename().string();
+				if (auto search = texturesCache.find(tilesetName); search != texturesCache.end()) {
+					texture = search->second;
+				}
+				else {
+					tilesetPath = resPath + "Assets\\Textures\\" + tileset->getImage().filename().string();
+					texture = loadTexture(tilesetPath, Globals::renderer);
+					texturesCache.emplace(tilesetName, texture);
+				}
+
+				if (texture == nullptr) return;
+
+				SDL_Rect tileRect;
+				tileRect.x = tileObject.getDrawingRect().x;
+				tileRect.y = tileObject.getDrawingRect().y;
+				tileRect.w = tileObject.getDrawingRect().width;
+				tileRect.h = tileObject.getDrawingRect().height;
+
+				SDL_Rect renderTile;
+				renderTile.x = (x * 32) - Globals::camera.x;
+				renderTile.y = (y * 32) - Globals::camera.y;
+				renderTile.w = 32;
+				renderTile.h = 32;
+
+				SDL_RenderCopy(Globals::renderer, texture, &tileRect, &renderTile);
+
+				y++;
+				if (y >= 32) {
+					y = 0;
+					x++;
+					if (x >= 32) {
+						x = 0;
+					}
+				}
+			}
+		}
+	}
 }
 
 void Game::draw() {

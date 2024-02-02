@@ -52,8 +52,13 @@ public:
 	SDL_Texture* backGroundImageNE;
 	SDL_Texture* splashImage;
 	SDL_Texture* overlayImage;
-
 	SDL_Texture* scoreTexture = NULL; //draw string to screen
+
+	/**
+	* Cache de texturas
+	* Lista que contem o nome da imagem e a textura SDL
+	*/
+	std::map<string, SDL_Texture*> texturesCache;
 
 	bool isFading = false;
 	bool fadeIn, fadeOut;
@@ -111,6 +116,8 @@ public:
 
 private:
 	void updateMaps();
+	void loadTiledMap(const string& mapFile);
+	void renderTiles();
 	void spawnEnemies(int enemiesToBuild);
 	void spawnItem(int itemId, int quant, int xPos, int yPos);
 	void loadAnimationSets();

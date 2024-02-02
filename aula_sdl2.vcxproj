@@ -91,6 +91,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\src\item;D:\Workspaces\Cpp\aula_sdl2\inc\item;D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -108,6 +109,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\src\item;D:\Workspaces\Cpp\aula_sdl2\inc\item;D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -229,6 +231,7 @@
     <ClInclude Include="inc\roundKing.h" />
     <ClInclude Include="inc\soundManager.h" />
     <ClInclude Include="inc\termiteMiner.h" />
+    <ClInclude Include="inc\tileson\tileson.hpp" />
     <ClInclude Include="inc\timeController.h" />
     <ClInclude Include="inc\tinyxml2.h" />
     <ClInclude Include="inc\ui\itemPickMessageUi.h" />
