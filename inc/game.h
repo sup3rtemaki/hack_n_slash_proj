@@ -17,7 +17,6 @@
 #include "roundKing.h"
 #include "hpBar.h"
 #include "map.h"
-#include "tinyxml2.h"
 
 #include "helpers/saveHandler.h"
 
@@ -100,7 +99,6 @@ public:
 
 	CameraController camController;
 
-	tinyxml2::XMLDocument xml_doc;
 	int mapQty;
 
 	SaveHandler saveHandler;

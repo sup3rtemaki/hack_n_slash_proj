@@ -79,8 +79,13 @@ int main(int argc, char** argv) {
 	}*/
 
 
-	Game game;
-	game.update();
+	try {
+		Game game;
+		game.update();
+	}
+	catch (const std::exception& e) {
+		cerr << e.what() << endl;
+	}
 
 	cleanup(Globals::renderer);
 	cleanup(window);

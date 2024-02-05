@@ -1,24 +1,21 @@
 #include "game.h"
-#include "tinyxml2.h"
 
 #include <iostream>
 #include <fstream>
 #include <string>
 
 #include "tileson/tileson.hpp"
+#include "nlohmann/json.hpp"
 
-#define MAP1_X 1025
-#define MAP1_Y 0
-#define MAP_DISTANCE 2000
+using json = nlohmann::json;
+using namespace std;
 
 tson::Tileson tileson; // Tileson global instance
 std::unique_ptr<tson::Map> tiledMap; // Tiled map
 std::map<std::tuple<int, int>, tson::Tile*> tileData;
 
-using namespace std;
-
 Game::Game() {
-	//TODO: Criar método initialConfigs ou algo do tipo pra encapsular tudo isso
+	//TODO: Criar método initialize ou algo do tipo pra encapsular tudo isso
 
 	string resPath = getResourcePath();
 
@@ -29,239 +26,86 @@ Game::Game() {
 	currentMapId = 0;
 	mapToDrawCount = 0;
 
-	tinyxml2::XMLError mResult = xml_doc.LoadFile("mapsPositions.xml");
+	// JSON
+	std::ifstream ifs(resPath + "mapsPositions.json");
+	
+	json mapsPositions = json::parse(ifs);
 
-	if (mResult == tinyxml2::XML_SUCCESS) {
-		tinyxml2::XMLNode* root = xml_doc.FirstChildElement("maps");
+	mapQty = mapsPositions["maps"]["map_count"];
 
-		tinyxml2::XMLElement* element = root->FirstChildElement("map_count");
-		mResult = element->QueryIntText(&mapQty);
+	if (mapQty > 0) {
+		for (auto& mapsIt : mapsPositions["maps"]["map"]) {
+			string file = mapsIt["file"];
+			int id = mapsIt["id"];
+			int l_x1 = mapsIt["l_x1"];
+			int l_y1 = mapsIt["l_y1"];
+			int l_x2 = mapsIt["l_x2"];
+			int l_y2 = mapsIt["l_y2"];
+			int r_x1 = mapsIt["r_x1"];
+			int r_y1 = mapsIt["r_y1"];
+			int r_x2 = mapsIt["r_x2"];
+			int r_y2 = mapsIt["r_y2"];
+			int t_x1 = mapsIt["t_x1"];
+			int t_y1 = mapsIt["t_y1"];
+			int t_x2 = mapsIt["t_x2"];
+			int t_y2 = mapsIt["t_y2"];
+			int b_x1 = mapsIt["b_x1"];
+			int b_y1 = mapsIt["b_y1"];
+			int b_x2 = mapsIt["b_x2"];
+			int b_y2 = mapsIt["b_y2"];
+			int l_map = mapsIt["l_map"];
+			int r_map = mapsIt["r_map"];
+			int t_map = mapsIt["t_map"];
+			int b_map = mapsIt["b_map"];
+			int qt_enemies = mapsIt["qt_enemies"];
+			int qt_items = mapsIt["qt_items"];
 
-		//list<Map> mapList;
+			cout << "entrou 1" << endl;
 
-		element = root->FirstChildElement("map");
-		int i = 0;
-		
-		while (element != nullptr && i < mapQty)
-		{
-			tinyxml2::XMLElement* item = element->FirstChildElement("file");
-			string f = item->GetText();
-
-			int mId;
-			item = element->FirstChildElement("id");
-			mResult = item->QueryIntText(&mId);
-
-			int l_x1;
-			item = element->FirstChildElement("l_x1");
-			mResult = item->QueryIntText(&l_x1);
-
-			int l_y1;
-			item = element->FirstChildElement("l_y1");
-			mResult = item->QueryIntText(&l_y1);
-
-			int l_x2;
-			item = element->FirstChildElement("l_x2");
-			mResult = item->QueryIntText(&l_x2);
-
-			int l_y2;
-			item = element->FirstChildElement("l_y2");
-			mResult = item->QueryIntText(&l_y2);
-
-			int r_x1;
-			item = element->FirstChildElement("r_x1");
-			mResult = item->QueryIntText(&r_x1);
-
-			int r_y1;
-			item = element->FirstChildElement("r_y1");
-			mResult = item->QueryIntText(&r_y1);
-
-			int r_x2;
-			item = element->FirstChildElement("r_x2");
-			mResult = item->QueryIntText(&r_x2);
-
-			int r_y2;
-			item = element->FirstChildElement("r_y2");
-			mResult = item->QueryIntText(&r_y2);
-
-			int t_x1;
-			item = element->FirstChildElement("t_x1");
-			mResult = item->QueryIntText(&t_x1);
-
-			int t_y1;
-			item = element->FirstChildElement("t_y1");
-			mResult = item->QueryIntText(&t_y1);
-
-			int t_x2;
-			item = element->FirstChildElement("t_x2");
-			mResult = item->QueryIntText(&t_x2);
-
-			int t_y2;
-			item = element->FirstChildElement("t_y2");
-			mResult = item->QueryIntText(&t_y2);
-
-			int b_x1;
-			item = element->FirstChildElement("b_x1");
-			mResult = item->QueryIntText(&b_x1);
-
-			int b_y1;
-			item = element->FirstChildElement("b_y1");
-			mResult = item->QueryIntText(&b_y1);
-
-			int b_x2;
-			item = element->FirstChildElement("b_x2");
-			mResult = item->QueryIntText(&b_x2);
-
-			int b_y2;
-			item = element->FirstChildElement("b_y2");
-			mResult = item->QueryIntText(&b_y2);
-
-			int l_map;
-			item = element->FirstChildElement("l_map");
-			mResult = item->QueryIntText(&l_map);
-
-			int r_map;
-			item = element->FirstChildElement("r_map");
-			mResult = item->QueryIntText(&r_map);
-
-			int t_map;
-			item = element->FirstChildElement("t_map");
-			mResult = item->QueryIntText(&t_map);
-
-			int b_map;
-			item = element->FirstChildElement("b_map");
-			mResult = item->QueryIntText(&b_map);
-
-			int qt_enemies;
 			std::vector<std::tuple<int, int, int>> mapEnemies;
-			item = element->FirstChildElement("qt_enemies");
-			mResult = item->QueryIntText(&qt_enemies);
-
 			if (qt_enemies > 0) {
-				tinyxml2::XMLElement* enemy_element = element->FirstChildElement("enemy");
-				int j = 0;
-
-				while (enemy_element != nullptr && j < qt_enemies) {
-					int e_id;
-					item = enemy_element->FirstChildElement("e_id");
-					mResult = item->QueryIntText(&e_id);
-
-					int e_x;
-					item = enemy_element->FirstChildElement("e_x");
-					mResult = item->QueryIntText(&e_x);
-
-					int e_y;
-					item = enemy_element->FirstChildElement("e_y");
-					mResult = item->QueryIntText(&e_y);
-
+				for (auto& enemiesIt : mapsIt["enemy"]) {
+					int e_id = enemiesIt["e_id"];
+					int e_x = enemiesIt["e_x"];
+					int e_y = enemiesIt["e_y"];
+					cout << "entrou 2" << endl;
 					mapEnemies.push_back(std::make_tuple(e_id, e_x, e_y));
-
-					enemy_element = enemy_element->NextSiblingElement("enemy");
-					j++;
-				}
-			}
-
-			int qt_items;
-			vector<pair<bool, tuple<int, int, int>>> itemsInMapVector;
-			item = element->FirstChildElement("qt_items");
-			mResult = item->QueryIntText(&qt_items);
-
-			if (qt_items > 0) {
-				tinyxml2::XMLElement* items_element = element->FirstChildElement("item");
-				int j = 0;
-
-				while (items_element != nullptr && j < qt_items) {
-					int isPickedUpInt;
-					item = items_element->FirstChildElement("is_picked");
-					mResult = item->QueryIntText(&isPickedUpInt);
-					bool isPickedUp;
-					if (isPickedUpInt == 0) {
-						isPickedUp = false;
-					}
-					else {
-						isPickedUp = true;
-					}
-
-					int itemId;
-					item = items_element->FirstChildElement("item_id");
-					mResult = item->QueryIntText(&itemId);
-
-					int itemX;
-					item = items_element->FirstChildElement("item_x");
-					mResult = item->QueryIntText(&itemX);
-
-					int itemY;
-					item = items_element->FirstChildElement("item_y");
-					mResult = item->QueryIntText(&itemY);
-
-					itemsInMapVector.push_back(std::make_pair(isPickedUp, std::make_tuple(itemId, itemX, itemY)));
-
-					items_element = items_element->NextSiblingElement("item");
-					j++;
 				}
 			}
 			
-			Map m = Map(mId, f, l_x1, l_y1, l_x2, l_y2, r_x1, r_y1, r_x2, r_y2, t_x1, t_y1, t_x2, t_y2, b_x1, b_y1, b_x2, b_y2, l_map, r_map, t_map, b_map, qt_enemies, mapEnemies);
+			vector<pair<bool, tuple<int, int, int>>> itemsInMapVector;
+			for (auto& itemsIt : mapsIt["item"]) {
+				int isPickedUpInt = itemsIt["is_picked"];
+				bool isPickedUp = (isPickedUpInt == 0) ? false : true;
+				cout << "entrou 3" << endl;
+				int itemId = itemsIt["item_id"];
+				int itemX = itemsIt["item_x"];
+				int itemY = itemsIt["item_y"];
+				cout << "entrou 3" << endl;
+				itemsInMapVector.push_back(
+					std::make_pair(isPickedUp, std::make_tuple(itemId, itemX, itemY))
+				);
+			}
+
+			Map m = Map(id, file, l_x1, l_y1, l_x2, l_y2, r_x1, r_y1, r_x2, r_y2, t_x1, t_y1, t_x2, t_y2, b_x1, b_y1, b_x2, b_y2, l_map, r_map, t_map, b_map, qt_enemies, mapEnemies);
 			m.itemsInMap = itemsInMapVector;
 			mapList.push_back(m);
 
-			cout << m.id << " " << m.file << " " << 
+			cout << m.id << " " << m.file << " " <<
 				m.leftX1 << " " << m.leftY1 << " " << m.leftX2 << " " << m.leftY2 << " " <<
 				m.rightX1 << " " << m.rightY1 << " " << m.rightX2 << " " << m.rightY2 << " " <<
 				m.topX1 << " " << m.topY1 << " " << m.topX2 << " " << m.topY2 << " " <<
 				m.bottomX1 << " " << m.bottomY1 << " " << m.bottomX2 << " " << m.bottomY2 << " " <<
 				m.leftMapId << " " << m.rightMapId << " " << m.topMapId << " " << m.bottomMapId << " " <<
 				"\n";
-
-			element = element->NextSiblingElement("map");
-			i++;
 		}
-	}
-	else {
-		cout << "Error opening XML";
 	}
 
 	currentMap = &(*std::next(mapList.begin(), currentMapId));
 
-	//auto tempMap = std::next(mapList.begin(), currentMapId); //Get the current map based on currentMapId
-
-	/*currentMap = Map(tempMap->id, tempMap->file, tempMap->leftX1, tempMap->leftY1, tempMap->leftX2, tempMap->leftY2, 
-		tempMap->rightX1, tempMap->rightY1,tempMap->rightX2, tempMap->rightY2,
-		tempMap->topX1, tempMap->topY1, tempMap->topX2, tempMap->topY2,
-		tempMap->bottomX1, tempMap->bottomY1, tempMap->bottomX2, tempMap->bottomY2,
-		tempMap->leftMapId, tempMap->rightMapId, tempMap->topMapId, tempMap->bottomMapId
-		);*/
-
 	//Pre-load current and surroundings maps images
 	loadTiledMap(resPath + currentMap->file);
 	mustSpawnEnemies = true;
-
-	/*int enemyId, enemyX, enemyY;
-	std::tie(enemyId, enemyX, enemyY) = currentMap.enemies.empty();
-	cout << enemyId << ", " << enemyX << ", " << enemyY << "\n";*/
-
-	//tempMap = std::next(mapList.begin(), currentMap.mapN);
-	//backGroundImageN = loadTexture(resPath + tempMap->file, Globals::renderer);
-
-	//tempMap = std::next(mapList.begin(), currentMap.mapNW);
-	//backGroundImageNW = loadTexture(resPath + tempMap->file, Globals::renderer);
-
-	//tempMap = std::next(mapList.begin(), currentMap.mapW);
-	//backGroundImageW = loadTexture(resPath + tempMap->file, Globals::renderer);
-
-	//tempMap = std::next(mapList.begin(), currentMap.mapSW);
-	//backGroundImageSW = loadTexture(resPath + tempMap->file, Globals::renderer);
-
-	//tempMap = std::next(mapList.begin(), currentMap.mapS);
-	//backGroundImageS = loadTexture(resPath + tempMap->file, Globals::renderer);
-
-	//tempMap = std::next(mapList.begin(), currentMap.mapSE);
-	//backGroundImageSE = loadTexture(resPath + tempMap->file, Globals::renderer);
-
-	//tempMap = std::next(mapList.begin(), currentMap.mapE);
-	//backGroundImageE = loadTexture(resPath + tempMap->file, Globals::renderer);
-
-	//tempMap = std::next(mapList.begin(), currentMap.mapNE);
-	//backGroundImageNE = loadTexture(resPath + tempMap->file, Globals::renderer);
 
 	splashImage = loadTexture(resPath + "cyborgtitle.png", Globals::renderer);
 	overlayImage = loadTexture(resPath + "overlay.png", Globals::renderer);
@@ -461,7 +305,6 @@ Game::~Game() {
 	Entity::removeAllFromList(&walls, true);
 	Entity::removeAllFromList(&currentMapEnemies, true);
 	deadEnemiesIds.clear();
-	xml_doc.~XMLDocument();
 }
 
 void Game::update() {
@@ -696,65 +539,35 @@ void Game::updateMaps() {
 			if (alpha > 254) {
 				camController.isLerping = false;
 
-				//TODO Remover itens ja pegos do mapa
 				inactivateCurrentMapItems();
 
-				int cont = 0;
+				std::ifstream ifs(getResourcePath() + "mapsPositions.json");
+				json mapsPositions = json::parse(ifs);
+
 				for (auto const& i : currentMap->itemsInMap) {
-					if (i.first){
-						tinyxml2::XMLNode* root = xml_doc.FirstChildElement("maps");
-						tinyxml2::XMLElement* element = root->FirstChildElement("map");
-						int xmlCont = 0;
+					if (i.first) {
+						std::ofstream outputFile(getResourcePath() + "mapsPositions.json");
+						for (auto& mapsIt : mapsPositions["maps"]["map"]) {
+							int id = mapsIt["id"];
+							int qt_items = mapsIt["qt_items"];
+							if ((id == currentMap->id) && (qt_items > 0)) {
+								for (auto& itemsIt : mapsIt["item"]) {
+									int itemId = itemsIt["item_id"];
+									int itemX = itemsIt["item_x"];
+									int itemY = itemsIt["item_y"];
 
-						while (element != nullptr && xmlCont < mapQty) {
-							int mapId;
-							tinyxml2::XMLElement* map_id = element->FirstChildElement("id");
-							map_id->QueryIntText(&mapId);
-
-							if (currentMap->id == mapId) {
-								int qt_items;
-								tinyxml2::XMLElement* item = element->FirstChildElement("qt_items");
-								item->QueryIntText(&qt_items);
-
-								if (qt_items > 0) {
-									tinyxml2::XMLElement* items_element = element->FirstChildElement("item");
-									int itemCont = 0;
-
-									while (items_element != nullptr && itemCont < qt_items) {
-										int itemId;
-										item = items_element->FirstChildElement("item_id");
-										item->QueryIntText(&itemId);
-
-										int itemX;
-										item = items_element->FirstChildElement("item_x");
-										item->QueryIntText(&itemX);
-
-										int itemY;
-										item = items_element->FirstChildElement("item_y");
-										item->QueryIntText(&itemY);
-
-										if (itemId == get<0>(i.second) &&
-											itemX == get<1>(i.second) &&
-											itemY == get<2>(i.second)) {
-											item = items_element->FirstChildElement("is_picked");
-											item->SetText(1);
-											int error = xml_doc.SaveFile("mapsPositions.xml");
-											if (error) {
-												cout << "Nao foi possivel salvar arquivo! Erro: " << error << "\n";
-											}
-										}
-
-										items_element = items_element->NextSiblingElement("item");
-										itemCont++;
+									if (itemId == get<0>(i.second) &&
+										itemX == get<1>(i.second) &&
+										itemY == get<2>(i.second)) {
+										itemsIt["is_picked"].clear();
+										itemsIt["is_picked"] = 1;
+										outputFile << std::setw(4) << mapsPositions << std::endl;
 									}
-								}
+								}								
 							}
-							
-							element = element->NextSiblingElement("map");
-							xmlCont++;
 						}
+						outputFile.close();				
 					}
-					cont++;
 				}
 
 				const string& resPath = getResourcePath();
@@ -846,7 +659,6 @@ void Game::renderTiles() {
 	string tilesetPath;
 	int x = 0;
 	int y = 0;
-	int cont = 0;
 	SDL_Texture* texture = nullptr;
 	for (auto layer : currentMap->getLayers()) {
 		if (&layer == nullptr) return;
