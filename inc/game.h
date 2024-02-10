@@ -116,6 +116,7 @@ private:
 	void updateMaps();
 	void loadTiledMap(const string& mapFile);
 	void renderTiles();
+	void buildWalls();
 	void spawnEnemies(int enemiesToBuild);
 	void spawnItem(int itemId, int quant, int xPos, int yPos);
 	void loadAnimationSets();

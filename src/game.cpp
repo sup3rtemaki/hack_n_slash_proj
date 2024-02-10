@@ -16,7 +16,6 @@ std::map<std::tuple<int, int>, tson::Tile*> tileData;
 
 Game::Game() {
 	//TODO: Criar método initialize ou algo do tipo pra encapsular tudo isso
-
 	string resPath = getResourcePath();
 
 	//teste
@@ -105,6 +104,7 @@ Game::Game() {
 
 	//Pre-load current and surroundings maps images
 	loadTiledMap(resPath + currentMap->file);
+	buildWalls();
 	mustSpawnEnemies = true;
 
 	splashImage = loadTexture(resPath + "cyborgtitle.png", Globals::renderer);
@@ -164,8 +164,6 @@ Game::Game() {
 	hero->currentMap = currentMap;
 	Entity::entities.push_back(hero);
 
-	//TODO: Fazer método para spawnar itens de acordo com mapa
-	//spawnItem(Item::HONEYDEW_POTION_ID, 5, 200, 200);
 	spawnItemsFromCurrentMap();
 
 	//get camera to follow hero
@@ -174,86 +172,8 @@ Game::Game() {
 	quickItemUi = new QuickItemUi(hero);
 	itemPickMessageUi = new ItemPickMessageUi(hero);
 
-	// build the outer walls
-	int tileSize = 32;
-
-	//for(int i = 0; i < 1028 / tileSize; i++) {
-	//	// top walls
-	//	Wall* newWall = new Wall(wallAnimSet);
-	//	newWall->x = i * tileSize + tileSize; /// 2;
-	//	newWall->y = tileSize / 2;
-	//	walls.push_back(newWall);
-	//	Entity::entities.push_back(newWall);
-
-	//	// bottom walls
-	//	newWall = new Wall(wallAnimSet); // reusing the pointer
-	//	newWall->x = i * tileSize + tileSize; /// 2;
-	//	newWall->y = 1028 - tileSize; /// 2;
-	//	walls.push_back(newWall);
-	//	Entity::entities.push_back(newWall);
-	//}
-
-	//for (int i = 0; i < 1028 / tileSize; i++) {
-	//	// left walls
-	//	Wall* newWall = new Wall(wallAnimSet);
-	//	newWall->x = tileSize / 2;
-	//	newWall->y = i * tileSize + tileSize; /// 2;
-	//	walls.push_back(newWall);
-	//	Entity::entities.push_back(newWall);
-
-	//	// right walls
-	//	newWall = new Wall(wallAnimSet); // reusing the pointer
-	//	newWall->x = 1028 - tileSize; /// 2;
-	//	newWall->y = i * tileSize + tileSize; /// 2;
-	//	walls.push_back(newWall);
-	//	Entity::entities.push_back(newWall);
-	//}
-
 	buildBossNext = false;
 	bossActive = false;
-
-	//build walls based on wall map
-	//string line;
-	//string s;
-	//int yPos = 0;
-	//ifstream myfile(resPath + "wallMap.txt");
-	//if (myfile.is_open()){
-	//	while (getline(myfile, line)){
-	//		std::string::size_type pos = line.find('x');
-	//		s = line.substr(0, pos);
-
-	//		for (int i = 0; i < s.length(); i++) {
-	//			if (s[i] == '1') {
-	//				//teste
-	//				Wall* newWall = new Wall(wallAnimSet);
-	//				newWall->x = i * 32 + 16;
-	//				newWall->y = yPos;
-	//				walls.push_back(newWall);
-	//				Entity::entities.push_back(newWall);
-	//			}
-	//		}
-
-	//		yPos += 32;
-	//	}
-
-	//	myfile.close();
-	//}
-
-	//else cout << "Unable to open file";
-
-	//teste
-	Wall* newWall = new Wall(wallAnimSet);
-	newWall->x = 988;
-	newWall->y = 150;
-	walls.push_back(newWall);
-	Entity::entities.push_back(newWall);
-
-	newWall = new Wall(wallAnimSet);
-	newWall->x = 1024;
-	newWall->y = 250;
-	walls.push_back(newWall);
-	Entity::entities.push_back(newWall);
-	///////////////////////////////////
 
 	//setup hpbars position
 	heroHpBar.x = 10;
@@ -372,6 +292,7 @@ void Game::update() {
 						for (list<Entity*>::iterator enemy = currentMapEnemies.begin(); enemy != currentMapEnemies.end(); enemy++) {
 							(*enemy)->active = false;
 						}
+
 						mustSpawnEnemies = true;
 						hero->revive();
 					}
@@ -600,16 +521,24 @@ void Game::updateMaps() {
 				fadeIn = false;
 				fadeOut = true;
 
+				// Remove enemies
 				for (list<Entity*>::iterator enemy = currentMapEnemies.begin(); enemy != currentMapEnemies.end(); enemy++) {
 					(*enemy)->active = false;
+				}
+
+				// Remove walls
+				for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
+					if ((*entity)->type == "wall") {
+						(*entity)->active = false;
+					}
 				}
 
 				mustSpawnEnemies = true;
 				hero->currentMap = currentMap;
 				spawnItemsFromCurrentMap();
+				buildWalls();
 				camController.update();
 				saveGame();
-				
 			}
 		}
 		else if (alpha >= 0 && fadeOut) {
@@ -663,8 +592,7 @@ void Game::renderTiles() {
 	for (auto layer : currentMap->getLayers()) {
 		if (&layer == nullptr) return;
 
-		for (auto& [pos, tileObject] : layer.getTileObjects()) //Loops through absolutely all existing tiles
-		{
+		for (auto& [pos, tileObject] : layer.getTileObjects()) { //Loops through absolutely all existing tiles
 			if (tileObject.getTile() == nullptr) return;
 
 			if (layer.getType() == tson::LayerType::TileLayer) {
@@ -711,6 +639,34 @@ void Game::renderTiles() {
 						x = 0;
 					}
 				}
+			}
+		}
+	}
+}
+
+void Game::buildWalls() {
+	auto currentMap = tiledMap.get();
+	if (currentMap == nullptr) {
+		cout << "Mapa nulo" << endl;
+		return;
+	}
+
+	const string resPath = getResourcePath();
+	string tilesetName;
+	string tilesetPath;
+	int x = 0;
+	int y = 0;
+	SDL_Texture* texture = nullptr;
+	for (auto layer : currentMap->getLayers()) {
+		if (&layer == nullptr) return;
+
+		for (auto& [pos, tileObject] : layer.getTileObjects()) {
+			for (auto it : tileObject.getTile()->getObjectgroup().getObjectsByName("Wall")) {
+				Wall* newWall = new Wall(it.getSize().x, it.getSize().y, 0);
+				newWall->x = tileObject.getPosition().x + 16;
+				newWall->y = tileObject.getPosition().y;
+				walls.push_back(newWall);
+				Entity::entities.push_back(newWall);
 			}
 		}
 	}
