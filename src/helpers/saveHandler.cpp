@@ -9,13 +9,13 @@ using json = nlohmann::json;
 
 const std::string SAVE_FILE_PATH = "SaveGame\\save.json";
 
-SaveHandler::SaveHandler() : heroHp(0), heroX(0), heroY(0), currentMapId(0) {
+SaveHandler::SaveHandler() : heroHp(0), heroX(0), heroY(0) {
 }
 
 SaveHandler::~SaveHandler() {
 }
 
-void SaveHandler::save(int heroHp, int heroX, int heroY, int currentMapId, std::vector<std::pair<int, int>> items) {
+void SaveHandler::save(int heroHp, int heroX, int heroY, string currentMapFile, std::vector<std::pair<int, int>> items) {
 	std::cout << "Save\n";
 
 	std::ofstream file(SAVE_FILE_PATH);
@@ -28,7 +28,7 @@ void SaveHandler::save(int heroHp, int heroX, int heroY, int currentMapId, std::
 	save["heroHp"] = heroHp;
 	save["heroX"] = heroX;
 	save["heroY"] = heroY;
-	save["currentMapId"] = currentMapId;
+	save["currentMapFile"] = currentMapFile;
 
 	if (!items.empty()) {
 		for (auto i : items) {
@@ -60,7 +60,7 @@ bool SaveHandler::load() {
 	heroHp = data["heroHp"];
 	heroX = data["heroX"];
 	heroY = data["heroY"];
-	currentMapId = data["currentMapId"];
+	currentMapFile = string(data["currentMapFile"]);
 	items.clear();
 
 	json jItem = data["inventory"];
@@ -86,8 +86,8 @@ int SaveHandler::getHeroY() {
 	return heroY;
 }
 
-int SaveHandler::getCurrentMapId() {
-	return currentMapId;
+string SaveHandler::getCurrentMapFile() {
+	return currentMapFile;
 }
 
 std::vector<std::pair<int, int>> SaveHandler::getItems() {

@@ -22,12 +22,13 @@ Game::Game() {
 	backGroundImage = loadTexture(resPath + "map.png", Globals::renderer);
 	fadeImage = loadTexture(resPath + "blackBG.png", Globals::renderer);
 
-	currentMapId = 0;
-	mapToDrawCount = 0;
+	//currentMapId = 0;
 
 	// JSON
+
+	/*
 	std::ifstream ifs(resPath + "mapsPositions.json");
-	
+
 	json mapsPositions = json::parse(ifs);
 
 	mapQty = mapsPositions["maps"]["map_count"];
@@ -71,7 +72,7 @@ Game::Game() {
 					mapEnemies.push_back(std::make_tuple(e_id, e_x, e_y));
 				}
 			}
-			
+
 			vector<pair<bool, tuple<int, int, int>>> itemsInMapVector;
 			for (auto& itemsIt : mapsIt["item"]) {
 				int isPickedUpInt = itemsIt["is_picked"];
@@ -104,8 +105,9 @@ Game::Game() {
 
 	//Pre-load current and surroundings maps images
 	loadTiledMap(resPath + currentMap->file);
-	buildWalls();
-	mustSpawnEnemies = true;
+	*/
+	
+	mustSpawnEnemies = false;// true;
 
 	splashImage = loadTexture(resPath + "cyborgtitle.png", Globals::renderer);
 	overlayImage = loadTexture(resPath + "overlay.png", Globals::renderer);
@@ -137,16 +139,20 @@ Game::Game() {
 	//	Mix_Volume(-1, 50);
 	//}
 
+	//TODO: Levar essa rotina pro loadGame
 	loadAnimationSets();
 
 	saveHandler.load();
+	currentMap = new Map();
+	currentMap->file = saveHandler.getCurrentMapFile();
+
+	loadTiledMap(resPath + currentMap->file);
+
+	buildWalls();
 
 	// build hero entity
 	hero = new Hero(heroAnimSet);
 	hero->invincibleTimer = 0;
-	//hero->x = Globals::ScreenWidth / 2;
-	//hero->y = Globals::ScreenHeight / 2;
-	//TODO: Levar essa rotina pro loadGame
 	hero->hp = saveHandler.getHeroHp();
 	hero->x = saveHandler.getHeroX();
 	hero->y = saveHandler.getHeroY();
@@ -186,7 +192,6 @@ Game::Game() {
 	camController.isLerping = true;
 
 	updateMaps();
-
 }
 
 Game::~Game() {
@@ -228,7 +233,7 @@ Game::~Game() {
 }
 
 void Game::update() {
-	int enemiesToBuild = currentMap->qtEnemies;
+	int enemiesToBuild = 0;//currentMap->qtEnemies;
 	int enemiesBuilt = 0;
 	float enemyBuildTimer = 1;
 	bool quit = false;
@@ -341,7 +346,7 @@ void Game::update() {
 			}
 		}
 
-		enemiesToBuild = currentMap->qtEnemies;
+		enemiesToBuild = 0;// currentMap->qtEnemies;
 
 		//spawn enemies
 		if (hero->hp > 0 && !splashShowing) {
@@ -413,6 +418,7 @@ void Game::update() {
 		}
 
 		//If hero is in change map region, fade to change map
+		/*
 		if ((hero->x > currentMap->leftX1) && (hero->x < currentMap->leftX2) && (hero->y > currentMap->leftY1) && (hero->y < currentMap->leftY2)) {
 			isFading = true;
 			fadeIn = true;
@@ -437,6 +443,7 @@ void Game::update() {
 			isFading = false;
 			nextMap = NextMap::NONE;
 		}
+		*/
 
 		//update camera position
 		camController.update();
@@ -462,34 +469,40 @@ void Game::updateMaps() {
 
 				inactivateCurrentMapItems();
 
-				std::ifstream ifs(getResourcePath() + "mapsPositions.json");
-				json mapsPositions = json::parse(ifs);
+				// TODO: Levar essa rotina de atualizar o status do item no arquivo json
+				// pra outro lugar, e tentar melhorar
+				std::ifstream ifs(getResourcePath() + currentMap->file);
+				json mapFile = json::parse(ifs);
 
 				for (auto const& i : currentMap->itemsInMap) {
 					if (i.first) {
-						std::ofstream outputFile(getResourcePath() + "mapsPositions.json");
-						for (auto& mapsIt : mapsPositions["maps"]["map"]) {
-							int id = mapsIt["id"];
-							int qt_items = mapsIt["qt_items"];
-							if ((id == currentMap->id) && (qt_items > 0)) {
-								for (auto& itemsIt : mapsIt["item"]) {
-									int itemId = itemsIt["item_id"];
-									int itemX = itemsIt["item_x"];
-									int itemY = itemsIt["item_y"];
-
-									if (itemId == get<0>(i.second) &&
-										itemX == get<1>(i.second) &&
-										itemY == get<2>(i.second)) {
-										itemsIt["is_picked"].clear();
-										itemsIt["is_picked"] = 1;
-										outputFile << std::setw(4) << mapsPositions << std::endl;
+						for (auto& layersIt : mapFile["layers"]) {
+							string name = layersIt["name"];
+							if (name == "Items") {
+								for (auto& object : layersIt["objects"]) {
+									if ((int)object["x"] == std::get<1>(i.second) &&
+										(int)object["y"] == std::get<2>(i.second)) {
+										for (auto& prop : object["properties"]) {
+											if (prop["name"] == "itemId" &&
+												prop["value"] == std::get<0>(i.second)) {
+												for (auto& prop2 : object["properties"]) {
+													if (prop2["name"] == "isPicked") {
+														std::ofstream outputFile(getResourcePath() + currentMap->file);
+														prop2["value"].clear();
+														prop2["value"] = true;
+														outputFile << std::setw(4) << mapFile << std::endl;
+														outputFile.close();
+													}
+												}
+											}
+										}
 									}
-								}								
+								}
 							}
-						}
-						outputFile.close();				
+						}						
 					}
 				}
+				
 
 				const string& resPath = getResourcePath();
 
@@ -621,7 +634,7 @@ void Game::renderTiles() {
 				tileRect.x = tileObject.getDrawingRect().x;
 				tileRect.y = tileObject.getDrawingRect().y;
 				tileRect.w = tileObject.getDrawingRect().width;
-				tileRect.h = tileObject.getDrawingRect().height;
+				tileRect.h = tileObject.getDrawingRect().height;			
 
 				SDL_Rect renderTile;
 				renderTile.x = (x * 32) - Globals::camera.x;
@@ -651,12 +664,6 @@ void Game::buildWalls() {
 		return;
 	}
 
-	const string resPath = getResourcePath();
-	string tilesetName;
-	string tilesetPath;
-	int x = 0;
-	int y = 0;
-	SDL_Texture* texture = nullptr;
 	for (auto layer : currentMap->getLayers()) {
 		if (&layer == nullptr) return;
 
@@ -853,16 +860,44 @@ void Game::loadAnimationSets() {
 	stoneProjectileAnimSet->loadAnimationSet("stoneProjectile.fdset", dataGroupTypes, true, 0, true);
 }
 
-void Game::spawnItemsFromCurrentMap(){
-	for (auto const& i : currentMap->itemsInMap) {
-		//TODO: Acrescentar quantidade de itens no maps.xml e no itemsInMap
-		if (!i.first) {
-			spawnItem(get<0>(i.second), 1, get<1>(i.second), get<2>(i.second));
+void Game::spawnItemsFromCurrentMap() {
+	auto currentTiledMap = tiledMap.get();
+	if (currentTiledMap == nullptr) {
+		cout << "Mapa nulo" << endl;
+		return;
+	}
+	for (auto layer : currentTiledMap->getLayers()) {
+		if (&layer == nullptr) return;
+
+		if (layer.getType() == tson::LayerType::ObjectGroup &&
+			layer.getName() == "Items") {
+			bool isPicked;
+			int itemId;
+			int xPos;
+			int yPos;
+			for (auto object : layer.getObjects()) {
+				for (auto prop : object.getProperties().getProperties()) {
+					if (prop.second.getName() == "isPicked") {
+						isPicked = std::any_cast<bool>(prop.second.getValue());
+					}
+					else if (prop.second.getName() == "itemId") {
+						itemId = std::any_cast<int>(prop.second.getValue());
+					}
+				}
+				xPos = object.getPosition().x;
+				yPos = object.getPosition().y;
+				currentMap->itemsInMap.push_back(
+					std::make_pair(isPicked, std::make_tuple(itemId, xPos, yPos)));
+
+				if (!isPicked) {
+					spawnItem(itemId, 1, xPos, yPos);
+				}
+			}
 		}
 	}
 }
 
-void Game::inactivateCurrentMapItems(){
+void Game::inactivateCurrentMapItems() {
 	for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
 		if (dynamic_cast<Item*>((*entity)) != nullptr) {
 			Item* i = (Item*)(*entity);
@@ -914,9 +949,13 @@ void Game::saveGame() {
 	for (auto itemMap : hero->inventory) {
 		inventory.push_back(std::make_pair(itemMap.first, itemMap.second->quantity));
 	}
-	saveHandler.save(hero->hp, hero->x, hero->y, currentMap->id, inventory);
+	//saveHandler.save(hero->hp, hero->x, hero->y, currentMap->file, inventory);
 }
 
 void Game::loadGame() {
 	//TODO: Trazer rotina de carregamento
+	if (!saveHandler.load()) {
+		cerr << "Erro ao carregar savefile" << endl;
+		terminate();
+	}
 }

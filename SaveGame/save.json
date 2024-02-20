@@ -1,5 +1,5 @@
 {
-    "currentMapId": 0,
+    "currentMapFile": "mapTest1.json",
     "heroHp": 5,
     "heroX": 955,
     "heroY": 174,
