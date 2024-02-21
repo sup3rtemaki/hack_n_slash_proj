@@ -107,7 +107,7 @@ Game::Game() {
 	loadTiledMap(resPath + currentMap->file);
 	*/
 	
-	mustSpawnEnemies = false;// true;
+	mustSpawnEnemies = true;
 
 	splashImage = loadTexture(resPath + "cyborgtitle.png", Globals::renderer);
 	overlayImage = loadTexture(resPath + "overlay.png", Globals::renderer);
@@ -501,8 +501,7 @@ void Game::updateMaps() {
 							}
 						}						
 					}
-				}
-				
+				}				
 
 				const string& resPath = getResourcePath();
 
@@ -731,53 +730,52 @@ void Game::draw() {
 }
 
 void Game::spawnEnemies(int enemiesToBuild) {
-	int i = 0;
-	int enemyId;
+	auto tMap = tiledMap.get();
+	if (tMap == nullptr) {
+		cout << "Mapa nulo" << endl;
+		return;
+	}
+
 	int enemyPosX, enemyPosY;
 	int uniqueId;
-	while (i < enemiesToBuild) {
-		enemyId = std::get<0>(currentMap->enemies[i]);
-		enemyPosX = std::get<1>(currentMap->enemies[i]);
-		enemyPosY = std::get<2>(currentMap->enemies[i]);
-		uniqueId = (currentMap->id * 100) + (enemyId * 10) + i;
+	int counter = 0;
+	auto layer = tMap->getLayer("EnemiesSpawn");
+	for (auto object : layer->getObjects()) {
+		int enemyId = std::any_cast<int>(object.getProp("enemyId")->getValue());
+		uniqueId = (enemyId * 10) + counter;
+		enemyPosX = object.getPosition().x;
+		enemyPosY = object.getPosition().y;
 		switch (enemyId) {
 		case 0:
 			if (deadEnemiesIds.empty() ||
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
-				Glob* enemy = new Glob(globAnimSet);
-				enemy->x = enemyPosX;
-				enemy->y = enemyPosY;
-				enemy->invincibleTimer = 0.1;
-				enemy->enemyId = uniqueId;
-				currentMapEnemies.push_back(enemy);
-				Entity::entities.push_back(enemy);
+					Glob* enemy = new Glob(globAnimSet);
+					enemy->x = enemyPosX;
+					enemy->y = enemyPosY;
+					enemy->invincibleTimer = 0.1;
+					enemy->enemyId = uniqueId;
+					currentMapEnemies.push_back(enemy);
+					Entity::entities.push_back(enemy);
 			}
 			break;
-
 		case 1:
 			if (deadEnemiesIds.empty() ||
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
-				TermiteMiner* enemy = new TermiteMiner(termiteMinerAnimSet);
-				enemy->x = enemyPosX;
-				enemy->y = enemyPosY;
-				enemy->invincibleTimer = 0.1;
-				enemy->enemyId = uniqueId;
-				currentMapEnemies.push_back(enemy);
-				Entity::entities.push_back(enemy);
-
-				//Grob* enemy = new Grob(grobAnimSet);
-				//enemy->x = enemyPosX;
-				//enemy->y = enemyPosY;
-				//enemy->invincibleTimer = 0.1;
-				//enemy->enemyId = uniqueId;
-				//currentMapEnemies.push_back(enemy);
-				//Entity::entities.push_back(enemy);
+					TermiteMiner* enemy = new TermiteMiner(termiteMinerAnimSet);
+					enemy->x = enemyPosX;
+					enemy->y = enemyPosY;
+					enemy->invincibleTimer = 0.1;
+					enemy->enemyId = uniqueId;
+					currentMapEnemies.push_back(enemy);
+					Entity::entities.push_back(enemy);
 			}
 			break;
+		default:
+			break;
+			
 		}
-		
-		i++;
 	}
+
 	mustSpawnEnemies = false;
 }
 
