@@ -4,8 +4,8 @@
 void CameraController::update() {
 	if (target != NULL) {
 		//we are following someone
-		float targetX = target->x - Globals::camera.w / 2;
-		float targetY = target->y - Globals::camera.h / 2;
+		int targetX = (int)target->x - Globals::camera.w / 2;
+		int targetY = (int)target->y - Globals::camera.h / 2;
 
 		//move to target position with delay
 		if (isLerping) {

@@ -21,91 +21,6 @@ Game::Game() {
 	//teste
 	backGroundImage = loadTexture(resPath + "map.png", Globals::renderer);
 	fadeImage = loadTexture(resPath + "blackBG.png", Globals::renderer);
-
-	//currentMapId = 0;
-
-	// JSON
-
-	/*
-	std::ifstream ifs(resPath + "mapsPositions.json");
-
-	json mapsPositions = json::parse(ifs);
-
-	mapQty = mapsPositions["maps"]["map_count"];
-
-	if (mapQty > 0) {
-		for (auto& mapsIt : mapsPositions["maps"]["map"]) {
-			string file = mapsIt["file"];
-			int id = mapsIt["id"];
-			int l_x1 = mapsIt["l_x1"];
-			int l_y1 = mapsIt["l_y1"];
-			int l_x2 = mapsIt["l_x2"];
-			int l_y2 = mapsIt["l_y2"];
-			int r_x1 = mapsIt["r_x1"];
-			int r_y1 = mapsIt["r_y1"];
-			int r_x2 = mapsIt["r_x2"];
-			int r_y2 = mapsIt["r_y2"];
-			int t_x1 = mapsIt["t_x1"];
-			int t_y1 = mapsIt["t_y1"];
-			int t_x2 = mapsIt["t_x2"];
-			int t_y2 = mapsIt["t_y2"];
-			int b_x1 = mapsIt["b_x1"];
-			int b_y1 = mapsIt["b_y1"];
-			int b_x2 = mapsIt["b_x2"];
-			int b_y2 = mapsIt["b_y2"];
-			int l_map = mapsIt["l_map"];
-			int r_map = mapsIt["r_map"];
-			int t_map = mapsIt["t_map"];
-			int b_map = mapsIt["b_map"];
-			int qt_enemies = mapsIt["qt_enemies"];
-			int qt_items = mapsIt["qt_items"];
-
-			cout << "entrou 1" << endl;
-
-			std::vector<std::tuple<int, int, int>> mapEnemies;
-			if (qt_enemies > 0) {
-				for (auto& enemiesIt : mapsIt["enemy"]) {
-					int e_id = enemiesIt["e_id"];
-					int e_x = enemiesIt["e_x"];
-					int e_y = enemiesIt["e_y"];
-					cout << "entrou 2" << endl;
-					mapEnemies.push_back(std::make_tuple(e_id, e_x, e_y));
-				}
-			}
-
-			vector<pair<bool, tuple<int, int, int>>> itemsInMapVector;
-			for (auto& itemsIt : mapsIt["item"]) {
-				int isPickedUpInt = itemsIt["is_picked"];
-				bool isPickedUp = (isPickedUpInt == 0) ? false : true;
-				cout << "entrou 3" << endl;
-				int itemId = itemsIt["item_id"];
-				int itemX = itemsIt["item_x"];
-				int itemY = itemsIt["item_y"];
-				cout << "entrou 3" << endl;
-				itemsInMapVector.push_back(
-					std::make_pair(isPickedUp, std::make_tuple(itemId, itemX, itemY))
-				);
-			}
-
-			Map m = Map(id, file, l_x1, l_y1, l_x2, l_y2, r_x1, r_y1, r_x2, r_y2, t_x1, t_y1, t_x2, t_y2, b_x1, b_y1, b_x2, b_y2, l_map, r_map, t_map, b_map, qt_enemies, mapEnemies);
-			m.itemsInMap = itemsInMapVector;
-			mapList.push_back(m);
-
-			cout << m.id << " " << m.file << " " <<
-				m.leftX1 << " " << m.leftY1 << " " << m.leftX2 << " " << m.leftY2 << " " <<
-				m.rightX1 << " " << m.rightY1 << " " << m.rightX2 << " " << m.rightY2 << " " <<
-				m.topX1 << " " << m.topY1 << " " << m.topX2 << " " << m.topY2 << " " <<
-				m.bottomX1 << " " << m.bottomY1 << " " << m.bottomX2 << " " << m.bottomY2 << " " <<
-				m.leftMapId << " " << m.rightMapId << " " << m.topMapId << " " << m.bottomMapId << " " <<
-				"\n";
-		}
-	}
-
-	currentMap = &(*std::next(mapList.begin(), currentMapId));
-
-	//Pre-load current and surroundings maps images
-	loadTiledMap(resPath + currentMap->file);
-	*/
 	
 	mustSpawnEnemies = true;
 
@@ -149,6 +64,7 @@ Game::Game() {
 	loadTiledMap(resPath + currentMap->file);
 
 	buildWalls();
+	buildWaypoints();
 
 	// build hero entity
 	hero = new Hero(heroAnimSet);
@@ -233,7 +149,6 @@ Game::~Game() {
 }
 
 void Game::update() {
-	int enemiesToBuild = 0;//currentMap->qtEnemies;
 	int enemiesBuilt = 0;
 	float enemyBuildTimer = 1;
 	bool quit = false;
@@ -273,7 +188,6 @@ void Game::update() {
 
 					if (overlayTimer <= 0 && hero->hp < 1) {
 						//cleanup and restart game
-						enemiesToBuild = currentMap->qtEnemies;
 						enemiesBuilt = 0;
 						enemyBuildTimer = 3;
 						overlayTimer = 2;
@@ -346,12 +260,10 @@ void Game::update() {
 			}
 		}
 
-		enemiesToBuild = 0;// currentMap->qtEnemies;
-
 		//spawn enemies
 		if (hero->hp > 0 && !splashShowing) {
 			if (currentMapEnemies.size() <= 0 && mustSpawnEnemies) {
-				spawnEnemies(enemiesToBuild);
+				spawnEnemies();
 			}
 			/*if (enemiesToBuild == enemiesBuilt && currentMapEnemies.size() <= 0) {
 				enemiesToBuild = enemiesToBuild + 6;
@@ -366,32 +278,6 @@ void Game::update() {
 
 			//enemyBuildTimer -= TimeController::timeController.dT;
 			enemyBuildTimer = 0;
-
-			//if no bosses, check if we must build globs and grobs
-			/*if (!buildBossNext && !bossActive && enemyBuildTimer <= 0 && enemiesBuilt < enemiesToBuild && currentMapEnemies.size() < 8) {
-				float grobChance = getRandomNumber(10);
-
-				if (grobChance < 3) {
-					Grob* enemy = new Grob(grobAnimSet);
-					enemy->x = getRandomNumber((Globals::ScreenWidth) - (2 * 32) - 32) + 32 + 16;
-					enemy->y = getRandomNumber((Globals::ScreenHeight) - (2 * 32) - 32) + 32 + 16;
-					enemy->invincibleTimer = 0.1;
-					currentMapEnemies.push_back(enemy);
-					Entity::entities.push_back(enemy);
-					enemiesBuilt++;
-					enemyBuildTimer = 1;
-				}
-				else {
-					Glob* enemy = new Glob(globAnimSet);
-					enemy->x = getRandomNumber((Globals::ScreenWidth) - (2 * 32) - 32) + 32 + 16;
-					enemy->y = getRandomNumber((Globals::ScreenHeight) - (2 * 32) - 32) + 32 + 16;
-					enemy->invincibleTimer = 0.1;
-					currentMapEnemies.push_back(enemy);
-					Entity::entities.push_back(enemy);
-					enemiesBuilt++;
-					enemyBuildTimer = 1;
-				}
-			}*/
 
 			//boss
 			if (buildBossNext && enemyBuildTimer <= 0 && currentMapEnemies.size() == 0) {
@@ -412,38 +298,21 @@ void Game::update() {
 				bossActive = false;
 				buildBossNext = false;
 				enemiesBuilt = 0;
-				enemiesToBuild = 2;
 				bossHpBar.entity = NULL; // when boss dies, hpbar doesnt reference him anymore
 			}
 		}
 
 		//If hero is in change map region, fade to change map
-		/*
-		if ((hero->x > currentMap->leftX1) && (hero->x < currentMap->leftX2) && (hero->y > currentMap->leftY1) && (hero->y < currentMap->leftY2)) {
-			isFading = true;
-			fadeIn = true;
-			nextMap = NextMap::LEFT;
+		for (auto& waypoint : currentMap->currentMapWaypoints) {
+			if ((hero->x > waypoint.waypointRect.x) && 
+				(hero->x < waypoint.waypointRect.x + waypoint.waypointRect.w) &&
+				(hero->y > waypoint.waypointRect.y) && 
+				(hero->y < waypoint.waypointRect.y + waypoint.waypointRect.h)) {
+				currentMap->nextMapWaypoint = waypoint;
+				isFading = true;
+				fadeIn = true;
+			}
 		}
-		else if ((hero->x >= currentMap->topX1) && (hero->x < currentMap->topX2) && (hero->y >= currentMap->topY1) && (hero->y < currentMap->topY2)) {
-			isFading = true;
-			fadeIn = true;
-			nextMap = NextMap::TOP;
-		}
-		else if ((hero->x >= currentMap->rightX1) && (hero->x < currentMap->rightX2) && (hero->y >= currentMap->rightY1) && (hero->y < currentMap->rightY2)) {
-			isFading = true;
-			fadeIn = true;
-			nextMap = NextMap::RIGHT;
-		}
-		else if ((hero->x >= currentMap->bottomX1) && (hero->x < currentMap->bottomX2) && (hero->y >= currentMap->bottomY1) && (hero->y < currentMap->bottomY2)) {
-			isFading = true;
-			fadeIn = true;
-			nextMap = NextMap::BOTTOM;
-		}
-		else {
-			isFading = false;
-			nextMap = NextMap::NONE;
-		}
-		*/
 
 		//update camera position
 		camController.update();
@@ -465,12 +334,12 @@ void Game::updateMaps() {
 			SDL_SetTextureAlphaMod(fadeImage, alpha);
 
 			if (alpha > 254) {
-				camController.isLerping = false;
+				//camController.isLerping = false;
 
 				inactivateCurrentMapItems();
 
 				// TODO: Levar essa rotina de atualizar o status do item no arquivo json
-				// pra outro lugar, e tentar melhorar
+				// pra outro lugar, e tentar melhorar pq ta muito ruim e feio
 				std::ifstream ifs(getResourcePath() + currentMap->file);
 				json mapFile = json::parse(ifs);
 
@@ -505,30 +374,10 @@ void Game::updateMaps() {
 
 				const string& resPath = getResourcePath();
 
-				if (nextMap == NextMap::LEFT) {
-					auto tempMap = std::next(mapList.begin(), currentMap->leftMapId);
-					currentMap = &(*tempMap);
-					loadTiledMap(resPath + currentMap->file);
-					hero->x = (hero->x - 960) + 32;
-				}
-				else if (nextMap == NextMap::RIGHT) {
-					auto tempMap = std::next(mapList.begin(), currentMap->rightMapId);
-					currentMap = &(*tempMap);
-					loadTiledMap(resPath + currentMap->file);
-					hero->x = (hero->x + 960) - 32;
-				}
-				else if (nextMap == NextMap::TOP) {
-					auto tempMap = std::next(mapList.begin(), currentMap->topMapId);
-					currentMap = &(*tempMap);
-					loadTiledMap(resPath + currentMap->file);
-					hero->y = (hero->y - 960) + 32;
-				}
-				else if (nextMap == NextMap::BOTTOM) {
-					auto tempMap = std::next(mapList.begin(), currentMap->bottomMapId);
-					currentMap = &(*tempMap);
-					loadTiledMap(resPath + currentMap->file);
-					hero->y = (hero->y + 960) - 32;
-				}
+				currentMap->file = currentMap->nextMapWaypoint.nextMapFile;
+				loadTiledMap(resPath + currentMap->file);
+				hero->x = currentMap->nextMapWaypoint.xDestination;
+				hero->y = currentMap->nextMapWaypoint.yDestination;
 
 				fadeIn = false;
 				fadeOut = true;
@@ -549,14 +398,14 @@ void Game::updateMaps() {
 				hero->currentMap = currentMap;
 				spawnItemsFromCurrentMap();
 				buildWalls();
-				camController.update();
+				buildWaypoints();
 				saveGame();
 			}
 		}
 		else if (alpha >= 0 && fadeOut) {
 			fadeIn = false;
 			fadeOut = true;
-			alphaCalc -= 2.0f;
+			alphaCalc -= 10.0f;
 			alpha = alphaCalc;
 			SDL_SetTextureAlphaMod(fadeImage, alpha);
 
@@ -678,12 +527,33 @@ void Game::buildWalls() {
 	}
 }
 
+void Game::buildWaypoints() {
+	auto tMap = tiledMap.get();
+	if (tMap == nullptr) {
+		cout << "Mapa nulo" << endl;
+		return;
+	}
+
+	auto layer = tMap->getLayer("Waypoints");
+	for (auto object : layer->getObjects()) {
+		Map::Waypoint waypoint;
+		waypoint.nextMapFile = std::any_cast<string>(object.getProp("nextMapFileName")->getValue());
+		waypoint.xDestination = std::any_cast<int>(object.getProp("xDest")->getValue());
+		waypoint.yDestination = std::any_cast<int>(object.getProp("yDest")->getValue());
+		waypoint.waypointRect.x = object.getPosition().x;
+		waypoint.waypointRect.y = object.getPosition().y;
+		waypoint.waypointRect.w = object.getSize().x;
+		waypoint.waypointRect.h = object.getSize().y;
+
+		currentMap->currentMapWaypoints.push_back(waypoint);
+	}
+}
+
 void Game::draw() {
 	// clear screen
 	SDL_SetRenderDrawColor(Globals::renderer, 145, 133, 129, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(Globals::renderer);
 
-	//TESTE
 	if (splashShowing) {
 		renderTexture(splashImage, Globals::renderer, 0, 0);
 	}
@@ -729,7 +599,7 @@ void Game::draw() {
 	SDL_RenderPresent(Globals::renderer);
 }
 
-void Game::spawnEnemies(int enemiesToBuild) {
+void Game::spawnEnemies() {
 	auto tMap = tiledMap.get();
 	if (tMap == nullptr) {
 		cout << "Mapa nulo" << endl;
@@ -746,7 +616,7 @@ void Game::spawnEnemies(int enemiesToBuild) {
 		enemyPosX = object.getPosition().x;
 		enemyPosY = object.getPosition().y;
 		switch (enemyId) {
-		case 0:
+		case 0: // Glob
 			if (deadEnemiesIds.empty() ||
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
 					Glob* enemy = new Glob(globAnimSet);
@@ -758,7 +628,7 @@ void Game::spawnEnemies(int enemiesToBuild) {
 					Entity::entities.push_back(enemy);
 			}
 			break;
-		case 1:
+		case 1: // Termite
 			if (deadEnemiesIds.empty() ||
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
 					TermiteMiner* enemy = new TermiteMiner(termiteMinerAnimSet);

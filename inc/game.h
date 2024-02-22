@@ -68,14 +68,6 @@ public:
 	int mapToDrawCount;
 	Map* currentMap;
 	list<Map> mapList;
-	enum class NextMap {
-		NONE,
-		LEFT,
-		TOP,
-		RIGHT,
-		BOTTOM
-	};
-	NextMap nextMap;
 
 	Hero* hero;
 	KeyboardInput heroKeyboardInput;
@@ -117,7 +109,8 @@ private:
 	void loadTiledMap(const string& mapFile);
 	void renderTiles();
 	void buildWalls();
-	void spawnEnemies(int enemiesToBuild);
+	void buildWaypoints();
+	void spawnEnemies();
 	void spawnItem(int itemId, int quant, int xPos, int yPos);
 	void loadAnimationSets();
 	void spawnItemsFromCurrentMap();

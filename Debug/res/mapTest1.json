@@ -170,11 +170,22 @@
                  "id":7,
                  "name":"",
                  "properties":[
-                        {
-                         "name":"nextMapFileName",
-                         "type":"string",
-                         "value":"mapText2.json"
-                        }],
+                  {
+                    "name": "nextMapFileName",
+                    "type": "string",
+                    "value": "mapTest2.json"
+                  },
+                  {
+                    "name": "xDest",
+                    "type": "int",
+                    "value": 92
+                  },
+                  {
+                    "name": "yDest",
+                    "type": "int",
+                    "value": 112
+                  }
+                 ],
                  "rotation":0,
                  "type":"",
                  "visible":true,
