@@ -314,11 +314,14 @@ void Game::update() {
 			}
 		}
 
-		//update camera position
-		camController.update();
-
 		// draw all entites
 		draw();
+
+		// update camera position
+		camController.update();
+
+		// framerate
+		// cout << TimeController::timeController.dT << endl;
 	}
 }
 
@@ -462,35 +465,41 @@ void Game::renderTiles() {
 				bool hasAnimation = tileObject.getTile()->getAnimation().any();
 				tson::Rect drawingRect;
 
-				if (!hasAnimation) {
-					drawingRect = tileObject.getDrawingRect();
-				}
+				// Only render the tile if it's id is different from the tileset's firstGid, because
+				// the first tile of each tileset is a blank tile to fill the layer and doesnt need to
+				// be drawn
+				if (tileObject.getTile()->getGid() != tileset->getFirstgid()) {
 
-				tilesetName = tileset->getImage().filename().string();
-				if (auto search = texturesCache.find(tilesetName); search != texturesCache.end()) {
-					texture = search->second;
-				}
-				else {
-					tilesetPath = resPath + "Assets\\Textures\\" + tileset->getImage().filename().string();
-					texture = loadTexture(tilesetPath, Globals::renderer);
-					texturesCache.emplace(tilesetName, texture);
-				}
+					if (!hasAnimation) {
+						drawingRect = tileObject.getDrawingRect();
+					}
 
-				if (texture == nullptr) return;
+					tilesetName = tileset->getImage().filename().string();
+					if (auto search = texturesCache.find(tilesetName); search != texturesCache.end()) {
+						texture = search->second;
+					}
+					else {
+						tilesetPath = resPath + "Assets\\Textures\\" + tileset->getImage().filename().string();
+						texture = loadTexture(tilesetPath, Globals::renderer);
+						texturesCache.emplace(tilesetName, texture);
+					}
 
-				SDL_Rect tileRect;
-				tileRect.x = tileObject.getDrawingRect().x;
-				tileRect.y = tileObject.getDrawingRect().y;
-				tileRect.w = tileObject.getDrawingRect().width;
-				tileRect.h = tileObject.getDrawingRect().height;			
+					if (texture == nullptr) return;
 
-				SDL_Rect renderTile;
-				renderTile.x = (x * 32) - Globals::camera.x;
-				renderTile.y = (y * 32) - Globals::camera.y;
-				renderTile.w = 32;
-				renderTile.h = 32;
+					SDL_Rect tileRect;
+					tileRect.x = tileObject.getDrawingRect().x;
+					tileRect.y = tileObject.getDrawingRect().y;
+					tileRect.w = tileObject.getDrawingRect().width;
+					tileRect.h = tileObject.getDrawingRect().height;
 
-				SDL_RenderCopy(Globals::renderer, texture, &tileRect, &renderTile);
+					SDL_Rect renderTile;
+					renderTile.x = (x * 32) - Globals::camera.x;
+					renderTile.y = (y * 32) - Globals::camera.y;
+					renderTile.w = 32;
+					renderTile.h = 32;
+
+					SDL_RenderCopy(Globals::renderer, texture, &tileRect, &renderTile);
+				}				
 
 				y++;
 				if (y >= 32) {

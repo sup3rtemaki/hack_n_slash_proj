@@ -1,5 +1,5 @@
 { "columns":8,
- "image":"..\\Textures\\dungeon_doors.png",
+ "image":"..\/..\/..\/..\/..\/..\/Tiled\/Texture\/dungeon_doors.png",
  "imageheight":256,
  "imagewidth":256,
  "margin":0,
@@ -9,110 +9,6 @@
  "tiledversion":"1.10.2",
  "tileheight":32,
  "tiles":[
-        {
-         "id":0,
-         "objectgroup":
-            {
-             "draworder":"index",
-             "id":2,
-             "name":"",
-             "objects":[
-                    {
-                     "height":16,
-                     "id":1,
-                     "name":"Wall",
-                     "rotation":0,
-                     "type":"",
-                     "visible":true,
-                     "width":32,
-                     "x":0,
-                     "y":16
-                    }],
-             "opacity":1,
-             "type":"objectgroup",
-             "visible":true,
-             "x":0,
-             "y":0
-            }
-        },
-        {
-         "id":1,
-         "objectgroup":
-            {
-             "draworder":"index",
-             "id":2,
-             "name":"",
-             "objects":[
-                    {
-                     "height":16,
-                     "id":1,
-                     "name":"Wall",
-                     "rotation":0,
-                     "type":"",
-                     "visible":true,
-                     "width":32,
-                     "x":0,
-                     "y":16
-                    }],
-             "opacity":1,
-             "type":"objectgroup",
-             "visible":true,
-             "x":0,
-             "y":0
-            }
-        },
-        {
-         "id":6,
-         "objectgroup":
-            {
-             "draworder":"index",
-             "id":2,
-             "name":"",
-             "objects":[
-                    {
-                     "height":32,
-                     "id":1,
-                     "name":"Wall",
-                     "rotation":0,
-                     "type":"",
-                     "visible":true,
-                     "width":4,
-                     "x":0,
-                     "y":0
-                    }],
-             "opacity":1,
-             "type":"objectgroup",
-             "visible":true,
-             "x":0,
-             "y":0
-            }
-        },
-        {
-         "id":7,
-         "objectgroup":
-            {
-             "draworder":"index",
-             "id":2,
-             "name":"",
-             "objects":[
-                    {
-                     "height":32,
-                     "id":1,
-                     "name":"Wall",
-                     "rotation":0,
-                     "type":"",
-                     "visible":true,
-                     "width":4,
-                     "x":28,
-                     "y":0
-                    }],
-             "opacity":1,
-             "type":"objectgroup",
-             "visible":true,
-             "x":0,
-             "y":0
-            }
-        },
         {
          "id":8,
          "objectgroup":
@@ -138,7 +34,7 @@
              "x":0,
              "y":0
             }
-        },
+        }, 
         {
          "id":9,
          "objectgroup":
@@ -164,7 +60,7 @@
              "x":0,
              "y":0
             }
-        },
+        }, 
         {
          "id":14,
          "objectgroup":
@@ -190,9 +86,113 @@
              "x":0,
              "y":0
             }
-        },
+        }, 
         {
          "id":15,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "id":2,
+             "name":"",
+             "objects":[
+                    {
+                     "height":32,
+                     "id":1,
+                     "name":"Wall",
+                     "rotation":0,
+                     "type":"",
+                     "visible":true,
+                     "width":4,
+                     "x":28,
+                     "y":0
+                    }],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        }, 
+        {
+         "id":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "id":2,
+             "name":"",
+             "objects":[
+                    {
+                     "height":32,
+                     "id":1,
+                     "name":"Wall",
+                     "rotation":0,
+                     "type":"",
+                     "visible":true,
+                     "width":32,
+                     "x":0,
+                     "y":0
+                    }],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        }, 
+        {
+         "id":17,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "id":2,
+             "name":"",
+             "objects":[
+                    {
+                     "height":32,
+                     "id":1,
+                     "name":"Wall",
+                     "rotation":0,
+                     "type":"",
+                     "visible":true,
+                     "width":32,
+                     "x":0,
+                     "y":0
+                    }],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        }, 
+        {
+         "id":22,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "id":2,
+             "name":"",
+             "objects":[
+                    {
+                     "height":32,
+                     "id":1,
+                     "name":"Wall",
+                     "rotation":0,
+                     "type":"",
+                     "visible":true,
+                     "width":4,
+                     "x":0,
+                     "y":0
+                    }],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        }, 
+        {
+         "id":23,
          "objectgroup":
             {
              "draworder":"index",
