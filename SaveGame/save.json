@@ -1,8 +1,8 @@
 {
-    "currentMapFile": "mapTest1.json",
+    "currentMapFile": "warrior_birth.json",
     "heroHp": 5,
-    "heroX": 955,
-    "heroY": 174,
+    "heroX": 735,
+    "heroY": 448,
     "inventory": [
         {
             "id": 0,

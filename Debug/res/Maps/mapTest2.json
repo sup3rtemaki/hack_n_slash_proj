@@ -2218,11 +2218,11 @@
   "tilesets": [
     {
       "firstgid": 1,
-      "source": "Assets\\Tilesets\\Grass.json"
+      "source": "..\\Assets\\Tilesets\\Grass.json"
     },
     {
       "firstgid": 65,
-      "source": "Assets\\Tilesets\\Props.json"
+      "source": "..\\Assets\\Tilesets\\Props.json"
     }
   ],
   "tilewidth": 32,

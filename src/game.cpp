@@ -14,6 +14,9 @@ tson::Tileson tileson; // Tileson global instance
 std::unique_ptr<tson::Map> tiledMap; // Tiled map
 std::map<std::tuple<int, int>, tson::Tile*> tileData;
 
+const string MAPS_FOLDER_PATH = "Maps\\";
+const string TEXTURES_FOLDER_PATH = "Assets\\Textures\\";
+
 Game::Game() {
 	//TODO: Criar método initialize ou algo do tipo pra encapsular tudo isso
 	string resPath = getResourcePath();
@@ -61,7 +64,7 @@ Game::Game() {
 	currentMap = new Map();
 	currentMap->file = saveHandler.getCurrentMapFile();
 
-	loadTiledMap(resPath + currentMap->file);
+	loadTiledMap(resPath + MAPS_FOLDER_PATH + currentMap->file);
 
 	buildWalls();
 	buildWaypoints();
@@ -343,7 +346,7 @@ void Game::updateMaps() {
 
 				// TODO: Levar essa rotina de atualizar o status do item no arquivo json
 				// pra outro lugar, e tentar melhorar pq ta muito ruim e feio
-				std::ifstream ifs(getResourcePath() + currentMap->file);
+				std::ifstream ifs(getResourcePath() + MAPS_FOLDER_PATH + currentMap->file);
 				json mapFile = json::parse(ifs);
 
 				for (auto const& i : currentMap->itemsInMap) {
@@ -378,7 +381,7 @@ void Game::updateMaps() {
 				const string& resPath = getResourcePath();
 
 				currentMap->file = currentMap->nextMapWaypoint.nextMapFile;
-				loadTiledMap(resPath + currentMap->file);
+				loadTiledMap(resPath + MAPS_FOLDER_PATH + currentMap->file);
 				hero->x = currentMap->nextMapWaypoint.xDestination;
 				hero->y = currentMap->nextMapWaypoint.yDestination;
 
@@ -449,15 +452,22 @@ void Game::renderTiles() {
 
 	const string resPath = getResourcePath();
 	string tilesetName;
-	string tilesetPath;
+	string tilesetTexturePath;
 	int x = 0;
 	int y = 0;
 	SDL_Texture* texture = nullptr;
 	for (auto layer : currentMap->getLayers()) {
-		if (&layer == nullptr) return;
+		if (&layer == nullptr) {
+			cout << "layer null" << endl;
+		}
+
+		layer.resolveFlaggedTiles();
 
 		for (auto& [pos, tileObject] : layer.getTileObjects()) { //Loops through absolutely all existing tiles
-			if (tileObject.getTile() == nullptr) return;
+			if (tileObject.getTile() == nullptr) {
+				cout << "tile null" << endl;
+				return;
+			}
 
 			if (layer.getType() == tson::LayerType::TileLayer) {
 				//Set sprite data to draw the tile
@@ -465,10 +475,12 @@ void Game::renderTiles() {
 				bool hasAnimation = tileObject.getTile()->getAnimation().any();
 				tson::Rect drawingRect;
 
-				// Only render the tile if it's id is different from the tileset's firstGid, because
-				// the first tile of each tileset is a blank tile to fill the layer and doesnt need to
-				// be drawn
-				if (tileObject.getTile()->getGid() != tileset->getFirstgid()) {
+
+				// Only render the tile if its not marked as transparent
+				// Some empty tiles are marked as transparent to fill the layer, but they doesnt
+				// need to be drawn
+				bool isTransparentTile = std::any_cast<bool>(tileObject.getTile()->getProp("isTransparent")->getValue());
+				if (!isTransparentTile) {
 
 					if (!hasAnimation) {
 						drawingRect = tileObject.getDrawingRect();
@@ -479,12 +491,15 @@ void Game::renderTiles() {
 						texture = search->second;
 					}
 					else {
-						tilesetPath = resPath + "Assets\\Textures\\" + tileset->getImage().filename().string();
-						texture = loadTexture(tilesetPath, Globals::renderer);
+						tilesetTexturePath = resPath + TEXTURES_FOLDER_PATH + tileset->getImage().filename().string();
+						texture = loadTexture(tilesetTexturePath, Globals::renderer);
 						texturesCache.emplace(tilesetName, texture);
 					}
 
-					if (texture == nullptr) return;
+					if (texture == nullptr) {
+						cout << "texture null " << tilesetName << endl;
+						return;
+					}
 
 					SDL_Rect tileRect;
 					tileRect.x = tileObject.getDrawingRect().x;
@@ -499,7 +514,7 @@ void Game::renderTiles() {
 					renderTile.h = 32;
 
 					SDL_RenderCopy(Globals::renderer, texture, &tileRect, &renderTile);
-				}				
+				}			
 
 				y++;
 				if (y >= 32) {
@@ -609,6 +624,8 @@ void Game::draw() {
 }
 
 void Game::spawnEnemies() {
+	mustSpawnEnemies = false;
+
 	auto tMap = tiledMap.get();
 	if (tMap == nullptr) {
 		cout << "Mapa nulo" << endl;
@@ -619,6 +636,10 @@ void Game::spawnEnemies() {
 	int uniqueId;
 	int counter = 0;
 	auto layer = tMap->getLayer("EnemiesSpawn");
+	if (layer == nullptr) {
+		return;
+	}
+
 	for (auto object : layer->getObjects()) {
 		int enemyId = std::any_cast<int>(object.getProp("enemyId")->getValue());
 		uniqueId = (enemyId * 10) + counter;
@@ -654,8 +675,6 @@ void Game::spawnEnemies() {
 			
 		}
 	}
-
-	mustSpawnEnemies = false;
 }
 
 void Game::spawnItem(int itemId, int quant, int xPos, int yPos) {

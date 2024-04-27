@@ -265,19 +265,19 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"Assets\\Tilesets\\Earth_Underground.json"
+         "source":"..\\Assets\\Tilesets\\Earth_Underground.json"
         },
         {
          "firstgid":257,
-         "source":"Assets\\Tilesets\\Moss_Stone_Walls_Underground.json"
+         "source":"..\\Assets\\Tilesets\\Moss_Stone_Walls_Underground.json"
         },
         {
          "firstgid":385,
-         "source":"Assets\\Tilesets\\Dungeon_Floor.json"
+         "source":"..\\Assets\\Tilesets\\Dungeon_Floor.json"
         },
         {
          "firstgid":449,
-         "source":"Assets\\Tilesets\\Dungeon_Doors.json"
+         "source":"..\\Assets\\Tilesets\\Dungeon_Doors.json"
         }],
  "tilewidth":32,
  "type":"map",

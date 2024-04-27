@@ -1,0 +1,4238 @@
+{
+  "columns": 16,
+  "image": "..\\Textures\\adult_ant_cocoon_prop.png",
+  "imageheight": 512,
+  "imagewidth": 512,
+  "margin": 0,
+  "name": "Adult_Ant_Aocoon_Prop",
+  "spacing": 0,
+  "tilecount": 256,
+  "tiledversion": "1.10.2",
+  "tileheight": 32,
+  "tiles": [
+    {
+      "id": 0,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 3,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 3,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 65,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 66,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 67,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 68,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 69,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 71,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 72,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 73,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 74,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 75,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 76,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 77,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 78,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 79,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 80,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 81,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 82,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 83,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 84,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 85,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 86,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 87,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 88,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 89,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 90,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 91,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 92,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 93,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 94,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 95,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 96,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 97,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 98,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 99,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 100,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 101,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 102,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 104,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 105,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 106,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 107,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 108,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 109,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 110,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 111,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 112,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 113,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 114,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 115,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 116,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 117,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 118,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 119,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 120,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 121,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 122,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 123,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 124,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 125,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 126,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 127,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 128,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 129,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 130,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 131,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 132,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 133,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 134,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 135,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 136,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 137,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 138,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 139,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 140,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 141,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 142,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 143,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 144,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 145,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 146,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 147,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 148,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 149,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 150,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 151,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 152,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 153,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 154,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 155,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 156,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 157,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 158,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 159,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 160,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 161,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 32,
+            "id": 1,
+            "name": "Wall",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 32,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 162,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 163,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 164,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 165,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 166,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 167,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 168,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 169,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 170,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 171,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 172,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 173,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 174,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": 175,
+      "properties": [
+        {
+          "name": "isTransparent",
+          "type": "bool",
+          "value": false
+        }
+      ]
+    }
+  ],
+  "tilewidth": 32,
+  "type": "tileset",
+  "version": "1.10"
+}
