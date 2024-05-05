@@ -38,6 +38,7 @@ public:
 	AnimationSet* bulletAnimSet;
 	AnimationSet* hDewPotionAnimSet;
 	AnimationSet* stoneProjectileAnimSet;
+	AnimationSet* doubleDoorsAnimSet;
 
 	SDL_Texture* backGroundImage;
 	SDL_Texture* fadeImage;
@@ -108,6 +109,7 @@ private:
 	void updateMaps();
 	void loadTiledMap(const string& mapFile);
 	void renderTiles();
+	void buildDoors();
 	void buildWalls();
 	void buildWaypoints();
 	void spawnEnemies();

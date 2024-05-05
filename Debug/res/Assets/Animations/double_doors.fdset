@@ -1,0 +1,122 @@
+Assets\\Textures\\double_doors.png
+animations: 9
+doubleBlackDoorClosed
+frames: 1
+frame
+clip: 0 63 64 64
+offset: 0 32
+duration: 0.5
+index: 0
+collisionBox: 0 0 64 64
+doubleBlackDoorOpening
+frames: 4
+frame
+clip: 0 63 64 64
+offset: 0 32
+duration: 0.2
+index: 0
+collisionBox: 0 0 64 64
+frame
+clip: 64 63 64 64
+offset: 0 32
+duration: 0.2
+index: 1
+collisionBox: 0 0 64 64
+frame
+clip: 128 63 64 64
+offset: 0 32
+duration: 0.2
+index: 2
+collisionBox: 0 0 64 64
+frame
+clip: 192 63 64 64
+offset: 0 32
+duration: 0.2
+index: 3
+doubleBlackDoorOpen
+frames: 1
+frame
+clip: 192 63 64 64
+offset: 0 32
+duration: 0.5
+index: 0
+doubleHWoodenDoorClosed
+frames: 1
+frame
+clip: 0 128 64 64
+offset: 0 32
+duration: 0.5
+index: 0
+collisionBox: 0 0 64 64
+doubleHWoodenDoorOpening
+frames: 4
+frame
+clip: 0 128 64 64
+offset: 0 32
+duration: 0.2
+index: 0
+collisionBox: 0 0 64 64
+frame
+clip: 64 128 64 64
+offset: 0 32
+duration: 0.2
+index: 1
+collisionBox: 0 0 64 64
+frame
+clip: 128 128 64 64
+offset: 0 32
+duration: 0.2
+index: 2
+collisionBox: 0 0 64 64
+frame
+clip: 192 128 64 64
+offset: 0 32
+duration: 0.2
+index: 3
+doubleHWoodenDoorOpen
+frames: 1
+frame
+clip: 192 128 64 64
+offset: 0 32
+duration: 0.5
+index: 0
+doubleChitinDoorClosed
+frames: 1
+frame
+clip: 0 192 64 64
+offset: 0 32
+duration: 0.5
+index: 0
+collisionBox: 0 0 64 64
+doubleChitinDoorOpening
+frames: 4
+frame
+clip: 0 192 64 64
+offset: 0 32
+duration: 0.2
+index: 0
+collisionBox: 0 0 64 64
+frame
+clip: 64 192 64 64
+offset: 0 32
+duration: 0.2
+index: 1
+collisionBox: 0 0 64 64
+frame
+clip: 128 194 64 64
+offset: 0 32
+duration: 0.2
+index: 2
+collisionBox: 0 0 64 64
+frame
+clip: 192 192 64 64
+offset: 0 32
+duration: 0.2
+index: 3
+doubleChitinDoorOpen
+frames: 1
+frame
+clip: 192 192 64 64
+offset: 0 32
+duration: 0.5
+index: 0

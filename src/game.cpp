@@ -1,5 +1,7 @@
 #include "game.h"
 
+#include "door.h"
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -68,6 +70,7 @@ Game::Game() {
 
 	buildWalls();
 	buildWaypoints();
+	buildDoors();
 
 	// build hero entity
 	hero = new Hero(heroAnimSet);
@@ -261,6 +264,14 @@ void Game::update() {
 				spawnItem((*entity)->dropItemId, (*entity)->dropItemQty, (*entity)->dropItemXPos, (*entity)->dropItemYPos);
 				(*entity)->dropItemFlag = false; // Failsafe
 			}
+
+			if (dynamic_cast<Door*>((*entity)) != nullptr) {
+				Door* d = (Door*)(*entity);
+				if (d->isClosed &&
+					(Entity::distanceBetweenTwoPoints(hero->x, hero->y + (hero->collisionBoxYOffset / 2), d->x + 32, d->y) < 60.0)) {
+					cout << "Perto da porta" << endl;
+				}
+			}
 		}
 
 		//spawn enemies
@@ -405,6 +416,7 @@ void Game::updateMaps() {
 				spawnItemsFromCurrentMap();
 				buildWalls();
 				buildWaypoints();
+				buildDoors();
 				saveGame();
 			}
 		}
@@ -461,8 +473,6 @@ void Game::renderTiles() {
 			cout << "layer null" << endl;
 		}
 
-		layer.resolveFlaggedTiles();
-
 		for (auto& [pos, tileObject] : layer.getTileObjects()) { //Loops through absolutely all existing tiles
 			if (tileObject.getTile() == nullptr) {
 				cout << "tile null" << endl;
@@ -508,10 +518,10 @@ void Game::renderTiles() {
 					tileRect.h = tileObject.getDrawingRect().height;
 
 					SDL_Rect renderTile;
-					renderTile.x = (x * 32) - Globals::camera.x;
-					renderTile.y = (y * 32) - Globals::camera.y;
-					renderTile.w = 32;
-					renderTile.h = 32;
+					renderTile.x = (x * tileRect.w) - Globals::camera.x;
+					renderTile.y = (y * tileRect.h) - Globals::camera.y;
+					renderTile.w = tileRect.w;
+					renderTile.h = tileRect.h;
 
 					SDL_RenderCopy(Globals::renderer, texture, &tileRect, &renderTile);
 				}			
@@ -525,6 +535,41 @@ void Game::renderTiles() {
 					}
 				}
 			}
+		}
+	}
+}
+
+void Game::buildDoors() {
+	auto tMap = tiledMap.get();
+	if (tMap == nullptr) {
+		cout << "Mapa nulo" << endl;
+		return;
+	}
+
+	auto layer = tMap->getLayer("Doors");
+	if (layer == nullptr) return;
+
+	for (auto& [pos, tileObject] : layer->getTileObjects()) {
+		auto animPrefixProp = tileObject.getTile()->getProp("animPrefix");
+		auto isClosedProp = tileObject.getTile()->getProp("isClosed");
+		auto animSetProp = tileObject.getTile()->getProp("animSet");
+
+		if (animPrefixProp == nullptr ||
+			isClosedProp == nullptr ||
+			animSetProp == nullptr) continue;
+
+		string animName = std::any_cast<string>(animSetProp->getValue());
+		if (animName == "doubleDoors") {
+			Door* door = new Door(
+				doubleDoorsAnimSet,
+				std::any_cast<string>(animPrefixProp->getValue()),
+				std::any_cast<bool>(isClosedProp->getValue()),
+				tileObject.getTile()->getPosition(pos).x,
+				tileObject.getTile()->getPosition(pos).y,
+				64,
+				64,
+				-32);
+			Entity::entities.push_back(door);
 		}
 	}
 }
@@ -754,6 +799,9 @@ void Game::loadAnimationSets() {
 
 	stoneProjectileAnimSet = new AnimationSet();
 	stoneProjectileAnimSet->loadAnimationSet("stoneProjectile.fdset", dataGroupTypes, true, 0, true);
+
+	doubleDoorsAnimSet = new AnimationSet();
+	doubleDoorsAnimSet->loadAnimationSet("Assets\\Animations\\double_doors.fdset", dataGroupTypes);
 }
 
 void Game::spawnItemsFromCurrentMap() {

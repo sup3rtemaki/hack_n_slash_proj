@@ -90,7 +90,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\src\item;D:\Workspaces\Cpp\aula_sdl2\inc\item;D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\inc\npcs;D:\Workspaces\Cpp\aula_sdl2\src\npcs;D:\Workspaces\Cpp\aula_sdl2\src\item;D:\Workspaces\Cpp\aula_sdl2\inc\item;D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -108,7 +108,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\src\item;D:\Workspaces\Cpp\aula_sdl2\inc\item;D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\inc\npcs;D:\Workspaces\Cpp\aula_sdl2\src\npcs;D:\Workspaces\Cpp\aula_sdl2\src\item;D:\Workspaces\Cpp\aula_sdl2\inc\item;D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -180,6 +180,7 @@
     <ClCompile Include="src\livingEntity.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\map.cpp" />
+    <ClCompile Include="src\npcs\door.cpp" />
     <ClCompile Include="src\projectiles\stoneProjectile.cpp" />
     <ClCompile Include="src\randomNumber.cpp" />
     <ClCompile Include="src\res_path.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="inc\keyboardInput.h" />
     <ClInclude Include="inc\livingEntity.h" />
     <ClInclude Include="inc\map.h" />
+    <ClInclude Include="inc\npcs\door.h" />
     <ClInclude Include="inc\projectiles\stoneProjectile.h" />
     <ClInclude Include="inc\randomNumber.h" />
     <ClInclude Include="inc\res_path.h" />
