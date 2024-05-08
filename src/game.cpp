@@ -99,6 +99,7 @@ Game::Game() {
 
 	quickItemUi = new QuickItemUi(hero);
 	itemPickMessageUi = new ItemPickMessageUi(hero);
+	actionMessageUi = new ActionMessageUi();
 
 	buildBossNext = false;
 	bossActive = false;
@@ -269,7 +270,10 @@ void Game::update() {
 				Door* d = (Door*)(*entity);
 				if (d->isClosed &&
 					(Entity::distanceBetweenTwoPoints(hero->x, hero->y + (hero->collisionBoxYOffset / 2), d->x + 32, d->y) < 60.0)) {
-					cout << "Perto da porta" << endl;
+					// Teste
+					actionMessageUi->setMessage("Open door");
+					// d->openDoor();
+					// d->update();
 				}
 			}
 		}
@@ -404,9 +408,9 @@ void Game::updateMaps() {
 					(*enemy)->active = false;
 				}
 
-				// Remove walls
+				// Remove walls and doors
 				for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
-					if ((*entity)->type == "wall") {
+					if ((*entity)->type == "wall" || (*entity)->type == "door") {
 						(*entity)->active = false;
 					}
 				}
@@ -641,6 +645,7 @@ void Game::draw() {
 		//TODO: Encapsular desenho de UI
 		quickItemUi->draw();
 		itemPickMessageUi->draw();
+		actionMessageUi->draw();
 
 		//draw UI stuff
 		heroHpBar.draw();
@@ -657,7 +662,7 @@ void Game::draw() {
 				ss << "Enemies dispatched: " << Glob::globsKilled + Grob::grobsKilled + RoundKing::roundKingsKilled;
 
 				string resPath = getResourcePath();
-				scoreTexture = renderText(ss.str(), resPath + "vermin_vibes_1989.ttf", color, 30, Globals::renderer);
+				scoreTexture = renderText(ss.str(), resPath + Ui::FONTS_PATH + "vermin_vibes_1989.ttf", color, 30, Globals::renderer);
 			}
 
 			renderTexture(scoreTexture, Globals::renderer, 20, 50);

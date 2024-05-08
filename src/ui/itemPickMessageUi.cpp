@@ -1,7 +1,7 @@
 #include "ui/itemPickMessageUi.h"
 
 
-const string FONT_FILE = "vermin_vibes_1989.ttf";
+const string FONT_FILE = "alagard.ttf";;
 const int FONT_X = 20;
 const int FONT_Y = 280;
 const int FONT_SIZE = 16;
@@ -23,25 +23,27 @@ void ItemPickMessageUi::draw() {
 		itemName = hero->addedItemName;
 	}
 
-	if (timer <= 0) {
-		fontTexture = nullptr;
-	}
-	else {
+	if (timer > 0) {
 		stringstream message;
 		message << "Looted " << hero->qtyItemsPicked << " " << itemName;
 
-		fontTexture = renderText(
-			message.str(),
-			resPath + FONT_FILE,
-			color,
-			FONT_SIZE,
-			Globals::renderer
-		);
+		if (fontTexture == nullptr) {
+			fontTexture = renderText(
+				message.str(),
+				resPath + FONTS_PATH + FONT_FILE,
+				color,
+				FONT_SIZE,
+				Globals::renderer
+			);
+		}
+
 		renderTexture(fontTexture, Globals::renderer, FONT_X, FONT_Y);
 
 		timer -= TimeController::timeController.dT;
 		hero->addedItemName = "";
 	}
+
+	fontTexture = nullptr;
 }
 
 void ItemPickMessageUi::setUp() {

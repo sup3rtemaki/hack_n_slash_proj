@@ -6,11 +6,22 @@
 
 class Ui {
 public:
+	static const string HUD_TEXTURES_PATH;
+	static const string FONTS_PATH;
+
 	Ui();
 	~Ui();
 
 	virtual void draw() = 0;
 	virtual void setUp() = 0;
+
+protected:
+	void drawHorizontalGradientBox(SDL_Renderer* renderer,
+		const int x, const int y, const int w, const int h, const float steps,
+		const SDL_Color c1, const SDL_Color c2, const int fill);
+	void drawVerticalGradientBox(SDL_Renderer* renderer,
+		const int x, const int y, const int w, const int h, const float steps,
+		const SDL_Color c1, const SDL_Color c2, const int fill);
 };
 
 #endif // !UI

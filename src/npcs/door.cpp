@@ -70,7 +70,6 @@ void Door::updateAnimation() {
 		//if we are at the end of animation
 		if (currentFrame->frameNumber == currentAnim->getEndFrameNumber()) {
 			if (state == DOOR_STATE_OPENING) {
-				isClosed = false;
 				changeAnimation(DOOR_STATE_OPEN, true);
 			}
 		}
@@ -92,4 +91,5 @@ void Door::updateCollisionBox() {
 
 void Door::openDoor() {
 	changeAnimation(DOOR_STATE_OPENING, true);
+	isClosed = false;
 }

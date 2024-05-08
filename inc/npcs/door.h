@@ -14,6 +14,7 @@ public:
 
 	string animPrefix;
 	bool isClosed;
+	bool isLocked;
 
 	Door(AnimationSet* animSet, string prefix, bool isClosed, int posX, int posY, int width, int height, int collisionBoxYOffset);
 

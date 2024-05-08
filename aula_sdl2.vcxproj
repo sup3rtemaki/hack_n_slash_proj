@@ -188,6 +188,7 @@
     <ClCompile Include="src\soundManager.cpp" />
     <ClCompile Include="src\termiteMiner.cpp" />
     <ClCompile Include="src\timeController.cpp" />
+    <ClCompile Include="src\ui\actionMessageUi.cpp" />
     <ClCompile Include="src\ui\itemPickMessageUi.cpp" />
     <ClCompile Include="src\ui\quickItemUi.cpp" />
     <ClCompile Include="src\ui\ui.cpp" />
@@ -234,6 +235,7 @@
     <ClInclude Include="inc\termiteMiner.h" />
     <ClInclude Include="inc\tileson\tileson.hpp" />
     <ClInclude Include="inc\timeController.h" />
+    <ClInclude Include="inc\ui\actionMessageUi.h" />
     <ClInclude Include="inc\ui\itemPickMessageUi.h" />
     <ClInclude Include="inc\ui\quickItemUi.h" />
     <ClInclude Include="inc\ui\ui.h" />
