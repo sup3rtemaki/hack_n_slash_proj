@@ -16,13 +16,13 @@ public:
 	bool isClosed;
 	bool isLocked;
 
-	Door(AnimationSet* animSet, string prefix, bool isClosed, int posX, int posY, int width, int height, int collisionBoxYOffset);
+	Door(AnimationSet* animSet, int id, string prefix, bool isClosed, int posX, int posY, int width, int height, int collisionBoxYOffset);
 
 	void update();
 	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");
 	void updateAnimation();
 	void updateCollisionBox();
-	void openDoor();
+	void open();
 };
 
 #endif // !DOOR

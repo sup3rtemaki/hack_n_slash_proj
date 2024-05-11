@@ -70,6 +70,7 @@ public:
 	int mapToDrawCount;
 	Map* currentMap;
 	list<Map> mapList;
+	vector<int> openDoorsIds;
 
 	Hero* hero;
 	KeyboardInput heroKeyboardInput;
@@ -111,6 +112,7 @@ private:
 	void updateMaps();
 	void loadTiledMap(const string& mapFile);
 	void renderTiles();
+	void checkOpenDoors();
 	void buildDoors();
 	void buildWalls();
 	void buildWaypoints();

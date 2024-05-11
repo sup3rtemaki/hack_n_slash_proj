@@ -9,6 +9,7 @@
 
 class Map {
 public:
+	int id;
 	string file;
 
 	vector<tuple<int, int, int>> enemies; // <id, x, y>

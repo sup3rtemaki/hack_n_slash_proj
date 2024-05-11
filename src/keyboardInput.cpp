@@ -23,7 +23,8 @@ void KeyboardInput::update(SDL_Event* e){
 			hero->useSelectedItemQuickAccess();
 		}
 		if (e->key.keysym.scancode == SDL_SCANCODE_S) {
-			hero->pickNearItemFromGround();
+			//hero->pickNearItemFromGround();
+			hero->takeAction();
 		}
 
 		if (e->key.keysym.scancode == SDL_SCANCODE_F) {

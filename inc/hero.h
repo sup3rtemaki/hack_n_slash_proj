@@ -10,6 +10,12 @@
 #include <unordered_map>
 #include <vector>
 
+enum class HeroActions {
+	PICK_NEAR_ITEM,
+	OPEN_DOOR,
+	NONE
+};
+
 class Hero : public LivingEntity {
 public:
 	static const string HERO_ANIM_UP;
@@ -57,6 +63,7 @@ public:
 	int honeydewQty;
 	int qtyItemsPicked;
 
+	class Door* nearestDoor;
 	map<int, Item*> inventory;
 	vector<int> quickAccessInventory = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 	unordered_map<int, Item*> passiveSlots;
@@ -75,16 +82,17 @@ public:
 	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");
 	void updateAnimation();
 	void updateDamages();
+	void takeAction();
 	//void checkNearItem(Item* item);
 	void addItemToInventory(Item* item);
 	void addItemToQuickAccess(int itemId);
 	void useSelectedItem(int invIndex);
 	void useSelectedItemQuickAccess();
 	void pickNearItemFromGround();
+	void openDoor();
 
 	void statusTimerTick();
 	void healTimerTick();
-	void shoot();
 
 private:
 	void findNearestItem();

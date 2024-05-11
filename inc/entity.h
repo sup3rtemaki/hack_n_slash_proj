@@ -12,6 +12,7 @@
 class Entity {
 public:
 	static const int DIR_UP, DIR_DOWN, DIR_LEFT, DIR_RIGHT, DIR_NONE; // reference constants
+	int id;
 	int state; // quick label to see what the entity is up to
 	float x, y;
 	int direction;

@@ -3,7 +3,7 @@
 #include "globals.h"
 
 const string& ITEM_FRAME_FILE = "itemFrame.png";
-const string& ITEM_QUANTITY_FONT_FILE = "vermin_vibes_1989.ttf";
+const string& FONT_FILE = "alagard.ttf";
 const int ITEM_FRAME_X = 24;
 const int ITEM_FRAME_Y = 304;
 const int ITEM_X = 20;
@@ -38,7 +38,7 @@ void QuickItemUi::drawItemQuantity() {
 	ss << hero->inventory.find(hero->inventoryIndex)->second->quantity;
 	SDL_Texture* currentItemQuantity = renderText(
 		ss.str(),
-		resPath + ITEM_QUANTITY_FONT_FILE,
+		resPath + Ui::FONTS_PATH + FONT_FILE,
 		color, 
 		ITEM_QUANTITY_FONT_SIZE,
 		Globals::renderer

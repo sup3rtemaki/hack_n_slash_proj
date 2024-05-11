@@ -1,5 +1,7 @@
 #include "hero.h"
 
+#include "door.h"
+
 const string Hero::HERO_ANIM_UP = "up";
 const string Hero::HERO_ANIM_DOWN = "down";
 const string Hero::HERO_ANIM_LEFT = "left";
@@ -57,6 +59,7 @@ Hero::Hero(AnimationSet* animSet) {
 	direction = DIR_DOWN;
 	honeydewQty = 3;
 	inventoryIndex = 0;
+	nearestDoor = nullptr;
 
 	changeAnimation(HERO_STATE_IDLE, true);
 	updateCollisionBox();
@@ -292,6 +295,15 @@ void Hero::updateDamages() {
 	}
 }
 
+void Hero::takeAction() {
+	if (nearestDoor != nullptr) {
+		openDoor();
+	}
+	else {
+		pickNearItemFromGround();
+	}
+}
+
 void Hero::addItemToInventory(Item* item) {
 	addedItemName = item->name;
 	qtyItemsPicked = item->quantity;
@@ -368,6 +380,10 @@ void Hero::pickNearItemFromGround() {
 
 void Hero::statusTimerTick() {
 	healTimerTick();
+}
+
+void Hero::openDoor() {
+	nearestDoor->open();
 }
 
 void Hero::healTimerTick() {

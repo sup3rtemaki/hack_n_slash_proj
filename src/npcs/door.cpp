@@ -8,8 +8,9 @@ const string Door::DOOR_CLOSED_ANIM_SUFFIX = "Closed";
 const string Door::DOOR_OPENING_ANIM_SUFFIX = "Opening";
 const string Door::DOOR_OPEN_ANIM_SUFFIX = "Open";
 
-Door::Door(AnimationSet* animSet, string prefix, bool isClosed, int posX, int posY, int width, int height, int collisionBoxYOffset) {
+Door::Door(AnimationSet* animSet, int id, string prefix, bool isClosed, int posX, int posY, int width, int height, int collisionBoxYOffset) {
 	this->animSet = animSet;
+	this->id = id;
 	animPrefix = prefix;
 	this->isClosed = isClosed;
 	x = posX;
@@ -89,7 +90,7 @@ void Door::updateCollisionBox() {
 	collisionBox.h = collisionBoxH;
 }
 
-void Door::openDoor() {
+void Door::open() {
 	changeAnimation(DOOR_STATE_OPENING, true);
 	isClosed = false;
 }

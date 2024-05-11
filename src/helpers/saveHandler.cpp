@@ -15,7 +15,8 @@ SaveHandler::SaveHandler() : heroHp(0), heroX(0), heroY(0) {
 SaveHandler::~SaveHandler() {
 }
 
-void SaveHandler::save(int heroHp, int heroX, int heroY, string currentMapFile, std::vector<std::pair<int, int>> items) {
+void SaveHandler::save(
+	int heroHp, int heroX, int heroY, string currentMapFile, std::vector<std::pair<int, int>> items, std::vector<int>openDoorsIds) {
 	std::cout << "Save\n";
 
 	std::ofstream file(SAVE_FILE_PATH);
@@ -36,6 +37,14 @@ void SaveHandler::save(int heroHp, int heroX, int heroY, string currentMapFile, 
 			jItem["id"] = i.first;
 			jItem["itemQty"] = i.second;
 			save["inventory"].push_back(jItem);
+		}
+	}
+
+	if (!openDoorsIds.empty()) {
+		for (int i : openDoorsIds) {
+			json jOpenDoorId;
+			jOpenDoorId["id"] = i;
+			save["openDoors"].push_back(jOpenDoorId);
 		}
 	}
 
@@ -62,12 +71,19 @@ bool SaveHandler::load() {
 	heroY = data["heroY"];
 	currentMapFile = string(data["currentMapFile"]);
 	items.clear();
+	openDoorsIds.clear();
 
 	json jItem = data["inventory"];
-
 	if (!jItem.empty()) {
 		for (auto& element : jItem) {
 			items.push_back(std::make_pair(element["id"], element["itemQty"]));
+		}
+	}
+
+	json jOpenDoorIds = data["openDoors"];
+	if (!jOpenDoorIds.empty()) {
+		for (auto& element : jOpenDoorIds) {
+			openDoorsIds.push_back(element["id"]);
 		}
 	}
 
@@ -92,4 +108,8 @@ string SaveHandler::getCurrentMapFile() {
 
 std::vector<std::pair<int, int>> SaveHandler::getItems() {
 	return items;
+}
+
+std::vector<int> SaveHandler::getOpenDoorsIds() {
+	return openDoorsIds;
 }

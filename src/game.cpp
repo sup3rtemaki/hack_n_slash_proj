@@ -68,10 +68,6 @@ Game::Game() {
 
 	loadTiledMap(resPath + MAPS_FOLDER_PATH + currentMap->file);
 
-	buildWalls();
-	buildWaypoints();
-	buildDoors();
-
 	// build hero entity
 	hero = new Hero(heroAnimSet);
 	hero->invincibleTimer = 0;
@@ -86,11 +82,17 @@ Game::Game() {
 	}
 	hero->inventoryIndex = 0;
 
+	openDoorsIds = saveHandler.getOpenDoorsIds();
+
 	heroKeyboardInput.hero = hero;
 	heroJoystickInput.hero = hero;
 	heroHpBar.entity = hero;
 	hero->currentMap = currentMap;
 	Entity::entities.push_back(hero);
+
+	buildWalls();
+	buildWaypoints();
+	buildDoors();
 
 	spawnItemsFromCurrentMap();
 
@@ -271,9 +273,17 @@ void Game::update() {
 				if (d->isClosed &&
 					(Entity::distanceBetweenTwoPoints(hero->x, hero->y + (hero->collisionBoxYOffset / 2), d->x + 32, d->y) < 60.0)) {
 					// Teste
+					hero->nearestDoor = d;
 					actionMessageUi->setMessage("Open door");
-					// d->openDoor();
-					// d->update();
+				}
+				else {
+					hero->nearestDoor = nullptr;
+
+					if (!d->isClosed) {
+						if(std::find(openDoorsIds.begin(), openDoorsIds.end(), d->id) == openDoorsIds.end()) {
+							openDoorsIds.push_back(d->id);
+						}
+					}
 				}
 			}
 		}
@@ -422,6 +432,7 @@ void Game::updateMaps() {
 				buildWaypoints();
 				buildDoors();
 				saveGame();
+				openDoorsIds = {};
 			}
 		}
 		else if (alpha >= 0 && fadeOut) {
@@ -464,6 +475,11 @@ void Game::renderTiles() {
 	if (currentMap == nullptr) {
 		cout << "Mapa nulo" << endl;
 		return;
+	}
+
+	int mapId = std::any_cast<int>(currentMap->getProp("id")->getValue());
+	if (mapId > 0 && mapId != this->currentMap->id) {
+		this->currentMap->id = mapId;
 	}
 
 	const string resPath = getResourcePath();
@@ -543,6 +559,10 @@ void Game::renderTiles() {
 	}
 }
 
+void Game::checkOpenDoors() {
+
+}
+
 void Game::buildDoors() {
 	auto tMap = tiledMap.get();
 	if (tMap == nullptr) {
@@ -553,6 +573,7 @@ void Game::buildDoors() {
 	auto layer = tMap->getLayer("Doors");
 	if (layer == nullptr) return;
 
+	int idCounter = 0;
 	for (auto& [pos, tileObject] : layer->getTileObjects()) {
 		auto animPrefixProp = tileObject.getTile()->getProp("animPrefix");
 		auto isClosedProp = tileObject.getTile()->getProp("isClosed");
@@ -563,18 +584,33 @@ void Game::buildDoors() {
 			animSetProp == nullptr) continue;
 
 		string animName = std::any_cast<string>(animSetProp->getValue());
+
+		int doorId = 1000 + (currentMap->id * 10) + idCounter;
+
 		if (animName == "doubleDoors") {
+			bool isDoorClosed = true;
+
+			if (!openDoorsIds.empty()) {
+				for (int id : openDoorsIds) {
+					if (id == doorId) isDoorClosed = false;
+				}
+			}
+
 			Door* door = new Door(
 				doubleDoorsAnimSet,
+				doorId,
 				std::any_cast<string>(animPrefixProp->getValue()),
-				std::any_cast<bool>(isClosedProp->getValue()),
+				isDoorClosed,
 				tileObject.getTile()->getPosition(pos).x,
 				tileObject.getTile()->getPosition(pos).y,
 				64,
 				64,
 				-32);
+
 			Entity::entities.push_back(door);
 		}
+
+		idCounter++;
 	}
 }
 
@@ -684,7 +720,7 @@ void Game::spawnEnemies() {
 
 	int enemyPosX, enemyPosY;
 	int uniqueId;
-	int counter = 0;
+	int idCounter = 0;
 	auto layer = tMap->getLayer("EnemiesSpawn");
 	if (layer == nullptr) {
 		return;
@@ -692,7 +728,7 @@ void Game::spawnEnemies() {
 
 	for (auto object : layer->getObjects()) {
 		int enemyId = std::any_cast<int>(object.getProp("enemyId")->getValue());
-		uniqueId = (enemyId * 10) + counter;
+		uniqueId = (enemyId * 10) + idCounter;
 		enemyPosX = object.getPosition().x;
 		enemyPosY = object.getPosition().y;
 		switch (enemyId) {
@@ -724,6 +760,8 @@ void Game::spawnEnemies() {
 			break;
 			
 		}
+
+		idCounter++;
 	}
 }
 
@@ -898,7 +936,7 @@ void Game::saveGame() {
 	for (auto itemMap : hero->inventory) {
 		inventory.push_back(std::make_pair(itemMap.first, itemMap.second->quantity));
 	}
-	//saveHandler.save(hero->hp, hero->x, hero->y, currentMap->file, inventory);
+	// saveHandler.save(hero->hp, hero->x, hero->y, currentMap->file, inventory, openDoorsIds);
 }
 
 void Game::loadGame() {
