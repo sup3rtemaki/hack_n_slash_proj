@@ -8,6 +8,7 @@ public:
 	static const int HONEYDEW_POTION_ID = 0;
 	static const int GREEN_BERRY_ID = 1;
 	static const int STONE_ID = 2;
+	static const int COMMON_KEY_ID = 3;
 	static const string ITEM_CONSUMABLE;
 	static const string ITEM_PASSIVE;
 	static const string ITEM_KEY;

@@ -39,14 +39,18 @@ void Stone::update() {
 }
 
 void Stone::changeAnimation(int newState, bool resetFrameToBeginning, string animName) {
-	if (!animName.empty()) {
-		currentAnim = animSet->getAnimation(animName);
+	updateCollisionBox();
+
+	if (currentFrame == NULL || currentAnim == NULL) {
+		return;
 	}
-	else {
-		currentAnim = animSet->getAnimation("idle");
+
+	frameTimer += TimeController::timeController.dT;
+
+	if (frameTimer >= currentFrame->duration) {
+		currentFrame = currentAnim->getNextFrame(currentFrame);
+		frameTimer = 0;
 	}
-	//currentAnim = animSet->getAnimation("idle");
-	currentFrame = currentAnim->getFrame(0);
 }
 
 void Stone::applyEffect(LivingEntity* heroEntity) {

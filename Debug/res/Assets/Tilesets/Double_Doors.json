@@ -264,7 +264,7 @@
           "value": "doubleBlackDoor"
         },
         {
-          "name": "isClosed",
+          "name": "isLocked",
           "type": "bool",
           "value": true
         },
@@ -439,7 +439,7 @@
           "value": "doubleHWoodenDoor"
         },
         {
-          "name": "isClosed",
+          "name": "isLocked",
           "type": "bool",
           "value": true
         },
@@ -614,7 +614,7 @@
           "value": "doubleChitinDoor"
         },
         {
-          "name": "isClosed",
+          "name": "isLocked",
           "type": "bool",
           "value": true
         },

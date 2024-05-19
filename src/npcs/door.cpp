@@ -93,4 +93,5 @@ void Door::updateCollisionBox() {
 void Door::open() {
 	changeAnimation(DOOR_STATE_OPENING, true);
 	isClosed = false;
+	isLocked = false;
 }

@@ -8,6 +8,7 @@
 
 #include "tileson/tileson.hpp"
 #include "nlohmann/json.hpp"
+#include "item/key.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -78,9 +79,9 @@ Game::Game() {
 	hero->inventory = loadInventoryItems(saveHandler.getItems());
 	for (auto i : hero->inventory) {
 		hero->addItemToQuickAccess(i.first);
-		hero->inventoryIndex++;
+		hero->quickAccessInventoryIndex++;
 	}
-	hero->inventoryIndex = 0;
+	hero->quickAccessInventoryIndex = 0;
 
 	openDoorsIds = saveHandler.getOpenDoorsIds();
 
@@ -102,6 +103,7 @@ Game::Game() {
 	quickItemUi = new QuickItemUi(hero);
 	itemPickMessageUi = new ItemPickMessageUi(hero);
 	actionMessageUi = new ActionMessageUi();
+	hero->actionMessageUi = actionMessageUi;
 
 	buildBossNext = false;
 	bossActive = false;
@@ -274,10 +276,13 @@ void Game::update() {
 					(Entity::distanceBetweenTwoPoints(hero->x, hero->y + (hero->collisionBoxYOffset / 2), d->x + 32, d->y) < 60.0)) {
 					// Teste
 					hero->nearestDoor = d;
-					actionMessageUi->setMessage("Open door");
+					if (!actionMessageUi->isUiLocked()) {
+						actionMessageUi->setMessage("Open door");
+					}
 				}
 				else {
 					hero->nearestDoor = nullptr;
+					actionMessageUi->unlock();
 
 					if (!d->isClosed) {
 						if(std::find(openDoorsIds.begin(), openDoorsIds.end(), d->id) == openDoorsIds.end()) {
@@ -576,11 +581,11 @@ void Game::buildDoors() {
 	int idCounter = 0;
 	for (auto& [pos, tileObject] : layer->getTileObjects()) {
 		auto animPrefixProp = tileObject.getTile()->getProp("animPrefix");
-		auto isClosedProp = tileObject.getTile()->getProp("isClosed");
+		auto isLockedProp = tileObject.getTile()->getProp("isLocked");
 		auto animSetProp = tileObject.getTile()->getProp("animSet");
 
 		if (animPrefixProp == nullptr ||
-			isClosedProp == nullptr ||
+			isLockedProp == nullptr ||
 			animSetProp == nullptr) continue;
 
 		string animName = std::any_cast<string>(animSetProp->getValue());
@@ -606,7 +611,7 @@ void Game::buildDoors() {
 				64,
 				64,
 				-32);
-
+			door->isLocked = std::any_cast<bool>(isLockedProp->getValue()),
 			Entity::entities.push_back(door);
 		}
 
@@ -911,6 +916,10 @@ map<int, Item*> Game::loadInventoryItems(std::vector<std::pair<int, int>> items)
 			case Item::STONE_ID:
 				loadItem = new Stone(hDewPotionAnimSet, false, item.second);
 				loadItem->projectileAnimSet = stoneProjectileAnimSet;
+				loadItem->active = false;
+				break;
+			case Item::COMMON_KEY_ID:
+				loadItem = new Key(hDewPotionAnimSet, false, item.second);
 				loadItem->active = false;
 				break;
 			default:

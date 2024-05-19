@@ -18,8 +18,9 @@ ActionMessageUi::ActionMessageUi() {
 }
 
 void ActionMessageUi::draw() {
-	if (timer > 0) {
-		if (fontTexture == nullptr) {		
+	if (timer > 0 || uiLock) {
+		if (fontTexture == nullptr || ((message != prevMessage) && !message.empty())) {
+			prevMessage = message;
             fontX = SCREEN_CENTER_X - ((message.length() * FONT_SIZE) / 4);
 
 			fontTexture = renderText(
@@ -38,17 +39,17 @@ void ActionMessageUi::draw() {
         backgroundMessageRect.h = FONT_SIZE;        
 
         backgroundBarTexture = loadTexture(resPath + Ui::HUD_TEXTURES_PATH + MESSAGE_BAR_TEXTURE_FILE, Globals::renderer);
-        SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
         
-        SDL_RenderCopy(Globals::renderer, backgroundBarTexture, NULL, &backgroundMessageRect);
+		// TODO: Descomentar linha abaixo quando fizer um sprite decente pro fundo do texto
+        //SDL_RenderCopy(Globals::renderer, backgroundBarTexture, NULL, &backgroundMessageRect);
 
 		renderTexture(fontTexture, Globals::renderer, fontX, FONT_Y);
 
 		timer -= TimeController::timeController.dT;
+		if (timer < 0) timer = 0;
 		return;
 	}
 
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 	backgroundBarTexture = nullptr;
 	fontTexture = nullptr;
 	message.clear();
@@ -56,9 +57,31 @@ void ActionMessageUi::draw() {
 
 void ActionMessageUi::setUp() {
 	resPath = getResourcePath();
+	uiLock = false;
 }
 
 void ActionMessageUi::setMessage(string message) {
+	this->message.clear();
 	this->message = message;
 	timer = SHOW_MESSAGE_TIME;
+}
+
+void ActionMessageUi::setTimer(float time) {
+	timer = time;
+}
+
+bool ActionMessageUi::isMessageEmpty() {
+	return message.empty();
+}
+
+void ActionMessageUi::lock() {
+	uiLock = true;
+}
+
+void ActionMessageUi::unlock() {
+	uiLock = false;
+}
+
+bool ActionMessageUi::isUiLocked() {
+	return uiLock;
 }

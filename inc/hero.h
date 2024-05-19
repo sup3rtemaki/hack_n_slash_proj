@@ -60,6 +60,7 @@ public:
 
 	int isMovingMethod = 0; // TODO: Paliativo, mudar depois 0 = not moving, 1 = keyboard, 2 = joystick
 	int inventoryIndex = 0;
+	int quickAccessInventoryIndex = 0;
 	int honeydewQty;
 	int qtyItemsPicked;
 
@@ -71,6 +72,7 @@ public:
 	string addedItemName;
 
 	Map* currentMap;
+	class ActionMessageUi* actionMessageUi;
 
 	Hero(AnimationSet* animSet);
 
@@ -85,7 +87,7 @@ public:
 	void takeAction();
 	//void checkNearItem(Item* item);
 	void addItemToInventory(Item* item);
-	void addItemToQuickAccess(int itemId);
+	void addItemToQuickAccess(int itemId, int position = -1);
 	void useSelectedItem(int invIndex);
 	void useSelectedItemQuickAccess();
 	void pickNearItemFromGround();

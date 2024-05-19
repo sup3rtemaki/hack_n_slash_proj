@@ -1,6 +1,7 @@
 #include "hero.h"
 
 #include "door.h"
+#include "ui/actionMessageUi.h"
 
 const string Hero::HERO_ANIM_UP = "up";
 const string Hero::HERO_ANIM_DOWN = "down";
@@ -60,7 +61,6 @@ Hero::Hero(AnimationSet* animSet) {
 	honeydewQty = 3;
 	inventoryIndex = 0;
 	nearestDoor = nullptr;
-
 	changeAnimation(HERO_STATE_IDLE, true);
 	updateCollisionBox();
 }
@@ -297,7 +297,13 @@ void Hero::updateDamages() {
 
 void Hero::takeAction() {
 	if (nearestDoor != nullptr) {
-		openDoor();
+		if (!nearestDoor->isLocked) {
+			openDoor();
+		}
+		else {
+			actionMessageUi->setMessage("Door Locked");
+			actionMessageUi->lock();
+		}
 	}
 	else {
 		pickNearItemFromGround();
@@ -318,16 +324,32 @@ void Hero::addItemToInventory(Item* item) {
 
 	auto itemMap = std::make_pair(item->id, item);
 	cout << "Adicionando item: " << itemMap.first << " " << itemMap.second << "\n";
-	inventory.emplace(itemMap);
+	inventory.insert(itemMap);
 	cout << "Item inserido: " << itemMap.second->name << "\n";
 }
 
-void Hero::addItemToQuickAccess(int itemId) {
-	quickAccessInventory[inventoryIndex] = itemId;
+void Hero::addItemToQuickAccess(int itemId, int position) {
+	if (position < 0 || position >= quickAccessInventory.size()) {
+		position = 0;
+		for (position; position < quickAccessInventory.size(); position++) {
+			if (quickAccessInventory[position] == itemId) { // Item ja existe no quickAccessInventory
+				return;
+			}
+			if (quickAccessInventory[position] == -1) { // Achou proxima posição valida
+				break; // Sai do loop pra guardar a posição
+			}
+		}
+	}
+
+	if (position == quickAccessInventory.size()) { // quickAccessInventory está cheio
+		position = 0;
+	}
+
+	quickAccessInventory[position] = itemId;
 }
 
 void Hero::useSelectedItemQuickAccess() {
-	int id = quickAccessInventory[inventoryIndex];
+	int id = quickAccessInventory[quickAccessInventoryIndex];
 	if (id < 0) {
 		cout << "ID < 0!" << id << "\n";
 		return;
@@ -383,6 +405,8 @@ void Hero::statusTimerTick() {
 }
 
 void Hero::openDoor() {
+	if (nearestDoor == nullptr) return; // Safety for key item
+
 	nearestDoor->open();
 }
 
@@ -442,6 +466,10 @@ void Hero::useSelectedItem(int invIndex) {
 		moving = false;
 		frameTimer = 0;
 		if (item->second->type == "cProjectileItem") {
+			changeAnimation(HERO_STATE_SHOOTING, true);
+		}
+		else if (item->second->type == "kKeyItem") {
+			// TODO: Criar anim pra abrir porta
 			changeAnimation(HERO_STATE_SHOOTING, true);
 		}
 		else {

@@ -28,9 +28,9 @@ void KeyboardInput::update(SDL_Event* e){
 		}
 
 		if (e->key.keysym.scancode == SDL_SCANCODE_F) {
-			hero->inventoryIndex++;
-			if (hero->quickAccessInventory[hero->inventoryIndex] == -1) {
-				hero->inventoryIndex = 0;
+			hero->quickAccessInventoryIndex++;
+			if (hero->quickAccessInventory[hero->quickAccessInventoryIndex] == -1) {
+				hero->quickAccessInventoryIndex = 0;
 			}
 		}
 	}

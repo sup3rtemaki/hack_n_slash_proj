@@ -174,6 +174,7 @@
     <ClCompile Include="src\item.cpp" />
     <ClCompile Include="src\item\greenBerry.cpp" />
     <ClCompile Include="src\item\honeydewPotion.cpp" />
+    <ClCompile Include="src\item\key.cpp" />
     <ClCompile Include="src\item\stone.cpp" />
     <ClCompile Include="src\joystickInput.cpp" />
     <ClCompile Include="src\keyboardInput.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="inc\item\greenBerry.h" />
     <ClInclude Include="inc\item\honeydewPotion.h" />
     <ClInclude Include="inc\item\itemsHub.h" />
+    <ClInclude Include="inc\item\key.h" />
     <ClInclude Include="inc\item\stone.h" />
     <ClInclude Include="inc\joystickInput.h" />
     <ClInclude Include="inc\keyboardInput.h" />
