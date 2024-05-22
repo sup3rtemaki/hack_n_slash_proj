@@ -41,16 +41,7 @@ public:
 	AnimationSet* stoneProjectileAnimSet;
 	AnimationSet* doubleDoorsAnimSet;
 
-	SDL_Texture* backGroundImage;
 	SDL_Texture* fadeImage;
-	SDL_Texture* backGroundImageN;
-	SDL_Texture* backGroundImageNW;
-	SDL_Texture* backGroundImageW;
-	SDL_Texture* backGroundImageSW;
-	SDL_Texture* backGroundImageS;
-	SDL_Texture* backGroundImageSE;
-	SDL_Texture* backGroundImageE;
-	SDL_Texture* backGroundImageNE;
 	SDL_Texture* splashImage;
 	SDL_Texture* overlayImage;
 	SDL_Texture* scoreTexture = NULL; //draw string to screen
@@ -109,6 +100,8 @@ public:
 	void draw();
 
 private:
+	string resPath;
+
 	void updateMaps();
 	void loadTiledMap(const string& mapFile);
 	void renderTiles();

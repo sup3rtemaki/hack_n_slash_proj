@@ -13,7 +13,7 @@ GreenBerry::GreenBerry(AnimationSet* animSet, bool isOnGround, int quant) {
 	description = "Green berry, rich in water";
 	this->isOnGround = isOnGround;
 
-	string resPath = getResourcePath();
+	string resPath = getResourcePath() + Item::ITEMS_IMAGES_FOLDER;;
 	this->image = loadTexture(resPath + "greenBerry.png", Globals::renderer);
 
 	collisionBoxW = 8;

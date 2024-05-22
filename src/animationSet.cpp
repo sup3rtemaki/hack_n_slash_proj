@@ -34,7 +34,8 @@ Animation* AnimationSet::getAnimation(string name) {
 void AnimationSet::loadAnimationSet(string fileName, list<DataGroupType>& groupTypes, bool setColourKey, int transparentPixelIndex, bool createWhiteTexture) {
 
 	ifstream file;
-	string resPath = getResourcePath();
+	const string resPath = getResourcePath();
+	const string ALL_WHITE_PATH = "Assets\\Textures\\";
 	file.open(resPath + fileName);
 	if (file.good())
 	{
@@ -54,7 +55,7 @@ void AnimationSet::loadAnimationSet(string fileName, list<DataGroupType>& groupT
 
 			if (createWhiteTexture)
 			{
-				SDL_Surface* whiteSurface = loadSurface(resPath + "allwhite.png", Globals::renderer);
+				SDL_Surface* whiteSurface = loadSurface(resPath + ALL_WHITE_PATH + "allwhite.png", Globals::renderer);
 				surfacePaletteSwap(spriteSurface, whiteSurface);
 				SDL_SetColorKey(spriteSurface, 1, SDL_MapRGB(spriteSurface->format, transparentPixel->r, transparentPixel->g, transparentPixel->b));
 				whiteSpriteSheet = convertSurfaceToTexture(spriteSurface, Globals::renderer, false); //create the texture whilst destroying the surface

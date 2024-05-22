@@ -13,6 +13,8 @@ public:
 	static const string ITEM_PASSIVE;
 	static const string ITEM_KEY;
 
+	static const string ITEMS_IMAGES_FOLDER;
+
 	int id;
 	int quantity;
 	string name;

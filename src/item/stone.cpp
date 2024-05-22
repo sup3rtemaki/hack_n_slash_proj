@@ -12,7 +12,7 @@ Stone::Stone(AnimationSet* animSet, bool isOnGround, int quant) {
 	description = "Small throwing stone, good to scare small predators";
 	this->isOnGround = isOnGround;
 
-	string resPath = getResourcePath();
+	string resPath = getResourcePath() + Item::ITEMS_IMAGES_FOLDER;;
 	this->image = loadTexture(resPath + "stoneItem.png", Globals::renderer);
 
 	collisionBoxW = 8;

@@ -12,7 +12,7 @@ Key::Key(AnimationSet* animSet, bool isOnGround, int quant = 1) {
 	description = "Common Key";
 	this->isOnGround = isOnGround;
 
-	string resPath = getResourcePath();
+	string resPath = getResourcePath() + Item::ITEMS_IMAGES_FOLDER;
 	this->image = loadTexture(resPath + "key.png", Globals::renderer);
 
 	collisionBoxW = 8;

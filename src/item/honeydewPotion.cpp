@@ -10,7 +10,7 @@ HoneydewPotion::HoneydewPotion(AnimationSet* animSet, bool isOnGround, int quant
 	description = "Sweet honeydew harvested from aphids";
 	this->isOnGround = isOnGround;
 
-	string resPath = getResourcePath();
+	string resPath = getResourcePath() + Item::ITEMS_IMAGES_FOLDER;
 	this->image = loadTexture(resPath + "honeyDewPotion.png", Globals::renderer);
 
 	collisionBoxW = 8;

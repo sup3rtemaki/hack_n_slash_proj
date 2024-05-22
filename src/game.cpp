@@ -19,19 +19,18 @@ std::map<std::tuple<int, int>, tson::Tile*> tileData;
 
 const string MAPS_FOLDER_PATH = "Maps\\";
 const string TEXTURES_FOLDER_PATH = "Assets\\Textures\\";
+const string SOUNDS_FOLDER_PATH = "Assets\\Sounds\\";
+const string ANIMATIONS_FOLDER_PATH = "Assets\\Animations\\";
 
 Game::Game() {
 	//TODO: Criar método initialize ou algo do tipo pra encapsular tudo isso
-	string resPath = getResourcePath();
+	resPath = getResourcePath();
 
-	//teste
-	backGroundImage = loadTexture(resPath + "map.png", Globals::renderer);
-	fadeImage = loadTexture(resPath + "blackBG.png", Globals::renderer);
-	
 	mustSpawnEnemies = true;
 
-	splashImage = loadTexture(resPath + "cyborgtitle.png", Globals::renderer);
-	overlayImage = loadTexture(resPath + "overlay.png", Globals::renderer);
+	fadeImage = loadTexture(resPath + Ui::HUD_TEXTURES_PATH + "blackBG.png", Globals::renderer);
+	splashImage = loadTexture(resPath + Ui::HUD_TEXTURES_PATH + "cyborgtitle.png", Globals::renderer);
+	overlayImage = loadTexture(resPath + Ui::HUD_TEXTURES_PATH + "overlay.png", Globals::renderer);
 
 	splashShowing = true;
 	overlayTimer = 2;
@@ -43,16 +42,16 @@ Game::Game() {
 	Globals::camera.h = Globals::ScreenHeight;
 
 	//loadup sounds
-	SoundManager::soundManager.loadSound("hit", resPath + "Randomize2.wav");
-	SoundManager::soundManager.loadSound("enemyHit", resPath + "Hit_Hurt9.wav");
-	SoundManager::soundManager.loadSound("swing", resPath + "Randomize21.wav");
-	SoundManager::soundManager.loadSound("dash", resPath + "dash.wav");
-	SoundManager::soundManager.loadSound("growl", resPath + "Randomize34.wav");
-	SoundManager::soundManager.loadSound("enemyDie", resPath + "Randomize41.wav");
-	SoundManager::soundManager.loadSound("crash", resPath + "crash.wav");
-	SoundManager::soundManager.loadSound("smash", resPath + "smash.wav");
-	SoundManager::soundManager.loadSound("shoot", resPath + "shoot2.wav");
-	SoundManager::soundManager.loadSound("laugh", resPath + "laugh2.wav");
+	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "hit", resPath + "Randomize2.wav");
+	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "enemyHit", resPath + "Hit_Hurt9.wav");
+	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "swing", resPath + "Randomize21.wav");
+	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "dash", resPath + "dash.wav");
+	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "growl", resPath + "Randomize34.wav");
+	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "enemyDie", resPath + "Randomize41.wav");
+	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "crash", resPath + "crash.wav");
+	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "smash", resPath + "smash.wav");
+	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "shoot", resPath + "shoot2.wav");
+	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "laugh", resPath + "laugh2.wav");
 
 	//song = Mix_LoadMUS(string(resPath + "Fatal Theory.wav").c_str());
 	//if (song != NULL) {
@@ -122,17 +121,9 @@ Game::Game() {
 }
 
 Game::~Game() {
-	cleanup(backGroundImage);
-	cleanup(backGroundImageN);
-	cleanup(backGroundImageNW);
-	cleanup(backGroundImageW);
-	cleanup(backGroundImageSW);
-	cleanup(backGroundImageS);
-	cleanup(backGroundImageSE);
-	cleanup(backGroundImageE);
-	cleanup(backGroundImageNE);
 	cleanup(splashImage);
 	cleanup(overlayImage);
+	cleanup(fadeImage);
 
 	if (scoreTexture != NULL) {
 		cleanup(scoreTexture);
@@ -487,7 +478,6 @@ void Game::renderTiles() {
 		this->currentMap->id = mapId;
 	}
 
-	const string resPath = getResourcePath();
 	string tilesetName;
 	string tilesetTexturePath;
 	int x = 0;
@@ -702,7 +692,6 @@ void Game::draw() {
 				stringstream ss;
 				ss << "Enemies dispatched: " << Glob::globsKilled + Grob::grobsKilled + RoundKing::roundKingsKilled;
 
-				string resPath = getResourcePath();
 				scoreTexture = renderText(ss.str(), resPath + Ui::FONTS_PATH + "vermin_vibes_1989.ttf", color, 30, Globals::renderer);
 			}
 
@@ -822,34 +811,34 @@ void Game::loadAnimationSets() {
 	dataGroupTypes.push_back(dmgType);
 
 	hDewPotionAnimSet = new AnimationSet();
-	hDewPotionAnimSet->loadAnimationSet("groundConsumableItem.fdset", dataGroupTypes);
+	hDewPotionAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "groundConsumableItem.fdset", dataGroupTypes);
 
 	heroAnimSet = new AnimationSet();
-	heroAnimSet->loadAnimationSet("antHero.fdset", dataGroupTypes, true, 0, true);//"udemyCyborg.fdset", dataGroupTypes, true, 0, true);
+	heroAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "antHero.fdset", dataGroupTypes, true, 0, true);//"udemyCyborg.fdset", dataGroupTypes, true, 0, true);
 
 	globAnimSet = new AnimationSet();
-	globAnimSet->loadAnimationSet("glob.fdset", dataGroupTypes, true, 0, true);
+	globAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "glob.fdset", dataGroupTypes, true, 0, true);
 
 	grobAnimSet = new AnimationSet();
-	grobAnimSet->loadAnimationSet("grob.fdset", dataGroupTypes, true, 0, true);
+	grobAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "grob.fdset", dataGroupTypes, true, 0, true);
 
 	termiteMinerAnimSet = new AnimationSet();
-	termiteMinerAnimSet->loadAnimationSet("termiteMiner.fdset", dataGroupTypes, true, 0, true);
+	termiteMinerAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "termiteMiner.fdset", dataGroupTypes, true, 0, true);
 
 	wallAnimSet = new AnimationSet();
-	wallAnimSet->loadAnimationSet("wall.fdset", dataGroupTypes);
+	wallAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "wall.fdset", dataGroupTypes);
 
 	roundKingAnimSet = new AnimationSet();
-	roundKingAnimSet->loadAnimationSet("roundKing.fdset", dataGroupTypes, true, 0, true);
+	roundKingAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "roundKing.fdset", dataGroupTypes, true, 0, true);
 
 	bulletAnimSet = new AnimationSet();
-	bulletAnimSet->loadAnimationSet("bullet.fdset", dataGroupTypes, true, 0, true);
+	bulletAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "bullet.fdset", dataGroupTypes, true, 0, true);
 
 	stoneProjectileAnimSet = new AnimationSet();
-	stoneProjectileAnimSet->loadAnimationSet("stoneProjectile.fdset", dataGroupTypes, true, 0, true);
+	stoneProjectileAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "stoneProjectile.fdset", dataGroupTypes, true, 0, true);
 
 	doubleDoorsAnimSet = new AnimationSet();
-	doubleDoorsAnimSet->loadAnimationSet("Assets\\Animations\\double_doors.fdset", dataGroupTypes);
+	doubleDoorsAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "double_doors.fdset", dataGroupTypes);
 }
 
 void Game::spawnItemsFromCurrentMap() {

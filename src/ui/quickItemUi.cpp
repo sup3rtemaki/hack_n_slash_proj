@@ -3,6 +3,7 @@
 #include "globals.h"
 
 const string& ITEM_FRAME_FILE = "itemFrame.png";
+const string& ITEM_FRAME_FOLDER = "\\Assets\\Textures\\HUD\\";
 const string& FONT_FILE = "alagard.ttf";
 const int ITEM_FRAME_X = 24;
 const int ITEM_FRAME_Y = 304;
@@ -54,5 +55,5 @@ void QuickItemUi::draw() {
 
 void QuickItemUi::setUp() {
 	resPath = getResourcePath();
-	quickItemFrame = loadTexture(resPath + ITEM_FRAME_FILE, Globals::renderer);
+	quickItemFrame = loadTexture(resPath + ITEM_FRAME_FOLDER + ITEM_FRAME_FILE, Globals::renderer);
 }

@@ -6,6 +6,8 @@ const string Item::ITEM_CONSUMABLE = "consumable";
 const string Item::ITEM_PASSIVE = "passive";
 const string Item::ITEM_KEY = "key";
 
+const string Item::ITEMS_IMAGES_FOLDER = "\\Assets\\Textures\\Items\\";
+
 Item::Item(SDL_Texture* image, AnimationSet* animSet) {
 	this->image = image;
 	this->animSet = animSet;
