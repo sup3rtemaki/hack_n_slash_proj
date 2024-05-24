@@ -1,4 +1,5 @@
 #include "ui/hpBar.h"
+#include <hero.h>
 
 const int HERO_HP_BAR_X = 10;
 const int HERO_HP_BAR_Y = 10;
@@ -8,7 +9,7 @@ const int HERO_HP_BAR_H = 10;
 const int HERO_ST_BAR_X = 10;
 const int HERO_ST_BAR_Y = 25;
 const int HERO_ST_BAR_W = 10;
-const int HERO_ST_BAR_H = 25;
+const int HERO_ST_BAR_H = 10;
 
 const int BOSS_HP_BAR_W = 200;
 const int BOSS_HP_BAR_H = 30;
@@ -18,10 +19,10 @@ const int HERO_HP_BAR_G = 51;
 const int HERO_HP_BAR_B= 51;
 
 const int HERO_ST_BAR_R = 51;
-const int HERO_ST_BAR_G = 240;
+const int HERO_ST_BAR_G = 150;
 const int HERO_ST_BAR_B = 51;
 
-const int BOSS_HP_BAR_R = 240;
+const int BOSS_HP_BAR_R = 150;
 const int BOSS_HP_BAR_G = 51;
 const int BOSS_HP_BAR_B = 51;
 
@@ -33,16 +34,27 @@ HPBar::HPBar(LivingEntity* livingEntity, BarType barType) :
 void HPBar::draw() {
 	if (entity == nullptr) return;
 
-	SDL_SetRenderDrawColor(Globals::renderer, 240, 51, 159, SDL_ALPHA_OPAQUE);
+	SDL_SetRenderDrawColor(Globals::renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
 
 	//draw hp bar borders (TODO add image)
 	SDL_Rect barContainer = { x, y, barWidth, barHeight };
 	SDL_RenderDrawRect(Globals::renderer, &barContainer);
 
 	//percentage of entities health remaining
-	float hpPercent = entity->hp / (entity->hpMax * 1.0f);//1.0f to return a float
+	float percent = entity->hp / (entity->hpMax * 1.0f);//1.0f to return a float
 
-	SDL_Rect hpRect = { x + 2, y + 2, (barWidth - 4) * hpPercent, (barHeight - 4) };
+	switch (barType) {
+		case BarType::HERO_HEALTH_BAR:
+		case BarType::BOSS_HEALTH_BAR:
+			percent = entity->hp / (entity->hpMax * 1.0f);//1.0f to return a float
+			break;
+
+		case BarType::HERO_STAMINA_BAR:
+			percent = entity->stamina / (entity->staminaMax * 1.0f);//1.0f to return a float
+			break;
+	}
+
+	SDL_Rect hpRect = { x + 2, y + 2, (barWidth - 4) * percent, (barHeight - 4) };
 
 	SDL_RenderFillRect(Globals::renderer, &hpRect);
 }
@@ -63,7 +75,7 @@ void HPBar::setUp() {
 		case BarType::HERO_STAMINA_BAR:
 			x = HERO_ST_BAR_X;
 			y = HERO_ST_BAR_Y;
-			barWidth = entity->hpMax * HERO_ST_BAR_W;
+			barWidth = entity->stamina * HERO_ST_BAR_W;
 			barHeight = HERO_ST_BAR_H;
 			color.r = HERO_ST_BAR_R;
 			color.g = HERO_ST_BAR_G;

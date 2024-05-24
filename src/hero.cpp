@@ -53,6 +53,8 @@ Hero::Hero(AnimationSet* animSet) {
 	moveSpeed = 0;
 	moveSpeedMax = 50;
 	hp = hpMax = 20;
+	stamina = staminaMax = 20;
+	staminaStatusAmount = 0.1f;
 	damage = 0;
 	collisionBoxW = 20;
 	collisionBoxH = 24;
@@ -88,16 +90,21 @@ void Hero::update() {
 }
 
 void Hero::slash() {
-	if (hp > 0 && (state == HERO_STATE_MOVE || state == HERO_STATE_IDLE)) {
+	if (hp > 0 &&
+		(state == HERO_STATE_MOVE || state == HERO_STATE_IDLE) &&
+		stamina > 0.f) {
 		moving = false;
 		frameTimer = 0;
+		stamina -= 2.f;
 		changeAnimation(HERO_STATE_SLASH, true);
 		SoundManager::soundManager.playSound("swing");
 	}
 }
 
 void Hero::dash() {
-	if (hp > 0 && (state == HERO_STATE_MOVE || state == HERO_STATE_IDLE)) {
+	if (hp > 0 &&
+		(state == HERO_STATE_MOVE || state == HERO_STATE_IDLE) &&
+		stamina > 0.f) {
 		moving = false;
 		frameTimer = 0;
 
@@ -105,6 +112,7 @@ void Hero::dash() {
 		slideAngle = angle;
 		slideAmount = 200;
 		invincibleTimer = 0.1;
+		stamina -= 4.f;
 
 		changeAnimation(HERO_STATE_DASH, true);
 
@@ -401,6 +409,10 @@ void Hero::pickNearItemFromGround() {
 }
 
 void Hero::statusTimerTick() {
+	if (stamina <= staminaMax) {
+		stamina += staminaStatusAmount;
+	}
+
 	healTimerTick();
 }
 

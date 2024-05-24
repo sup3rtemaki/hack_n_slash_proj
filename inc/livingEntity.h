@@ -8,7 +8,10 @@ class LivingEntity : public Entity {
 public:
 	static const float TIME_TICK;
 
-	float hp, hpMax;
+	float hp;
+	float hpMax;
+	float stamina;
+	float staminaMax;
 	int damage = 0;
 	int enemyId;
 	SDL_Rect hitBox;
@@ -18,6 +21,10 @@ public:
 	float healStatusTimerAux;
 	float healRate;
 	float healStatusAmount;
+
+	float staminaStatusTimer;
+	float staminaRate;
+	float staminaStatusAmount;
 
 	virtual void updateHitBox();
 	virtual void updateDamages() = 0; // how we get damaged by other things

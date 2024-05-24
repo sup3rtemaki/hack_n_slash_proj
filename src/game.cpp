@@ -102,12 +102,14 @@ Game::Game() {
 	itemPickMessageUi = new ItemPickMessageUi(hero);
 	actionMessageUi = new ActionMessageUi();
 	heroHpBar = new HPBar(hero, BarType::HERO_HEALTH_BAR);
+	heroStBar = new HPBar(hero, BarType::HERO_STAMINA_BAR);
 	hero->actionMessageUi = actionMessageUi;
 
 	gui.push_back(quickItemUi);
 	gui.push_back(itemPickMessageUi);
 	gui.push_back(actionMessageUi);
 	gui.push_back(heroHpBar);
+	gui.push_back(heroStBar);
 
 	buildBossNext = false;
 	bossActive = false;
@@ -193,7 +195,7 @@ void Game::update() {
 						enemyWavesTillBoss = 3;
 						bossActive = false; 
 						buildBossNext = false;
-						bossHpBar->entity = nullptr; // make hpbar point to no entities
+						//bossHpBar->entity = nullptr; // make hpbar point to no entities
 
 						RoundKing::roundKingsKilled = 0;
 						Glob::globsKilled = 0;

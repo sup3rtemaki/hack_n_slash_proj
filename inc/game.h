@@ -79,6 +79,7 @@ public:
 	bool mustSpawnEnemies = false;
 	
 	HPBar* heroHpBar;
+	HPBar* heroStBar;
 	HPBar* bossHpBar;
 
 	bool splashShowing;
