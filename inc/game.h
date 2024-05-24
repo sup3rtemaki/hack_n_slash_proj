@@ -15,12 +15,12 @@
 #include "soundManager.h"
 #include "cameraController.h"
 #include "roundKing.h"
-#include "hpBar.h"
 #include "map.h"
 
 #include "helpers/saveHandler.h"
 
 #include "ui/actionMessageUi.h"
+#include "ui/hpBar.h"
 #include "ui/quickItemUi.h"
 #include "ui/itemPickMessageUi.h"
 
@@ -69,6 +69,7 @@ public:
 
 	list<Entity*> currentMapEnemies;
 	list<Entity*> walls;
+	list<Ui*> gui;
 	list<int> deadEnemiesIds;
 	list<Item*> itemsOnMap;
 
@@ -77,8 +78,8 @@ public:
 	bool bossActive = false;
 	bool mustSpawnEnemies = false;
 	
-	HPBar heroHpBar;
-	HPBar bossHpBar;
+	HPBar* heroHpBar;
+	HPBar* bossHpBar;
 
 	bool splashShowing;
 	float overlayTimer;

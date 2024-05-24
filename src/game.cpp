@@ -86,7 +86,6 @@ Game::Game() {
 
 	heroKeyboardInput.hero = hero;
 	heroJoystickInput.hero = hero;
-	heroHpBar.entity = hero;
 	hero->currentMap = currentMap;
 	Entity::entities.push_back(hero);
 
@@ -102,18 +101,16 @@ Game::Game() {
 	quickItemUi = new QuickItemUi(hero);
 	itemPickMessageUi = new ItemPickMessageUi(hero);
 	actionMessageUi = new ActionMessageUi();
+	heroHpBar = new HPBar(hero, BarType::HERO_HEALTH_BAR);
 	hero->actionMessageUi = actionMessageUi;
+
+	gui.push_back(quickItemUi);
+	gui.push_back(itemPickMessageUi);
+	gui.push_back(actionMessageUi);
+	gui.push_back(heroHpBar);
 
 	buildBossNext = false;
 	bossActive = false;
-
-	//setup hpbars position
-	heroHpBar.x = 10;
-	heroHpBar.y = 10;
-	heroHpBar.barHeight = 10;
-	heroHpBar.barWidth = hero->hpMax * 10;
-	bossHpBar.x = Globals::ScreenWidth / 2.0f - (bossHpBar.barWidth / 2.0f); // centered horizontally
-	bossHpBar.y = Globals::ScreenHeight - bossHpBar.barHeight - 20; // 20 pixels off the bottom
 
 	camController.isLerping = true;
 
@@ -196,7 +193,7 @@ void Game::update() {
 						enemyWavesTillBoss = 3;
 						bossActive = false; 
 						buildBossNext = false;
-						bossHpBar.entity = NULL; // make hpbar point to no entities
+						bossHpBar->entity = nullptr; // make hpbar point to no entities
 
 						RoundKing::roundKingsKilled = 0;
 						Glob::globsKilled = 0;
@@ -311,7 +308,7 @@ void Game::update() {
 				Entity::entities.push_back(round);
 
 				//make hpbar point to boss
-				bossHpBar.entity = round;
+				bossHpBar = new HPBar(round, BarType::BOSS_HEALTH_BAR); // Exemplo
 				bossActive = true;
 				buildBossNext = false;
 				enemyWavesTillBoss = 3;
@@ -322,7 +319,7 @@ void Game::update() {
 				bossActive = false;
 				buildBossNext = false;
 				enemiesBuilt = 0;
-				bossHpBar.entity = NULL; // when boss dies, hpbar doesnt reference him anymore
+				bossHpBar->entity = nullptr; // when boss dies, hpbar doesnt reference him anymore
 			}
 		}
 
@@ -673,14 +670,12 @@ void Game::draw() {
 			(*entity)->draw();
 		}
 
-		//TODO: Encapsular desenho de UI
-		quickItemUi->draw();
-		itemPickMessageUi->draw();
-		actionMessageUi->draw();
+		// draw all of the UI
+		for (list<Ui*>::iterator ui = gui.begin(); ui != gui.end(); ui++) {
+			(*ui)->draw();
+		}
 
-		//draw UI stuff
-		heroHpBar.draw();
-		bossHpBar.draw();
+		// bossHpBar->draw();
 
 		if (overlayTimer <= 0 && hero->hp < 1) {
 			renderTexture(overlayImage, Globals::renderer, 0, 0);

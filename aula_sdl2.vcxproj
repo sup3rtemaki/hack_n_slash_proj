@@ -170,7 +170,6 @@
     <ClCompile Include="src\groupBuilder.cpp" />
     <ClCompile Include="src\helpers\saveHandler.cpp" />
     <ClCompile Include="src\hero.cpp" />
-    <ClCompile Include="src\hpBar.cpp" />
     <ClCompile Include="src\item.cpp" />
     <ClCompile Include="src\item\greenBerry.cpp" />
     <ClCompile Include="src\item\honeydewPotion.cpp" />
@@ -190,6 +189,7 @@
     <ClCompile Include="src\termiteMiner.cpp" />
     <ClCompile Include="src\timeController.cpp" />
     <ClCompile Include="src\ui\actionMessageUi.cpp" />
+	<ClCompile Include="src\ui\hpBar.cpp" />
     <ClCompile Include="src\ui\itemPickMessageUi.cpp" />
     <ClCompile Include="src\ui\quickItemUi.cpp" />
     <ClCompile Include="src\ui\ui.cpp" />
@@ -217,7 +217,6 @@
     <ClInclude Include="inc\groupString.h" />
     <ClInclude Include="inc\helpers\saveHandler.h" />
     <ClInclude Include="inc\hero.h" />
-    <ClInclude Include="inc\hpBar.h" />
     <ClInclude Include="inc\item.h" />
     <ClInclude Include="inc\item\greenBerry.h" />
     <ClInclude Include="inc\item\honeydewPotion.h" />
@@ -238,6 +237,7 @@
     <ClInclude Include="inc\tileson\tileson.hpp" />
     <ClInclude Include="inc\timeController.h" />
     <ClInclude Include="inc\ui\actionMessageUi.h" />
+	<ClInclude Include="inc\ui\hpBar.h" />
     <ClInclude Include="inc\ui\itemPickMessageUi.h" />
     <ClInclude Include="inc\ui\quickItemUi.h" />
     <ClInclude Include="inc\ui\ui.h" />
