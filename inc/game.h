@@ -36,6 +36,7 @@ public:
 	AnimationSet* termiteMinerAnimSet;
 	AnimationSet* wallAnimSet;
 	AnimationSet* roundKingAnimSet;
+	AnimationSet* smallBrownSpiderAnimSet;
 	AnimationSet* bulletAnimSet;
 	AnimationSet* hDewPotionAnimSet;
 	AnimationSet* stoneProjectileAnimSet;

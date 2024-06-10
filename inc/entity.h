@@ -23,6 +23,7 @@ public:
 	string type = "entity";
 	bool moving;
 	float angle;
+	float distanceToTarget;
 	float moveSpeed;
 	float moveSpeedMax;
 	float slideAngle;

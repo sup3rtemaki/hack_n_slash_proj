@@ -9,6 +9,7 @@
 #include "tileson/tileson.hpp"
 #include "nlohmann/json.hpp"
 #include "item/key.h"
+#include "npcs/bosses/smallBrownSpider.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -117,6 +118,14 @@ Game::Game() {
 	camController.isLerping = true;
 
 	updateMaps();
+
+	// teste
+	SmallBrownSpider* enemy = new SmallBrownSpider(smallBrownSpiderAnimSet);
+	enemy->x = hero->x + 32;
+	enemy->y = hero->y + 32;
+	enemy->invincibleTimer = 0.1;
+	//currentMapEnemies.push_back(enemy);
+	Entity::entities.push_back(enemy);
 }
 
 Game::~Game() {
@@ -827,6 +836,9 @@ void Game::loadAnimationSets() {
 
 	roundKingAnimSet = new AnimationSet();
 	roundKingAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "roundKing.fdset", dataGroupTypes, true, 0, true);
+
+	smallBrownSpiderAnimSet = new AnimationSet();
+	smallBrownSpiderAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "spider_boss.fdset", dataGroupTypes);
 
 	bulletAnimSet = new AnimationSet();
 	bulletAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "bullet.fdset", dataGroupTypes, true, 0, true);

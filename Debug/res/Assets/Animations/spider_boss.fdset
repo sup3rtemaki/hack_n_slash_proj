@@ -1,0 +1,503 @@
+Assets\\Animations\\spider_boss.png
+animations: 25
+up
+frames: 4
+frame
+clip: 5 202 67 52
+offset: 34 50
+duration: 0.1
+index: 0
+collisionBox: 14 4 49 48
+frame
+clip: 86 199 71 55
+offset: 33 53
+duration: 0.1
+index: 1
+collisionBox: 12 4 46 49
+frame
+clip: 165 201 71 53
+offset: 34 51
+duration: 0.1
+index: 2
+collisionBox: 14 4 45 48
+frame
+clip: 248 200 68 55
+offset: 31 52
+duration: 0.1
+index: 3
+collisionBox: 11 4 46 48
+down
+frames: 4
+frame
+clip: 165 7 65 57
+offset: 34 54
+duration: 0.1
+index: 0
+collisionBox: 13 1 49 56
+frame
+clip: 8 7 65 58
+offset: 31 54
+duration: 0.1
+index: 1
+collisionBox: 12 2 45 54
+frame
+clip: 244 7 67 58
+offset: 35 53
+duration: 0.1
+index: 2
+collisionBox: 8 5 55 50
+frame
+clip: 87 0 69 64
+offset: 32 59
+duration: 0.1
+index: 3
+collisionBox: 10 6 48 58
+left
+frames: 4
+frame
+clip: 6 84 72 46
+offset: 29 37
+duration: 0.1
+index: 0
+collisionBox: 10 8 52 34
+frame
+clip: 167 84 67 46
+offset: 30 37
+duration: 0.1
+index: 1
+collisionBox: 85 580 0 0
+frame
+clip: 90 80 63 47
+offset: 29 41
+duration: 0.1
+index: 2
+collisionBox: 9 16 48 25
+frame
+clip: 247 86 72 47
+offset: 30 36
+duration: 0.1
+index: 3
+collisionBox: 10 9 52 24
+right
+frames: 4
+frame
+clip: 7 149 68 45
+offset: 37 36
+duration: 0.1
+index: 0
+collisionBox: 9 9 52 28
+frame
+clip: 88 147 63 45
+offset: 36 36
+duration: 0.1
+index: 1
+collisionBox: 6 5 50 31
+frame
+clip: 169 147 67 46
+offset: 36 37
+duration: 0.1
+index: 2
+collisionBox: 7 11 48 24
+frame
+clip: 245 149 67 44
+offset: 35 35
+duration: 0.1
+index: 3
+collisionBox: 8 9 51 25
+idleUp
+frames: 1
+frame
+clip: 87 198 70 57
+offset: 32 54
+duration: 0.1
+index: 0
+collisionBox: 19 10 32 44
+idleDown
+frames: 1
+frame
+clip: 86 6 72 58
+offset: 33 54
+duration: 0.1
+index: 0
+collisionBox: 19 4 35 53
+idleLeft
+frames: 1
+frame
+clip: 95 82 58 47
+offset: 21 38
+duration: 0.1
+index: 0
+collisionBox: 3 11 48 27
+idleRight
+frames: 1
+frame
+clip: 86 154 65 40
+offset: 38 29
+duration: 0.1
+index: 0
+collisionBox: 9 2 47 28
+telegraphDashUp
+frames: 5
+frame
+clip: 2 493 79 54
+offset: 37 49
+duration: 0.2
+index: 0
+collisionBox: 21 2 36 48
+frame
+clip: 90 493 64 55
+offset: 29 46
+duration: 0.2
+index: 1
+collisionBox: 13 5 36 44
+frame
+clip: 173 494 59 51
+offset: 26 44
+duration: 0.3
+index: 2
+collisionBox: 11 4 35 43
+frame
+clip: 89 496 67 48
+offset: 30 46
+duration: 0.05
+index: 3
+collisionBox: 19 3 26 46
+frame
+clip: 7 491 67 53
+offset: 32 51
+duration: 0.05
+index: 4
+collisionBox: 19 6 31 46
+dashUp
+frames: 1
+frame
+clip: 262 484 69 67
+offset: 32 56
+duration: 0.5
+index: 0
+collisionBox: 18 14 35 45
+hitBox: 9 3 50 24
+damage: 20
+telegraphDashDown
+frames: 5
+frame
+clip: 5 269 75 69
+offset: 34 60
+duration: 0.2
+index: 0
+collisionBox: 21 7 32 55
+frame
+clip: 92 270 61 72
+offset: 27 55
+duration: 0.2
+index: 1
+collisionBox: 14 4 31 53
+frame
+clip: 173 269 60 70
+offset: 26 57
+duration: 0.3
+index: 2
+collisionBox: 15 4 25 57
+frame
+clip: 90 271 65 66
+offset: 29 53
+duration: 0.05
+index: 3
+collisionBox: 19 3 24 55
+frame
+clip: 8 273 73 67
+offset: 31 55
+duration: 0.05
+index: 4
+collisionBox: 19 5 26 53
+dashDown
+frames: 1
+frame
+clip: 247 254 69 92
+offset: 32 78
+duration: 0.5
+index: 0
+collisionBox: 19 25 26 57
+hitBox: 6 64 54 22
+damage: 20
+telegraphDashLeft
+frames: 5
+frame
+clip: 15 361 62 42
+offset: 20 34
+duration: 0.2
+index: 0
+collisionBox: 5 4 48 24
+frame
+clip: 94 357 59 44
+offset: 19 37
+duration: 0.2
+index: 1
+collisionBox: 4 6 50 28
+frame
+clip: 176 358 57 46
+offset: 17 36
+duration: 0.3
+index: 2
+collisionBox: 5 6 43 26
+frame
+clip: 92 358 62 46
+offset: 21 36
+duration: 0.05
+index: 3
+collisionBox: 9 7 46 22
+frame
+clip: 12 358 64 44
+offset: 22 35
+duration: 0.05
+index: 4
+collisionBox: 8 7 47 27
+dashLeft
+frames: 1
+frame
+clip: 238 356 99 46
+offset: 39 34
+duration: 0.5
+index: 0
+collisionBox: 15 9 60 21
+hitBox: 3 8 21 32
+damage: 20
+telegraphDashRight
+frames: 5
+frame
+clip: 5 418 68 49
+offset: 42 39
+duration: 0.2
+index: 0
+collisionBox: 5 8 55 28
+frame
+clip: 83 421 69 44
+offset: 43 36
+duration: 0.2
+index: 1
+collisionBox: 12 8 47 22
+frame
+clip: 167 418 67 51
+offset: 40 39
+duration: 0.3
+index: 2
+collisionBox: 9 9 44 26
+frame
+clip: 85 416 69 49
+offset: 38 42
+duration: 0.05
+index: 3
+collisionBox: 8 12 50 25
+frame
+clip: 9 419 64 48
+offset: 34 39
+duration: 0.05
+index: 4
+collisionBox: 5 8 50 25
+dashRight
+frames: 1
+frame
+clip: 238 416 104 51
+offset: 60 39
+duration: 0.5
+index: 0
+collisionBox: 33 12 53 25
+hitBox: 83 11 15 32
+damage: 20
+slashRHandUp
+frames: 3
+frame
+clip: 10 803 63 68
+offset: 29 58
+duration: 0.3
+index: 0
+collisionBox: 18 14 25 45
+frame
+clip: 90 797 61 72
+offset: 29 63
+duration: 0.1
+index: 1
+collisionBox: 17 21 25 44
+hitBox: 17 8 38 17
+damage: 10
+frame
+clip: 186 802 63 71
+offset: 29 57
+duration: 0.2
+index: 2
+slashLHandUp
+frames: 3
+frame
+clip: 265 804 61 64
+offset: 30 56
+duration: 0.3
+index: 0
+collisionBox: 20 14 23 44
+frame
+clip: 340 791 62 71
+offset: 36 68
+duration: 0.1
+index: 1
+collisionBox: 26 29 23 42
+hitBox: 9 12 41 23
+damage: 10
+frame
+clip: 412 808 67 61
+offset: 28 52
+duration: 0.2
+index: 2
+collisionBox: 18 13 23 39
+slashRHandDown
+frames: 3
+frame
+clip: 4 576 72 64
+offset: 35 54
+duration: 0.3
+index: 0
+collisionBox: 19 2 33 54
+frame
+clip: 88 576 76 91
+offset: 31 56
+duration: 0.1
+index: 1
+collisionBox: 17 6 33 54
+hitBox: 9 56 40 20
+damage: 10
+frame
+clip: 172 570 73 82
+offset: 28 62
+duration: 0.2
+index: 2
+collisionBox: 14 12 30 50
+slashLHandDown
+frames: 3
+frame
+clip: 263 577 74 71
+offset: 33 52
+duration: 0.3
+index: 0
+collisionBox: 19 2 33 53
+frame
+clip: 357 573 71 90
+offset: 35 56
+duration: 0.1
+index: 1
+collisionBox: 21 9 27 54
+hitBox: 20 59 36 21
+damage: 10
+frame
+clip: 439 571 66 84
+offset: 32 59
+duration: 0.3
+index: 2
+collisionBox: 19 8 30 50
+slashRHandLeft
+frames: 3
+frame
+clip: 6 674 68 45
+offset: 29 41
+duration: 0.3
+index: 0
+collisionBox: 10 10 55 25
+frame
+clip: 86 673 74 51
+offset: 31 42
+duration: 0.1
+index: 1
+collisionBox: 17 14 41 23
+hitBox: 2 5 15 41
+damage: 10
+frame
+clip: 173 678 82 49
+offset: 40 37
+duration: 0.2
+index: 2
+collisionBox: 22 6 42 24
+slashLHandLeft
+frames: 3
+frame
+clip: 263 675 73 50
+offset: 28 40
+duration: 0.3
+index: 0
+collisionBox: 17 11 38 22
+frame
+clip: 336 672 84 54
+offset: 37 43
+duration: 0.1
+index: 1
+collisionBox: 18 14 44 21
+hitBox: 7 12 15 29
+damage: 10
+frame
+clip: 418 670 80 58
+offset: 35 45
+duration: 0.2
+index: 2
+collisionBox: 19 15 39 22
+slashRHandRight
+frames: 3
+frame
+clip: 1 739 79 49
+offset: 42 40
+duration: 0.3
+index: 0
+collisionBox: 15 9 45 25
+frame
+clip: 84 739 91 53
+offset: 39 41
+duration: 0.1
+index: 1
+collisionBox: 12 9 48 26
+hitBox: 59 10 18 30
+damage: 10
+frame
+clip: 176 735 83 57
+offset: 42 45
+duration: 0.2
+index: 2
+collisionBox: 18 10 45 27
+slashLHandRight
+frames: 3
+frame
+clip: 258 741 75 46
+offset: 43 39
+duration: 0.3
+index: 0
+collisionBox: 15 6 44 24
+frame
+clip: 343 735 78 52
+offset: 35 45
+duration: 0.1
+index: 1
+collisionBox: 11 10 46 30
+hitBox: 53 8 17 35
+damage: 10
+frame
+clip: 422 735 78 56
+offset: 36 45
+duration: 0.2
+index: 2
+collisionBox: 16 11 42 25
+die
+frames: 4
+frame
+clip: 2 882 74 65
+offset: 37 59
+duration: 0.2
+index: 0
+frame
+clip: 84 879 75 72
+offset: 35 63
+duration: 0.2
+index: 1
+frame
+clip: 167 890 67 64
+offset: 33 54
+duration: 0.2
+index: 2
+frame
+clip: 246 886 65 65
+offset: 28 60
+duration: 0.2
+index: 3

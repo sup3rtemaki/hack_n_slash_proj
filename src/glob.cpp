@@ -85,7 +85,7 @@ void Glob::think() {
 			}
 			else {
 				findNearestTarget();
-				if (target != NULL && target->hp > 0) {
+				if (target != nullptr && target->hp > 0) {
 					float dist = Entity::distanceBetweenTwoEntities(this, target);
 					
 					//if in range, attack

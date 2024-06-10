@@ -27,7 +27,7 @@ int RoundKing::roundKingsKilled = 0;
 RoundKing::RoundKing(AnimationSet* animSet, AnimationSet* bulletAnimSet) {
 	this->animSet = animSet;
 	this->bulletAnimSet = bulletAnimSet;
-	type = "enemy";
+	type = "boss";
 	x = Globals::ScreenWidth - 32;
 	y = Globals::ScreenHeight - 32;
 	moveSpeed = 0;

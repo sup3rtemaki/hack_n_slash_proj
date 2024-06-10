@@ -42,8 +42,8 @@ void Entity::updateMovement() {
 		// works out move distance using speed, deltaTime
 		float moveDist = moveSpeed * (TimeController::timeController.dT) * moveLerp;
 		if (moveDist > 0) {
-			float xMove = moveDist * (cos(angle * Globals::PI / 180));
-			float yMove = moveDist * (sin(angle * Globals::PI / 180));
+			float xMove = moveDist * (cos(angle * Globals::PI / 180.f));
+			float yMove = moveDist * (sin(angle * Globals::PI / 180.f));
 
 			x += xMove;
 			y += yMove;
@@ -61,8 +61,8 @@ void Entity::updateMovement() {
 	if (slideAmount > 0) {
 		float slideDist = slideAmount * TimeController::timeController.dT * moveLerp;
 		if (slideDist > 0) {
-			float xMove = slideDist * (cos(slideAngle * Globals::PI / 180));
-			float yMove = slideDist * (sin(slideAngle * Globals::PI / 180));
+			float xMove = slideDist * (cos(slideAngle * Globals::PI / 180.f));
+			float yMove = slideDist * (sin(slideAngle * Globals::PI / 180.f));
 
 			x += xMove;
 			y += yMove;

@@ -32,10 +32,15 @@ void LivingEntity::updateInvincibleTimer() {
 void LivingEntity::draw() {
 	if (currentFrame != NULL && active) {
 		if (invincibleTimer > 0 && animSet->whiteSpriteSheet != NULL) {
-			currentFrame->Draw(animSet->whiteSpriteSheet, x - Globals::camera.x, y - Globals::camera.y);
+			currentFrame->Draw(
+				animSet->whiteSpriteSheet,
+				x - (Globals::camera.x * 1.f),
+				y - (Globals::camera.y * 1.f));
 		}
 		else {
-			currentFrame->Draw(animSet->spriteSheet, x - Globals::camera.x, y - Globals::camera.y);
+			currentFrame->Draw(animSet->spriteSheet,
+				x - (Globals::camera.x * 1.f),
+				y - (Globals::camera.y * 1.f));
 		}
 		
 	}

@@ -1,8 +1,8 @@
 {
-    "currentMapFile": "warrior_halls_2.json",
+    "currentMapFile": "warrior_halls_4.json",
     "heroHp": 5,
-    "heroX": 735,
-    "heroY": 448,
+    "heroX": 500,
+    "heroY": 500,
     "inventory": [
         {
             "id": 0,
