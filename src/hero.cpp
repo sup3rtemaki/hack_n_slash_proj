@@ -52,9 +52,9 @@ Hero::Hero(AnimationSet* animSet) {
 	y = Globals::ScreenHeight / 2;
 	moveSpeed = 0;
 	moveSpeedMax = 50;
-	hp = hpMax = 20;
-	stamina = staminaMax = 20;
-	staminaStatusAmount = 0.1f;
+	hp = hpMax = 100;
+	stamina = staminaMax = 50;
+	staminaStatusAmount = 0.3f;
 	damage = 0;
 	collisionBoxW = 20;
 	collisionBoxH = 24;
@@ -79,6 +79,10 @@ void Hero::update() {
 		hp = hpMax;
 	}
 
+	if (stamina < 0.f) {
+		stamina = 0;
+	}
+
 	statusTimerTick();
 	updateCollisionBox();
 	updateMovement();
@@ -95,7 +99,7 @@ void Hero::slash() {
 		stamina > 0.f) {
 		moving = false;
 		frameTimer = 0;
-		stamina -= 2.f;
+		stamina -= 17.f;
 		changeAnimation(HERO_STATE_SLASH, true);
 		SoundManager::soundManager.playSound("swing");
 	}
@@ -112,7 +116,7 @@ void Hero::dash() {
 		slideAngle = angle;
 		slideAmount = 200;
 		invincibleTimer = 0.1;
-		stamina -= 4.f;
+		stamina -= 30.f;
 
 		changeAnimation(HERO_STATE_DASH, true);
 
@@ -283,7 +287,7 @@ void Hero::updateAnimation() {
 void Hero::updateDamages() {
 	if (active && hp > 0 && invincibleTimer <= 0) {
 		for (auto entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
-			if ((*entity)->active && (*entity)->type == "enemy") {
+			if ((*entity)->active && ((*entity)->type == "enemy" || (*entity)->type == "boss")) {
 				LivingEntity* enemy = (LivingEntity*)(*entity); //enemies are living entites
 
 				if (enemy->damage > 0 && Entity::checkCollision(collisionBox, enemy->hitBox)) {

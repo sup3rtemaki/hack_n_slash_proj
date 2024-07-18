@@ -1,6 +1,6 @@
 {
     "currentMapFile": "warrior_halls_4.json",
-    "heroHp": 5,
+    "heroHp": 100,
     "heroX": 500,
     "heroY": 500,
     "inventory": [

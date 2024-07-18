@@ -59,15 +59,17 @@ SmallBrownSpider::SmallBrownSpider(AnimationSet* animSet) {
 	y = Globals::ScreenHeight - 32;
 	moveSpeed = 0;
 	moveSpeedMax = 40;
-	hp = hpMax = 500;
+	hp = hpMax = 300;
 	damage = 0;
 	collisionBoxW = 40;
 	collisionBoxH = 40;
 	collisionBox.w = collisionBoxW;
 	collisionBox.h = collisionBoxH;
 	collisionBoxYOffset = -40;
+	thinkTimerModifier = 5;
+	phase = SMALL_BROWN_SPIDER_PHASE_NORMAL;
 
-	changeAnimation(SMALL_BROWN_SPIDER_STATE_IDLE, true);
+	//changeAnimation(SMALL_BROWN_SPIDER_STATE_IDLE, true);
 	updateCollisionBox();
 }
 
@@ -79,6 +81,7 @@ void SmallBrownSpider::update() {
 		die();
 	}
 
+	updateDirection();
 	think();
 	updateCollisionBox();
 	updateMovement();
@@ -93,12 +96,46 @@ void SmallBrownSpider::think() {
 	if (state == SMALL_BROWN_SPIDER_STATE_IDLE || state == SMALL_BROWN_SPIDER_STATE_MOVE) {
 		thinkTimer -= TimeController::timeController.dT;
 
+		//check wich phase we are in
+		if (hp > 250) {
+			phase = SMALL_BROWN_SPIDER_PHASE_NORMAL;
+		}
+		else if (hp > 100) {
+			phase = SMALL_BROWN_SPIDER_PHASE_DAMAGED;
+		}
+		else {
+			phase = SMALL_BROWN_SPIDER_PHASE_FRANTIC;
+		}
+
 		//time to choose an action
 		if (thinkTimer <= 0) {
-			thinkTimer = rand() % 2; //0 - 5 seconds
-			int action = rand() % 10;
+			int actionModifier;
 
-			if (action < 3) {
+			switch (phase) {
+				case SMALL_BROWN_SPIDER_PHASE_NORMAL:
+					thinkTimerModifier = 4;
+					actionModifier = 30;
+					break;
+
+				case SMALL_BROWN_SPIDER_PHASE_DAMAGED:
+					thinkTimerModifier = 3;
+					actionModifier = 20;
+					break;
+
+				case SMALL_BROWN_SPIDER_PHASE_FRANTIC:
+					thinkTimerModifier = 2;
+					actionModifier = 10;
+					break;
+
+				default:
+					break;
+			}
+
+			thinkTimer = getRandomNumber(thinkTimerModifier);
+
+			int action = getRandomNumber(100);
+
+			if (action < actionModifier) {
 				moving = false;
 				aiState = SMALL_BROWN_SPIDER_AI_NORMAL;
 				changeAnimation(SMALL_BROWN_SPIDER_STATE_IDLE, true);
@@ -110,7 +147,11 @@ void SmallBrownSpider::think() {
 
 					//if in range, attack
 					if (dist < 50) {
-						action <= 4.f ? telegraphDash() : slash();
+						slash();
+						aiState = SMALL_BROWN_SPIDER_AI_NORMAL;
+					}
+					else if (dist < 150){
+						telegraphDash();
 						aiState = SMALL_BROWN_SPIDER_AI_NORMAL;
 					}
 					else {
@@ -143,7 +184,7 @@ void SmallBrownSpider::slash() {
 void SmallBrownSpider::dash() {
 	moving = false;
 	frameTimer = 0;
-	slideAmount = 300;
+	slideAmount = 200;
 	slideAngle = angle;
 	changeAnimation(SMALL_BROWN_SPIDER_STATE_DASH, true);
 }
@@ -152,6 +193,13 @@ void SmallBrownSpider::telegraphDash() {
 	moving = false;
 	frameTimer = 0;
 	changeAnimation(SMALL_BROWN_SPIDER_STATE_TELEGRAPH_DASH, true);
+}
+
+void SmallBrownSpider::updateDirection() {
+	if (target == nullptr) return;
+
+	angle = Entity::angleBetweenTwoEntities(this, target);
+	direction = angleToDirection(angle);
 }
 
 void SmallBrownSpider::die() {
@@ -177,6 +225,8 @@ void SmallBrownSpider::findNearestTarget() {
 					target = (LivingEntity*)(*entity);
 				}
 			}
+
+			return;
 		}
 	}
 }

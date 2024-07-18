@@ -126,6 +126,8 @@ Game::Game() {
 	enemy->invincibleTimer = 0.1;
 	//currentMapEnemies.push_back(enemy);
 	Entity::entities.push_back(enemy);
+	bossHpBar = new HPBar(enemy, BarType::BOSS_HEALTH_BAR); // Exemplo
+	gui.push_back(bossHpBar);
 }
 
 Game::~Game() {

@@ -56,30 +56,29 @@ public:
 	//when 0, do new acton
 	float thinkTimer = 0;
 
-	//how long to shoot for
-	float shootTimer = 0;
-
-	//time between bullets
-	float shotTimer = 0;
-
 	//who should i chase
 	LivingEntity* target = NULL;
 
-	//current phase for boss
-	int aiState = SMALL_BROWN_SPIDER_PHASE_NORMAL;
+	int aiState = SMALL_BROWN_SPIDER_AI_NORMAL;
+
+	int phase;
 
 	SmallBrownSpider(AnimationSet* animSet);
 	void update();
 	void think();
-	void charge();
 	void slash();
 	void dash();
 	void telegraphDash();
+	void updateDirection();
 	void die();
 	void findNearestTarget();
 	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");
 	void updateAnimation();
 	void updateDamages();
+
+private:
+	int thinkTimerModifier;
+	int actionModifier;
 };
 
 #endif // !SMALLBROWNSPIDER
