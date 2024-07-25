@@ -54,7 +54,6 @@ const int SmallBrownSpider::SMALL_BROWN_SPIDER_AI_CHASE = 1;
 SmallBrownSpider::SmallBrownSpider(AnimationSet* animSet) {
 	this->animSet = animSet;
 	type = "boss";
-	id = 1;
 	x = Globals::ScreenWidth - 32;
 	y = Globals::ScreenHeight - 32;
 	moveSpeed = 0;

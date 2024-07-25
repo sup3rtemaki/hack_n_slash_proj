@@ -120,14 +120,7 @@ Game::Game() {
 	updateMaps();
 
 	// teste
-	SmallBrownSpider* enemy = new SmallBrownSpider(smallBrownSpiderAnimSet);
-	enemy->x = hero->x + 32;
-	enemy->y = hero->y + 32;
-	enemy->invincibleTimer = 0.1;
-	//currentMapEnemies.push_back(enemy);
-	Entity::entities.push_back(enemy);
-	bossHpBar = new HPBar(enemy, BarType::BOSS_HEALTH_BAR); // Exemplo
-	gui.push_back(bossHpBar);
+	spawnBoss();
 }
 
 Game::~Game() {
@@ -297,42 +290,8 @@ void Game::update() {
 		//spawn enemies
 		if (hero->hp > 0 && !splashShowing) {
 			if (currentMapEnemies.size() <= 0 && mustSpawnEnemies) {
+				spawnBoss();
 				spawnEnemies();
-			}
-			/*if (enemiesToBuild == enemiesBuilt && currentMapEnemies.size() <= 0) {
-				enemiesToBuild = enemiesToBuild + 6;
-				enemiesBuilt = 0;
-				enemyBuildTimer = 4;
-				enemyWavesTillBoss--;
-
-				if (enemyWavesTillBoss <= 0) {
-					buildBossNext = true;
-				}
-			}*/
-
-			//enemyBuildTimer -= TimeController::timeController.dT;
-			enemyBuildTimer = 0;
-
-			//boss
-			if (buildBossNext && enemyBuildTimer <= 0 && currentMapEnemies.size() == 0) {
-				RoundKing* round = new RoundKing(roundKingAnimSet, bulletAnimSet);
-				round->invincibleTimer = 0.1;
-				currentMapEnemies.push_back(round);
-				Entity::entities.push_back(round);
-
-				//make hpbar point to boss
-				bossHpBar = new HPBar(round, BarType::BOSS_HEALTH_BAR); // Exemplo
-				bossActive = true;
-				buildBossNext = false;
-				enemyWavesTillBoss = 3;
-			}
-
-			//reset spawn waves
-			if (bossActive && currentMapEnemies.size() == 0) {
-				bossActive = false;
-				buildBossNext = false;
-				enemiesBuilt = 0;
-				bossHpBar->entity = nullptr; // when boss dies, hpbar doesnt reference him anymore
 			}
 		}
 
@@ -357,6 +316,25 @@ void Game::update() {
 		// framerate
 		// cout << TimeController::timeController.dT << endl;
 	}
+}
+
+bool Game::isBossMap() {
+	auto tMap = tiledMap.get();
+	if (tMap == nullptr) {
+		cout << "Mapa nulo" << endl;
+		return false;
+	}
+	
+	auto layer = tMap->getLayer("BossSpawn");
+	if (layer == nullptr) return false;
+
+	for (auto obj : layer->getObjects()) {
+		if (!std::any_cast<bool>(obj.getProp("isDefeated")->getValue())) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void Game::updateMaps() {
@@ -405,9 +383,9 @@ void Game::updateMaps() {
 									}
 								}
 							}
-						}						
+						}
 					}
-				}				
+				}
 
 				const string& resPath = getResourcePath();
 
@@ -465,6 +443,7 @@ void Game::updateMaps() {
 		alphaCalc = 0.0f;
 	}
 
+	checkBossDeath();
 	renderTiles();
 	renderTexture(fadeImage, Globals::renderer, (-200) - Globals::camera.x, (-200) - Globals::camera.y);
 }
@@ -660,6 +639,19 @@ void Game::buildWaypoints() {
 		waypoint.waypointRect.h = object.getSize().y;
 
 		currentMap->currentMapWaypoints.push_back(waypoint);
+
+		if (isBossMap()) {
+			Wall* fogWall = new Wall(
+				waypoint.waypointRect.w + 2,
+				waypoint.waypointRect.h + 2,
+				0);
+
+			fogWall->x = waypoint.waypointRect.x - 1;
+			fogWall->y = waypoint.waypointRect.y - 1;
+			fogWalls.push_back(fogWall);
+			Entity::entities.push_back(fogWall);
+
+		}
 	}
 }
 
@@ -687,8 +679,6 @@ void Game::draw() {
 		for (list<Ui*>::iterator ui = gui.begin(); ui != gui.end(); ui++) {
 			(*ui)->draw();
 		}
-
-		// bossHpBar->draw();
 
 		if (overlayTimer <= 0 && hero->hp < 1) {
 			renderTexture(overlayImage, Globals::renderer, 0, 0);
@@ -720,14 +710,14 @@ void Game::spawnEnemies() {
 		return;
 	}
 
-	int enemyPosX, enemyPosY;
-	int uniqueId;
-	int idCounter = 0;
 	auto layer = tMap->getLayer("EnemiesSpawn");
 	if (layer == nullptr) {
 		return;
 	}
 
+	int enemyPosX, enemyPosY;
+	int uniqueId;
+	int idCounter = 0;
 	for (auto object : layer->getObjects()) {
 		int enemyId = std::any_cast<int>(object.getProp("enemyId")->getValue());
 		uniqueId = (enemyId * 10) + idCounter;
@@ -767,6 +757,42 @@ void Game::spawnEnemies() {
 	}
 }
 
+void Game::spawnBoss() {
+	auto tMap = tiledMap.get();
+	if (tMap == nullptr) {
+		cout << "Mapa nulo" << endl;
+		return;
+	}
+
+	auto layer = tMap->getLayer("BossSpawn");
+	if (layer == nullptr) return;
+
+	int bossPosX, bossPosY;
+	for (auto object : layer->getObjects()) {
+		bool isDefeated = std::any_cast<bool>(object.getProp("isDefeated")->getValue());
+		if (isDefeated) return;
+
+		int bossId = std::any_cast<int>(object.getProp("bossId")->getValue());
+		bossPosX = object.getPosition().x;
+		bossPosY = object.getPosition().y;
+		switch (bossId) {
+		case 990001: // Small Brown Spider
+			currentBoss = new SmallBrownSpider(smallBrownSpiderAnimSet);
+			currentBoss->x = bossPosX;
+			currentBoss->y = bossPosY;
+			currentBoss->id = bossId;
+			currentBoss->invincibleTimer = 0.1;
+			//currentMapEnemies.push_back(currentBoss);
+			Entity::entities.push_back(currentBoss);
+			bossHpBar = new HPBar(currentBoss, BarType::BOSS_HEALTH_BAR); // Exemplo
+			gui.push_back(bossHpBar);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
 void Game::spawnItem(int itemId, int quant, int xPos, int yPos) {
 	//TODO: Spawnar itens usando a lista currentMap->itemsInMap
 	//TODO: Criar switch case com enums do itemId
@@ -792,6 +818,42 @@ void Game::spawnItem(int itemId, int quant, int xPos, int yPos) {
 	spawnItem->y = yPos;
 	spawnItem->active = true;
 	Entity::entities.push_back(spawnItem);
+}
+
+void Game::checkBossDeath() {
+	if (currentBoss != nullptr && currentBoss->active && currentBoss->hp <= 0) {
+		saveBossDefeat();
+
+		for (auto fogWall : fogWalls) {
+			fogWall->active = false;
+		}
+
+		fogWalls.clear();
+		// currentBoss = nullptr;
+	}
+}
+
+void Game::saveBossDefeat() {
+	const string mapFilePath = getResourcePath() + MAPS_FOLDER_PATH + currentMap->file;
+	std::ifstream ifs(mapFilePath);
+	json mapFile = json::parse(ifs);
+
+	for (auto& layersIt : mapFile["layers"]) {
+		string name = layersIt["name"];
+		if (name == "BossSpawn") {
+			for (auto& object : layersIt["objects"]) {
+				for (auto& prop : object["properties"]) {
+					if (prop["name"] == "isDefeated") {
+						std::ofstream outputFile(mapFilePath);
+						prop["value"].clear();
+						prop["value"] = true;
+						outputFile << std::setw(4) << mapFile << std::endl;
+						outputFile.close();
+					}
+				}
+			}
+		}
+	}
 }
 
 void Game::loadAnimationSets() {

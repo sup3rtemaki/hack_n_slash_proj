@@ -68,8 +68,11 @@ public:
 	KeyboardInput heroKeyboardInput;
 	JoystickInput heroJoystickInput;
 
+	LivingEntity* currentBoss;
+
 	list<Entity*> currentMapEnemies;
 	list<Entity*> walls;
+	list<Entity*> fogWalls;
 	list<Ui*> gui;
 	list<int> deadEnemiesIds;
 	list<Item*> itemsOnMap;
@@ -105,6 +108,8 @@ public:
 private:
 	string resPath;
 
+	bool isBossMap();
+
 	void updateMaps();
 	void loadTiledMap(const string& mapFile);
 	void renderTiles();
@@ -113,7 +118,10 @@ private:
 	void buildWalls();
 	void buildWaypoints();
 	void spawnEnemies();
+	void spawnBoss();
 	void spawnItem(int itemId, int quant, int xPos, int yPos);
+	void checkBossDeath();
+	void saveBossDefeat();
 	void loadAnimationSets();
 	void spawnItemsFromCurrentMap();
 	void inactivateCurrentMapItems();
