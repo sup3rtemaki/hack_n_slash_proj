@@ -3,6 +3,7 @@
     "heroHp": 100,
     "heroX": 500,
     "heroY": 500,
+    "checkpointId": 0,
     "inventory": [
         {
             "id": 0,

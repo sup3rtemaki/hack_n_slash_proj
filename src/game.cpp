@@ -10,6 +10,7 @@
 #include "nlohmann/json.hpp"
 #include "item/key.h"
 #include "npcs/bosses/smallBrownSpider.h"
+#include "checkpoint.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -43,16 +44,16 @@ Game::Game() {
 	Globals::camera.h = Globals::ScreenHeight;
 
 	//loadup sounds
-	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "hit", resPath + "Randomize2.wav");
-	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "enemyHit", resPath + "Hit_Hurt9.wav");
-	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "swing", resPath + "Randomize21.wav");
-	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "dash", resPath + "dash.wav");
-	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "growl", resPath + "Randomize34.wav");
-	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "enemyDie", resPath + "Randomize41.wav");
-	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "crash", resPath + "crash.wav");
-	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "smash", resPath + "smash.wav");
-	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "shoot", resPath + "shoot2.wav");
-	SoundManager::soundManager.loadSound(SOUNDS_FOLDER_PATH + "laugh", resPath + "laugh2.wav");
+	SoundManager::soundManager.loadSound("hit", resPath + SOUNDS_FOLDER_PATH + "Randomize2.wav");
+	SoundManager::soundManager.loadSound("enemyHit", resPath + SOUNDS_FOLDER_PATH + "Hit_Hurt9.wav");
+	SoundManager::soundManager.loadSound("swing", resPath + SOUNDS_FOLDER_PATH + "Randomize21.wav");
+	SoundManager::soundManager.loadSound("dash", resPath + SOUNDS_FOLDER_PATH + "dash.wav");
+	SoundManager::soundManager.loadSound("growl", resPath + SOUNDS_FOLDER_PATH + "Randomize34.wav");
+	SoundManager::soundManager.loadSound("enemyDie", resPath + SOUNDS_FOLDER_PATH + "Randomize41.wav");
+	SoundManager::soundManager.loadSound("crash", resPath + SOUNDS_FOLDER_PATH + "crash.wav");
+	SoundManager::soundManager.loadSound("smash", resPath + SOUNDS_FOLDER_PATH + "smash.wav");
+	SoundManager::soundManager.loadSound("shoot", resPath + SOUNDS_FOLDER_PATH + "shoot2.wav");
+	SoundManager::soundManager.loadSound("laugh", resPath + SOUNDS_FOLDER_PATH + "laugh2.wav");
 
 	//song = Mix_LoadMUS(string(resPath + "Fatal Theory.wav").c_str());
 	//if (song != NULL) {
@@ -75,6 +76,7 @@ Game::Game() {
 	hero->hp = saveHandler.getHeroHp();
 	hero->x = saveHandler.getHeroX();
 	hero->y = saveHandler.getHeroY();
+	hero->checkpointId = saveHandler.getCheckpointId();
 	hero->inventory.clear();
 	hero->inventory = loadInventoryItems(saveHandler.getItems());
 	for (auto i : hero->inventory) {
@@ -93,6 +95,7 @@ Game::Game() {
 	buildWalls();
 	buildWaypoints();
 	buildDoors();
+	spawnCheckpoints();
 
 	spawnItemsFromCurrentMap();
 
@@ -415,6 +418,7 @@ void Game::updateMaps() {
 				buildWalls();
 				buildWaypoints();
 				buildDoors();
+				spawnCheckpoints();
 				saveGame();
 				openDoorsIds = {};
 			}
@@ -767,28 +771,27 @@ void Game::spawnBoss() {
 	auto layer = tMap->getLayer("BossSpawn");
 	if (layer == nullptr) return;
 
-	int bossPosX, bossPosY;
 	for (auto object : layer->getObjects()) {
 		bool isDefeated = std::any_cast<bool>(object.getProp("isDefeated")->getValue());
 		if (isDefeated) return;
 
 		int bossId = std::any_cast<int>(object.getProp("bossId")->getValue());
-		bossPosX = object.getPosition().x;
-		bossPosY = object.getPosition().y;
+		int bossPosX = object.getPosition().x;
+		int bossPosY = object.getPosition().y;
 		switch (bossId) {
-		case 990001: // Small Brown Spider
-			currentBoss = new SmallBrownSpider(smallBrownSpiderAnimSet);
-			currentBoss->x = bossPosX;
-			currentBoss->y = bossPosY;
-			currentBoss->id = bossId;
-			currentBoss->invincibleTimer = 0.1;
-			//currentMapEnemies.push_back(currentBoss);
-			Entity::entities.push_back(currentBoss);
-			bossHpBar = new HPBar(currentBoss, BarType::BOSS_HEALTH_BAR); // Exemplo
-			gui.push_back(bossHpBar);
-			break;
-		default:
-			break;
+			case 990001: // Small Brown Spider
+				currentBoss = new SmallBrownSpider(smallBrownSpiderAnimSet);
+				currentBoss->x = bossPosX;
+				currentBoss->y = bossPosY;
+				currentBoss->id = bossId;
+				currentBoss->invincibleTimer = 0.1;
+				//currentMapEnemies.push_back(currentBoss);
+				Entity::entities.push_back(currentBoss);
+				bossHpBar = new HPBar(currentBoss, BarType::BOSS_HEALTH_BAR); // Exemplo
+				gui.push_back(bossHpBar);
+				break;
+			default:
+				break;
 		}
 	}
 }
@@ -818,6 +821,31 @@ void Game::spawnItem(int itemId, int quant, int xPos, int yPos) {
 	spawnItem->y = yPos;
 	spawnItem->active = true;
 	Entity::entities.push_back(spawnItem);
+}
+
+void Game::spawnCheckpoints() {
+	auto tMap = tiledMap.get();
+	if (tMap == nullptr) {
+		cout << "Mapa nulo" << endl;
+		return;
+	}
+
+	auto layer = tMap->getLayer("Checkpoints");
+	if (layer == nullptr) return;
+
+	for (auto object : layer->getObjects()) {
+		bool isActive = std::any_cast<bool>(object.getProp("isActive")->getValue());
+		int cpId = std::any_cast<int>(object.getProp("checkpointId")->getValue());
+		int cpPosX = object.getPosition().x;
+		int cpPosY = object.getPosition().y;
+
+		Checkpoint* checkpoint = new Checkpoint(checkpointAnimSet, cpId, currentMap->file);
+		checkpoint->x = cpPosX;
+		checkpoint->y = cpPosY;
+		if (isActive) checkpoint->activate();
+
+		Entity::entities.push_back(checkpoint);
+	}
 }
 
 void Game::checkBossDeath() {
@@ -912,6 +940,9 @@ void Game::loadAnimationSets() {
 
 	doubleDoorsAnimSet = new AnimationSet();
 	doubleDoorsAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "double_doors.fdset", dataGroupTypes);
+
+	checkpointAnimSet = new AnimationSet();
+	checkpointAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "checkpoint.fdset", dataGroupTypes);
 }
 
 void Game::spawnItemsFromCurrentMap() {

@@ -1,0 +1,32 @@
+Assets\\Animations\\checkpoint_prototype.png
+animations: 2
+inactive
+frames: 1
+frame
+clip: 2 8 30 24
+offset: 15 21
+duration: 0.1
+index: 0
+collisionBox: 2 11 27 13
+active
+frames: 4
+frame
+clip: 36 1 27 30
+offset: 12 29
+duration: 0.2
+index: 0
+frame
+clip: 69 0 26 31
+offset: 11 30
+duration: 0.2
+index: 1
+frame
+clip: 133 0 26 31
+offset: 11 30
+duration: 0.2
+index: 2
+frame
+clip: 100 1 27 30
+offset: 12 29
+duration: 0.2
+index: 3

@@ -16,7 +16,7 @@ SaveHandler::~SaveHandler() {
 }
 
 void SaveHandler::save(
-	int heroHp, int heroX, int heroY, string currentMapFile, std::vector<std::pair<int, int>> items, std::vector<int>openDoorsIds) {
+	int heroHp, int heroX, int heroY, int checkpointId, string currentMapFile, std::vector<std::pair<int, int>> items, std::vector<int>openDoorsIds) {
 	std::cout << "Save\n";
 
 	std::ofstream file(SAVE_FILE_PATH);
@@ -29,6 +29,7 @@ void SaveHandler::save(
 	save["heroHp"] = heroHp;
 	save["heroX"] = heroX;
 	save["heroY"] = heroY;
+	save["checkpointId"] = checkpointId;
 	save["currentMapFile"] = currentMapFile;
 
 	if (!items.empty()) {
@@ -69,6 +70,7 @@ bool SaveHandler::load() {
 	heroHp = data["heroHp"];
 	heroX = data["heroX"];
 	heroY = data["heroY"];
+	checkpointId = data["checkpointId"];
 	currentMapFile = string(data["currentMapFile"]);
 	items.clear();
 	openDoorsIds.clear();
@@ -100,6 +102,10 @@ int SaveHandler::getHeroX() {
 
 int SaveHandler::getHeroY() {
 	return heroY;
+}
+
+int SaveHandler::getCheckpointId() {
+	return checkpointId;
 }
 
 string SaveHandler::getCurrentMapFile() {

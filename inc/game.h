@@ -41,6 +41,7 @@ public:
 	AnimationSet* hDewPotionAnimSet;
 	AnimationSet* stoneProjectileAnimSet;
 	AnimationSet* doubleDoorsAnimSet;
+	AnimationSet* checkpointAnimSet;
 
 	SDL_Texture* fadeImage;
 	SDL_Texture* splashImage;
@@ -120,6 +121,7 @@ private:
 	void spawnEnemies();
 	void spawnBoss();
 	void spawnItem(int itemId, int quant, int xPos, int yPos);
+	void spawnCheckpoints();
 	void checkBossDeath();
 	void saveBossDefeat();
 	void loadAnimationSets();

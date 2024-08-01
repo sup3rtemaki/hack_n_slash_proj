@@ -159,6 +159,7 @@
     <ClCompile Include="src\animationSet.cpp" />
     <ClCompile Include="src\bullet.cpp" />
     <ClCompile Include="src\cameraController.cpp" />
+    <ClCompile Include="src\checkpoint.cpp" />
     <ClCompile Include="src\cleanup.cpp" />
     <ClCompile Include="src\drawing_functions.cpp" />
     <ClCompile Include="src\entity.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="inc\animationSet.h" />
     <ClInclude Include="inc\bullet.h" />
     <ClInclude Include="inc\cameraController.h" />
+    <ClInclude Include="inc\checkpoint.h" />
     <ClInclude Include="inc\cleanup.h" />
     <ClInclude Include="inc\dataGroupType.h" />
     <ClInclude Include="inc\drawing_functions.h" />

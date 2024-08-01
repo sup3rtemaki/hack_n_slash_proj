@@ -10,12 +10,20 @@ public:
 	SaveHandler();
 	~SaveHandler();
 
-	void save(int heroHp, int heroX, int heroY, string currentMapFile, std::vector<std::pair<int, int>> items, std::vector<int>openDoorsIds);
+	void save(
+		int heroHp,
+		int heroX,
+		int heroY,
+		int checkpointId,
+		string currentMapFile,
+		std::vector<std::pair<int, int>> items,
+		std::vector<int>openDoorsIds);
 	bool load();
 
 	int getHeroHp();
 	int getHeroX();
 	int getHeroY();
+	int getCheckpointId();
 	string getCurrentMapFile();
 	std::vector<std::pair<int, int>> getItems();
 	std::vector<int> getOpenDoorsIds();
@@ -24,6 +32,7 @@ private:
 	int heroHp;
 	int heroX;
 	int heroY;
+	int checkpointId;
 	string currentMapFile;
 	std::vector<std::pair<int, int>> items;
 	std::vector<int> openDoorsIds;

@@ -63,6 +63,7 @@ public:
 	int quickAccessInventoryIndex = 0;
 	int honeydewQty;
 	int qtyItemsPicked;
+	int checkpointId;
 
 	class Door* nearestDoor;
 	map<int, Item*> inventory;
