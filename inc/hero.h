@@ -57,15 +57,20 @@ public:
 	static const int HERO_STATE_DEAD;
 	static const int HERO_STATE_CONSUMING_ITEM;
 	static const int HERO_STATE_SHOOTING;
+	static const int HERO_STATE_RESTING;
+
+	bool isCheckpointActivatedFlag;
+	bool isRested;
+	bool mustSaveGame;
 
 	int isMovingMethod = 0; // TODO: Paliativo, mudar depois 0 = not moving, 1 = keyboard, 2 = joystick
 	int inventoryIndex = 0;
 	int quickAccessInventoryIndex = 0;
 	int honeydewQty;
 	int qtyItemsPicked;
-	int checkpointId;
 
 	class Door* nearestDoor;
+	class Checkpoint* nearestCheckpoint;
 	map<int, Item*> inventory;
 	vector<int> quickAccessInventory = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 	unordered_map<int, Item*> passiveSlots;
@@ -82,6 +87,7 @@ public:
 	void dash();
 	void die();
 	void revive();
+	void rest();
 	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");
 	void updateAnimation();
 	void updateDamages();

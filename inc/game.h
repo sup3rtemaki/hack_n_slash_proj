@@ -124,6 +124,7 @@ private:
 	void spawnCheckpoints();
 	void checkBossDeath();
 	void saveBossDefeat();
+	void saveCheckpointActivatedState(int checkpointId);
 	void loadAnimationSets();
 	void spawnItemsFromCurrentMap();
 	void inactivateCurrentMapItems();

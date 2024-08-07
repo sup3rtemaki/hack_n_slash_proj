@@ -9,14 +9,15 @@ using json = nlohmann::json;
 
 const std::string SAVE_FILE_PATH = "SaveGame\\save.json";
 
-SaveHandler::SaveHandler() : heroHp(0), heroX(0), heroY(0) {
+SaveHandler::SaveHandler() : heroHp{ 0 }, heroX{ 0 }, heroY{ 0 }, checkpointId{ 0 } {
 }
 
 SaveHandler::~SaveHandler() {
 }
 
 void SaveHandler::save(
-	int heroHp, int heroX, int heroY, int checkpointId, string currentMapFile, std::vector<std::pair<int, int>> items, std::vector<int>openDoorsIds) {
+	int heroHp, int heroX, int heroY, /*int checkpointId, string checkpointMapFile,*/
+	string currentMapFile, std::vector<std::pair<int, int>> items, std::vector<int>openDoorsIds) {
 	std::cout << "Save\n";
 
 	std::ofstream file(SAVE_FILE_PATH);
@@ -29,8 +30,8 @@ void SaveHandler::save(
 	save["heroHp"] = heroHp;
 	save["heroX"] = heroX;
 	save["heroY"] = heroY;
-	save["checkpointId"] = checkpointId;
-	save["currentMapFile"] = currentMapFile;
+	//save["checkpointId"] = checkpointId;
+	//save["currentMapFile"] = currentMapFile;
 
 	if (!items.empty()) {
 		for (auto i : items) {
@@ -70,7 +71,6 @@ bool SaveHandler::load() {
 	heroHp = data["heroHp"];
 	heroX = data["heroX"];
 	heroY = data["heroY"];
-	checkpointId = data["checkpointId"];
 	currentMapFile = string(data["currentMapFile"]);
 	items.clear();
 	openDoorsIds.clear();
@@ -81,13 +81,13 @@ bool SaveHandler::load() {
 			items.push_back(std::make_pair(element["id"], element["itemQty"]));
 		}
 	}
-
-	json jOpenDoorIds = data["openDoors"];
-	if (!jOpenDoorIds.empty()) {
-		for (auto& element : jOpenDoorIds) {
-			openDoorsIds.push_back(element["id"]);
-		}
-	}
+	// TODO: Remover salvamento das portas abertas pelo saveHandler, salvar igual os checkpoints
+	//json jOpenDoorIds = data["openDoors"];
+	//if (!jOpenDoorIds.empty()) {
+	//	for (auto& element : jOpenDoorIds) {
+	//		openDoorsIds.push_back(element["id"]);
+	//	}
+	//}
 
 	return true;
 }
@@ -102,10 +102,6 @@ int SaveHandler::getHeroX() {
 
 int SaveHandler::getHeroY() {
 	return heroY;
-}
-
-int SaveHandler::getCheckpointId() {
-	return checkpointId;
 }
 
 string SaveHandler::getCurrentMapFile() {

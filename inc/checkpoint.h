@@ -11,7 +11,7 @@ public:
 	static const int CHECKPOINT_STATE_ACTIVE;
 	static const int CHECKPOINT_STATE_INACTIVE;
 
-	bool isActive;
+	bool isActivated;
 
 	Checkpoint(AnimationSet* animSet, int id, string& mapFileName);
 

@@ -14,7 +14,7 @@ Checkpoint::Checkpoint(AnimationSet* animSet, int id, string& mapFileName) {
 	collisionBoxW = 10;
 	collisionBoxH = 10;
 	collisionBoxYOffset = -10;
-	isActive = false;
+	isActivated = false;
 
 	changeAnimation(CHECKPOINT_STATE_INACTIVE, true);
 	updateCollisionBox();
@@ -48,7 +48,7 @@ void Checkpoint::updateAnimation() {
 
 void Checkpoint::activate() {
 	frameTimer = 0;
-	isActive = true;
+	isActivated = true;
 	changeAnimation(CHECKPOINT_STATE_ACTIVE, true);
 }
 

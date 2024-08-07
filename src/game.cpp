@@ -76,7 +76,6 @@ Game::Game() {
 	hero->hp = saveHandler.getHeroHp();
 	hero->x = saveHandler.getHeroX();
 	hero->y = saveHandler.getHeroY();
-	hero->checkpointId = saveHandler.getCheckpointId();
 	hero->inventory.clear();
 	hero->inventory = loadInventoryItems(saveHandler.getItems());
 	for (auto i : hero->inventory) {
@@ -246,6 +245,7 @@ void Game::update() {
 			// update all entites in world at once (polymorphism)
 			(*entity)->update();
 
+			// TODO: Encapsular essa rotina em um método
 			// checks if entity is an item, and if we are close to it
 			if (dynamic_cast<Item*>((*entity)) != nullptr) {
 				Item* i = (Item*)(*entity);
@@ -267,11 +267,12 @@ void Game::update() {
 				(*entity)->dropItemFlag = false; // Failsafe
 			}
 
+			// TODO: Encapsular essa rotina em um método
 			if (dynamic_cast<Door*>((*entity)) != nullptr) {
 				Door* d = (Door*)(*entity);
 				if (d->isClosed &&
-					(Entity::distanceBetweenTwoPoints(hero->x, hero->y + (hero->collisionBoxYOffset / 2), d->x + 32, d->y) < 60.0)) {
-					// Teste
+					(Entity::distanceBetweenTwoPoints(
+						hero->x, hero->y + (hero->collisionBoxYOffset / 2), d->x + 32, d->y) < 60.0)) {
 					hero->nearestDoor = d;
 					if (!actionMessageUi->isUiLocked()) {
 						actionMessageUi->setMessage("Open door");
@@ -286,6 +287,38 @@ void Game::update() {
 							openDoorsIds.push_back(d->id);
 						}
 					}
+				}
+			}
+
+			// TODO: Encapsular essa rotina em um método
+			if (dynamic_cast<Checkpoint*>((*entity)) != nullptr) {
+				Checkpoint* cp = (Checkpoint*)(*entity);
+				if (Entity::distanceBetweenTwoPoints(
+						hero->x, hero->y + (hero->collisionBoxYOffset / 2.f), cp->x + 32.f, cp->y) < 60.0) {
+					hero->nearestCheckpoint = cp;
+
+					cp->isActivated ?
+						actionMessageUi->unlock() :
+						actionMessageUi->setMessage("Activate checkpoint");
+				}
+				else {
+					hero->nearestCheckpoint = nullptr;
+					actionMessageUi->unlock();
+				}
+
+				if (hero->isCheckpointActivatedFlag) {
+					// saves checkpoint activated status
+					hero->isCheckpointActivatedFlag = false;
+					saveCheckpointActivatedState(cp->id);
+					actionMessageUi->setMessage("Checkpoint active!");
+					actionMessageUi->setTimer(3.f);
+				}
+
+				if (hero->state == Hero::HERO_STATE_RESTING && hero->isRested) {
+					hero->isRested = false;
+					deadEnemiesIds.clear();
+					currentMapEnemies.clear();
+					spawnEnemies();
 				}
 			}
 		}
@@ -308,6 +341,11 @@ void Game::update() {
 				isFading = true;
 				fadeIn = true;
 			}
+		}
+
+		if (hero->mustSaveGame) {
+			hero->mustSaveGame = false;
+			saveGame();
 		}
 
 		// draw all entites
@@ -884,6 +922,35 @@ void Game::saveBossDefeat() {
 	}
 }
 
+void Game::saveCheckpointActivatedState(int checkpointId) {
+	const string mapFilePath = getResourcePath() + MAPS_FOLDER_PATH + currentMap->file;
+	std::ifstream ifs(mapFilePath);
+	json mapFile = json::parse(ifs);
+	bool checkpointFound = false;
+
+	for (auto& layersIt : mapFile["layers"]) {
+		string name = layersIt["name"];
+		if (name == "Checkpoints") {
+			for (auto& object : layersIt["objects"]) {
+				for (auto& prop : object["properties"]) {
+					if (prop["name"] == "checkpointId" &&
+						prop["value"] == checkpointId) {
+						for (auto& prop2 : object["properties"]) {
+							if (prop2["name"] == "isActive") {
+								std::ofstream outputFile(mapFilePath);
+								prop2["value"].clear();
+								prop2["value"] = true;
+								outputFile << std::setw(4) << mapFile << std::endl;
+								outputFile.close();
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 void Game::loadAnimationSets() {
 	list<DataGroupType> dataGroupTypes; //describes the types of groups the data can have
 
@@ -1034,11 +1101,19 @@ map<int, Item*> Game::loadInventoryItems(std::vector<std::pair<int, int>> items)
 }
 
 void Game::saveGame() {
+	cout << "Saving..." << endl;
 	std::vector<std::pair<int, int>> inventory;
 	for (auto itemMap : hero->inventory) {
 		inventory.push_back(std::make_pair(itemMap.first, itemMap.second->quantity));
 	}
-	// saveHandler.save(hero->hp, hero->x, hero->y, currentMap->file, inventory, openDoorsIds);
+
+	//saveHandler.save(
+	//	hero->hp,
+	//	hero->x,
+	//	hero->y,
+	//	currentMap->file,
+	//	inventory,
+	//	openDoorsIds);
 }
 
 void Game::loadGame() {

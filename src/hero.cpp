@@ -1,5 +1,6 @@
 #include "hero.h"
 
+#include "checkpoint.h"
 #include "door.h"
 #include "ui/actionMessageUi.h"
 
@@ -42,6 +43,7 @@ const int Hero::HERO_STATE_DASH = 3;
 const int Hero::HERO_STATE_DEAD = 4;
 const int Hero::HERO_STATE_CONSUMING_ITEM = 5;
 const int Hero::HERO_STATE_SHOOTING = 6;
+const int Hero::HERO_STATE_RESTING = 7;
 
 Hero::Hero(AnimationSet* animSet) {
 	this->animSet = animSet;
@@ -63,6 +65,7 @@ Hero::Hero(AnimationSet* animSet) {
 	honeydewQty = 3;
 	inventoryIndex = 0;
 	nearestDoor = nullptr;
+	nearestCheckpoint = nullptr;
 	changeAnimation(HERO_STATE_IDLE, true);
 	updateCollisionBox();
 }
@@ -225,6 +228,20 @@ void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 			currentAnim = animSet->getAnimation(HERO_SHOOT_ANIM_RIGHT);
 		}
 	}
+	else if (state == HERO_STATE_RESTING) { // TODO: Criar anims para descanso na fogueira
+		if (direction == DIR_DOWN) {
+			currentAnim = animSet->getAnimation(HERO_ANIM_IDLE_DOWN);
+		}
+		else if (direction == DIR_UP) {
+			currentAnim = animSet->getAnimation(HERO_ANIM_IDLE_UP);
+		}
+		else if (direction == DIR_LEFT) {
+			currentAnim = animSet->getAnimation(HERO_ANIM_IDLE_LEFT);
+		}
+		else if (direction == DIR_RIGHT) {
+			currentAnim = animSet->getAnimation(HERO_ANIM_IDLE_RIGHT);
+		}
+	}
 	else if (state == HERO_STATE_DEAD) {
 		currentAnim = animSet->getAnimation(HERO_ANIM_DIE);
 	}
@@ -248,6 +265,11 @@ void Hero::updateAnimation() {
 
 	if (state != HERO_STATE_MOVE && state != HERO_STATE_CONSUMING_ITEM && moving) {
 		changeAnimation(HERO_STATE_MOVE, true);
+	}
+
+	if (state == HERO_STATE_RESTING) {
+		// TODO: Fazer anim e lógica de sentar na fogueira depois de implementar os menus
+		state = HERO_STATE_IDLE;
 	}
 
 	frameTimer += TimeController::timeController.dT;
@@ -315,6 +337,15 @@ void Hero::takeAction() {
 		else {
 			actionMessageUi->setMessage("Door Locked");
 			actionMessageUi->lock();
+		}
+	}
+	else if (nearestCheckpoint != nullptr) {
+		if (nearestCheckpoint->isActivated) {
+			rest();
+		}
+		else {
+			nearestCheckpoint->activate();
+			isCheckpointActivatedFlag = true;
 		}
 	}
 	else {
@@ -410,6 +441,14 @@ void Hero::pickNearItemFromGround() {
 	}
 	
 	currentNearItem = nullptr;
+}
+
+void Hero::rest() {
+	changeAnimation(HERO_STATE_RESTING, true);
+	hp = hpMax;
+	stamina = staminaMax;
+	mustSaveGame = true;
+	isRested = true;
 }
 
 void Hero::statusTimerTick() {
