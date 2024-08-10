@@ -114,7 +114,10 @@ private:
 	void updateMaps();
 	void loadTiledMap(const string& mapFile);
 	void renderTiles();
-	void checkOpenDoors();
+	void checkAndHandleEnemyLoot(Entity* entity);
+	void checkAndHandleNearItem(Entity* entity);
+	void checkAndHandleNearDoor(Entity* entity);
+	void checkAndHandleNearCheckpoint(Entity* entity);
 	void buildDoors();
 	void buildWalls();
 	void buildWaypoints();

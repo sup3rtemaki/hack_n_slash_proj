@@ -220,6 +220,7 @@ void Game::update() {
 						}
 
 						mustSpawnEnemies = true;
+						//TODO: reviver na última fogueira
 						hero->revive();
 					}
 					
@@ -245,82 +246,13 @@ void Game::update() {
 			// update all entites in world at once (polymorphism)
 			(*entity)->update();
 
-			// TODO: Encapsular essa rotina em um método
-			// checks if entity is an item, and if we are close to it
-			if (dynamic_cast<Item*>((*entity)) != nullptr) {
-				Item* i = (Item*)(*entity);
-				if (i->isOnGround &&
-					(Entity::distanceBetweenTwoPoints(hero->x, hero->y + (hero->collisionBoxYOffset / 2), i->x, i->y) < 40.0)) {
-					if (!i->isNearHero) {
-						i->isNearHero = true;
-						hero->nearItems.push_back(i);
-					}
-				}
-				else {
-					i->isNearHero = false;
-					hero->nearItems.remove(i);
-				}
-			}
+			checkAndHandleEnemyLoot(*entity);
 
-			if ((*entity)->type == "enemy" && (*entity)->dropItemFlag) {
-				spawnItem((*entity)->dropItemId, (*entity)->dropItemQty, (*entity)->dropItemXPos, (*entity)->dropItemYPos);
-				(*entity)->dropItemFlag = false; // Failsafe
-			}
+			checkAndHandleNearItem(*entity);
 
-			// TODO: Encapsular essa rotina em um método
-			if (dynamic_cast<Door*>((*entity)) != nullptr) {
-				Door* d = (Door*)(*entity);
-				if (d->isClosed &&
-					(Entity::distanceBetweenTwoPoints(
-						hero->x, hero->y + (hero->collisionBoxYOffset / 2), d->x + 32, d->y) < 60.0)) {
-					hero->nearestDoor = d;
-					if (!actionMessageUi->isUiLocked()) {
-						actionMessageUi->setMessage("Open door");
-					}
-				}
-				else {
-					hero->nearestDoor = nullptr;
-					actionMessageUi->unlock();
+			checkAndHandleNearDoor(*entity);
 
-					if (!d->isClosed) {
-						if(std::find(openDoorsIds.begin(), openDoorsIds.end(), d->id) == openDoorsIds.end()) {
-							openDoorsIds.push_back(d->id);
-						}
-					}
-				}
-			}
-
-			// TODO: Encapsular essa rotina em um método
-			if (dynamic_cast<Checkpoint*>((*entity)) != nullptr) {
-				Checkpoint* cp = (Checkpoint*)(*entity);
-				if (Entity::distanceBetweenTwoPoints(
-						hero->x, hero->y + (hero->collisionBoxYOffset / 2.f), cp->x + 32.f, cp->y) < 60.0) {
-					hero->nearestCheckpoint = cp;
-
-					cp->isActivated ?
-						actionMessageUi->unlock() :
-						actionMessageUi->setMessage("Activate checkpoint");
-				}
-				else {
-					hero->nearestCheckpoint = nullptr;
-					actionMessageUi->unlock();
-				}
-
-				if (hero->isCheckpointActivatedFlag) {
-					// saves checkpoint activated status
-					hero->isCheckpointActivatedFlag = false;
-					saveCheckpointActivatedState(cp->id);
-					actionMessageUi->setMessage("Checkpoint active!");
-					actionMessageUi->setTimer(3.f);
-				}
-
-				if (hero->state == Hero::HERO_STATE_RESTING && hero->isRested) {
-					hero->isRested = false;
-					deadEnemiesIds.clear();
-					currentMapEnemies.clear();
-					spawnEnemies();
-				}
-			}
+			checkAndHandleNearCheckpoint(*entity);
 		}
 
 		//spawn enemies
@@ -585,8 +517,85 @@ void Game::renderTiles() {
 	}
 }
 
-void Game::checkOpenDoors() {
+void Game::checkAndHandleEnemyLoot(Entity* entity) {
+	if (entity->type == "enemy" && entity->dropItemFlag) {
+		spawnItem(entity->dropItemId, entity->dropItemQty, entity->dropItemXPos, entity->dropItemYPos);
+		entity->dropItemFlag = false; // Failsafe
+	}
+}
 
+void Game::checkAndHandleNearItem(Entity* entity) {
+	if (dynamic_cast<Item*>(entity) != nullptr) {
+		Item* i = (Item*)entity;
+		if (i->isOnGround &&
+			(Entity::distanceBetweenTwoPoints(hero->x, hero->y + (hero->collisionBoxYOffset / 2), i->x, i->y) < 40.0)) {
+			if (!i->isNearHero) {
+				i->isNearHero = true;
+				hero->nearItems.push_back(i);
+			}
+		}
+		else {
+			i->isNearHero = false;
+			hero->nearItems.remove(i);
+		}
+	}
+}
+
+void Game::checkAndHandleNearDoor(Entity* entity) {
+	if (dynamic_cast<Door*>(entity) != nullptr) {
+		Door* d = (Door*)entity;
+		if (d->isClosed &&
+			(Entity::distanceBetweenTwoPoints(
+				hero->x, hero->y + (hero->collisionBoxYOffset / 2), d->x + 32, d->y) < 60.0)) {
+			hero->nearestDoor = d;
+			if (!actionMessageUi->isUiLocked()) {
+				actionMessageUi->setMessage("Open door");
+			}
+		}
+		else {
+			hero->nearestDoor = nullptr;
+			actionMessageUi->unlock();
+
+			if (!d->isClosed) {
+				if (std::find(openDoorsIds.begin(), openDoorsIds.end(), d->id) == openDoorsIds.end()) {
+					openDoorsIds.push_back(d->id);
+				}
+			}
+		}
+	}
+}
+
+void Game::checkAndHandleNearCheckpoint(Entity* entity) {
+	if (dynamic_cast<Checkpoint*>(entity) != nullptr) {
+		Checkpoint* cp = (Checkpoint*)entity;
+		if (Entity::distanceBetweenTwoPoints(
+			hero->x, hero->y + (hero->collisionBoxYOffset / 2.f), cp->x + 32.f, cp->y) < 60.0) {
+			hero->nearestCheckpoint = cp;
+
+			cp->isActivated ?
+				actionMessageUi->unlock() :
+				actionMessageUi->setMessage("Activate checkpoint");
+		}
+		else {
+			hero->nearestCheckpoint = nullptr;
+			actionMessageUi->unlock();
+		}
+
+		if (hero->isCheckpointActivatedFlag) {
+			// saves checkpoint activated status
+			hero->isCheckpointActivatedFlag = false;
+			saveCheckpointActivatedState(cp->id);
+			actionMessageUi->setMessage("Checkpoint active!");
+			actionMessageUi->setTimer(3.f);
+		}
+
+		if (hero->state == Hero::HERO_STATE_RESTING && hero->isRested) {
+			hero->isRested = false;
+			deadEnemiesIds.clear();
+			currentMapEnemies.clear();
+			spawnEnemies();
+		}
+	}
 }
 
 void Game::buildDoors() {
