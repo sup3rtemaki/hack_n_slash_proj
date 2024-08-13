@@ -11,6 +11,7 @@ Checkpoint::Checkpoint(AnimationSet* animSet, int id, string& mapFileName) {
 	this->id = id;
 	this->mapFileName = mapFileName;
 	this->solid = true;
+	this->type = "checkpoint";
 	collisionBoxW = 10;
 	collisionBoxH = 10;
 	collisionBoxYOffset = -10;

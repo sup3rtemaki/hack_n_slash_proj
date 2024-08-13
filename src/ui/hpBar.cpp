@@ -32,7 +32,7 @@ HPBar::HPBar(LivingEntity* livingEntity, BarType barType) :
 }
 
 void HPBar::draw() {
-	if (entity == nullptr || entity->hp <= 0) return;
+	if (entity == nullptr || !entity->active || entity->hp <= 0) return;
 
 	SDL_SetRenderDrawColor(Globals::renderer, color.r / 5, color.g / 5, color.b / 5, SDL_ALPHA_OPAQUE);
 	SDL_Rect backgroundRect = { x + 2, y + 2, (barWidth - 4), (barHeight - 4) };

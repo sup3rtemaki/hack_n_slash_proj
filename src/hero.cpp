@@ -134,10 +134,11 @@ void Hero::die() {
 
 void Hero::revive() {
 	hp = hpMax;
+	stamina = staminaMax;
 	changeAnimation(HERO_STATE_IDLE, true);
 	moving = false;
-	x = Globals::ScreenWidth / 2;
-	y = Globals::ScreenHeight / 2;
+	x = lastCheckpointPos.x;
+	y = lastCheckpointPos.y;
 	slideAmount = 0;
 }
 
@@ -340,6 +341,10 @@ void Hero::takeAction() {
 		}
 	}
 	else if (nearestCheckpoint != nullptr) {
+		lastCheckpointPos.x = nearestCheckpoint->x;
+		lastCheckpointPos.y = nearestCheckpoint->y;
+		lastCheckpointMapFile = nearestCheckpoint->mapFileName;
+
 		if (nearestCheckpoint->isActivated) {
 			rest();
 		}

@@ -118,6 +118,7 @@ private:
 	void checkAndHandleNearItem(Entity* entity);
 	void checkAndHandleNearDoor(Entity* entity);
 	void checkAndHandleNearCheckpoint(Entity* entity);
+	void handleMapChange(bool isHeroRespawn = false);
 	void buildDoors();
 	void buildWalls();
 	void buildWaypoints();
@@ -132,7 +133,7 @@ private:
 	void spawnItemsFromCurrentMap();
 	void inactivateCurrentMapItems();
 	map<int, Item*> loadInventoryItems(std::vector<std::pair<int, int>> items);
-	void saveGame();
+	void saveGame(bool isCheckpointSave = false);
 	void loadGame();
 };
 

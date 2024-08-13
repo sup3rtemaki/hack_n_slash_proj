@@ -1,21 +1,20 @@
 {
-    "currentMapFile": "warrior_halls_3.json",
     "heroHp": 100,
-    "heroX": 500,
-    "heroY": 500,
-    "checkpointId": 0,
+    "heroX": 274,
+    "heroY": 394,
     "inventory": [
         {
             "id": 0,
-            "itemQty": 13
+            "itemQty": 12
         },
         {
             "id": 1,
             "itemQty": 6
         },
         {
-          "id": 3,
-          "itemQty": 2
+            "id": 3,
+            "itemQty": 1
         }
-    ]
+    ],
+    "mapFile": "warrior_halls_3.json"
 }

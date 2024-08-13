@@ -74,8 +74,8 @@ Game::Game() {
 	hero = new Hero(heroAnimSet);
 	hero->invincibleTimer = 0;
 	hero->hp = saveHandler.getHeroHp();
-	hero->x = saveHandler.getHeroX();
-	hero->y = saveHandler.getHeroY();
+	hero->x = hero->lastCheckpointPos.x = saveHandler.getHeroX();
+	hero->y = hero->lastCheckpointPos.y = saveHandler.getHeroY();
 	hero->inventory.clear();
 	hero->inventory = loadInventoryItems(saveHandler.getItems());
 	for (auto i : hero->inventory) {
@@ -83,6 +83,7 @@ Game::Game() {
 		hero->quickAccessInventoryIndex++;
 	}
 	hero->quickAccessInventoryIndex = 0;
+	hero->lastCheckpointMapFile = currentMap->file;
 
 	openDoorsIds = saveHandler.getOpenDoorsIds();
 
@@ -220,8 +221,7 @@ void Game::update() {
 						}
 
 						mustSpawnEnemies = true;
-						//TODO: reviver na última fogueira
-						hero->revive();
+						handleMapChange(true);
 					}
 					
 					break;
@@ -277,7 +277,8 @@ void Game::update() {
 
 		if (hero->mustSaveGame) {
 			hero->mustSaveGame = false;
-			saveGame();
+			hero->lastCheckpointMapFile = currentMap->file;
+			saveGame(true);
 		}
 
 		// draw all entites
@@ -360,37 +361,7 @@ void Game::updateMaps() {
 					}
 				}
 
-				const string& resPath = getResourcePath();
-
-				currentMap->file = currentMap->nextMapWaypoint.nextMapFile;
-				loadTiledMap(resPath + MAPS_FOLDER_PATH + currentMap->file);
-				hero->x = currentMap->nextMapWaypoint.xDestination;
-				hero->y = currentMap->nextMapWaypoint.yDestination;
-
-				fadeIn = false;
-				fadeOut = true;
-
-				// Remove enemies
-				for (list<Entity*>::iterator enemy = currentMapEnemies.begin(); enemy != currentMapEnemies.end(); enemy++) {
-					(*enemy)->active = false;
-				}
-
-				// Remove walls and doors
-				for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
-					if ((*entity)->type == "wall" || (*entity)->type == "door") {
-						(*entity)->active = false;
-					}
-				}
-
-				mustSpawnEnemies = true;
-				hero->currentMap = currentMap;
-				spawnItemsFromCurrentMap();
-				buildWalls();
-				buildWaypoints();
-				buildDoors();
-				spawnCheckpoints();
-				saveGame();
-				openDoorsIds = {};
+				handleMapChange();
 			}
 		}
 		else if (alpha >= 0 && fadeOut) {
@@ -596,6 +567,54 @@ void Game::checkAndHandleNearCheckpoint(Entity* entity) {
 			spawnEnemies();
 		}
 	}
+}
+
+void Game::handleMapChange(bool isHeroRespawn) {
+	if (isHeroRespawn) {
+		saveGame(true);
+		hero->revive();
+		loadGame();
+		currentMap->file = saveHandler.getCurrentMapFile();
+		hero->hp = saveHandler.getHeroHp();
+		hero->x = saveHandler.getHeroX();
+		hero->y = saveHandler.getHeroY();
+	}
+	else {
+		currentMap->file = currentMap->nextMapWaypoint.nextMapFile;
+		hero->x = currentMap->nextMapWaypoint.xDestination;
+		hero->y = currentMap->nextMapWaypoint.yDestination;
+
+		fadeIn = false;
+		fadeOut = true;
+	}
+
+	loadTiledMap(resPath + MAPS_FOLDER_PATH + currentMap->file);
+
+	// Remove enemies
+	for (list<Entity*>::iterator enemy = currentMapEnemies.begin(); enemy != currentMapEnemies.end(); enemy++) {
+		(*enemy)->active = false;
+	}
+
+	// Remove walls, doors and checkpoints
+	for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
+		if ((*entity)->type == "wall" ||
+				(*entity)->type == "door" ||
+				(*entity)->type == "checkpoint" ||
+				(*entity)->type == "boss") {
+			(*entity)->active = false;
+		}
+	}
+
+	currentBoss = nullptr;
+
+	mustSpawnEnemies = true;
+	hero->currentMap = currentMap;
+	spawnItemsFromCurrentMap();
+	buildWalls();
+	buildWaypoints();
+	buildDoors();
+	spawnCheckpoints();
+	openDoorsIds = {};
 }
 
 void Game::buildDoors() {
@@ -1104,25 +1123,42 @@ map<int, Item*> Game::loadInventoryItems(std::vector<std::pair<int, int>> items)
 	else {
 		cout << "Vetor de items vazio!\n";
 	}
-	
 
 	return loadedItems;
 }
 
-void Game::saveGame() {
+void Game::saveGame(bool isCheckpointSave) {
 	cout << "Saving..." << endl;
+
+	float hp;
+	int x, y;
+	string mapFile;
+
+	if (isCheckpointSave) {
+		hp = hero->hpMax;
+		x = hero->lastCheckpointPos.x;
+		y = hero->lastCheckpointPos.y;
+		mapFile = hero->lastCheckpointMapFile;
+	}
+	else {
+		hp = hero->hp;
+		x = hero->x;
+		y = hero->y;
+		mapFile = currentMap->file;
+	}
+
 	std::vector<std::pair<int, int>> inventory;
 	for (auto itemMap : hero->inventory) {
 		inventory.push_back(std::make_pair(itemMap.first, itemMap.second->quantity));
 	}
 
-	//saveHandler.save(
-	//	hero->hp,
-	//	hero->x,
-	//	hero->y,
-	//	currentMap->file,
-	//	inventory,
-	//	openDoorsIds);
+	saveHandler.save(
+		hp,
+		x,
+		y,
+		mapFile,
+		inventory,
+		openDoorsIds);
 }
 
 void Game::loadGame() {

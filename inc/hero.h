@@ -63,6 +63,9 @@ public:
 	bool isRested;
 	bool mustSaveGame;
 
+	SDL_Point lastCheckpointPos;
+	string lastCheckpointMapFile;
+
 	int isMovingMethod = 0; // TODO: Paliativo, mudar depois 0 = not moving, 1 = keyboard, 2 = joystick
 	int inventoryIndex = 0;
 	int quickAccessInventoryIndex = 0;

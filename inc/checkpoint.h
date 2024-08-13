@@ -12,13 +12,13 @@ public:
 	static const int CHECKPOINT_STATE_INACTIVE;
 
 	bool isActivated;
+	string mapFileName;
 
 	Checkpoint(AnimationSet* animSet, int id, string& mapFileName);
 
 	void activate();
 
 private:
-	string mapFileName;
 	void update();
 	void updateAnimation();
 	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");

@@ -23,6 +23,7 @@ public:
 	int getHeroX();
 	int getHeroY();
 	string getCurrentMapFile();
+	void setCurrentMapFile(string mapFile);
 	std::vector<std::pair<int, int>> getItems();
 	std::vector<int> getOpenDoorsIds();
 
@@ -30,8 +31,6 @@ private:
 	int heroHp;
 	int heroX;
 	int heroY;
-	int checkpointId;
-	string checkpointMapFile;
 	string currentMapFile;
 	std::vector<std::pair<int, int>> items;
 	std::vector<int> openDoorsIds;
