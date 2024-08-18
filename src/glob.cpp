@@ -45,6 +45,7 @@ Glob::Glob(AnimationSet* animSet) {
 	collisionBox.h = collisionBoxH;
 	collisionBoxYOffset = -14;
 	direction = DIR_DOWN;
+	this->essence = 20;
 	populatePossibleDropItemsMap();
 	changeAnimation(GLOB_STATE_IDLE, true);
 	updateCollisionBox();

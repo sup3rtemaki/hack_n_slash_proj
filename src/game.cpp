@@ -105,6 +105,7 @@ Game::Game() {
 	quickItemUi = new QuickItemUi(hero);
 	itemPickMessageUi = new ItemPickMessageUi(hero);
 	actionMessageUi = new ActionMessageUi();
+	essenceCounterUi = new EssenceCounterUi(hero);
 	heroHpBar = new HPBar(hero, BarType::HERO_HEALTH_BAR);
 	heroStBar = new HPBar(hero, BarType::HERO_STAMINA_BAR);
 	hero->actionMessageUi = actionMessageUi;
@@ -114,6 +115,7 @@ Game::Game() {
 	gui.push_back(actionMessageUi);
 	gui.push_back(heroHpBar);
 	gui.push_back(heroStBar);
+	gui.push_back(essenceCounterUi);
 
 	buildBossNext = false;
 	bossActive = false;
@@ -311,6 +313,15 @@ bool Game::isBossMap() {
 	return false;
 }
 
+bool Game::isLivingEntityDead(Entity* entity) {
+	if (entity->active &&
+		dynamic_cast<LivingEntity*>(entity) != nullptr &&
+		((LivingEntity*)entity)->hp <= 0) {
+		return true;
+	}
+	return false;
+}
+
 void Game::updateMaps() {
 	if (isFading) {
 		hero->moving = false;
@@ -489,9 +500,16 @@ void Game::renderTiles() {
 }
 
 void Game::checkAndHandleEnemyLoot(Entity* entity) {
-	if (entity->type == "enemy" && entity->dropItemFlag) {
+	if (entity->type != "enemy") return;
+
+	if (entity->dropItemFlag)  {
 		spawnItem(entity->dropItemId, entity->dropItemQty, entity->dropItemXPos, entity->dropItemYPos);
 		entity->dropItemFlag = false; // Failsafe
+	}
+
+	if (isLivingEntityDead(entity)) {
+		hero->essence += entity->essence;
+		entity->essence = 0;
 	}
 }
 

@@ -45,6 +45,7 @@ public:
 	int dropItemQty;
 	bool dropItemFlag;
 	map<int, pair<pair<int, int>, int>> possibleDropItemsMap; // itemId, dropRate, maxQty
+	int essence;
 	
 
 	// virtual functions

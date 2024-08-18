@@ -9,6 +9,10 @@ Ui::Ui() {
 Ui::~Ui() {
 }
 
+void Ui::setUp() {
+    RES_PATH = getResourcePath();
+}
+
 void Ui::drawHorizontalGradientBox(SDL_Renderer* renderer,
     const int x, const int y, const int w, const int h, const float steps,
     const SDL_Color c1, const SDL_Color c2, const int fill) {

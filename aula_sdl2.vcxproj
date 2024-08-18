@@ -191,6 +191,7 @@
     <ClCompile Include="src\termiteMiner.cpp" />
     <ClCompile Include="src\timeController.cpp" />
     <ClCompile Include="src\ui\actionMessageUi.cpp" />
+    <ClCompile Include="src\ui\essenceCounterUi.cpp" />
     <ClCompile Include="src\ui\hpBar.cpp" />
     <ClCompile Include="src\ui\itemPickMessageUi.cpp" />
     <ClCompile Include="src\ui\quickItemUi.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="inc\tileson\tileson.hpp" />
     <ClInclude Include="inc\timeController.h" />
     <ClInclude Include="inc\ui\actionMessageUi.h" />
+    <ClInclude Include="inc\ui\essenceCounterUi.h" />
     <ClInclude Include="inc\ui\hpBar.h" />
     <ClInclude Include="inc\ui\itemPickMessageUi.h" />
     <ClInclude Include="inc\ui\quickItemUi.h" />

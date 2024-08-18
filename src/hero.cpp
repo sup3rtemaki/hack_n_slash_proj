@@ -55,6 +55,7 @@ Hero::Hero(AnimationSet* animSet) {
 	moveSpeed = 0;
 	moveSpeedMax = 50;
 	hp = hpMax = 100;
+	essence = 0;
 	stamina = staminaMax = 50;
 	staminaStatusAmount = 0.3f;
 	damage = 0;

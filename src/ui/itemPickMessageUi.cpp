@@ -1,7 +1,7 @@
 #include "ui/itemPickMessageUi.h"
 
 
-const string FONT_FILE = "alagard.ttf";;
+const string FONT_FILE = "alagard.ttf";
 const int FONT_X = 20;
 const int FONT_Y = 280;
 const int FONT_SIZE = 16;

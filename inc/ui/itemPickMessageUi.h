@@ -21,7 +21,6 @@ private:
 	SDL_Texture* fontTexture;
 	Hero* hero = nullptr;
 	float timer;
-
 };
 
 #endif // !ITEMPICKMESSAGEUI

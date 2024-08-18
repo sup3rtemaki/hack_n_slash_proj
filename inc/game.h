@@ -23,6 +23,7 @@
 #include "ui/hpBar.h"
 #include "ui/quickItemUi.h"
 #include "ui/itemPickMessageUi.h"
+#include "ui/essenceCounterUi.h"
 
 #include<thread>
 
@@ -99,6 +100,7 @@ public:
 	QuickItemUi* quickItemUi;
 	ItemPickMessageUi* itemPickMessageUi;
 	ActionMessageUi* actionMessageUi;
+	EssenceCounterUi* essenceCounterUi;
 
 	Game();
 	~Game();
@@ -110,6 +112,7 @@ private:
 	string resPath;
 
 	bool isBossMap();
+	bool isLivingEntityDead(Entity* entity);
 
 	void updateMaps();
 	void loadTiledMap(const string& mapFile);
