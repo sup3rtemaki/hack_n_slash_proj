@@ -44,6 +44,7 @@ public:
 	int dropItemId;
 	int dropItemQty;
 	bool dropItemFlag;
+	bool dropEssenceFlag;
 	map<int, pair<pair<int, int>, int>> possibleDropItemsMap; // itemId, dropRate, maxQty
 	int essence;
 	

@@ -14,6 +14,7 @@ public:
 		int heroHp,
 		int heroX,
 		int heroY,
+		int essence,
 		string currentMapFile,
 		std::vector<std::pair<int, int>> items,
 		std::vector<int>openDoorsIds);
@@ -22,6 +23,7 @@ public:
 	int getHeroHp();
 	int getHeroX();
 	int getHeroY();
+	int getEssence();
 	string getCurrentMapFile();
 	void setCurrentMapFile(string mapFile);
 	std::vector<std::pair<int, int>> getItems();
@@ -31,6 +33,7 @@ private:
 	int heroHp;
 	int heroX;
 	int heroY;
+	int essence;
 	string currentMapFile;
 	std::vector<std::pair<int, int>> items;
 	std::vector<int> openDoorsIds;

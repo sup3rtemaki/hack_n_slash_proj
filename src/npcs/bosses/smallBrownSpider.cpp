@@ -56,6 +56,7 @@ SmallBrownSpider::SmallBrownSpider(AnimationSet* animSet) {
 	type = "boss";
 	x = Globals::ScreenWidth - 32;
 	y = Globals::ScreenHeight - 32;
+	essence = 300;
 	moveSpeed = 0;
 	moveSpeedMax = 40;
 	hp = hpMax = 300;

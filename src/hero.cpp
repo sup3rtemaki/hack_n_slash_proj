@@ -65,6 +65,7 @@ Hero::Hero(AnimationSet* animSet) {
 	direction = DIR_DOWN;
 	honeydewQty = 3;
 	inventoryIndex = 0;
+	newEssenceQty = 0;
 	nearestDoor = nullptr;
 	nearestCheckpoint = nullptr;
 	changeAnimation(HERO_STATE_IDLE, true);
@@ -95,6 +96,7 @@ void Hero::update() {
 	updateDamages();
 	updateAnimation();
 	updateInvincibleTimer();
+	updateEssence();
 }
 
 void Hero::slash() {
@@ -463,6 +465,26 @@ void Hero::statusTimerTick() {
 	}
 
 	healTimerTick();
+}
+
+void Hero::addEssence(int essenceQty) {
+	cout << "Adding essence..." << endl;
+	if (newEssenceQty > 0) newEssenceQty += essenceQty;
+	else newEssenceQty = essenceQty;
+
+	prevEssence = essence;	
+}
+
+void Hero::updateEssence() {
+	if (newEssenceQty <= 0) return;
+
+	if (essence < (prevEssence + newEssenceQty)) {
+		cout << essence << " " << prevEssence << " " << newEssenceQty << endl;
+		essence++;
+	}
+	else {
+		newEssenceQty = 0;
+	}
 }
 
 void Hero::openDoor() {

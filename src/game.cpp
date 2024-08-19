@@ -76,6 +76,7 @@ Game::Game() {
 	hero->hp = saveHandler.getHeroHp();
 	hero->x = hero->lastCheckpointPos.x = saveHandler.getHeroX();
 	hero->y = hero->lastCheckpointPos.y = saveHandler.getHeroY();
+	hero->essence = saveHandler.getEssence();
 	hero->inventory.clear();
 	hero->inventory = loadInventoryItems(saveHandler.getItems());
 	for (auto i : hero->inventory) {
@@ -507,9 +508,9 @@ void Game::checkAndHandleEnemyLoot(Entity* entity) {
 		entity->dropItemFlag = false; // Failsafe
 	}
 
-	if (isLivingEntityDead(entity)) {
-		hero->essence += entity->essence;
-		entity->essence = 0;
+	if (isLivingEntityDead(entity) && !entity->dropEssenceFlag) {
+		hero->addEssence(entity->essence);
+		entity->dropEssenceFlag = true;
 	}
 }
 
@@ -941,6 +942,8 @@ void Game::checkBossDeath() {
 		}
 
 		fogWalls.clear();
+		hero->addEssence(currentBoss->essence);
+		currentBoss->dropEssenceFlag = true;
 		// currentBoss = nullptr;
 	}
 }
@@ -1174,6 +1177,7 @@ void Game::saveGame(bool isCheckpointSave) {
 		hp,
 		x,
 		y,
+		hero->essence,
 		mapFile,
 		inventory,
 		openDoorsIds);

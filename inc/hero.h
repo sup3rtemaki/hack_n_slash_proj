@@ -95,6 +95,7 @@ public:
 	void updateAnimation();
 	void updateDamages();
 	void takeAction();
+	void addEssence(int essenceQty);
 	//void checkNearItem(Item* item);
 	void addItemToInventory(Item* item);
 	void addItemToQuickAccess(int itemId, int position = -1);
@@ -107,7 +108,11 @@ public:
 	void healTimerTick();
 
 private:
+	int newEssenceQty;
+	int prevEssence;
+
 	void findNearestItem();
+	void updateEssence();
 	Item* currentNearItem;
 };
 

@@ -1,11 +1,12 @@
 {
+    "essence": 180,
     "heroHp": 100,
     "heroX": 274,
     "heroY": 394,
     "inventory": [
         {
             "id": 0,
-            "itemQty": 13
+            "itemQty": 10
         },
         {
             "id": 1,

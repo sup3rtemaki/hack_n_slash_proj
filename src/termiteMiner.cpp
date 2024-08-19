@@ -33,6 +33,7 @@ TermiteMiner::TermiteMiner(AnimationSet* animSet) {
 	type = "enemy";
 	x = Globals::ScreenWidth / 2;
 	y = Globals::ScreenHeight / 2;
+	essence = 55;
 	moveSpeed = 0;
 	moveSpeedMax = 20;
 	hp = hpMax = 30 + (rand() % 40); //30-49

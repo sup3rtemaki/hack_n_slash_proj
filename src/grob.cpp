@@ -35,6 +35,7 @@ Grob::Grob(AnimationSet* animSet) {
 	type = "enemy";
 	x = Globals::ScreenWidth / 2;
 	y = Globals::ScreenHeight / 2;
+	essence = 40;
 	moveSpeed = 0;
 	moveSpeedMax = 20;
 	hp = hpMax = 10 + (rand() % 20); //10-29

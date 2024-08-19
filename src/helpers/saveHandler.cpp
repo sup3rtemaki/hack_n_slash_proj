@@ -9,18 +9,17 @@ using json = nlohmann::json;
 
 const std::string SAVE_FILE_PATH = "SaveGame\\save.json";
 
-SaveHandler::SaveHandler() : heroHp{ 0 }, heroX{ 0 }, heroY{ 0 } {
+SaveHandler::SaveHandler() : heroHp{ 0 }, heroX{ 0 }, heroY{ 0 }, essence{ 0 } {
 }
 
 SaveHandler::~SaveHandler() {
 }
 
 void SaveHandler::save(
-		int heroHp, int heroX, int heroY,
+		int heroHp, int heroX, int heroY, int essence,
 		string currentMapFile,
 		std::vector<std::pair<int, int>> items,
 		std::vector<int>openDoorsIds) {
-	std::cout << "Save\n";
 
 	std::ofstream file(SAVE_FILE_PATH);
 	if (!file.is_open()) {
@@ -33,6 +32,7 @@ void SaveHandler::save(
 	save["heroHp"] = heroHp;
 	save["heroX"] = heroX;
 	save["heroY"] = heroY;
+	save["essence"] = essence;
 
 	if (!items.empty()) {
 		for (auto i : items) {
@@ -53,6 +53,7 @@ void SaveHandler::save(
 
 	file << std::setw(4) << save << std::endl;
 	file.close();
+	std::cout << "Save\n";
 }
 
 bool SaveHandler::load() {
@@ -72,6 +73,7 @@ bool SaveHandler::load() {
 	heroHp = data["heroHp"];
 	heroX = data["heroX"];
 	heroY = data["heroY"];
+	essence = data["essence"];
 	currentMapFile = string(data["mapFile"]);
 	items.clear();
 	openDoorsIds.clear();
@@ -103,6 +105,11 @@ int SaveHandler::getHeroX() {
 
 int SaveHandler::getHeroY() {
 	return heroY;
+}
+
+int SaveHandler::getEssence()
+{
+	return essence;
 }
 
 string SaveHandler::getCurrentMapFile() {

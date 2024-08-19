@@ -14,7 +14,11 @@ public:
 private:
 	string resPath;
 	SDL_Texture* fontTexture;
+	SDL_Texture* essenceCounterBarTexture;
 	Hero* hero = nullptr;
+
+	void drawBar();
+	void drawEssenceQuantity();
 };
 
 #endif // !ESSENCE_COUNTER_UI
