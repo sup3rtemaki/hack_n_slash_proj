@@ -1,0 +1,46 @@
+Assets\\Animations\\bloodstain.png
+animations: 2
+idle
+frames: 4
+frame
+clip: 0 0 32 32
+offset: 15 27
+duration: 0.15
+index: 0
+frame
+clip: 32 0 32 32
+offset: 15 27
+duration: 0.15
+index: 1
+frame
+clip: 64 0 32 32
+offset: 15 27
+duration: 0.15
+index: 2
+frame
+clip: 96 0 32 32
+offset: 15 27
+duration: 0.15
+index: 3
+die
+frames: 4
+frame
+clip: 0 32 32 32
+offset: 15 27
+duration: 0.15
+index: 0
+frame
+clip: 32 32 32 32
+offset: 15 27
+duration: 0.15
+index: 1
+frame
+clip: 64 32 32 32
+offset: 15 27
+duration: 0.15
+index: 2
+frame
+clip: 96 32 32 32
+offset: 15 27
+duration: 0.15
+index: 3

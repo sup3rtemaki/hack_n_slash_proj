@@ -1,5 +1,6 @@
 #include "hero.h"
 
+#include "bloodstain.h"
 #include "checkpoint.h"
 #include "door.h"
 #include "ui/actionMessageUi.h"
@@ -68,6 +69,7 @@ Hero::Hero(AnimationSet* animSet) {
 	newEssenceQty = 0;
 	nearestDoor = nullptr;
 	nearestCheckpoint = nullptr;
+	nearestBloodstain = nullptr;
 	changeAnimation(HERO_STATE_IDLE, true);
 	updateCollisionBox();
 }
@@ -356,6 +358,10 @@ void Hero::takeAction() {
 			isCheckpointActivatedFlag = true;
 		}
 	}
+	else if(nearestBloodstain != nullptr){
+		addEssence(nearestBloodstain->recoverEssence());
+		nearestBloodstain = nullptr;
+	}
 	else {
 		pickNearItemFromGround();
 	}
@@ -468,7 +474,6 @@ void Hero::statusTimerTick() {
 }
 
 void Hero::addEssence(int essenceQty) {
-	cout << "Adding essence..." << endl;
 	if (newEssenceQty > 0) newEssenceQty += essenceQty;
 	else newEssenceQty = essenceQty;
 
@@ -478,13 +483,7 @@ void Hero::addEssence(int essenceQty) {
 void Hero::updateEssence() {
 	if (newEssenceQty <= 0) return;
 
-	if (essence < (prevEssence + newEssenceQty)) {
-		cout << essence << " " << prevEssence << " " << newEssenceQty << endl;
-		essence++;
-	}
-	else {
-		newEssenceQty = 0;
-	}
+	essence < (prevEssence + newEssenceQty) ? essence++ : newEssenceQty = 0;
 }
 
 void Hero::openDoor() {

@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 
+#include "bloodstain.h"
 #include "tileson/tileson.hpp"
 #include "nlohmann/json.hpp"
 #include "item/key.h"
@@ -86,8 +87,34 @@ Game::Game() {
 	hero->quickAccessInventoryIndex = 0;
 	hero->lastCheckpointMapFile = currentMap->file;
 
+	// open doors
 	openDoorsIds = saveHandler.getOpenDoorsIds();
 
+	// bloodstain
+	bloodstain = new Bloodstain(bloodstainAnimSet);
+	BloodstainInfo bloodstainInfo = saveHandler.getBloodstainInfo();
+	bloodstain->setLocation(
+		bloodstainInfo.x,
+		bloodstainInfo.y,
+		bloodstainInfo.essence,
+		bloodstainInfo.mapName
+	);
+	if (bloodstain->x > 0 && bloodstain->y > 0 && !bloodstain->mapName.empty()) {
+		bloodstain->isLive = true;
+	}
+	else {
+		bloodstain->isLive = false;
+	}
+
+	if (bloodstain->mapName == currentMap->file) {
+		bloodstain->create();
+	}
+	else {
+		bloodstain->destroy();
+	}
+	Entity::entities.push_back(bloodstain);
+
+	//keyboard
 	heroKeyboardInput.hero = hero;
 	heroJoystickInput.hero = hero;
 	hero->currentMap = currentMap;
@@ -163,6 +190,7 @@ void Game::update() {
 	int enemiesBuilt = 0;
 	float enemyBuildTimer = 1;
 	bool quit = false;
+	bool mustSetBloodstainLocation = true;
 	SDL_Event e;
 	
 	// setup time controller before game starts
@@ -223,6 +251,7 @@ void Game::update() {
 							(*enemy)->active = false;
 						}
 
+						mustSetBloodstainLocation = true;
 						mustSpawnEnemies = true;
 						handleMapChange(true);
 					}
@@ -239,9 +268,21 @@ void Game::update() {
 			}
 		}
 
-		//make overlay timer tick down
-		if (hero->hp < 1 && overlayTimer > 0) {
-			overlayTimer -= TimeController::timeController.dT;
+		if (hero->hp < 1) {
+			if (overlayTimer > 0) {
+				overlayTimer -= TimeController::timeController.dT; //make overlay timer tick down
+			}
+			else {
+				if (mustSetBloodstainLocation) {
+					bloodstain->setLocation(
+						hero->x,
+						hero->y,
+						hero->essence,
+						currentMap->file);
+					hero->essence = 0;
+					mustSetBloodstainLocation = false;
+				}
+			}
 		}
 
 		// update all entites
@@ -256,6 +297,8 @@ void Game::update() {
 			checkAndHandleNearDoor(*entity);
 
 			checkAndHandleNearCheckpoint(*entity);
+
+			checkAndHandleNearBloodstain(*entity);
 		}
 
 		//spawn enemies
@@ -588,6 +631,17 @@ void Game::checkAndHandleNearCheckpoint(Entity* entity) {
 	}
 }
 
+void Game::checkAndHandleNearBloodstain(Entity* entity) {
+	if (dynamic_cast<Bloodstain*>(entity) != nullptr) {
+		Bloodstain* bloodstain = (Bloodstain*)entity;
+		if (bloodstain->isLive && 
+			Entity::distanceBetweenTwoPoints(
+				hero->x, hero->y + (hero->collisionBoxYOffset / 2.f), bloodstain->x + 32.f, bloodstain->y) < 60.0) {
+			hero->nearestBloodstain = bloodstain;
+		}
+	}
+}
+
 void Game::handleMapChange(bool isHeroRespawn) {
 	if (isHeroRespawn) {
 		saveGame(true);
@@ -633,6 +687,13 @@ void Game::handleMapChange(bool isHeroRespawn) {
 	buildWaypoints();
 	buildDoors();
 	spawnCheckpoints();
+	if (bloodstain->isLive &&
+		currentMap->file == bloodstain->mapName) {
+		bloodstain->create();
+	}
+	else {
+		bloodstain->destroy();
+	}
 	openDoorsIds = {};
 }
 
@@ -870,6 +931,7 @@ void Game::spawnBoss() {
 				currentBoss->y = bossPosY;
 				currentBoss->id = bossId;
 				currentBoss->invincibleTimer = 0.1;
+				currentBoss->hp = 1;
 				//currentMapEnemies.push_back(currentBoss);
 				Entity::entities.push_back(currentBoss);
 				bossHpBar = new HPBar(currentBoss, BarType::BOSS_HEALTH_BAR); // Exemplo
@@ -942,8 +1004,10 @@ void Game::checkBossDeath() {
 		}
 
 		fogWalls.clear();
-		hero->addEssence(currentBoss->essence);
-		currentBoss->dropEssenceFlag = true;
+		if (!currentBoss->dropEssenceFlag) {
+			hero->addEssence(currentBoss->essence);
+			currentBoss->dropEssenceFlag = true;
+		}		
 		// currentBoss = nullptr;
 	}
 }
@@ -1059,6 +1123,9 @@ void Game::loadAnimationSets() {
 
 	checkpointAnimSet = new AnimationSet();
 	checkpointAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "checkpoint.fdset", dataGroupTypes);
+
+	bloodstainAnimSet = new AnimationSet();
+	bloodstainAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "bloodstain.fdset", dataGroupTypes);
 }
 
 void Game::spawnItemsFromCurrentMap() {
@@ -1180,7 +1247,11 @@ void Game::saveGame(bool isCheckpointSave) {
 		hero->essence,
 		mapFile,
 		inventory,
-		openDoorsIds);
+		openDoorsIds,
+		bloodstain->x,
+		bloodstain->y,
+		bloodstain->essence,
+		bloodstain->mapName);
 }
 
 void Game::loadGame() {

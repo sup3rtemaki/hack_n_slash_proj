@@ -43,6 +43,7 @@ public:
 	AnimationSet* stoneProjectileAnimSet;
 	AnimationSet* doubleDoorsAnimSet;
 	AnimationSet* checkpointAnimSet;
+	AnimationSet* bloodstainAnimSet;
 
 	SDL_Texture* fadeImage;
 	SDL_Texture* splashImage;
@@ -111,6 +112,8 @@ public:
 private:
 	string resPath;
 
+	class Bloodstain* bloodstain;
+
 	bool isBossMap();
 	bool isLivingEntityDead(Entity* entity);
 
@@ -121,6 +124,7 @@ private:
 	void checkAndHandleNearItem(Entity* entity);
 	void checkAndHandleNearDoor(Entity* entity);
 	void checkAndHandleNearCheckpoint(Entity* entity);
+	void checkAndHandleNearBloodstain(Entity* entity);
 	void handleMapChange(bool isHeroRespawn = false);
 	void buildDoors();
 	void buildWalls();

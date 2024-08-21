@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClCompile Include="src\animation.cpp" />
     <ClCompile Include="src\animationSet.cpp" />
+    <ClCompile Include="src\bloodstain.cpp" />
     <ClCompile Include="src\bullet.cpp" />
     <ClCompile Include="src\cameraController.cpp" />
     <ClCompile Include="src\checkpoint.cpp" />
@@ -201,6 +202,7 @@
   <ItemGroup>
     <ClInclude Include="inc\animation.h" />
     <ClInclude Include="inc\animationSet.h" />
+    <ClInclude Include="inc\bloodstain.h" />
     <ClInclude Include="inc\bullet.h" />
     <ClInclude Include="inc\cameraController.h" />
     <ClInclude Include="inc\checkpoint.h" />

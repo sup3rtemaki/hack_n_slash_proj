@@ -74,6 +74,7 @@ public:
 
 	class Door* nearestDoor;
 	class Checkpoint* nearestCheckpoint;
+	class Bloodstain* nearestBloodstain;
 	map<int, Item*> inventory;
 	vector<int> quickAccessInventory = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 	unordered_map<int, Item*> passiveSlots;
