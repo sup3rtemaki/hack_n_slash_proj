@@ -638,6 +638,7 @@ void Game::checkAndHandleNearBloodstain(Entity* entity) {
 			Entity::distanceBetweenTwoPoints(
 				hero->x, hero->y + (hero->collisionBoxYOffset / 2.f), bloodstain->x + 32.f, bloodstain->y) < 60.0) {
 			hero->nearestBloodstain = bloodstain;
+			actionMessageUi->setMessage("Recover lost essence");
 		}
 	}
 }
@@ -931,7 +932,6 @@ void Game::spawnBoss() {
 				currentBoss->y = bossPosY;
 				currentBoss->id = bossId;
 				currentBoss->invincibleTimer = 0.1;
-				currentBoss->hp = 1;
 				//currentMapEnemies.push_back(currentBoss);
 				Entity::entities.push_back(currentBoss);
 				bossHpBar = new HPBar(currentBoss, BarType::BOSS_HEALTH_BAR); // Exemplo

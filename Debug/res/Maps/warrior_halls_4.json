@@ -3201,7 +3201,7 @@
                         {
                             "name": "isDefeated",
                             "type": "bool",
-                            "value": true
+                            "value": false
                         }
                     ],
                     "rotation": 0,

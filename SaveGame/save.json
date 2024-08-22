@@ -1,11 +1,11 @@
 {
     "bloodstain": {
-        "bEssence": 0,
-        "bMapFile": "warrior_halls_4.json",
-        "bX": -1,
-        "bY": -1
+        "bEssence": 400,
+        "bMapFile": "warrior_halls_3.json",
+        "bX": 914,
+        "bY": 413
     },
-    "essence": 400,
+    "essence": 0,
     "heroHp": 100,
     "heroX": 274,
     "heroY": 394,
