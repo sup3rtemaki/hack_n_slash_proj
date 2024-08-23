@@ -20,6 +20,7 @@ void SaveHandler::save(
 		string currentMapFile,
 		std::vector<std::pair<int, int>> items,
 		std::vector<int>openDoorsIds,
+		std::vector<int> defeatedBossesIds,
 		int bloodstainX, int bloodstainY, int bloodstainEssence, string bloodstainMapName) {
 
 	std::ofstream file(SAVE_FILE_PATH);
@@ -49,6 +50,14 @@ void SaveHandler::save(
 			json jOpenDoorId;
 			jOpenDoorId["id"] = i;
 			save["openDoors"].push_back(jOpenDoorId);
+		}
+	}
+
+	if (!defeatedBossesIds.empty()) {
+		for (int i : defeatedBossesIds) {
+			json jDefeatedBossesId;
+			jDefeatedBossesId["id"] = i;
+			save["defeatedBosses"].push_back(jDefeatedBossesId);
 		}
 	}
 
@@ -100,6 +109,13 @@ bool SaveHandler::load() {
 		}
 	}
 
+	json jDefeatedBossesId = data["defeatedBosses"];
+	if (!jDefeatedBossesId.empty()) {
+		for (auto& element : jDefeatedBossesId) {
+			defeatedBossesIds.push_back(element["id"]);
+		}
+	}
+
 	json jBloodstain = data["bloodstain"];
 	bloodtsainInfo.x = jBloodstain["bX"];
 	bloodtsainInfo.y = jBloodstain["bY"];
@@ -139,6 +155,10 @@ std::vector<std::pair<int, int>> SaveHandler::getItems() {
 
 std::vector<int> SaveHandler::getOpenDoorsIds() {
 	return openDoorsIds;
+}
+
+std::vector<int> SaveHandler::getDefeatedBossesIds() {
+	return defeatedBossesIds;
 }
 
 BloodstainInfo SaveHandler::getBloodstainInfo() {

@@ -66,6 +66,7 @@ public:
 	Map* currentMap;
 	list<Map> mapList;
 	vector<int> openDoorsIds;
+	vector<int> defeatedBossesIds;
 
 	Hero* hero;
 	KeyboardInput heroKeyboardInput;
@@ -134,7 +135,6 @@ private:
 	void spawnItem(int itemId, int quant, int xPos, int yPos);
 	void spawnCheckpoints();
 	void checkBossDeath();
-	void saveBossDefeat();
 	void saveCheckpointActivatedState(int checkpointId);
 	void loadAnimationSets();
 	void spawnItemsFromCurrentMap();

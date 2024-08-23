@@ -25,6 +25,7 @@ public:
 		string currentMapFile,
 		std::vector<std::pair<int, int>> items,
 		std::vector<int>openDoorsIds,
+		std::vector<int> defeatedBossesIds,
 		int bloodstainX,
 		int bloodstainY,
 		int bloodstainEssence,
@@ -39,6 +40,7 @@ public:
 	void setCurrentMapFile(string mapFile);
 	std::vector<std::pair<int, int>> getItems();
 	std::vector<int> getOpenDoorsIds();
+	std::vector<int> getDefeatedBossesIds();
 	BloodstainInfo getBloodstainInfo();
 
 private:
@@ -49,6 +51,7 @@ private:
 	string currentMapFile;
 	std::vector<std::pair<int, int>> items;
 	std::vector<int> openDoorsIds;
+	std::vector<int> defeatedBossesIds;
 	BloodstainInfo bloodtsainInfo;
 };
 

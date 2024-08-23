@@ -89,6 +89,7 @@ Game::Game() {
 
 	// open doors
 	openDoorsIds = saveHandler.getOpenDoorsIds();
+	defeatedBossesIds = saveHandler.getDefeatedBossesIds();
 
 	// bloodstain
 	bloodstain = new Bloodstain(bloodstainAnimSet);
@@ -348,13 +349,17 @@ bool Game::isBossMap() {
 	auto layer = tMap->getLayer("BossSpawn");
 	if (layer == nullptr) return false;
 
+	// Aqui pode ter um problema futuramente, pois assumimos que só há um objeto de boss na layer
 	for (auto obj : layer->getObjects()) {
-		if (!std::any_cast<bool>(obj.getProp("isDefeated")->getValue())) {
-			return true;
+		int bossId = std::any_cast<int>(obj.getProp("bossId")->getValue());
+		std::vector<int>::iterator it;
+		it = find(defeatedBossesIds.begin(), defeatedBossesIds.end(), bossId);
+		if (it != defeatedBossesIds.end()) {
+			return false;
 		}
 	}
 
-	return false;
+	return true;
 }
 
 bool Game::isLivingEntityDead(Entity* entity) {
@@ -919,10 +924,11 @@ void Game::spawnBoss() {
 	if (layer == nullptr) return;
 
 	for (auto object : layer->getObjects()) {
-		bool isDefeated = std::any_cast<bool>(object.getProp("isDefeated")->getValue());
-		if (isDefeated) return;
-
 		int bossId = std::any_cast<int>(object.getProp("bossId")->getValue());
+		for (int i : defeatedBossesIds) {
+			if (i == bossId) return;
+		}
+
 		int bossPosX = object.getPosition().x;
 		int bossPosY = object.getPosition().y;
 		switch (bossId) {
@@ -997,7 +1003,11 @@ void Game::spawnCheckpoints() {
 
 void Game::checkBossDeath() {
 	if (currentBoss != nullptr && currentBoss->active && currentBoss->hp <= 0) {
-		saveBossDefeat();
+		std::vector<int>::iterator it;
+		it = find(defeatedBossesIds.begin(), defeatedBossesIds.end(), currentBoss->id);
+		if (it == defeatedBossesIds.end()) {
+			defeatedBossesIds.push_back(currentBoss->id);
+		}
 
 		for (auto fogWall : fogWalls) {
 			fogWall->active = false;
@@ -1009,29 +1019,6 @@ void Game::checkBossDeath() {
 			currentBoss->dropEssenceFlag = true;
 		}		
 		// currentBoss = nullptr;
-	}
-}
-
-void Game::saveBossDefeat() {
-	const string mapFilePath = getResourcePath() + MAPS_FOLDER_PATH + currentMap->file;
-	std::ifstream ifs(mapFilePath);
-	json mapFile = json::parse(ifs);
-
-	for (auto& layersIt : mapFile["layers"]) {
-		string name = layersIt["name"];
-		if (name == "BossSpawn") {
-			for (auto& object : layersIt["objects"]) {
-				for (auto& prop : object["properties"]) {
-					if (prop["name"] == "isDefeated") {
-						std::ofstream outputFile(mapFilePath);
-						prop["value"].clear();
-						prop["value"] = true;
-						outputFile << std::setw(4) << mapFile << std::endl;
-						outputFile.close();
-					}
-				}
-			}
-		}
 	}
 }
 
@@ -1248,6 +1235,7 @@ void Game::saveGame(bool isCheckpointSave) {
 		mapFile,
 		inventory,
 		openDoorsIds,
+		defeatedBossesIds,
 		bloodstain->x,
 		bloodstain->y,
 		bloodstain->essence,

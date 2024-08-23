@@ -3197,11 +3197,6 @@
                             "name": "bossId",
                             "type": "int",
                             "value": 990001
-                        },
-                        {
-                            "name": "isDefeated",
-                            "type": "bool",
-                            "value": false
                         }
                     ],
                     "rotation": 0,
