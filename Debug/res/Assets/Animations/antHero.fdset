@@ -1,5 +1,5 @@
 Assets\\Animations\\AntHero.png
-animations: 25
+animations: 33
 up
 frames: 4
 frame
@@ -502,3 +502,227 @@ offset: 18 49
 duration: 0.1
 index: 2
 collisionBox: 4 3 28 48
+slashUp2
+frames: 3
+frame
+clip: 2 716 39 49
+offset: 20 42
+duration: 0.1
+index: 0
+collisionBox: 10 1 21 41
+frame
+clip: 68 708 44 54
+offset: 19 49
+duration: 0.1
+index: 1
+collisionBox: 9 7 25 42
+hitBox: 1 1 39 20
+damage: 10
+frame
+clip: 134 710 41 52
+offset: 17 47
+duration: 0.1
+index: 2
+collisionBox: 10 4 19 43
+slashDown2
+frames: 3
+frame
+clip: 2 506 39 50
+offset: 20 42
+duration: 0.1
+index: 0
+collisionBox: 9 4 20 42
+frame
+clip: 66 510 53 56
+offset: 24 40
+duration: 0.1
+index: 1
+collisionBox: 14 2 19 44
+hitBox: 1 26 51 29
+damage: 10
+frame
+clip: 132 506 46 55
+offset: 21 42
+duration: 0.1
+index: 2
+collisionBox: 11 5 22 40
+slashLeft2
+frames: 3
+frame
+clip: 2 656 50 45
+offset: 31 40
+duration: 0.1
+index: 0
+collisionBox: 10 3 30 39
+frame
+clip: 67 656 82 47
+offset: 69 41
+duration: 0.1
+index: 1
+collisionBox: 48 2 31 40
+hitBox: 1 11 40 18
+damage: 10
+frame
+clip: 174 657 76 47
+offset: 59 38
+duration: 0.1
+index: 2
+collisionBox: 38 2 29 41
+slashRight2
+frames: 3
+frame
+clip: 14 589 47 50
+offset: 16 43
+duration: 0.1
+index: 0
+collisionBox: 13 4 24 41
+frame
+clip: 75 589 82 51
+offset: 10 41
+duration: 0.1
+index: 1
+collisionBox: 9 6 24 40
+hitBox: 35 15 45 17
+damage: 10
+frame
+clip: 171 592 74 49
+offset: 11 40
+duration: 0.1
+index: 2
+collisionBox: 8 3 25 37
+slashUp3
+frames: 5
+frame
+clip: 19 1005 29 57
+offset: 12 47
+duration: 0.1
+index: 0
+collisionBox: 6 7 14 41
+frame
+clip: 81 1004 32 56
+offset: 14 49
+duration: 0.1
+index: 1
+collisionBox: 6 10 20 38
+frame
+clip: 147 1004 28 53
+offset: 11 48
+duration: 0.1
+index: 2
+collisionBox: 6 7 15 37
+frame
+clip: 201 994 29 56
+offset: 15 54
+duration: 0.1
+index: 3
+collisionBox: 8 11 14 40
+hitBox: 1 0 20 27
+damage: 15
+frame
+clip: 256 1003 44 48
+offset: 23 41
+duration: 0.2
+index: 4
+collisionBox: 15 4 4 92
+slashLeft3
+frames: 5
+frame
+clip: 0 936 56 55
+offset: 39 48
+duration: 0.1
+index: 0
+collisionBox: 24 6 26 44
+frame
+clip: 63 932 55 61
+offset: 41 52
+duration: 0.1
+index: 1
+collisionBox: 25 9 24 44
+frame
+clip: 143 930 40 60
+offset: 23 58
+duration: 0.1
+index: 2
+collisionBox: 6 15 26 43
+frame
+clip: 212 931 69 62
+offset: 49 57
+duration: 0.1
+index: 3
+collisionBox: 33 17 29 36
+hitBox: 3 8 34 37
+damage: 15
+frame
+clip: 306 942 67 51
+offset: 54 43
+duration: 0.2
+index: 4
+collisionBox: 34 3 28 43
+slashRight3
+frames: 5
+frame
+clip: 9 872 56 55
+offset: 14 47
+duration: 0.1
+index: 0
+collisionBox: 8 5 26 43
+frame
+clip: 74 865 53 62
+offset: 12 53
+duration: 0.1
+index: 1
+collisionBox: 10 14 23 40
+frame
+clip: 136 862 48 66
+offset: 16 59
+duration: 0.1
+index: 2
+collisionBox: 15 18 19 41
+frame
+clip: 198 868 69 58
+offset: 21 54
+duration: 0.1
+index: 3
+collisionBox: 16 18 23 33
+hitBox: 35 7 32 37
+damage: 15
+frame
+clip: 298 877 67 54
+offset: 10 44
+duration: 0.2
+index: 4
+collisionBox: 11 5 21 40
+slashDown3
+frames: 5
+frame
+clip: 8 793 37 52
+offset: 16 46
+duration: 0.1
+index: 0
+collisionBox: 9 5 17 45
+frame
+clip: 76 778 31 62
+offset: 12 57
+duration: 0.1
+index: 1
+collisionBox: 8 22 15 34
+frame
+clip: 137 772 38 71
+offset: 18 64
+duration: 0.1
+index: 2
+collisionBox: 9 25 17 41
+frame
+clip: 196 778 38 73
+offset: 19 61
+duration: 0.1
+index: 3
+collisionBox: 12 20 16 37
+hitBox: 4 33 25 37
+damage: 15
+frame
+clip: 261 793 35 59
+offset: 17 45
+duration: 0.2
+index: 4
+collisionBox: 9 7 18 38
