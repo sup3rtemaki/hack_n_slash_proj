@@ -9,6 +9,7 @@
 #include <map>
 #include <unordered_map>
 #include <vector>
+#include <deque>
 
 enum class HeroActions {
 	PICK_NEAR_ITEM,
@@ -33,6 +34,16 @@ public:
 	static const string HERO_SLASH_ANIM_LEFT;
 	static const string HERO_SLASH_ANIM_RIGHT;
 
+	static const string HERO_SLASH2_ANIM_UP;
+	static const string HERO_SLASH2_ANIM_DOWN;
+	static const string HERO_SLASH2_ANIM_LEFT;
+	static const string HERO_SLASH2_ANIM_RIGHT;
+
+	static const string HERO_SLASH3_ANIM_UP;
+	static const string HERO_SLASH3_ANIM_DOWN;
+	static const string HERO_SLASH3_ANIM_LEFT;
+	static const string HERO_SLASH3_ANIM_RIGHT;
+
 	static const string HERO_DASH_ANIM_UP;
 	static const string HERO_DASH_ANIM_DOWN;
 	static const string HERO_DASH_ANIM_LEFT;
@@ -52,7 +63,9 @@ public:
 
 	static const int HERO_STATE_IDLE;
 	static const int HERO_STATE_MOVE;
-	static const int HERO_STATE_SLASH;
+	static const int HERO_STATE_ATTACK_1;
+	static const int HERO_STATE_ATTACK_2;
+	static const int HERO_STATE_ATTACK_3;
 	static const int HERO_STATE_DASH;
 	static const int HERO_STATE_DEAD;
 	static const int HERO_STATE_CONSUMING_ITEM;
@@ -61,6 +74,7 @@ public:
 
 	bool isCheckpointActivatedFlag;
 	bool isRested;
+	bool isAttacking;
 	bool mustSaveGame;
 
 	SDL_Point lastCheckpointPos;
@@ -71,12 +85,14 @@ public:
 	int quickAccessInventoryIndex = 0;
 	int honeydewQty;
 	int qtyItemsPicked;
+	int attackBufferIndex;
 
 	class Door* nearestDoor;
 	class Checkpoint* nearestCheckpoint;
 	class Bloodstain* nearestBloodstain;
 	map<int, Item*> inventory;
 	vector<int> quickAccessInventory = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+	deque<int> attackBuffer;
 	unordered_map<int, Item*> passiveSlots;
 	list<Item*> nearItems;
 	string addedItemName;
@@ -87,7 +103,8 @@ public:
 	Hero(AnimationSet* animSet);
 
 	void update();
-	void slash();
+	void move(float angle);
+	void attack();
 	void dash();
 	void die();
 	void revive();
@@ -114,6 +131,7 @@ private:
 
 	void findNearestItem();
 	void updateEssence();
+	void updateAttackSequence();
 	Item* currentNearItem;
 };
 

@@ -34,7 +34,7 @@ void JoystickInput::update(SDL_Event* e) {
 		}
 
 		if (e->jbutton.button == JOY_RB) {
-			hero->slash();
+			hero->attack();
 		}
 	}
 

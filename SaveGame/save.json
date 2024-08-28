@@ -5,11 +5,6 @@
         "bX": 914,
         "bY": 413
     },
-    "defeatedBosses": [
-        {
-            "id": 990001
-        }
-    ],
     "essence": 600,
     "heroHp": 100,
     "heroX": 274,

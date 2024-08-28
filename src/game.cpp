@@ -639,11 +639,15 @@ void Game::checkAndHandleNearCheckpoint(Entity* entity) {
 void Game::checkAndHandleNearBloodstain(Entity* entity) {
 	if (dynamic_cast<Bloodstain*>(entity) != nullptr) {
 		Bloodstain* bloodstain = (Bloodstain*)entity;
-		if (bloodstain->isLive && 
-			Entity::distanceBetweenTwoPoints(
+		if (bloodstain->isLive) {
+			if (Entity::distanceBetweenTwoPoints(
 				hero->x, hero->y + (hero->collisionBoxYOffset / 2.f), bloodstain->x + 32.f, bloodstain->y) < 60.0) {
-			hero->nearestBloodstain = bloodstain;
-			actionMessageUi->setMessage("Recover lost essence");
+				hero->nearestBloodstain = bloodstain;
+				actionMessageUi->setMessage("Recover lost essence");
+			}
+			else {
+				hero->nearestBloodstain = nullptr;
+			}
 		}
 	}
 }

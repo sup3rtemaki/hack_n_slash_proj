@@ -17,7 +17,7 @@ void KeyboardInput::update(SDL_Event* e){
 			hero->dash();
 		}
 		if (e->key.keysym.scancode == SLASH) {
-			hero->slash();
+			hero->attack();
 		}
 		if (e->key.keysym.scancode == SDL_SCANCODE_A) {
 			hero->useSelectedItemQuickAccess();

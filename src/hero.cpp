@@ -20,6 +20,16 @@ const string Hero::HERO_SLASH_ANIM_DOWN = "slashDown";
 const string Hero::HERO_SLASH_ANIM_LEFT = "slashLeft";
 const string Hero::HERO_SLASH_ANIM_RIGHT = "slashRight";
 
+const string Hero::HERO_SLASH2_ANIM_UP = "slashUp2";
+const string Hero::HERO_SLASH2_ANIM_DOWN = "slashDown2";
+const string Hero::HERO_SLASH2_ANIM_LEFT = "slashLeft2";
+const string Hero::HERO_SLASH2_ANIM_RIGHT = "slashRight2";
+
+const string Hero::HERO_SLASH3_ANIM_UP = "slashUp3";
+const string Hero::HERO_SLASH3_ANIM_DOWN = "slashDown3";
+const string Hero::HERO_SLASH3_ANIM_LEFT = "slashLeft3";
+const string Hero::HERO_SLASH3_ANIM_RIGHT = "slashRight3";
+
 const string Hero::HERO_DASH_ANIM_UP = "dashUp";
 const string Hero::HERO_DASH_ANIM_DOWN = "dashDown";
 const string Hero::HERO_DASH_ANIM_LEFT = "dashLeft";
@@ -39,12 +49,14 @@ const string Hero::HERO_ANIM_DIE = "die";
 
 const int Hero::HERO_STATE_IDLE = 0;
 const int Hero::HERO_STATE_MOVE = 1;
-const int Hero::HERO_STATE_SLASH = 2;
-const int Hero::HERO_STATE_DASH = 3;
-const int Hero::HERO_STATE_DEAD = 4;
-const int Hero::HERO_STATE_CONSUMING_ITEM = 5;
-const int Hero::HERO_STATE_SHOOTING = 6;
-const int Hero::HERO_STATE_RESTING = 7;
+const int Hero::HERO_STATE_DASH = 2;
+const int Hero::HERO_STATE_DEAD = 3;
+const int Hero::HERO_STATE_CONSUMING_ITEM = 4;
+const int Hero::HERO_STATE_SHOOTING = 5;
+const int Hero::HERO_STATE_RESTING = 6;
+const int Hero::HERO_STATE_ATTACK_1 = 7;
+const int Hero::HERO_STATE_ATTACK_2 = 8;
+const int Hero::HERO_STATE_ATTACK_3 = 9;
 
 Hero::Hero(AnimationSet* animSet) {
 	this->animSet = animSet;
@@ -57,7 +69,7 @@ Hero::Hero(AnimationSet* animSet) {
 	moveSpeedMax = 50;
 	hp = hpMax = 100;
 	essence = 0;
-	stamina = staminaMax = 50;
+	stamina = staminaMax = 60;
 	staminaStatusAmount = 0.3f;
 	damage = 0;
 	collisionBoxW = 20;
@@ -67,6 +79,7 @@ Hero::Hero(AnimationSet* animSet) {
 	honeydewQty = 3;
 	inventoryIndex = 0;
 	newEssenceQty = 0;
+	attackBufferIndex = 0;
 	nearestDoor = nullptr;
 	nearestCheckpoint = nullptr;
 	nearestBloodstain = nullptr;
@@ -96,27 +109,67 @@ void Hero::update() {
 	updateCollisions();
 	updateHitBox();
 	updateDamages();
+	updateAttackSequence();
 	updateAnimation();
 	updateInvincibleTimer();
 	updateEssence();
 }
 
-void Hero::slash() {
-	if (hp > 0 &&
-		(state == HERO_STATE_MOVE || state == HERO_STATE_IDLE) &&
-		stamina > 0.f) {
-		moving = false;
-		frameTimer = 0;
-		stamina -= 17.f;
-		changeAnimation(HERO_STATE_SLASH, true);
-		SoundManager::soundManager.playSound("swing");
+void Hero::move(float angle) {
+	if (isAttacking) {
+		isAttacking = false;
+		attackBuffer.clear();
 	}
+	moving = true;
+	moveSpeed = moveSpeedMax;
+	this->angle = angle;
+
+	int newDirection = angleToDirection(angle);
+	//if direction changed, update current animation
+	if (direction != newDirection) {
+		direction = newDirection;
+		changeAnimation(state, false);
+	}
+}
+
+void Hero::attack() {
+	if (hp <= 0) return;
+
+	if (attackBuffer.size() >= 10) return;
+
+	int nextAttackState;
+
+	switch (state) {
+	case HERO_STATE_ATTACK_1:
+		nextAttackState = HERO_STATE_ATTACK_2;
+		break;
+	case HERO_STATE_ATTACK_2:
+		nextAttackState = HERO_STATE_ATTACK_3;
+		break;
+	case HERO_STATE_ATTACK_3:
+		nextAttackState = HERO_STATE_ATTACK_1;
+		break;
+	default:
+		if (stamina < 15) {
+			attackBuffer.clear();
+			return;
+		}
+		stamina -= 15;
+		changeAnimation(HERO_STATE_ATTACK_1, true);
+		return;
+	}
+
+	if (attackBuffer.empty() || attackBuffer.back() != nextAttackState) {
+		attackBuffer.push_back(nextAttackState);
+	}
+
+	isAttacking = true;
 }
 
 void Hero::dash() {
 	if (hp > 0 &&
 		(state == HERO_STATE_MOVE || state == HERO_STATE_IDLE) &&
-		stamina > 0.f) {
+		stamina > 30.f) {
 		moving = false;
 		frameTimer = 0;
 
@@ -178,7 +231,7 @@ void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 			currentAnim = animSet->getAnimation(HERO_ANIM_RIGHT);
 		}
 	}
-	else if (state == HERO_STATE_SLASH) {
+	else if (state == HERO_STATE_ATTACK_1) {
 		if (direction == DIR_DOWN) {
 			currentAnim = animSet->getAnimation(HERO_SLASH_ANIM_DOWN);
 		}
@@ -190,6 +243,34 @@ void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 		}
 		else if (direction == DIR_RIGHT) {
 			currentAnim = animSet->getAnimation(HERO_SLASH_ANIM_RIGHT);
+		}
+	}
+	else if (state == HERO_STATE_ATTACK_2) {
+		if (direction == DIR_DOWN) {
+			currentAnim = animSet->getAnimation(HERO_SLASH2_ANIM_DOWN);
+		}
+		else if (direction == DIR_UP) {
+			currentAnim = animSet->getAnimation(HERO_SLASH2_ANIM_UP);
+		}
+		else if (direction == DIR_LEFT) {
+			currentAnim = animSet->getAnimation(HERO_SLASH2_ANIM_LEFT);
+		}
+		else if (direction == DIR_RIGHT) {
+			currentAnim = animSet->getAnimation(HERO_SLASH2_ANIM_RIGHT);
+		}
+	}
+	else if (state == HERO_STATE_ATTACK_3) {
+		if (direction == DIR_DOWN) {
+			currentAnim = animSet->getAnimation(HERO_SLASH3_ANIM_DOWN);
+		}
+		else if (direction == DIR_UP) {
+			currentAnim = animSet->getAnimation(HERO_SLASH3_ANIM_UP);
+		}
+		else if (direction == DIR_LEFT) {
+			currentAnim = animSet->getAnimation(HERO_SLASH3_ANIM_LEFT);
+		}
+		else if (direction == DIR_RIGHT) {
+			currentAnim = animSet->getAnimation(HERO_SLASH3_ANIM_RIGHT);
 		}
 	}
 	else if (state == HERO_STATE_DASH) {
@@ -283,7 +364,13 @@ void Hero::updateAnimation() {
 	if (frameTimer >= currentFrame->duration) {
 		//if we are at the end of animation
 		if (currentFrame->frameNumber == currentAnim->getEndFrameNumber()) {
-			if (state == HERO_STATE_SLASH || state == HERO_STATE_DASH) {
+			if (state == HERO_STATE_ATTACK_1 ||
+				state == HERO_STATE_ATTACK_2 ||
+				state == HERO_STATE_ATTACK_3) {
+				changeAnimation(HERO_STATE_MOVE, true);
+				isAttacking = false;
+			}
+			if (state == HERO_STATE_DASH) {
 				//change back to moving state/anim
 				changeAnimation(HERO_STATE_MOVE, true);
 			}
@@ -484,6 +571,46 @@ void Hero::updateEssence() {
 	if (newEssenceQty <= 0) return;
 
 	essence < (prevEssence + newEssenceQty) ? essence++ : newEssenceQty = 0;
+}
+
+void Hero::updateAttackSequence() {
+	if (attackBuffer.empty()) return;
+
+	frameTimer += TimeController::timeController.dT;
+	if (currentFrame->frameNumber != currentAnim->getEndFrameNumber() ||
+		frameTimer < currentFrame->duration) return;
+
+	int attackState = attackBuffer.front();
+
+	switch (attackState) {
+	case HERO_STATE_ATTACK_1:
+		if (stamina < 15) {
+			attackBuffer.clear();
+			return;
+		}
+		stamina -= 15;
+		break;
+	case HERO_STATE_ATTACK_2:
+		if (stamina < 20 || !isAttacking ) {
+			attackBuffer.clear();
+			return;
+		}
+		stamina -= 20;
+		break;
+	case HERO_STATE_ATTACK_3:
+		if (stamina < 25 || !isAttacking) {
+			attackBuffer.clear();
+			return;
+		}
+		stamina -= 25;
+		break;
+	default:
+		return;
+	}
+
+	changeAnimation(attackState, true);
+	SoundManager::soundManager.playSound("swing");
+	attackBuffer.pop_front();
 }
 
 void Hero::openDoor() {
