@@ -58,6 +58,8 @@ const int Hero::HERO_STATE_ATTACK_1 = 7;
 const int Hero::HERO_STATE_ATTACK_2 = 8;
 const int Hero::HERO_STATE_ATTACK_3 = 9;
 
+const float ATTACK_TIME = 0.5f;
+
 Hero::Hero(AnimationSet* animSet) {
 	this->animSet = animSet;
 	type = "hero";
@@ -80,6 +82,7 @@ Hero::Hero(AnimationSet* animSet) {
 	inventoryIndex = 0;
 	newEssenceQty = 0;
 	attackBufferIndex = 0;
+	attackTimer = 0.f;
 	nearestDoor = nullptr;
 	nearestCheckpoint = nullptr;
 	nearestBloodstain = nullptr;
@@ -104,6 +107,7 @@ void Hero::update() {
 	}
 
 	statusTimerTick();
+	attackTimerTick();
 	updateCollisionBox();
 	updateMovement();
 	updateCollisions();
@@ -119,6 +123,7 @@ void Hero::move(float angle) {
 	if (isAttacking) {
 		isAttacking = false;
 		attackBuffer.clear();
+		attackTimer = 0.f;
 	}
 	moving = true;
 	moveSpeed = moveSpeedMax;
@@ -137,33 +142,44 @@ void Hero::attack() {
 
 	if (attackBuffer.size() >= 10) return;
 
-	int nextAttackState;
+	isAttacking = true;
 
-	switch (state) {
-	case HERO_STATE_ATTACK_1:
-		nextAttackState = HERO_STATE_ATTACK_2;
-		break;
-	case HERO_STATE_ATTACK_2:
-		nextAttackState = HERO_STATE_ATTACK_3;
-		break;
-	case HERO_STATE_ATTACK_3:
-		nextAttackState = HERO_STATE_ATTACK_1;
-		break;
-	default:
-		if (stamina < 15) {
+	if (attackTimer <= 0.f) {
+		if (stamina < 15.f) {
 			attackBuffer.clear();
 			return;
 		}
-		stamina -= 15;
+		attackTimer = ATTACK_TIME;
+		prevAttackState = HERO_STATE_ATTACK_1;
+		stamina -= 15.f;
 		changeAnimation(HERO_STATE_ATTACK_1, true);
 		return;
 	}
+	else {
+		int nextAttackState;
+		switch (prevAttackState) {
+		case HERO_STATE_ATTACK_1:
+			nextAttackState = HERO_STATE_ATTACK_2;
+			break;
+		case HERO_STATE_ATTACK_2:
+			nextAttackState = HERO_STATE_ATTACK_3;
+			break;
+		case HERO_STATE_ATTACK_3:
+			nextAttackState = HERO_STATE_ATTACK_1;
+			break;
+		default:
+			nextAttackState = HERO_STATE_ATTACK_1;
+			break;
+		}
 
-	if (attackBuffer.empty() || attackBuffer.back() != nextAttackState) {
-		attackBuffer.push_back(nextAttackState);
+		prevAttackState = nextAttackState;
+
+		if (attackBuffer.empty() || attackBuffer.back() != nextAttackState) {
+			attackBuffer.push_back(nextAttackState);
+		}
 	}
 
-	isAttacking = true;
+	attackTimer = ATTACK_TIME;
 }
 
 void Hero::dash() {
@@ -584,25 +600,25 @@ void Hero::updateAttackSequence() {
 
 	switch (attackState) {
 	case HERO_STATE_ATTACK_1:
-		if (stamina < 15) {
+		if (stamina < 15.f) {
 			attackBuffer.clear();
 			return;
 		}
-		stamina -= 15;
+		stamina -= 15.f;
 		break;
 	case HERO_STATE_ATTACK_2:
-		if (stamina < 20 || !isAttacking ) {
+		if (stamina < 20.f || !isAttacking ) {
 			attackBuffer.clear();
 			return;
 		}
-		stamina -= 20;
+		stamina -= 20.f;
 		break;
 	case HERO_STATE_ATTACK_3:
-		if (stamina < 25 || !isAttacking) {
+		if (stamina < 25.f || !isAttacking) {
 			attackBuffer.clear();
 			return;
 		}
-		stamina -= 25;
+		stamina -= 25.f;
 		break;
 	default:
 		return;
@@ -620,13 +636,22 @@ void Hero::openDoor() {
 }
 
 void Hero::healTimerTick() {
-	if (healStatusTimer <= 0) {
-		healStatusTimer = 0;
-		healStatusAmount = 0;
+	if (healStatusTimer <= 0.f) {
+		healStatusTimer = 0.f;
+		healStatusAmount = 0.f;
 	}
 	else {
 		hp += healStatusAmount;
 		healStatusTimer -= TimeController::timeController.dT;
+	}
+}
+
+void Hero::attackTimerTick() {
+	if (attackTimer <= 0.f) {
+		attackTimer = 0.f;
+	}
+	else {
+		attackTimer -= TimeController::timeController.dT;
 	}
 }
 

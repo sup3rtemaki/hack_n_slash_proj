@@ -86,6 +86,9 @@ public:
 	int honeydewQty;
 	int qtyItemsPicked;
 	int attackBufferIndex;
+	int prevAttackState;
+
+	float attackTimer;
 
 	class Door* nearestDoor;
 	class Checkpoint* nearestCheckpoint;
@@ -124,6 +127,7 @@ public:
 
 	void statusTimerTick();
 	void healTimerTick();
+	void attackTimerTick();
 
 private:
 	int newEssenceQty;
