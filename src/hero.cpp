@@ -146,20 +146,16 @@ void Hero::attack() {
 	if (attackBuffer.size() >= 10) return;
 
 	isAttacking = true;
+	int nextAttackState{};
 
 	if (attackTimer <= 0.f) {
 		if (stamina < 15.f) {
 			attackBuffer.clear();
 			return;
 		}
-		attackTimer = ATTACK_TIME;
-		prevAttackState = comboSequence[0];
-		stamina -= 15.f;
-		changeAnimation(prevAttackState, true);
-		return;
+		nextAttackState = comboSequence[0];
 	}
 	else {
-		int nextAttackState{};
 		int index = 0;
 		for (int attack : comboSequence) {
 			if (attack == prevAttackState) {
@@ -169,12 +165,12 @@ void Hero::attack() {
 			}
 			index++;
 		}
+	}
 
-		prevAttackState = nextAttackState;
+	prevAttackState = nextAttackState;
 
-		if (attackBuffer.empty() || attackBuffer.back() != nextAttackState) {
-			attackBuffer.push_back(nextAttackState);
-		}
+	if (attackBuffer.empty() || attackBuffer.back() != nextAttackState) {
+		attackBuffer.push_back(nextAttackState);
 	}
 }
 
@@ -187,7 +183,7 @@ void Hero::dash() {
 
 		//push the hero in the direction they are traveling
 		slideAngle = angle;
-		slideAmount = 200;
+		slideAmount = 200.f;
 		invincibleTimer = 0.1;
 		stamina -= 30.f;
 
@@ -209,7 +205,7 @@ void Hero::revive() {
 	moving = false;
 	x = lastCheckpointPos.x;
 	y = lastCheckpointPos.y;
-	slideAmount = 0;
+	slideAmount = 0.f;
 }
 
 void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string animName) {
@@ -427,7 +423,7 @@ void Hero::updateDamages() {
 					}
 
 					slideAngle = Entity::angleBetweenTwoEntities((*entity), this);
-					slideAmount = 200;
+					slideAmount = 200.f;
 				}
 			}
 		}
@@ -608,6 +604,8 @@ void Hero::updateAttackSequence() {
 			return;
 		}
 		stamina -= 20.f;
+		slideAngle = angle;
+		slideAmount = 20.f;
 		break;
 	case HERO_STATE_ATTACK_3:
 		if (stamina < 25.f || !isAttacking) {
@@ -615,6 +613,8 @@ void Hero::updateAttackSequence() {
 			return;
 		}
 		stamina -= 25.f;
+		slideAngle = angle;
+		slideAmount = 75.f;
 		break;
 	default:
 		return;
