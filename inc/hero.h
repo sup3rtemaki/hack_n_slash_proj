@@ -95,6 +95,7 @@ public:
 	class Bloodstain* nearestBloodstain;
 	map<int, Item*> inventory;
 	vector<int> quickAccessInventory = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+	vector<int> comboSequence;
 	deque<int> attackBuffer;
 	unordered_map<int, Item*> passiveSlots;
 	list<Item*> nearItems;

@@ -83,6 +83,9 @@ Hero::Hero(AnimationSet* animSet) {
 	newEssenceQty = 0;
 	attackBufferIndex = 0;
 	attackTimer = 0.f;
+	comboSequence.push_back(HERO_STATE_ATTACK_1);
+	comboSequence.push_back(HERO_STATE_ATTACK_2);
+	comboSequence.push_back(HERO_STATE_ATTACK_3);
 	nearestDoor = nullptr;
 	nearestCheckpoint = nullptr;
 	nearestBloodstain = nullptr;
@@ -150,26 +153,21 @@ void Hero::attack() {
 			return;
 		}
 		attackTimer = ATTACK_TIME;
-		prevAttackState = HERO_STATE_ATTACK_1;
+		prevAttackState = comboSequence[0];
 		stamina -= 15.f;
-		changeAnimation(HERO_STATE_ATTACK_1, true);
+		changeAnimation(prevAttackState, true);
 		return;
 	}
 	else {
-		int nextAttackState;
-		switch (prevAttackState) {
-		case HERO_STATE_ATTACK_1:
-			nextAttackState = HERO_STATE_ATTACK_2;
-			break;
-		case HERO_STATE_ATTACK_2:
-			nextAttackState = HERO_STATE_ATTACK_3;
-			break;
-		case HERO_STATE_ATTACK_3:
-			nextAttackState = HERO_STATE_ATTACK_1;
-			break;
-		default:
-			nextAttackState = HERO_STATE_ATTACK_1;
-			break;
+		int nextAttackState{};
+		int index = 0;
+		for (int attack : comboSequence) {
+			if (attack == prevAttackState) {
+				index == comboSequence.size() - 1 ?
+					nextAttackState = comboSequence[0] :
+					nextAttackState = comboSequence[index + 1];
+			}
+			index++;
 		}
 
 		prevAttackState = nextAttackState;
@@ -178,8 +176,6 @@ void Hero::attack() {
 			attackBuffer.push_back(nextAttackState);
 		}
 	}
-
-	attackTimer = ATTACK_TIME;
 }
 
 void Hero::dash() {
@@ -627,6 +623,7 @@ void Hero::updateAttackSequence() {
 	changeAnimation(attackState, true);
 	SoundManager::soundManager.playSound("swing");
 	attackBuffer.pop_front();
+	attackTimer = ATTACK_TIME;
 }
 
 void Hero::openDoor() {
