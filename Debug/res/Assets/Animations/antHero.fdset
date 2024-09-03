@@ -193,37 +193,133 @@ duration: 0.1
 index: 2
 collisionBox: 12 13 17 26
 dashUp
-frames: 1
+frames: 6
 frame
-clip: 354 166 53 45
-offset: 24 41
+clip: 684 259 44 48
+offset: 19 42
 duration: 0.1
 index: 0
-collisionBox: 18 13 16 27
+frame
+clip: 742 258 53 51
+offset: 26 48
+duration: 0.05
+index: 1
+frame
+clip: 810 260 46 48
+offset: 22 45
+duration: 0.05
+index: 2
+frame
+clip: 748 261 44 46
+offset: 20 44
+duration: 0.05
+index: 3
+frame
+clip: 883 263 42 52
+offset: 18 50
+duration: 0.1
+index: 4
+frame
+clip: 951 265 35 49
+offset: 15 47
+duration: 0.1
+index: 5
 dashDown
-frames: 1
+frames: 6
 frame
-clip: 358 72 52 44
-offset: 27 42
+clip: 679 74 50 42
+offset: 25 39
 duration: 0.1
 index: 0
-collisionBox: 20 14 16 24
+frame
+clip: 740 69 55 47
+offset: 28 46
+duration: 0.05
+index: 1
+frame
+clip: 803 66 60 53
+offset: 29 51
+duration: 0.05
+index: 2
+frame
+clip: 741 68 56 50
+offset: 27 48
+duration: 0.05
+index: 3
+frame
+clip: 871 74 53 50
+offset: 24 45
+duration: 0.1
+index: 4
+frame
+clip: 938 75 48 50
+offset: 25 44
+duration: 0.1
+index: 5
 dashLeft
-frames: 1
+frames: 6
 frame
-clip: 359 222 51 47
-offset: 27 41
+clip: 682 194 53 40
+offset: 35 34
 duration: 0.1
 index: 0
-collisionBox: 13 15 15 21
+frame
+clip: 745 192 55 44
+offset: 36 39
+duration: 0.05
+index: 1
+frame
+clip: 812 191 54 45
+offset: 33 39
+duration: 0.05
+index: 2
+frame
+clip: 743 191 58 44
+offset: 38 39
+duration: 0.05
+index: 3
+frame
+clip: 878 196 50 41
+offset: 30 36
+duration: 0.1
+index: 4
+frame
+clip: 937 192 48 52
+offset: 27 43
+duration: 0.1
+index: 5
 dashRight
-frames: 1
+frames: 6
 frame
-clip: 350 119 53 47
-offset: 24 41
+clip: 680 129 41 40
+offset: 10 36
 duration: 0.1
 index: 0
-collisionBox: 21 13 18 26
+frame
+clip: 742 126 45 42
+offset: 12 41
+duration: 0.05
+index: 1
+frame
+clip: 808 124 45 50
+offset: 10 45
+duration: 0.05
+index: 2
+frame
+clip: 745 126 40 49
+offset: 9 42
+duration: 0.05
+index: 3
+frame
+clip: 870 133 43 39
+offset: 13 35
+duration: 0.1
+index: 4
+frame
+clip: 941 131 45 45
+offset: 14 40
+duration: 0.1
+index: 5
 die
 frames: 2
 frame

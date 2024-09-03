@@ -184,7 +184,7 @@ void Hero::dash() {
 		//push the hero in the direction they are traveling
 		slideAngle = angle;
 		slideAmount = 200.f;
-		invincibleTimer = 0.1;
+		invincibleTimer = 0.1f;
 		stamina -= 30.f;
 
 		changeAnimation(HERO_STATE_DASH, true);
