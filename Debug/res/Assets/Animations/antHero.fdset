@@ -1,5 +1,5 @@
 Assets\\Animations\\AntHero.png
-animations: 33
+animations: 37
 up
 frames: 4
 frame
@@ -822,3 +822,171 @@ offset: 17 45
 duration: 0.2
 index: 4
 collisionBox: 9 7 18 38
+rollUp
+frames: 8
+frame
+clip: 679 525 50 44
+offset: 27 40
+duration: 0.1
+index: 0
+frame
+clip: 751 523 44 48
+offset: 20 42
+duration: 0.05
+index: 1
+frame
+clip: 813 529 41 34
+offset: 19 33
+duration: 0.1
+index: 2
+frame
+clip: 880 527 32 37
+offset: 18 34
+duration: 0.05
+index: 3
+frame
+clip: 942 522 39 50
+offset: 20 42
+duration: 0.1
+index: 4
+frame
+clip: 1008 527 37 38
+offset: 21 34
+duration: 0.05
+index: 5
+frame
+clip: 1073 520 47 55
+offset: 20 49
+duration: 0.1
+index: 6
+frame
+clip: 1135 520 48 56
+offset: 24 49
+duration: 0.1
+index: 7
+rollLeft
+frames: 8
+frame
+clip: 675 456 58 46
+offset: 40 45
+duration: 0.12
+index: 0
+frame
+clip: 746 463 51 44
+offset: 33 29
+duration: 0.05
+index: 1
+frame
+clip: 809 469 49 35
+offset: 31 29
+duration: 0.1
+index: 2
+frame
+clip: 880 455 43 48
+offset: 23 39
+duration: 0.05
+index: 3
+frame
+clip: 939 452 38 51
+offset: 18 41
+duration: 0.1
+index: 4
+frame
+clip: 1004 456 36 49
+offset: 16 39
+duration: 0.05
+index: 5
+frame
+clip: 1070 450 48 50
+offset: 30 38
+duration: 0.1
+index: 6
+frame
+clip: 1129 450 42 48
+offset: 28 41
+duration: 0.1
+index: 7
+rollRight
+frames: 8
+frame
+clip: 676 391 54 51
+offset: 19 46
+duration: 0.12
+index: 0
+frame
+clip: 742 397 52 48
+offset: 15 31
+duration: 0.05
+index: 1
+frame
+clip: 807 402 50 45
+offset: 19 27
+duration: 0.1
+index: 2
+frame
+clip: 870 393 44 46
+offset: 20 35
+duration: 0.05
+index: 3
+frame
+clip: 939 390 52 49
+offset: 27 38
+duration: 0.1
+index: 4
+frame
+clip: 1010 391 40 47
+offset: 22 39
+duration: 0.05
+index: 5
+frame
+clip: 1060 389 47 44
+offset: 15 35
+duration: 0.1
+index: 6
+frame
+clip: 1129 383 46 50
+offset: 18 44
+duration: 0.1
+index: 7
+rollDown
+frames: 8
+frame
+clip: 682 331 49 43
+offset: 22 41
+duration: 0.12
+index: 0
+frame
+clip: 747 335 44 45
+offset: 21 35
+duration: 0.05
+index: 1
+frame
+clip: 806 332 53 37
+offset: 27 31
+duration: 0.1
+index: 2
+frame
+clip: 873 330 48 38
+offset: 25 30
+duration: 0.05
+index: 3
+frame
+clip: 939 324 49 43
+offset: 22 38
+duration: 0.1
+index: 4
+frame
+clip: 999 328 48 44
+offset: 25 40
+duration: 0.05
+index: 5
+frame
+clip: 1060 332 52 49
+offset: 27 42
+duration: 0.1
+index: 6
+frame
+clip: 1129 329 47 52
+offset: 26 45
+duration: 0.1
+index: 7
