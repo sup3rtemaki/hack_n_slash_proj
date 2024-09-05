@@ -627,7 +627,7 @@ void Game::checkAndHandleNearCheckpoint(Entity* entity) {
 			actionMessageUi->setTimer(3.f);
 		}
 
-		if (hero->state == Hero::HERO_STATE_RESTING && hero->isRested) {
+		if (hero->state == (int)HERO_STATE::RESTING && hero->isRested) {
 			hero->isRested = false;
 			deadEnemiesIds.clear();
 			currentMapEnemies.clear();

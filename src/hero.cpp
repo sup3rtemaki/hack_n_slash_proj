@@ -35,6 +35,11 @@ const string Hero::HERO_DASH_ANIM_DOWN = "dashDown";
 const string Hero::HERO_DASH_ANIM_LEFT = "dashLeft";
 const string Hero::HERO_DASH_ANIM_RIGHT = "dashRight";
 
+const string Hero::HERO_ROLL_ANIM_UP = "rollUp";
+const string Hero::HERO_ROLL_ANIM_DOWN = "rollDown";
+const string Hero::HERO_ROLL_ANIM_LEFT = "rollLeft";
+const string Hero::HERO_ROLL_ANIM_RIGHT = "rollRight";
+
 const string Hero::HERO_CONSUMING_ANIM_UP = "consumeItemUp";
 const string Hero::HERO_CONSUMING_ANIM_DOWN = "consumeItemDown";
 const string Hero::HERO_CONSUMING_ANIM_LEFT = "consumeItemLeft";
@@ -47,18 +52,18 @@ const string Hero::HERO_SHOOT_ANIM_RIGHT = "shootRight";
 
 const string Hero::HERO_ANIM_DIE = "die";
 
-const int Hero::HERO_STATE_IDLE = 0;
-const int Hero::HERO_STATE_MOVE = 1;
-const int Hero::HERO_STATE_DASH = 2;
-const int Hero::HERO_STATE_DEAD = 3;
-const int Hero::HERO_STATE_CONSUMING_ITEM = 4;
-const int Hero::HERO_STATE_SHOOTING = 5;
-const int Hero::HERO_STATE_RESTING = 6;
-const int Hero::HERO_STATE_ATTACK_1 = 7;
-const int Hero::HERO_STATE_ATTACK_2 = 8;
-const int Hero::HERO_STATE_ATTACK_3 = 9;
+//const int Hero::HERO_STATE_IDLE = 0;
+//const int Hero::HERO_STATE_MOVE = 1;
+//const int Hero::HERO_STATE_DASH = 2;
+//const int Hero::HERO_STATE_DEAD = 3;
+//const int Hero::HERO_STATE_CONSUMING_ITEM = 4;
+//const int Hero::HERO_STATE_SHOOTING = 5;
+//const int Hero::HERO_STATE_RESTING = 6;
+//const int Hero::HERO_STATE_ATTACK_1 = 7;
+//const int Hero::HERO_STATE_ATTACK_2 = 8;
+//const int Hero::HERO_STATE_ATTACK_3 = 9;
 
-const float ATTACK_TIME = 0.5f;
+const float ATTACK_TIME = 0.8f;
 
 Hero::Hero(AnimationSet* animSet) {
 	this->animSet = animSet;
@@ -83,20 +88,20 @@ Hero::Hero(AnimationSet* animSet) {
 	newEssenceQty = 0;
 	attackBufferIndex = 0;
 	attackTimer = 0.f;
-	comboSequence.push_back(HERO_STATE_ATTACK_1);
-	comboSequence.push_back(HERO_STATE_ATTACK_2);
-	comboSequence.push_back(HERO_STATE_ATTACK_3);
+	comboSequence.push_back((int)HERO_STATE::ATTACK_1);
+	comboSequence.push_back((int)HERO_STATE::ATTACK_2);
+	comboSequence.push_back((int)HERO_STATE::ATTACK_3);
 	nearestDoor = nullptr;
 	nearestCheckpoint = nullptr;
 	nearestBloodstain = nullptr;
-	changeAnimation(HERO_STATE_IDLE, true);
+	changeAnimation((int)HERO_STATE::IDLE, true);
 	updateCollisionBox();
 }
 
 void Hero::update() {
 	// check if dead
-	if (hp < 1 && state != HERO_STATE_DEAD) {
-		changeAnimation(HERO_STATE_DEAD, true);
+	if (hp < 1 && state != (int)HERO_STATE::DEAD) {
+		changeAnimation((int)HERO_STATE::DEAD, true);
 		moving = false;
 		die();
 	}
@@ -176,7 +181,7 @@ void Hero::attack() {
 
 void Hero::dash() {
 	if (hp > 0 &&
-		(state == HERO_STATE_MOVE || state == HERO_STATE_IDLE) &&
+		(state == (int)HERO_STATE::MOVE || state == (int)HERO_STATE::IDLE) &&
 		stamina > 30.f) {
 		moving = false;
 		frameTimer = 0;
@@ -187,7 +192,26 @@ void Hero::dash() {
 		invincibleTimer = 0.1f;
 		stamina -= 30.f;
 
-		changeAnimation(HERO_STATE_DASH, true);
+		changeAnimation((int)HERO_STATE::DASH, true);
+
+		SoundManager::soundManager.playSound("dash");
+	}
+}
+
+void Hero::roll() {
+	if (hp > 0 &&
+		(state == (int)HERO_STATE::MOVE || state == (int)HERO_STATE::IDLE) &&
+		stamina > 50.f) {
+		moving = false;
+		frameTimer = 0;
+
+		//push the hero in the direction they are traveling
+		slideAngle = angle;
+		slideAmount = 315.f;
+		invincibleTimer = 0.25f;
+		stamina -= 50.f;
+
+		changeAnimation((int)HERO_STATE::ROLL, true);
 
 		SoundManager::soundManager.playSound("dash");
 	}
@@ -195,13 +219,13 @@ void Hero::dash() {
 
 void Hero::die() {
 	moving = false;
-	changeAnimation(HERO_STATE_DEAD, true);
+	changeAnimation((int)HERO_STATE::DEAD, true);
 }
 
 void Hero::revive() {
 	hp = hpMax;
 	stamina = staminaMax;
-	changeAnimation(HERO_STATE_IDLE, true);
+	changeAnimation((int)HERO_STATE::IDLE, true);
 	moving = false;
 	x = lastCheckpointPos.x;
 	y = lastCheckpointPos.y;
@@ -211,7 +235,7 @@ void Hero::revive() {
 void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string animName) {
 	state = newState;
 
-	if (state == HERO_STATE_IDLE) {
+	if (state == (int)HERO_STATE::IDLE) {
 		if (direction == DIR_DOWN) {
 			currentAnim = animSet->getAnimation(HERO_ANIM_IDLE_DOWN);
 		}
@@ -225,7 +249,7 @@ void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 			currentAnim = animSet->getAnimation(HERO_ANIM_IDLE_RIGHT);
 		}
 	}
-	else if (state == HERO_STATE_MOVE) {
+	else if (state == (int)HERO_STATE::MOVE) {
 		if (direction == DIR_DOWN) {
 			currentAnim = animSet->getAnimation(HERO_ANIM_DOWN);
 		}
@@ -239,7 +263,7 @@ void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 			currentAnim = animSet->getAnimation(HERO_ANIM_RIGHT);
 		}
 	}
-	else if (state == HERO_STATE_ATTACK_1) {
+	else if (state == (int)HERO_STATE::ATTACK_1) {
 		if (direction == DIR_DOWN) {
 			currentAnim = animSet->getAnimation(HERO_SLASH_ANIM_DOWN);
 		}
@@ -253,7 +277,7 @@ void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 			currentAnim = animSet->getAnimation(HERO_SLASH_ANIM_RIGHT);
 		}
 	}
-	else if (state == HERO_STATE_ATTACK_2) {
+	else if (state == (int)HERO_STATE::ATTACK_2) {
 		if (direction == DIR_DOWN) {
 			currentAnim = animSet->getAnimation(HERO_SLASH2_ANIM_DOWN);
 		}
@@ -267,7 +291,7 @@ void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 			currentAnim = animSet->getAnimation(HERO_SLASH2_ANIM_RIGHT);
 		}
 	}
-	else if (state == HERO_STATE_ATTACK_3) {
+	else if (state == (int)HERO_STATE::ATTACK_3) {
 		if (direction == DIR_DOWN) {
 			currentAnim = animSet->getAnimation(HERO_SLASH3_ANIM_DOWN);
 		}
@@ -281,7 +305,7 @@ void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 			currentAnim = animSet->getAnimation(HERO_SLASH3_ANIM_RIGHT);
 		}
 	}
-	else if (state == HERO_STATE_DASH) {
+	else if (state == (int)HERO_STATE::DASH) {
 		if (direction == DIR_DOWN) {
 			currentAnim = animSet->getAnimation(HERO_DASH_ANIM_DOWN);
 		}
@@ -295,7 +319,21 @@ void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 			currentAnim = animSet->getAnimation(HERO_DASH_ANIM_RIGHT);
 		}
 	}
-	else if (state == HERO_STATE_CONSUMING_ITEM) {
+	else if (state == (int)HERO_STATE::ROLL) {
+		if (direction == DIR_DOWN) {
+			currentAnim = animSet->getAnimation(HERO_ROLL_ANIM_DOWN);
+		}
+		else if (direction == DIR_UP) {
+			currentAnim = animSet->getAnimation(HERO_ROLL_ANIM_UP);
+		}
+		else if (direction == DIR_LEFT) {
+			currentAnim = animSet->getAnimation(HERO_ROLL_ANIM_LEFT);
+		}
+		else if (direction == DIR_RIGHT) {
+			currentAnim = animSet->getAnimation(HERO_ROLL_ANIM_RIGHT);
+		}
+	}
+	else if (state == (int)HERO_STATE::CONSUMING_ITEM) {
 		if (direction == DIR_DOWN) {
 			currentAnim = animSet->getAnimation(HERO_CONSUMING_ANIM_DOWN);
 		}
@@ -309,7 +347,7 @@ void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 			currentAnim = animSet->getAnimation(HERO_CONSUMING_ANIM_RIGHT);
 		}
 	}
-	else if (state == HERO_STATE_SHOOTING) {
+	else if (state == (int)HERO_STATE::SHOOTING) {
 		if (direction == DIR_DOWN) {
 			currentAnim = animSet->getAnimation(HERO_SHOOT_ANIM_DOWN);
 		}
@@ -323,7 +361,7 @@ void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 			currentAnim = animSet->getAnimation(HERO_SHOOT_ANIM_RIGHT);
 		}
 	}
-	else if (state == HERO_STATE_RESTING) { // TODO: Criar anims para descanso na fogueira
+	else if (state == (int)HERO_STATE::RESTING) { // TODO: Criar anims para descanso na fogueira
 		if (direction == DIR_DOWN) {
 			currentAnim = animSet->getAnimation(HERO_ANIM_IDLE_DOWN);
 		}
@@ -337,7 +375,7 @@ void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 			currentAnim = animSet->getAnimation(HERO_ANIM_IDLE_RIGHT);
 		}
 	}
-	else if (state == HERO_STATE_DEAD) {
+	else if (state == (int)HERO_STATE::DEAD) {
 		currentAnim = animSet->getAnimation(HERO_ANIM_DIE);
 	}
 
@@ -354,17 +392,17 @@ void Hero::updateAnimation() {
 		return;
 	}
 
-	if (state == HERO_STATE_MOVE && !moving) {
-		changeAnimation(HERO_STATE_IDLE, true);
+	if (state == (int)HERO_STATE::MOVE && !moving) {
+		changeAnimation((int)HERO_STATE::IDLE, true);
 	}
 
-	if (state != HERO_STATE_MOVE && state != HERO_STATE_CONSUMING_ITEM && moving) {
-		changeAnimation(HERO_STATE_MOVE, true);
+	if (state != (int)HERO_STATE::MOVE && state != (int)HERO_STATE::CONSUMING_ITEM && moving) {
+		changeAnimation((int)HERO_STATE::MOVE, true);
 	}
 
-	if (state == HERO_STATE_RESTING) {
+	if (state == (int)HERO_STATE::RESTING) {
 		// TODO: Fazer anim e lógica de sentar na fogueira depois de implementar os menus
-		state = HERO_STATE_IDLE;
+		state = (int)HERO_STATE::IDLE;
 	}
 
 	frameTimer += TimeController::timeController.dT;
@@ -372,22 +410,22 @@ void Hero::updateAnimation() {
 	if (frameTimer >= currentFrame->duration) {
 		//if we are at the end of animation
 		if (currentFrame->frameNumber == currentAnim->getEndFrameNumber()) {
-			if (state == HERO_STATE_ATTACK_1 ||
-				state == HERO_STATE_ATTACK_2 ||
-				state == HERO_STATE_ATTACK_3) {
-				changeAnimation(HERO_STATE_MOVE, true);
+			if (state == (int)HERO_STATE::ATTACK_1 ||
+				state == (int)HERO_STATE::ATTACK_2 ||
+				state == (int)HERO_STATE::ATTACK_3) {
+				changeAnimation((int)HERO_STATE::MOVE, true);
 				isAttacking = false;
 			}
-			if (state == HERO_STATE_DASH) {
+			if (state == (int)HERO_STATE::DASH) {
 				//change back to moving state/anim
-				changeAnimation(HERO_STATE_MOVE, true);
+				changeAnimation((int)HERO_STATE::MOVE, true);
 			}
-			else if (state == HERO_STATE_DEAD && hp > 0) {
+			else if (state == (int)HERO_STATE::DEAD && hp > 0) {
 				//was dead but now have more hp, get back up
-				changeAnimation(HERO_STATE_MOVE, true);
+				changeAnimation((int)HERO_STATE::MOVE, true);
 			}
-			else if (state == HERO_STATE_CONSUMING_ITEM || state == HERO_STATE_SHOOTING) {
-				changeAnimation(HERO_STATE_IDLE, true);
+			else if (state == (int)HERO_STATE::CONSUMING_ITEM || state == (int)HERO_STATE::SHOOTING) {
+				changeAnimation((int)HERO_STATE::IDLE, true);
 			}
 			else {
 				// reset animation (loops it)
@@ -395,7 +433,7 @@ void Hero::updateAnimation() {
 			}
 		}
 		else {
-			if (state == HERO_STATE_CONSUMING_ITEM) {
+			if (state == (int)HERO_STATE::CONSUMING_ITEM) {
 				moving = false;
 			}
 
@@ -553,7 +591,7 @@ void Hero::pickNearItemFromGround() {
 }
 
 void Hero::rest() {
-	changeAnimation(HERO_STATE_RESTING, true);
+	changeAnimation((int)HERO_STATE::RESTING, true);
 	hp = hpMax;
 	stamina = staminaMax;
 	mustSaveGame = true;
@@ -591,14 +629,14 @@ void Hero::updateAttackSequence() {
 	int attackState = attackBuffer.front();
 
 	switch (attackState) {
-	case HERO_STATE_ATTACK_1:
+	case (int)HERO_STATE::ATTACK_1:
 		if (stamina < 15.f) {
 			attackBuffer.clear();
 			return;
 		}
 		stamina -= 15.f;
 		break;
-	case HERO_STATE_ATTACK_2:
+	case (int)HERO_STATE::ATTACK_2:
 		if (stamina < 20.f || !isAttacking ) {
 			attackBuffer.clear();
 			return;
@@ -607,7 +645,7 @@ void Hero::updateAttackSequence() {
 		slideAngle = angle;
 		slideAmount = 20.f;
 		break;
-	case HERO_STATE_ATTACK_3:
+	case (int)HERO_STATE::ATTACK_3:
 		if (stamina < 25.f || !isAttacking) {
 			attackBuffer.clear();
 			return;
@@ -674,7 +712,7 @@ void Hero::findNearestItem() {
 }
 
 void Hero::useSelectedItem(int invIndex) {
-	if (hp > 0 && (state == HERO_STATE_MOVE || state == HERO_STATE_IDLE)) {
+	if (hp > 0 && (state == (int)HERO_STATE::MOVE || state == (int)HERO_STATE::IDLE)) {
 		auto item = inventory.find(invIndex);
 		if (item == inventory.end()) {
 			cout << "Item na posicao " << invIndex << " não encontrado\n";
@@ -697,14 +735,14 @@ void Hero::useSelectedItem(int invIndex) {
 		moving = false;
 		frameTimer = 0;
 		if (item->second->type == "cProjectileItem") {
-			changeAnimation(HERO_STATE_SHOOTING, true);
+			changeAnimation((int)HERO_STATE::SHOOTING, true);
 		}
 		else if (item->second->type == "kKeyItem") {
 			// TODO: Criar anim pra abrir porta
-			changeAnimation(HERO_STATE_SHOOTING, true);
+			changeAnimation((int)HERO_STATE::SHOOTING, true);
 		}
 		else {
-			changeAnimation(HERO_STATE_CONSUMING_ITEM, true);
+			changeAnimation((int)HERO_STATE::CONSUMING_ITEM, true);
 		}
 	}
 }

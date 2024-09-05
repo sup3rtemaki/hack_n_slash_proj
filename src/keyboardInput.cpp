@@ -8,6 +8,7 @@ KeyboardInput::KeyboardInput() {
 	RIGHT = SDL_SCANCODE_RIGHT;
 	SLASH = SDL_SCANCODE_Z;
 	DASH = SDL_SCANCODE_X;
+
 }
 
 void KeyboardInput::update(SDL_Event* e){
@@ -37,7 +38,7 @@ void KeyboardInput::update(SDL_Event* e){
 
 	//button holds
 	const Uint8* keystates = SDL_GetKeyboardState(NULL); //check for keys still being held
-	if (((hero->state != Hero::HERO_STATE_MOVE && hero->state != Hero::HERO_STATE_IDLE) ||
+	if (((hero->state != (int)HERO_STATE::MOVE && hero->state != (int)HERO_STATE::IDLE) ||
 		(!keystates[UP] && !keystates[DOWN] && !keystates[RIGHT] && !keystates[LEFT])) &&
 		hero->isMovingMethod != 2) {
 		hero->moving = false;

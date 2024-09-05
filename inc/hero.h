@@ -17,6 +17,20 @@ enum class HeroActions {
 	NONE
 };
 
+enum class HERO_STATE {
+	IDLE,
+	MOVE,
+	ATTACK_1,
+	ATTACK_2,
+	ATTACK_3,
+	DASH,
+	ROLL,
+	DEAD,
+	CONSUMING_ITEM,
+	SHOOTING,
+	RESTING
+};
+
 class Hero : public LivingEntity {
 public:
 	static const string HERO_ANIM_UP;
@@ -49,6 +63,11 @@ public:
 	static const string HERO_DASH_ANIM_LEFT;
 	static const string HERO_DASH_ANIM_RIGHT;
 
+	static const string HERO_ROLL_ANIM_UP;
+	static const string HERO_ROLL_ANIM_DOWN;
+	static const string HERO_ROLL_ANIM_LEFT;
+	static const string HERO_ROLL_ANIM_RIGHT;
+
 	static const string HERO_CONSUMING_ANIM_UP;
 	static const string HERO_CONSUMING_ANIM_DOWN;
 	static const string HERO_CONSUMING_ANIM_LEFT;
@@ -61,16 +80,16 @@ public:
 
 	static const string HERO_ANIM_DIE;
 
-	static const int HERO_STATE_IDLE;
-	static const int HERO_STATE_MOVE;
-	static const int HERO_STATE_ATTACK_1;
-	static const int HERO_STATE_ATTACK_2;
-	static const int HERO_STATE_ATTACK_3;
-	static const int HERO_STATE_DASH;
-	static const int HERO_STATE_DEAD;
-	static const int HERO_STATE_CONSUMING_ITEM;
-	static const int HERO_STATE_SHOOTING;
-	static const int HERO_STATE_RESTING;
+	//static const int HERO_STATE_IDLE;
+	//static const int HERO_STATE_MOVE;
+	//static const int HERO_STATE_ATTACK_1;
+	//static const int HERO_STATE_ATTACK_2;
+	//static const int HERO_STATE_ATTACK_3;
+	//static const int HERO_STATE_DASH;
+	//static const int HERO_STATE_DEAD;
+	//static const int HERO_STATE_CONSUMING_ITEM;
+	//static const int HERO_STATE_SHOOTING;
+	//static const int HERO_STATE_RESTING;
 
 	bool isCheckpointActivatedFlag;
 	bool isRested;
@@ -110,6 +129,7 @@ public:
 	void move(float angle);
 	void attack();
 	void dash();
+	void roll();
 	void die();
 	void revive();
 	void rest();

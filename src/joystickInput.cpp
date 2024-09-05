@@ -56,7 +56,7 @@ void JoystickInput::update(SDL_Event* e) {
 	///////////////////////
 
 	if (e->type == SDL_JOYAXISMOTION &&
-		(hero->state == Hero::HERO_STATE_MOVE || hero->state == Hero::HERO_STATE_IDLE)) {
+		(hero->state == (int)HERO_STATE::MOVE || hero->state == (int)HERO_STATE::IDLE)) {
 		hero->isMovingMethod = 2;
 		////Motion on controller 0
 		if (e->jaxis.which == 0) {
