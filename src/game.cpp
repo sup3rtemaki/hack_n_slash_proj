@@ -269,6 +269,12 @@ void Game::update() {
 			}
 		}
 
+		if (hero->mustUpdateKeyJoyInput) {
+			heroKeyboardInput.update(&e);
+			heroJoystickInput.update(&e);
+			hero->mustUpdateKeyJoyInput = false;
+		}
+
 		if (hero->hp < 1) {
 			if (overlayTimer > 0) {
 				overlayTimer -= TimeController::timeController.dT; //make overlay timer tick down

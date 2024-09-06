@@ -94,6 +94,7 @@ Hero::Hero(AnimationSet* animSet) {
 	nearestDoor = nullptr;
 	nearestCheckpoint = nullptr;
 	nearestBloodstain = nullptr;
+	mustMoveAfterAction = false;
 	changeAnimation((int)HERO_STATE::IDLE, true);
 	updateCollisionBox();
 }
@@ -128,11 +129,17 @@ void Hero::update() {
 }
 
 void Hero::move(float angle) {
+	if (state == (int)HERO_STATE::DASH) {
+		mustMoveAfterAction = true;
+		return;
+	}
+
 	if (isAttacking) {
 		isAttacking = false;
 		attackBuffer.clear();
 		attackTimer = 0.f;
 	}
+
 	moving = true;
 	moveSpeed = moveSpeedMax;
 	this->angle = angle;
@@ -141,7 +148,7 @@ void Hero::move(float angle) {
 	//if direction changed, update current animation
 	if (direction != newDirection) {
 		direction = newDirection;
-		changeAnimation(state, false);
+		changeAnimation((int)HERO_STATE::MOVE, false);
 	}
 }
 
@@ -396,7 +403,14 @@ void Hero::updateAnimation() {
 		changeAnimation((int)HERO_STATE::IDLE, true);
 	}
 
-	if (state != (int)HERO_STATE::MOVE && state != (int)HERO_STATE::CONSUMING_ITEM && moving) {
+	if (state != (int)HERO_STATE::MOVE && moving) {
+		changeAnimation((int)HERO_STATE::IDLE, true);
+	}
+
+	if (state != (int)HERO_STATE::MOVE &&
+		state != (int)HERO_STATE::CONSUMING_ITEM &&
+		state != (int)HERO_STATE::DASH &&
+		moving) {
 		changeAnimation((int)HERO_STATE::MOVE, true);
 	}
 
@@ -418,7 +432,15 @@ void Hero::updateAnimation() {
 			}
 			if (state == (int)HERO_STATE::DASH) {
 				//change back to moving state/anim
-				changeAnimation((int)HERO_STATE::MOVE, true);
+				if (mustMoveAfterAction) {
+					changeAnimation((int)HERO_STATE::MOVE, true);
+					mustMoveAfterAction = false;
+					mustUpdateKeyJoyInput = true;
+					move(this->angle);
+				}
+				else {
+					changeAnimation((int)HERO_STATE::IDLE, true);
+				}
 			}
 			else if (state == (int)HERO_STATE::DEAD && hp > 0) {
 				//was dead but now have more hp, get back up

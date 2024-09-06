@@ -95,6 +95,8 @@ public:
 	bool isRested;
 	bool isAttacking;
 	bool mustSaveGame;
+	bool mustMoveAfterAction;
+	bool mustUpdateKeyJoyInput;
 
 	SDL_Point lastCheckpointPos;
 	string lastCheckpointMapFile;

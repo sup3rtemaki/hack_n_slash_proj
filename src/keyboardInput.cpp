@@ -11,7 +11,7 @@ KeyboardInput::KeyboardInput() {
 
 }
 
-void KeyboardInput::update(SDL_Event* e){
+void KeyboardInput::update(SDL_Event* e) {
 	//button presses
 	if (e->type == SDL_KEYDOWN) {
 		if (e->key.keysym.scancode == DASH) {
@@ -24,7 +24,6 @@ void KeyboardInput::update(SDL_Event* e){
 			hero->useSelectedItemQuickAccess();
 		}
 		if (e->key.keysym.scancode == SDL_SCANCODE_S) {
-			//hero->pickNearItemFromGround();
 			hero->takeAction();
 		}
 
@@ -38,9 +37,11 @@ void KeyboardInput::update(SDL_Event* e){
 
 	//button holds
 	const Uint8* keystates = SDL_GetKeyboardState(NULL); //check for keys still being held
-	if (((hero->state != (int)HERO_STATE::MOVE && hero->state != (int)HERO_STATE::IDLE) ||
-		(!keystates[UP] && !keystates[DOWN] && !keystates[RIGHT] && !keystates[LEFT])) &&
-		hero->isMovingMethod != 2) {
+	if (((hero->state != (int)HERO_STATE::MOVE &&
+				hero->state != (int)HERO_STATE::IDLE &&
+				hero->state != (int)HERO_STATE::DASH) ||
+			(!keystates[UP] && !keystates[DOWN] && !keystates[RIGHT] && !keystates[LEFT])) &&
+			hero->isMovingMethod != 2) {
 		hero->moving = false;
 		hero->isMovingMethod = 0;
 	}
