@@ -677,6 +677,7 @@ void Game::handleMapChange(bool isHeroRespawn) {
 		fadeOut = true;
 	}
 
+	hero->attackBuffer.clear();
 	loadTiledMap(resPath + MAPS_FOLDER_PATH + currentMap->file);
 
 	// Remove enemies

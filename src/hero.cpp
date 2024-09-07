@@ -129,7 +129,7 @@ void Hero::update() {
 }
 
 void Hero::move(float angle) {
-	if (state == (int)HERO_STATE::DASH) {
+	if (state != (int)HERO_STATE::MOVE) {
 		mustMoveAfterAction = true;
 		return;
 	}
@@ -166,6 +166,7 @@ void Hero::attack() {
 			return;
 		}
 		nextAttackState = comboSequence[0];
+		cout << nextAttackState << endl;
 	}
 	else {
 		int index = 0;
@@ -424,6 +425,14 @@ void Hero::updateAnimation() {
 	if (frameTimer >= currentFrame->duration) {
 		//if we are at the end of animation
 		if (currentFrame->frameNumber == currentAnim->getEndFrameNumber()) {
+			if (mustMoveAfterAction) {
+				changeAnimation((int)HERO_STATE::MOVE, true);
+				mustMoveAfterAction = false;
+				mustUpdateKeyJoyInput = true;
+				move(this->angle);
+				return;
+			}
+
 			if (state == (int)HERO_STATE::ATTACK_1 ||
 				state == (int)HERO_STATE::ATTACK_2 ||
 				state == (int)HERO_STATE::ATTACK_3) {
@@ -432,15 +441,8 @@ void Hero::updateAnimation() {
 			}
 			if (state == (int)HERO_STATE::DASH) {
 				//change back to moving state/anim
-				if (mustMoveAfterAction) {
-					changeAnimation((int)HERO_STATE::MOVE, true);
-					mustMoveAfterAction = false;
-					mustUpdateKeyJoyInput = true;
-					move(this->angle);
-				}
-				else {
-					changeAnimation((int)HERO_STATE::IDLE, true);
-				}
+				changeAnimation((int)HERO_STATE::IDLE, true);
+
 			}
 			else if (state == (int)HERO_STATE::DEAD && hp > 0) {
 				//was dead but now have more hp, get back up
@@ -642,11 +644,24 @@ void Hero::updateEssence() {
 }
 
 void Hero::updateAttackSequence() {
-	if (attackBuffer.empty()) return;
+	if (attackBuffer.empty()) {
+		cout << "vazio" << endl;
+		return;
+	}
+	else {
+		for (int i : attackBuffer) {
+			cout << i << endl;
+		}
+
+		cout << "--------------" << endl;
+	}
 
 	frameTimer += TimeController::timeController.dT;
 	if (currentFrame->frameNumber != currentAnim->getEndFrameNumber() ||
-		frameTimer < currentFrame->duration) return;
+		frameTimer < currentFrame->duration) {
+		cout << frameTimer << endl;
+		return;
+	}
 
 	int attackState = attackBuffer.front();
 
@@ -677,6 +692,7 @@ void Hero::updateAttackSequence() {
 		slideAmount = 75.f;
 		break;
 	default:
+		cout << "default" << endl;
 		return;
 	}
 
