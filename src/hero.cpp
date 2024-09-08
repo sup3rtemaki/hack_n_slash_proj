@@ -166,12 +166,11 @@ void Hero::attack() {
 			return;
 		}
 		nextAttackState = comboSequence[0];
-		cout << nextAttackState << endl;
 	}
 	else {
 		int index = 0;
-		for (int attack : comboSequence) {
-			if (attack == prevAttackState) {
+		for (int att :comboSequence) {
+			if (att == prevAttackState) {
 				index == comboSequence.size() - 1 ?
 					nextAttackState = comboSequence[0] :
 					nextAttackState = comboSequence[index + 1];
@@ -645,21 +644,10 @@ void Hero::updateEssence() {
 
 void Hero::updateAttackSequence() {
 	if (attackBuffer.empty()) {
-		cout << "vazio" << endl;
 		return;
 	}
-	else {
-		for (int i : attackBuffer) {
-			cout << i << endl;
-		}
 
-		cout << "--------------" << endl;
-	}
-
-	frameTimer += TimeController::timeController.dT;
-	if (currentFrame->frameNumber != currentAnim->getEndFrameNumber() ||
-		frameTimer < currentFrame->duration) {
-		cout << frameTimer << endl;
+	if (currentFrame->frameNumber != currentAnim->getEndFrameNumber()) {
 		return;
 	}
 
