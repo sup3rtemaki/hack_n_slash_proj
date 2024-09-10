@@ -292,6 +292,18 @@ void Game::update() {
 			}
 		}
 
+		//handle remove/spawn enemies
+		if (hero->hp > 0 && !splashShowing) {
+			if (mustRemoveAllEnemies) {
+				mustRemoveAllEnemies = false;
+				removeAllEnemiesInMap();
+			}
+			if (currentMapEnemies.size() <= 0 && mustSpawnEnemies) {
+				spawnBoss();
+				spawnEnemies();
+			}
+		}
+
 		// update all entites
 		for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
 			// update all entites in world at once (polymorphism)
@@ -303,17 +315,9 @@ void Game::update() {
 
 			checkAndHandleNearDoor(*entity);
 
-			checkAndHandleNearCheckpoint(*entity);
-
 			checkAndHandleNearBloodstain(*entity);
-		}
 
-		//spawn enemies
-		if (hero->hp > 0 && !splashShowing) {
-			if (currentMapEnemies.size() <= 0 && mustSpawnEnemies) {
-				spawnBoss();
-				spawnEnemies();
-			}
+			checkAndHandleNearCheckpoint(*entity);
 		}
 
 		//If hero is in change map region, fade to change map
@@ -635,9 +639,8 @@ void Game::checkAndHandleNearCheckpoint(Entity* entity) {
 
 		if (hero->state == (int)HERO_STATE::RESTING && hero->isRested) {
 			hero->isRested = false;
-			deadEnemiesIds.clear();
-			currentMapEnemies.clear();
-			spawnEnemies();
+			mustRemoveAllEnemies = true;
+			mustSpawnEnemies = true;
 		}
 	}
 }
@@ -1170,6 +1173,16 @@ void Game::inactivateCurrentMapItems() {
 			i->active = false;
 		}
 	}
+}
+
+void Game::removeAllEnemiesInMap() {
+	for (list<Entity*>::iterator enemy = currentMapEnemies.begin(); enemy != currentMapEnemies.end(); enemy++) {
+		(*enemy)->active = false;
+	}
+	Entity::removeInactiveEntitiesFromList(&Entity::entities, false);
+	Entity::removeInactiveEntitiesFromList(&currentMapEnemies, true);
+	currentMapEnemies.clear();
+	deadEnemiesIds.clear();
 }
 
 map<int, Item*> Game::loadInventoryItems(std::vector<std::pair<int, int>> items) {

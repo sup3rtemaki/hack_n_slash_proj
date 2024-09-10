@@ -85,6 +85,7 @@ public:
 	bool buildBossNext = false;
 	bool bossActive = false;
 	bool mustSpawnEnemies = false;
+	bool mustRemoveAllEnemies = false;
 	
 	HPBar* heroHpBar;
 	HPBar* heroStBar;
@@ -139,6 +140,7 @@ private:
 	void loadAnimationSets();
 	void spawnItemsFromCurrentMap();
 	void inactivateCurrentMapItems();
+	void removeAllEnemiesInMap();
 	map<int, Item*> loadInventoryItems(std::vector<std::pair<int, int>> items);
 	void saveGame(bool isCheckpointSave = false);
 	void loadGame();

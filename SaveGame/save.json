@@ -2,17 +2,17 @@
     "bloodstain": {
         "bEssence": 660,
         "bMapFile": "warrior_halls_4.json",
-        "bX": 673,
-        "bY": 722
+        "bX": -1,
+        "bY": -1
     },
-    "essence": 0,
+    "essence": 140,
     "heroHp": 100,
     "heroX": 274,
     "heroY": 394,
     "inventory": [
         {
             "id": 0,
-            "itemQty": 10
+            "itemQty": 9
         },
         {
             "id": 1,
