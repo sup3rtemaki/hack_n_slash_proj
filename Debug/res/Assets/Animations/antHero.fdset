@@ -1,5 +1,5 @@
 Assets\\Animations\\AntHero.png
-animations: 37
+animations: 41
 up
 frames: 4
 frame
@@ -990,3 +990,35 @@ clip: 1129 329 47 52
 offset: 26 45
 duration: 0.1
 index: 7
+restUp
+frames: 1
+frame
+clip: 400 13 37 54
+offset: 20 46
+duration: 0.1
+index: 0
+collisionBox: 10 17 22 30
+restDown
+frames: 1
+frame
+clip: 400 13 37 54
+offset: 20 46
+duration: 0.1
+index: 0
+collisionBox: 10 17 22 30
+restLeft
+frames: 1
+frame
+clip: 400 13 37 54
+offset: 20 46
+duration: 0.1
+index: 0
+collisionBox: 10 17 22 30
+restRight
+frames: 1
+frame
+clip: 400 13 37 54
+offset: 20 46
+duration: 0.1
+index: 0
+collisionBox: 10 17 22 30

@@ -43,6 +43,11 @@ public:
 	static const string HERO_ANIM_IDLE_LEFT;
 	static const string HERO_ANIM_IDLE_RIGHT;
 
+	static const string HERO_ANIM_REST_UP;
+	static const string HERO_ANIM_REST_DOWN;
+	static const string HERO_ANIM_REST_LEFT;
+	static const string HERO_ANIM_REST_RIGHT;
+
 	static const string HERO_SLASH_ANIM_UP;
 	static const string HERO_SLASH_ANIM_DOWN;
 	static const string HERO_SLASH_ANIM_LEFT;

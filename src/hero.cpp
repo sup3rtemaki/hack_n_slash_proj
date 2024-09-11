@@ -15,6 +15,11 @@ const string Hero::HERO_ANIM_IDLE_DOWN = "idleDown";
 const string Hero::HERO_ANIM_IDLE_LEFT = "idleLeft";
 const string Hero::HERO_ANIM_IDLE_RIGHT = "idleRight";
 
+const string Hero::HERO_ANIM_REST_UP = "restUp";
+const string Hero::HERO_ANIM_REST_DOWN = "restDown";
+const string Hero::HERO_ANIM_REST_LEFT = "restLeft";
+const string Hero::HERO_ANIM_REST_RIGHT = "restRight";
+
 const string Hero::HERO_SLASH_ANIM_UP = "slashUp";
 const string Hero::HERO_SLASH_ANIM_DOWN = "slashDown";
 const string Hero::HERO_SLASH_ANIM_LEFT = "slashLeft";
@@ -370,16 +375,16 @@ void Hero::changeAnimation(int newState, bool resetFrameToBeginning, string anim
 	}
 	else if (state == (int)HERO_STATE::RESTING) { // TODO: Criar anims para descanso na fogueira
 		if (direction == DIR_DOWN) {
-			currentAnim = animSet->getAnimation(HERO_ANIM_IDLE_DOWN);
+			currentAnim = animSet->getAnimation(HERO_ANIM_REST_DOWN);
 		}
 		else if (direction == DIR_UP) {
-			currentAnim = animSet->getAnimation(HERO_ANIM_IDLE_UP);
+			currentAnim = animSet->getAnimation(HERO_ANIM_REST_UP);
 		}
 		else if (direction == DIR_LEFT) {
-			currentAnim = animSet->getAnimation(HERO_ANIM_IDLE_LEFT);
+			currentAnim = animSet->getAnimation(HERO_ANIM_REST_LEFT);
 		}
 		else if (direction == DIR_RIGHT) {
-			currentAnim = animSet->getAnimation(HERO_ANIM_IDLE_RIGHT);
+			currentAnim = animSet->getAnimation(HERO_ANIM_REST_RIGHT);
 		}
 	}
 	else if (state == (int)HERO_STATE::DEAD) {
