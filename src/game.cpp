@@ -270,11 +270,14 @@ void Game::update() {
 		}
 
 		if (hero->mustUpdateKeyJoyInput) {
-			cout << "must update" << endl;
 			heroKeyboardInput.update(&e);
 			heroJoystickInput.update(&e);
 			hero->mustUpdateKeyJoyInput = false;
 		}
+
+		// joystick axis must be updated outside the poll event loop because of how the
+		// interaction with the axis works. consider refactoring in the future
+		heroJoystickInput.checkAxis();
 
 		if (hero->hp < 1) {
 			if (overlayTimer > 0) {

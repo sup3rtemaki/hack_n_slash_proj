@@ -7,6 +7,7 @@ class JoystickInput {
 public:
 	class JoystickInput();
 	void update(SDL_Event* e);
+	void checkAxis();
 
 	Hero* hero;
 

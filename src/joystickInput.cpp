@@ -1,7 +1,7 @@
 #include "joystickInput.h"
 
 JoystickInput::JoystickInput() {
-	SDL_Joystick* gGameController = NULL;
+	gGameController = NULL;
 
 	//Check for joysticks
 	if (SDL_NumJoysticks() < 1)
@@ -91,9 +91,40 @@ void JoystickInput::update(SDL_Event* e) {
 		}
 	}
 	else {
-		if (hero->isMovingMethod != 1) {
+		if (xDir != 0 || yDir != 0) {
+			double joystickAngle = atan2((double)yDir, (double)xDir) * (180.0 / M_PI);
+			hero->move(joystickAngle);
+		}
+		else if (hero->isMovingMethod != 1) {
 			hero->moving = false;
 			hero->isMovingMethod = 0;
 		}
+	}
+}
+
+void JoystickInput::checkAxis() {
+	// pre-check both analog axis before checking the axis motion event
+	// this causes some code duplication, but solves resuming the movement after pressing a button
+	// (the axis dont generate a new event if they are interrupted e kept at the same position)
+	// pre-check X axis
+	if (SDL_JoystickGetAxis(gGameController, X_AXIS_MOTION) > JOYSTICK_DEAD_ZONE) {
+		xDir = 1;
+	}
+	else if (SDL_JoystickGetAxis(gGameController, X_AXIS_MOTION) < -JOYSTICK_DEAD_ZONE) {
+		xDir = -1;
+	}
+	else {
+		xDir = 0;
+	}
+
+	// pre-check Y axis
+	if (SDL_JoystickGetAxis(gGameController, Y_AXIS_MOTION) > JOYSTICK_DEAD_ZONE) {
+		yDir = 1;
+	}
+	else if (SDL_JoystickGetAxis(gGameController, Y_AXIS_MOTION) < -JOYSTICK_DEAD_ZONE) {
+		yDir = -1;
+	}
+	else {
+		yDir = 0;
 	}
 }
