@@ -270,6 +270,7 @@ void Game::update() {
 		}
 
 		if (hero->mustUpdateKeyJoyInput) {
+			cout << "must update" << endl;
 			heroKeyboardInput.update(&e);
 			heroJoystickInput.update(&e);
 			hero->mustUpdateKeyJoyInput = false;

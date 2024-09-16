@@ -135,6 +135,7 @@ void Hero::update() {
 
 void Hero::move(float angle) {
 	if (state != (int)HERO_STATE::MOVE) {
+		cout << "must move after" << endl;
 		mustMoveAfterAction = true;
 		return;
 	}

@@ -6,9 +6,10 @@ KeyboardInput::KeyboardInput() {
 	DOWN = SDL_SCANCODE_DOWN;
 	LEFT = SDL_SCANCODE_LEFT;
 	RIGHT = SDL_SCANCODE_RIGHT;
-	SLASH = SDL_SCANCODE_Z;
+	ATTACK = SDL_SCANCODE_Z;
 	DASH = SDL_SCANCODE_X;
-
+	USE_ITEM = SDL_SCANCODE_A;
+	ACTION = SDL_SCANCODE_S;
 }
 
 void KeyboardInput::update(SDL_Event* e) {
@@ -17,13 +18,13 @@ void KeyboardInput::update(SDL_Event* e) {
 		if (e->key.keysym.scancode == DASH) {
 			hero->dash();
 		}
-		if (e->key.keysym.scancode == SLASH) {
+		if (e->key.keysym.scancode == ATTACK) {
 			hero->attack();
 		}
-		if (e->key.keysym.scancode == SDL_SCANCODE_A) {
+		if (e->key.keysym.scancode == USE_ITEM) {
 			hero->useSelectedItemQuickAccess();
 		}
-		if (e->key.keysym.scancode == SDL_SCANCODE_S) {
+		if (e->key.keysym.scancode == ACTION) {
 			hero->takeAction();
 		}
 

@@ -25,38 +25,27 @@ void JoystickInput::update(SDL_Event* e) {
 			hero->dash();
 		}
 
-		if (e->jbutton.button == JOY_X) {
+		if (e->jbutton.button == JOY_A) {
+			hero->takeAction();
+		}
+
+		if (e->jbutton.button == JOY_Y) {
 			hero->useSelectedItemQuickAccess();
 		}
 
-		if (e->jbutton.button == JOY_A) {
-			hero->pickNearItemFromGround();
+		if (e->jbutton.button == JOY_X) {
+			hero->attack();
 		}
 
 		if (e->jbutton.button == JOY_RB) {
-			hero->attack();
+			hero->quickAccessInventoryIndex++;
+			if (hero->quickAccessInventory[hero->quickAccessInventoryIndex] == -1) {
+				hero->quickAccessInventoryIndex = 0;
+			}
 		}
 	}
 
-	// TODO: Debug, remover depois
-	if (e->type == SDL_JOYBUTTONDOWN) {
-
-		cout << "Botao:" << (int)e->jbutton.button << "\n";
-	}
-
-	if (e->type == SDL_JOYHATMOTION) {
-
-		cout << "Hat:" << (int)e->jhat.hat << ", Valor: " << (int)e->jhat.value << "\n";
-	}
-
-	if (e->type == SDL_JOYBALLMOTION) {
-
-		cout << "Ball:" << (int)e->jball.ball << ", Valor: " << (int)e->jball.xrel << "\n";
-	}
-	///////////////////////
-
-	if (e->type == SDL_JOYAXISMOTION &&
-		(hero->state == (int)HERO_STATE::MOVE || hero->state == (int)HERO_STATE::IDLE)) {
+	if (e->type == SDL_JOYAXISMOTION) {
 		hero->isMovingMethod = 2;
 		////Motion on controller 0
 		if (e->jaxis.which == 0) {
@@ -93,9 +82,7 @@ void JoystickInput::update(SDL_Event* e) {
 			double joystickAngle = atan2((double)yDir, (double)xDir) * (180.0 / M_PI);
 
 			//Correct angle
-			if (xDir == 0 && yDir == 0)
-			{
-				joystickAngle = 0;
+			if (xDir == 0 && yDir == 0) {
 				hero->moving = false;
 			}
 			else {
