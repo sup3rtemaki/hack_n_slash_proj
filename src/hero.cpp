@@ -57,16 +57,7 @@ const string Hero::HERO_SHOOT_ANIM_RIGHT = "shootRight";
 
 const string Hero::HERO_ANIM_DIE = "die";
 
-//const int Hero::HERO_STATE_IDLE = 0;
-//const int Hero::HERO_STATE_MOVE = 1;
-//const int Hero::HERO_STATE_DASH = 2;
-//const int Hero::HERO_STATE_DEAD = 3;
-//const int Hero::HERO_STATE_CONSUMING_ITEM = 4;
-//const int Hero::HERO_STATE_SHOOTING = 5;
-//const int Hero::HERO_STATE_RESTING = 6;
-//const int Hero::HERO_STATE_ATTACK_1 = 7;
-//const int Hero::HERO_STATE_ATTACK_2 = 8;
-//const int Hero::HERO_STATE_ATTACK_3 = 9;
+const int Hero::PHEROMONE_TRAIL_MAX_SIZE = 10;
 
 const float ATTACK_TIME = 0.8f;
 
@@ -131,6 +122,7 @@ void Hero::update() {
 	updateAnimation();
 	updateInvincibleTimer();
 	updateEssence();
+	updatePheromoneTrail();
 }
 
 void Hero::move(float angle) {
@@ -693,6 +685,22 @@ void Hero::updateAttackSequence() {
 	SoundManager::soundManager.playSound("swing");
 	attackBuffer.pop_front();
 	attackTimer = ATTACK_TIME;
+}
+
+void Hero::updatePheromoneTrail() {
+	if (pheromoneTimer <= 0.f) {
+		if (pheromoneTrail.size() >= PHEROMONE_TRAIL_MAX_SIZE) {
+			pheromoneTrail.pop_front();
+		}
+		SDL_Point point;
+		point.x = x;
+		point.y = y;
+		pheromoneTrail.push_back(point);
+		pheromoneTimer = pheromoneMaxTime;
+	}
+	else {
+		pheromoneTimer -= TimeController::timeController.dT;
+	}
 }
 
 void Hero::openDoor() {

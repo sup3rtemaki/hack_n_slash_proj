@@ -85,16 +85,7 @@ public:
 
 	static const string HERO_ANIM_DIE;
 
-	//static const int HERO_STATE_IDLE;
-	//static const int HERO_STATE_MOVE;
-	//static const int HERO_STATE_ATTACK_1;
-	//static const int HERO_STATE_ATTACK_2;
-	//static const int HERO_STATE_ATTACK_3;
-	//static const int HERO_STATE_DASH;
-	//static const int HERO_STATE_DEAD;
-	//static const int HERO_STATE_CONSUMING_ITEM;
-	//static const int HERO_STATE_SHOOTING;
-	//static const int HERO_STATE_RESTING;
+	static const int PHEROMONE_TRAIL_MAX_SIZE;
 
 	bool isCheckpointActivatedFlag;
 	bool isRested;
@@ -123,6 +114,7 @@ public:
 	vector<int> quickAccessInventory = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 	vector<int> comboSequence;
 	deque<int> attackBuffer;
+	deque<SDL_Point> pheromoneTrail;
 	unordered_map<int, Item*> passiveSlots;
 	list<Item*> nearItems;
 	string addedItemName;
@@ -161,9 +153,13 @@ private:
 	int newEssenceQty;
 	int prevEssence;
 
+	float pheromoneTimer;
+	float pheromoneMaxTime = 1.f;
+
 	void findNearestItem();
 	void updateEssence();
 	void updateAttackSequence();
+	void updatePheromoneTrail();
 	Item* currentNearItem;
 };
 
