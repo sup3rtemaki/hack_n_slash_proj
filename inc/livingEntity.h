@@ -3,6 +3,8 @@
 
 #include "entity.h"
 
+#include <deque>
+
 //abstract class
 class LivingEntity : public Entity {
 public:
@@ -16,6 +18,7 @@ public:
 	int enemyId;
 	SDL_Rect hitBox;
 	float invincibleTimer = 0;
+	float distanceThreshold;
 
 	float healStatusTimer;
 	float healStatusTimerAux;
@@ -25,6 +28,9 @@ public:
 	float staminaStatusTimer;
 	float staminaRate;
 	float staminaStatusAmount;
+
+	deque<SDL_Point> pheromoneTrail;
+	SDL_Point currentTargetPos;
 
 	virtual void updateHitBox();
 	virtual void updateDamages() = 0; // how we get damaged by other things

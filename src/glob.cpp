@@ -45,6 +45,7 @@ Glob::Glob(AnimationSet* animSet) {
 	collisionBox.h = collisionBoxH;
 	collisionBoxYOffset = -14;
 	direction = DIR_DOWN;
+	distanceThreshold = 100.f;
 	this->essence = 20;
 	populatePossibleDropItemsMap();
 	changeAnimation(GLOB_STATE_IDLE, true);
@@ -79,7 +80,7 @@ void Glob::think() {
 			thinkTimer = rand() % 5; //0 - 5 seconds
 			int action = rand() % 10;
 
-			if (action < 3) {
+			if (action < 0) {
 				moving = false;
 				aiState = GLOB_AI_NORMAL;
 				changeAnimation(GLOB_STATE_IDLE, true);
@@ -88,9 +89,21 @@ void Glob::think() {
 				findNearestTarget();
 				if (target != nullptr && target->hp > 0) {
 					float dist = Entity::distanceBetweenTwoEntities(this, target);
+
+					if ((dist > distanceThreshold)) {
+						if (!target->pheromoneTrail.empty()) {
+							currentTargetPos = target->pheromoneTrail.front();
+						}
+					}
+					else {
+						SDL_Point heroPos;
+						heroPos.x = target->x;
+						heroPos.y = target->y;
+						currentTargetPos = heroPos;
+					}
 					
 					//if in range, attack
-					if (dist < 100) {
+					if (dist < 50) {
 						telegraph();
 						aiState = GLOB_AI_NORMAL;
 					}
@@ -111,7 +124,7 @@ void Glob::think() {
 
 	//if chasing a target, then hunt it down
 	if (aiState == GLOB_AI_CHASE && hp > 0 && active) {
-		angle = Entity::angleBetweenTwoEntities(this, target);
+		angle = Entity::angleBetweenTwoPoints(this->x, this->y, currentTargetPos.x, currentTargetPos.y);
 		move(angle);
 	}
 }
@@ -142,21 +155,21 @@ void Glob::die() {
 }
 
 void Glob::findNearestTarget() {
-	target = NULL;
+	target = nullptr;
 
 	//find closest target
 	for (auto entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
 		if ((*entity)->type == "hero" && (*entity)->active) {
 			//found first hero in list, set it as target
-			if (target == NULL) {
+			if (target == nullptr) {
 				target = (LivingEntity*)(*entity);
 			}
-			else {
-				//is this other hero closer than previous target
-				if (Entity::distanceBetweenTwoEntities(this, (*entity)) < Entity::distanceBetweenTwoEntities(this, target)) {
-					target = (LivingEntity*)(*entity);
-				}
-			}
+			//else {
+			//	//is this other hero closer than previous target
+			//	if (Entity::distanceBetweenTwoEntities(this, (*entity)) < Entity::distanceBetweenTwoEntities(this, target)) {
+			//		target = (LivingEntity*)(*entity);
+			//	}
+			//}
 		}
 	}
 }

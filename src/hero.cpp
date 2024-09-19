@@ -57,7 +57,7 @@ const string Hero::HERO_SHOOT_ANIM_RIGHT = "shootRight";
 
 const string Hero::HERO_ANIM_DIE = "die";
 
-const int Hero::PHEROMONE_TRAIL_MAX_SIZE = 10;
+const int Hero::PHEROMONE_TRAIL_MAX_SIZE = 5;
 
 const float ATTACK_TIME = 0.8f;
 
@@ -84,6 +84,8 @@ Hero::Hero(AnimationSet* animSet) {
 	newEssenceQty = 0;
 	attackBufferIndex = 0;
 	attackTimer = 0.f;
+	pheromoneTimer = 0.f;
+	pheromoneTrail.clear();
 	comboSequence.push_back((int)HERO_STATE::ATTACK_1);
 	comboSequence.push_back((int)HERO_STATE::ATTACK_2);
 	comboSequence.push_back((int)HERO_STATE::ATTACK_3);
@@ -93,6 +95,7 @@ Hero::Hero(AnimationSet* animSet) {
 	mustMoveAfterAction = false;
 	changeAnimation((int)HERO_STATE::IDLE, true);
 	updateCollisionBox();
+	updatePheromoneTrail();
 }
 
 void Hero::update() {

@@ -114,7 +114,6 @@ public:
 	vector<int> quickAccessInventory = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 	vector<int> comboSequence;
 	deque<int> attackBuffer;
-	deque<SDL_Point> pheromoneTrail;
 	unordered_map<int, Item*> passiveSlots;
 	list<Item*> nearItems;
 	string addedItemName;
@@ -154,7 +153,7 @@ private:
 	int prevEssence;
 
 	float pheromoneTimer;
-	float pheromoneMaxTime = 1.f;
+	float pheromoneMaxTime = 0.2f;
 
 	void findNearestItem();
 	void updateEssence();
