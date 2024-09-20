@@ -153,7 +153,7 @@ private:
 	int prevEssence;
 
 	float pheromoneTimer;
-	float pheromoneMaxTime = 0.2f;
+	float pheromoneMaxTime = 0.1f;
 
 	void findNearestItem();
 	void updateEssence();

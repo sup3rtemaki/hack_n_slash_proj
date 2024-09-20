@@ -57,7 +57,7 @@ const string Hero::HERO_SHOOT_ANIM_RIGHT = "shootRight";
 
 const string Hero::HERO_ANIM_DIE = "die";
 
-const int Hero::PHEROMONE_TRAIL_MAX_SIZE = 5;
+const int Hero::PHEROMONE_TRAIL_MAX_SIZE = 10;
 
 const float ATTACK_TIME = 0.8f;
 
@@ -85,7 +85,7 @@ Hero::Hero(AnimationSet* animSet) {
 	attackBufferIndex = 0;
 	attackTimer = 0.f;
 	pheromoneTimer = 0.f;
-	pheromoneTrail.clear();
+	distanceThreshold = 32.f;
 	comboSequence.push_back((int)HERO_STATE::ATTACK_1);
 	comboSequence.push_back((int)HERO_STATE::ATTACK_2);
 	comboSequence.push_back((int)HERO_STATE::ATTACK_3);
@@ -95,7 +95,13 @@ Hero::Hero(AnimationSet* animSet) {
 	mustMoveAfterAction = false;
 	changeAnimation((int)HERO_STATE::IDLE, true);
 	updateCollisionBox();
-	updatePheromoneTrail();
+
+	SDL_Point point;
+	point.x = x;
+	point.y = y;
+	for (int i = 0; i < PHEROMONE_TRAIL_MAX_SIZE; i++) {
+		pheromoneTrail.push_back(point);
+	}
 }
 
 void Hero::update() {
@@ -692,6 +698,12 @@ void Hero::updateAttackSequence() {
 
 void Hero::updatePheromoneTrail() {
 	if (pheromoneTimer <= 0.f) {
+		pheromoneTimer = pheromoneMaxTime;
+
+		if (Entity::distanceBetweenTwoPoints(x, y, pheromoneTrail.back().x, pheromoneTrail.back().y) < distanceThreshold) {
+			return;
+		}
+
 		if (pheromoneTrail.size() >= PHEROMONE_TRAIL_MAX_SIZE) {
 			pheromoneTrail.pop_front();
 		}
@@ -699,7 +711,6 @@ void Hero::updatePheromoneTrail() {
 		point.x = x;
 		point.y = y;
 		pheromoneTrail.push_back(point);
-		pheromoneTimer = pheromoneMaxTime;
 	}
 	else {
 		pheromoneTimer -= TimeController::timeController.dT;

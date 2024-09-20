@@ -31,6 +31,7 @@ public:
 
 	deque<SDL_Point> pheromoneTrail;
 	SDL_Point currentTargetPos;
+	int pheromoneTrailIndex = 0;
 
 	virtual void updateHitBox();
 	virtual void updateDamages() = 0; // how we get damaged by other things

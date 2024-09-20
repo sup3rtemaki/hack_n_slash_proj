@@ -45,7 +45,7 @@ Glob::Glob(AnimationSet* animSet) {
 	collisionBox.h = collisionBoxH;
 	collisionBoxYOffset = -14;
 	direction = DIR_DOWN;
-	distanceThreshold = 100.f;
+	distanceThreshold = 250.f;
 	this->essence = 20;
 	populatePossibleDropItemsMap();
 	changeAnimation(GLOB_STATE_IDLE, true);
@@ -77,10 +77,10 @@ void Glob::think() {
 
 		//time to choose an action
 		if (thinkTimer <= 0) {
-			thinkTimer = rand() % 5; //0 - 5 seconds
+			thinkTimer = rand() % 2; //0 - 5 seconds
 			int action = rand() % 10;
 
-			if (action < 0) {
+			if (action < 2) {
 				moving = false;
 				aiState = GLOB_AI_NORMAL;
 				changeAnimation(GLOB_STATE_IDLE, true);
@@ -92,14 +92,19 @@ void Glob::think() {
 
 					if ((dist > distanceThreshold)) {
 						if (!target->pheromoneTrail.empty()) {
-							currentTargetPos = target->pheromoneTrail.front();
+							if (Entity::distanceBetweenTwoPoints(this->x, this->y, currentTargetPos.x, currentTargetPos.y) < (dist / 5.f)) {
+								currentTargetPos = target->pheromoneTrail.at(pheromoneTrailIndex);
+								pheromoneTrailIndex++;
+							}
+							else {
+								currentTargetPos = target->pheromoneTrail.front();
+								pheromoneTrailIndex = 1;
+							}
 						}
 					}
 					else {
-						SDL_Point heroPos;
-						heroPos.x = target->x;
-						heroPos.y = target->y;
-						currentTargetPos = heroPos;
+						currentTargetPos.x = target->x;
+						currentTargetPos.y = target->y;
 					}
 					
 					//if in range, attack
