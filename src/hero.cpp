@@ -57,7 +57,7 @@ const string Hero::HERO_SHOOT_ANIM_RIGHT = "shootRight";
 
 const string Hero::HERO_ANIM_DIE = "die";
 
-const int Hero::PHEROMONE_TRAIL_MAX_SIZE = 10;
+const int Hero::PHEROMONE_TRAIL_MAX_SIZE = 25;
 
 const float ATTACK_TIME = 0.8f;
 

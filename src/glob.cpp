@@ -80,31 +80,41 @@ void Glob::think() {
 			thinkTimer = rand() % 2; //0 - 5 seconds
 			int action = rand() % 10;
 
-			if (action < 2) {
+			if (action < 0) {
 				moving = false;
 				aiState = GLOB_AI_NORMAL;
 				changeAnimation(GLOB_STATE_IDLE, true);
 			}
 			else {
+				// TODO Encapsular toda essa rotina
 				findNearestTarget();
 				if (target != nullptr && target->hp > 0) {
 					float dist = Entity::distanceBetweenTwoEntities(this, target);
-
 					if ((dist > distanceThreshold)) {
 						if (!target->pheromoneTrail.empty()) {
 							if (Entity::distanceBetweenTwoPoints(this->x, this->y, currentTargetPos.x, currentTargetPos.y) < (dist / 5.f)) {
 								currentTargetPos = target->pheromoneTrail.at(pheromoneTrailIndex);
 								pheromoneTrailIndex++;
+								isChasingPheromone = true;
 							}
 							else {
-								currentTargetPos = target->pheromoneTrail.front();
-								pheromoneTrailIndex = 1;
+								if (isChasingPheromone) {
+									currentTargetPos = target->pheromoneTrail.front();
+									pheromoneTrailIndex = 1;
+								}
+								else {
+									moving = false;
+									aiState = GLOB_AI_NORMAL;
+									changeAnimation(GLOB_STATE_IDLE, true);
+									return;
+								}
 							}
 						}
 					}
 					else {
 						currentTargetPos.x = target->x;
 						currentTargetPos.y = target->y;
+						isChasingPheromone = true;
 					}
 					
 					//if in range, attack
@@ -122,6 +132,7 @@ void Glob::think() {
 					moving = false;
 					aiState = GLOB_AI_NORMAL;
 					changeAnimation(GLOB_STATE_IDLE, true);
+					isChasingPheromone = false;
 				}
 			}
 		}
