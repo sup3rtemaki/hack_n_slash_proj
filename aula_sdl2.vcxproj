@@ -163,6 +163,7 @@
     <ClCompile Include="src\checkpoint.cpp" />
     <ClCompile Include="src\cleanup.cpp" />
     <ClCompile Include="src\drawing_functions.cpp" />
+    <ClCompile Include="src\entities\enemyEntity.cpp" />
     <ClCompile Include="src\entity.cpp" />
     <ClCompile Include="src\frame.cpp" />
     <ClCompile Include="src\game.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="inc\cleanup.h" />
     <ClInclude Include="inc\dataGroupType.h" />
     <ClInclude Include="inc\drawing_functions.h" />
+    <ClInclude Include="inc\entities\enemyEntity.h" />
     <ClInclude Include="inc\entity.h" />
     <ClInclude Include="inc\frame.h" />
     <ClInclude Include="inc\game.h" />

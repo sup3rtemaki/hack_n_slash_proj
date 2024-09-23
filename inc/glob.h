@@ -2,10 +2,10 @@
 #define GLOB
 
 #include <cstdlib>
-#include "livingEntity.h"
+#include "entities/enemyEntity.h"
 #include "soundManager.h"
 
-class Glob : public LivingEntity {
+class Glob : public EnemyEntity {
 public:
 	static const string GLOB_ANIM_UP;
 	static const string GLOB_ANIM_DOWN;
