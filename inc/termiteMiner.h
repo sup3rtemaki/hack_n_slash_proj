@@ -1,9 +1,9 @@
 #ifndef TERMITEMINER
 #define TERMITEMINER
 
-#include "livingEntity.h"
+#include "entities/enemyEntity.h"
 
-class TermiteMiner : public LivingEntity {
+class TermiteMiner : public EnemyEntity {
 public:
 	static const string TERMITE_MINER_ANIM_UP;
 	static const string TERMITE_MINER_ANIM_DOWN;

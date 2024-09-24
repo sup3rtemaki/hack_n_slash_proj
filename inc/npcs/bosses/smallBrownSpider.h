@@ -1,8 +1,8 @@
 #ifndef SMALLBROWNSPIDER
 #define SMALLBROWNSPIDER
 
-#include "livingEntity.h"
-class SmallBrownSpider : public LivingEntity {
+#include "entities/enemyEntity.h"
+class SmallBrownSpider : public EnemyEntity {
 public:
 	// animations
 	static const string SMALL_BROWN_SPIDER_ANIM_UP;

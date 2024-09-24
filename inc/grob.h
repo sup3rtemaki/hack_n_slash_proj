@@ -2,10 +2,10 @@
 #define GROB
 
 #include <cstdlib>
-#include "livingEntity.h"
+#include "entities/enemyEntity.h"
 #include "soundManager.h"
 
-class Grob : public LivingEntity {
+class Grob : public EnemyEntity {
 public:
 	static const string GROB_ANIM_UP;
 	static const string GROB_ANIM_DOWN;
