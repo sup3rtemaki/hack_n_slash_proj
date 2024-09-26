@@ -85,7 +85,7 @@ Hero::Hero(AnimationSet* animSet) {
 	attackBufferIndex = 0;
 	attackTimer = 0.f;
 	pheromoneTimer = 0.f;
-	distanceThreshold = 32.f;
+	distanceThreshold = 10.f;
 	comboSequence.push_back((int)HERO_STATE::ATTACK_1);
 	comboSequence.push_back((int)HERO_STATE::ATTACK_2);
 	comboSequence.push_back((int)HERO_STATE::ATTACK_3);
@@ -700,13 +700,14 @@ void Hero::updatePheromoneTrail() {
 	if (pheromoneTimer <= 0.f) {
 		pheromoneTimer = pheromoneMaxTime;
 
+		if (pheromoneTrail.size() >= PHEROMONE_TRAIL_MAX_SIZE) {
+			pheromoneTrail.pop_front();
+		}
+
 		if (Entity::distanceBetweenTwoPoints(x, y, pheromoneTrail.back().x, pheromoneTrail.back().y) < distanceThreshold) {
 			return;
 		}
 
-		if (pheromoneTrail.size() >= PHEROMONE_TRAIL_MAX_SIZE) {
-			pheromoneTrail.pop_front();
-		}
 		SDL_Point point;
 		point.x = x;
 		point.y = y;

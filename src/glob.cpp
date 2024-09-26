@@ -46,6 +46,7 @@ Glob::Glob(AnimationSet* animSet) {
 	collisionBoxYOffset = -14;
 	direction = DIR_DOWN;
 	distanceThreshold = 250.f;
+	currentTargetPos.x = currentTargetPos.y = 0;
 	this->essence = 20;
 	populatePossibleDropItemsMap();
 	changeAnimation(GLOB_STATE_IDLE, true);
@@ -92,7 +93,11 @@ void Glob::think() {
 					float dist = Entity::distanceBetweenTwoEntities(this, target);
 					if ((dist > distanceThreshold)) {
 						if (!target->pheromoneTrail.empty()) {
-							if (Entity::distanceBetweenTwoPoints(this->x, this->y, currentTargetPos.x, currentTargetPos.y) < (dist / 5.f)) {
+							// TODO fazer com que o inimigo persiga o ponto de feromonio mais proximo dele
+							if (currentTargetPos.x == 0 || currentTargetPos.y == 0) {
+								currentTargetPos = target->pheromoneTrail.front();
+							}
+							if (Entity::distanceBetweenTwoPoints(this->x, this->y, currentTargetPos.x, currentTargetPos.y) < (distanceThreshold / 5.f)) {
 								currentTargetPos = target->pheromoneTrail.at(pheromoneTrailIndex);
 								pheromoneTrailIndex++;
 								isChasingPheromone = true;
