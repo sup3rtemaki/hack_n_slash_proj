@@ -87,51 +87,9 @@ void Glob::think() {
 				changeAnimation(GLOB_STATE_IDLE, true);
 			}
 			else {
-				// TODO Encapsular toda essa rotina
 				findNearestTarget();
 				if (target != nullptr && target->hp > 0) {
-					float dist = Entity::distanceBetweenTwoEntities(this, target);
-					if ((dist > distanceThreshold)) {
-						if (!target->pheromoneTrail.empty()) {
-							// TODO fazer com que o inimigo persiga o ponto de feromonio mais proximo dele
-							if (currentTargetPos.x == 0 || currentTargetPos.y == 0) {
-								currentTargetPos = target->pheromoneTrail.front();
-							}
-							if (Entity::distanceBetweenTwoPoints(this->x, this->y, currentTargetPos.x, currentTargetPos.y) < (distanceThreshold / 5.f)) {
-								currentTargetPos = target->pheromoneTrail.at(pheromoneTrailIndex);
-								pheromoneTrailIndex++;
-								isChasingPheromone = true;
-							}
-							else {
-								if (isChasingPheromone) {
-									currentTargetPos = target->pheromoneTrail.front();
-									pheromoneTrailIndex = 1;
-								}
-								else {
-									moving = false;
-									aiState = GLOB_AI_NORMAL;
-									changeAnimation(GLOB_STATE_IDLE, true);
-									return;
-								}
-							}
-						}
-					}
-					else {
-						currentTargetPos.x = target->x;
-						currentTargetPos.y = target->y;
-						isChasingPheromone = true;
-					}
-					
-					//if in range, attack
-					if (dist < 50) {
-						telegraph();
-						aiState = GLOB_AI_NORMAL;
-					}
-					else {
-						aiState = GLOB_AI_CHASE;
-						moving = true;
-						changeAnimation(GLOB_STATE_MOVE, state != GLOB_STATE_MOVE);
-					}
+					pursueTarget(target);
 				}
 				else {
 					moving = false;
@@ -345,4 +303,49 @@ void Glob::populatePossibleDropItemsMap(){
 	//TODO: Popular de verdade
 	possibleDropItemsMap.insert({ Item::HONEYDEW_POTION_ID, {{0, 15}, 3} });
 	possibleDropItemsMap.insert({ Item::GREEN_BERRY_ID, {{0, 50}, 3} });
+}
+
+void Glob::pursueTarget(LivingEntity* entity) {
+	float dist = Entity::distanceBetweenTwoEntities(this, target);
+	if ((dist > distanceThreshold)) {
+		if (!target->pheromoneTrail.empty()) {
+			// TODO fazer com que o inimigo persiga o ponto de feromonio mais proximo dele
+			if (currentTargetPos.x == 0 || currentTargetPos.y == 0) {
+				currentTargetPos = target->pheromoneTrail.front();
+			}
+			if (Entity::distanceBetweenTwoPoints(this->x, this->y, currentTargetPos.x, currentTargetPos.y) < (distanceThreshold / 5.f)) {
+				currentTargetPos = target->pheromoneTrail.at(pheromoneTrailIndex);
+				pheromoneTrailIndex++;
+				isChasingPheromone = true;
+			}
+			else {
+				if (isChasingPheromone) {
+					currentTargetPos = target->pheromoneTrail.front();
+					pheromoneTrailIndex = 1;
+				}
+				else {
+					moving = false;
+					aiState = GLOB_AI_NORMAL;
+					changeAnimation(GLOB_STATE_IDLE, true);
+					return;
+				}
+			}
+		}
+	}
+	else {
+		currentTargetPos.x = target->x;
+		currentTargetPos.y = target->y;
+		isChasingPheromone = true;
+	}
+
+	//if in range, attack
+	if (dist < 50) {
+		telegraph();
+		aiState = GLOB_AI_NORMAL;
+	}
+	else {
+		aiState = GLOB_AI_CHASE;
+		moving = true;
+		changeAnimation(GLOB_STATE_MOVE, state != GLOB_STATE_MOVE);
+	}
 }

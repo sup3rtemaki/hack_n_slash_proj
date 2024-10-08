@@ -12,6 +12,7 @@ public:
 	virtual void updateDamages() = 0; // how we get damaged by other things
 	virtual void die() = 0;
 	virtual void hitLanded(LivingEntity* entity) { ; }
+	virtual void pursueTarget(LivingEntity* entity) { ; }
 };
 
 #endif // !ENEMYENTITY
