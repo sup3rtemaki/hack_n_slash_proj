@@ -291,3 +291,48 @@ void TermiteMiner::updateDamages() {
 void TermiteMiner::populatePossibleDropItemsMap() {
 }
 
+void TermiteMiner::pursueTarget(LivingEntity* entity) {
+	float dist = Entity::distanceBetweenTwoEntities(this, target);
+	if ((dist > distanceThreshold)) {
+		if (!target->pheromoneTrail.empty()) {
+			// TODO fazer com que o inimigo persiga o ponto de feromonio mais proximo dele
+			if (currentTargetPos.x == 0 || currentTargetPos.y == 0) {
+				currentTargetPos = target->pheromoneTrail.front();
+			}
+			if (Entity::distanceBetweenTwoPoints(this->x, this->y, currentTargetPos.x, currentTargetPos.y) < (distanceThreshold / 5.f)) {
+				currentTargetPos = target->pheromoneTrail.at(pheromoneTrailIndex);
+				pheromoneTrailIndex++;
+				isChasingPheromone = true;
+			}
+			else {
+				if (isChasingPheromone) {
+					currentTargetPos = target->pheromoneTrail.front();
+					pheromoneTrailIndex = 1;
+				}
+				else {
+					moving = false;
+					aiState = TERMITE_MINER_AI_NORMAL;
+					changeAnimation(TERMITE_MINER_STATE_IDLE, true);
+					return;
+				}
+			}
+		}
+	}
+	else {
+		currentTargetPos.x = target->x;
+		currentTargetPos.y = target->y;
+		isChasingPheromone = true;
+	}
+
+	//if in range, attack
+	if (dist < 50) {
+		attack();
+		aiState = TERMITE_MINER_AI_NORMAL;
+	}
+	else {
+		aiState = TERMITE_MINER_AI_CHASE;
+		moving = true;
+		changeAnimation(TERMITE_MINER_STATE_MOVE, state != TERMITE_MINER_STATE_MOVE);
+	}
+}
+

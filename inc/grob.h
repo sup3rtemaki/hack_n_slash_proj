@@ -52,7 +52,7 @@ public:
 	void updateAnimation();
 	void updateDamages();
 	void populatePossibleDropItemsMap();
-
+	void pursueTarget(LivingEntity* entity);
 };
 
 #endif // !GROB

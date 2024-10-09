@@ -75,6 +75,7 @@ public:
 	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");
 	void updateAnimation();
 	void updateDamages();
+	void pursueTarget(LivingEntity* entity);
 
 private:
 	int thinkTimerModifier;

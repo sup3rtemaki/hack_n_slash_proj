@@ -46,6 +46,8 @@ Grob::Grob(AnimationSet* animSet) {
 	collisionBox.h = collisionBoxH;
 	collisionBoxYOffset = -14;
 	direction = DIR_DOWN;
+	distanceThreshold = 250.f;
+	this->essence = 30;
 	populatePossibleDropItemsMap();
 	changeAnimation(GROB_STATE_IDLE, true);
 	updateCollisionBox();
@@ -76,7 +78,7 @@ void Grob::think() {
 
 		//time to choose an action
 		if (thinkTimer <= 0) {
-			thinkTimer = rand() % 5; //0 - 5 seconds
+			thinkTimer = rand() % 2; //0 - 5 seconds
 			int action = rand() % 10;
 
 			if (action < 3) {
@@ -87,18 +89,7 @@ void Grob::think() {
 			else {
 				findNearestTarget();
 				if (target != NULL && target->hp > 0) {
-					//float dist = Entity::distanceBetweenTwoEntities(this, target);
-
-					//if in range, attack
-					//if (dist < 100) {
-					//	telegraph();
-					//	aiState = GROB_AI_NORMAL;
-					//}
-					//else {
-					aiState = GROB_AI_CHASE;
-					moving = true;
-					changeAnimation(GROB_STATE_MOVE, state != GROB_STATE_MOVE);
-					//}
+					pursueTarget(target);
 				}
 				else {
 					moving = false;
@@ -111,7 +102,7 @@ void Grob::think() {
 
 	//if chasing a target, then hunt it down
 	if (aiState == GROB_AI_CHASE && hp > 0 && active) {
-		angle = Entity::angleBetweenTwoEntities(this, target);
+		angle = Entity::angleBetweenTwoPoints(this->x, this->y, currentTargetPos.x, currentTargetPos.y);
 		move(angle);
 	}
 }
@@ -310,4 +301,49 @@ void Grob::updateDamages() {
 void Grob::populatePossibleDropItemsMap() {
 	//TODO: Popular de verdade
 	possibleDropItemsMap.insert({ Item::HONEYDEW_POTION_ID, {{0, 70}, 3} });
+}
+
+void Grob::pursueTarget(LivingEntity* entity) {
+	float dist = Entity::distanceBetweenTwoEntities(this, target);
+	if ((dist > distanceThreshold)) {
+		if (!target->pheromoneTrail.empty()) {
+			// TODO fazer com que o inimigo persiga o ponto de feromonio mais proximo dele
+			if (currentTargetPos.x == 0 || currentTargetPos.y == 0) {
+				currentTargetPos = target->pheromoneTrail.front();
+			}
+			if (Entity::distanceBetweenTwoPoints(this->x, this->y, currentTargetPos.x, currentTargetPos.y) < (distanceThreshold / 5.f)) {
+				currentTargetPos = target->pheromoneTrail.at(pheromoneTrailIndex);
+				pheromoneTrailIndex++;
+				isChasingPheromone = true;
+			}
+			else {
+				if (isChasingPheromone) {
+					currentTargetPos = target->pheromoneTrail.front();
+					pheromoneTrailIndex = 1;
+				}
+				else {
+					moving = false;
+					aiState = GROB_AI_NORMAL;
+					changeAnimation(GROB_STATE_IDLE, true);
+					return;
+				}
+			}
+		}
+	}
+	else {
+		currentTargetPos.x = target->x;
+		currentTargetPos.y = target->y;
+		isChasingPheromone = true;
+	}
+
+	//if in range, attack
+	if (dist < 50) {
+		telegraph();
+		aiState = GROB_AI_NORMAL;
+	}
+	else {
+		aiState = GROB_AI_CHASE;
+		moving = true;
+		changeAnimation(GROB_STATE_MOVE, state != GROB_STATE_MOVE);
+	}
 }

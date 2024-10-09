@@ -388,3 +388,7 @@ void SmallBrownSpider::updateDamages() {
 		}
 	}
 }
+
+void SmallBrownSpider::pursueTarget(LivingEntity* entity)
+{
+}
