@@ -901,7 +901,7 @@ void Game::spawnEnemies() {
 		case 0: // Glob
 			if (deadEnemiesIds.empty() ||
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
-					Glob* enemy = new Glob(globAnimSet);
+				TermiteMiner* enemy = new TermiteMiner(termiteMinerAnimSet);
 					enemy->x = enemyPosX;
 					enemy->y = enemyPosY;
 					enemy->invincibleTimer = 0.1;

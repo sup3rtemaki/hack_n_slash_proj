@@ -5,14 +5,14 @@
         "bX": -1,
         "bY": -1
     },
-    "essence": 140,
+    "essence": 195,
     "heroHp": 100,
     "heroX": 274,
     "heroY": 394,
     "inventory": [
         {
             "id": 0,
-            "itemQty": 9
+            "itemQty": 8
         },
         {
             "id": 1,

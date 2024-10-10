@@ -42,6 +42,7 @@ TermiteMiner::TermiteMiner(AnimationSet* animSet) {
 	collisionBoxH = 20;
 	collisionBox.w = collisionBoxW;
 	collisionBox.h = collisionBoxH;
+	distanceThreshold = 250.f;
 	collisionBoxYOffset = -14;
 	direction = DIR_DOWN;
 	populatePossibleDropItemsMap();
@@ -85,18 +86,7 @@ void TermiteMiner::think() {
 			else {
 				findNearestTarget();
 				if (target != NULL && target->hp > 0) {
-					float dist = Entity::distanceBetweenTwoEntities(this, target);
-
-					//if in range, attack
-					if (dist < 20) {
-						attack();
-						aiState = TERMITE_MINER_AI_NORMAL;
-					}
-					else {
-						aiState = TERMITE_MINER_AI_CHASE;
-						moving = true;
-						changeAnimation(TERMITE_MINER_STATE_MOVE, state != TERMITE_MINER_STATE_MOVE);
-					}
+					pursueTarget(target);
 				}
 				else {
 					moving = false;
@@ -109,7 +99,7 @@ void TermiteMiner::think() {
 
 	//if chasing a target, then hunt it down
 	if (aiState == TERMITE_MINER_AI_CHASE && hp > 0 && active) {
-		angle = Entity::angleBetweenTwoEntities(this, target);
+		angle = Entity::angleBetweenTwoPoints(this->x, this->y, currentTargetPos.x, currentTargetPos.y);
 		move(angle);
 	}
 }
