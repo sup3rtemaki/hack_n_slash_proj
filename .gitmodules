@@ -1,0 +1,3 @@
+[submodule "submodules/ant_hero_tiled_project"]
+	path = submodules/ant_hero_tiled_project
+	url = https://github.com/sup3rtemaki/ant_hero_tiled_project
