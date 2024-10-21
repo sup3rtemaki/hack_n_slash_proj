@@ -22,7 +22,7 @@ def copy_and_modify_json_files(src_folder, dest_folder):
             # Substituir a substring ".tsx" por ".json"
             new_content = content.replace('.tsx', '.json')
 
-            # Substituir a substring "..\/..\/..\/..\/..\/Tiled\/Tilesets\/" por "..\\Assets\\Tilesets\\"
+            # Substituir a substring "..\/Tilesets\/" por "..\\Assets\\Tilesets\\"
             new_content = new_content.replace('..\/Tilesets\/', '..\\Assets\\Tilesets\\')
 
             # Salvar as alterações de volta no arquivo
