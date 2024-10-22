@@ -1,0 +1,19 @@
+cyborg.png
+animations: 1
+captain
+frames: 3
+frame
+clip: 254 94 51 52
+offset: 0 0
+duration: 0.5
+index: 0
+frame
+clip: 52 358 72 59
+offset: 0 0
+duration: 0.5
+index: 1
+frame
+clip: 354 68 57 52
+offset: 0 0
+duration: 0.5
+index: 2

@@ -1,0 +1,10 @@
+generic-consumable-item.png
+animations: 1
+idle
+frames: 1
+frame
+clip: 0 0 11 12
+offset: 0 0
+duration: 1
+index: 0
+collisionBox: 0 0 12 11

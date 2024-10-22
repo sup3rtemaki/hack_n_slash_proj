@@ -1,0 +1,7 @@
+frame
+clip: 0 0 100 100
+offset: 0 0
+duration: 0.5
+index: 1
+HitBox: 0 2 30 50
+Particle: explodo 34 34

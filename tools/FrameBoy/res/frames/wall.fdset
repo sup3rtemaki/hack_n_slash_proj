@@ -1,0 +1,10 @@
+wall.png
+animations: 1
+wall
+frames: 1
+frame
+clip: 0 0 32 33
+offset: 0 0
+duration: 0.5
+index: 0
+collisionBox: 0 0 32 33

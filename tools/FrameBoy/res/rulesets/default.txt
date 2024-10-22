@@ -1,0 +1,10 @@
+default
+.fdset
+0
+1
+HitBox
+2
+1
+Particle
+0
+0
