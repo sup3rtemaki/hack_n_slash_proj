@@ -5,6 +5,8 @@ const float Globals::PI = 3.14159f;
 //useful as a dev
 bool Globals::debugging = false;
 
+bool Globals::pause = false;
+
 //sdl
 int Globals::ScreenWidth = 640, Globals::ScreenHeight = 360, Globals::ScreenScale = 3;
 SDL_Renderer* Globals::renderer = NULL;

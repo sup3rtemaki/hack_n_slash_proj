@@ -219,7 +219,8 @@ void Game::update() {
 			if (e.type == SDL_KEYDOWN) {
 				switch (e.key.keysym.scancode) {
 				case SDL_SCANCODE_ESCAPE:
-					quit = true;
+					Globals::pause = !Globals::pause;
+					// quit = true;
 					break;
 				case SDL_SCANCODE_SPACE:
 					if (splashShowing) {
@@ -309,20 +310,23 @@ void Game::update() {
 		}
 
 		// update all entites
-		for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
-			// update all entites in world at once (polymorphism)
-			(*entity)->update();
+		if (!Globals::pause) {
+			for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
+				// update all entites in world at once (polymorphism)
+				(*entity)->update();
 
-			checkAndHandleEnemyLoot(*entity);
+				checkAndHandleEnemyLoot(*entity);
 
-			checkAndHandleNearItem(*entity);
+				checkAndHandleNearItem(*entity);
 
-			checkAndHandleNearDoor(*entity);
+				checkAndHandleNearDoor(*entity);
 
-			checkAndHandleNearBloodstain(*entity);
+				checkAndHandleNearBloodstain(*entity);
 
-			checkAndHandleNearCheckpoint(*entity);
+				checkAndHandleNearCheckpoint(*entity);
+			}
 		}
+		
 
 		//If hero is in change map region, fade to change map
 		for (auto& waypoint : currentMap->currentMapWaypoints) {

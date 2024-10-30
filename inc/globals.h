@@ -16,6 +16,8 @@ public:
 	//useful as a dev
 	static bool debugging;
 
+	static bool pause;
+
 	//sdl
 	static int ScreenWidth, ScreenHeight, ScreenScale;
 	static SDL_Renderer* renderer;
