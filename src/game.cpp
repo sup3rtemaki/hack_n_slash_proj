@@ -316,17 +316,12 @@ void Game::update() {
 				(*entity)->update();
 
 				checkAndHandleEnemyLoot(*entity);
-
 				checkAndHandleNearItem(*entity);
-
 				checkAndHandleNearDoor(*entity);
-
 				checkAndHandleNearBloodstain(*entity);
-
 				checkAndHandleNearCheckpoint(*entity);
 			}
 		}
-		
 
 		//If hero is in change map region, fade to change map
 		for (auto& waypoint : currentMap->currentMapWaypoints) {
