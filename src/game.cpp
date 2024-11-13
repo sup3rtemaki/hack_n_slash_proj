@@ -138,6 +138,7 @@ Game::Game() {
 	heroHpBar = new HPBar(hero, BarType::HERO_HEALTH_BAR);
 	heroStBar = new HPBar(hero, BarType::HERO_STAMINA_BAR);
 	hero->actionMessageUi = actionMessageUi;
+	gameMenu = new Menu(hero);
 
 	gui.push_back(quickItemUi);
 	gui.push_back(itemPickMessageUi);
@@ -145,6 +146,7 @@ Game::Game() {
 	gui.push_back(heroHpBar);
 	gui.push_back(heroStBar);
 	gui.push_back(essenceCounterUi);
+	gui.push_back(gameMenu);
 
 	buildBossNext = false;
 	bossActive = false;
