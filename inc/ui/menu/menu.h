@@ -3,6 +3,8 @@
 
 #include "ui/ui.h"
 
+#include <vector>
+
 class Menu : public Ui {
 public:
 	Menu(class Hero* hero);
@@ -15,7 +17,9 @@ public:
 private:
 	Hero* hero = nullptr;
 	SDL_Texture* bgImage;
+	SDL_Texture* fontTexture;
 	vector<string> menuItems;
+	int textYOffset;
 
 	void drawMenuBackground();
 	void drawText();
