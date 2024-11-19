@@ -28,6 +28,14 @@
 
 #include<thread>
 
+enum class GameState {
+	MainMenu,
+	Loading,
+	InGame,
+	Paused,
+	None
+};
+
 class Game {
 public:
 	Mix_Music* song;
@@ -107,6 +115,8 @@ public:
 	EssenceCounterUi* essenceCounterUi;
 	Menu* gameMenu;
 
+	GameState gameState;
+
 	Game();
 	~Game();
 
@@ -146,6 +156,7 @@ private:
 	map<int, Item*> loadInventoryItems(std::vector<std::pair<int, int>> items);
 	void saveGame(bool isCheckpointSave = false);
 	void loadGame();
+	GameState getGameState();
 };
 
 #endif // !GAME

@@ -1278,3 +1278,7 @@ void Game::loadGame() {
 		terminate();
 	}
 }
+
+GameState Game::getGameState() {
+	return gameState;
+}
