@@ -199,6 +199,20 @@ void Game::update() {
 	// setup time controller before game starts
 	TimeController::timeController.reset();
 
+	switch (gameState) {
+	case GameState::MainMenu:
+		break;
+	case GameState::Loading:
+		break;
+	case GameState::InGame:
+		break;
+	case GameState::Paused:
+		break;
+	case GameState::None:
+		gameState = GameState::MainMenu;
+		break;
+	}
+
 	//game loop
 	while (!quit) {
 		TimeController::timeController.updateTime();
@@ -384,6 +398,14 @@ bool Game::isLivingEntityDead(Entity* entity) {
 		return true;
 	}
 	return false;
+}
+
+void Game::runMainMenu()
+{
+}
+
+void Game::runMainGame()
+{
 }
 
 void Game::updateMaps() {

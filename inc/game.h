@@ -131,6 +131,8 @@ private:
 	bool isBossMap();
 	bool isLivingEntityDead(Entity* entity);
 
+	void runMainMenu();
+	void runMainGame();
 	void updateMaps();
 	void loadTiledMap(const string& mapFile);
 	void renderTiles();
