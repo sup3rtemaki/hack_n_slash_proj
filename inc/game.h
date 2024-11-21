@@ -59,6 +59,8 @@ public:
 	SDL_Texture* overlayImage;
 	SDL_Texture* scoreTexture = NULL; //draw string to screen
 
+	SDL_Event event;
+
 	/**
 	* Cache de texturas
 	* Lista que contem o nome da imagem e a textura SDL
@@ -95,6 +97,9 @@ public:
 	bool bossActive = false;
 	bool mustSpawnEnemies = false;
 	bool mustRemoveAllEnemies = false;
+	bool quit = false;
+	bool mustSetBloodstainLocation = true;
+
 	
 	HPBar* heroHpBar;
 	HPBar* heroStBar;

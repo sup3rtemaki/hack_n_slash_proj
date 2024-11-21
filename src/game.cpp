@@ -146,7 +146,8 @@ Game::Game() {
 	gui.push_back(heroHpBar);
 	gui.push_back(heroStBar);
 	gui.push_back(essenceCounterUi);
-	gui.push_back(gameMenu);
+	//TODO: descomentar quando implemetar rotina do menu
+	//gui.push_back(gameMenu);
 
 	buildBossNext = false;
 	bossActive = false;
@@ -190,182 +191,28 @@ Game::~Game() {
 }
 
 void Game::update() {
-	int enemiesBuilt = 0;
-	float enemyBuildTimer = 1;
-	bool quit = false;
-	bool mustSetBloodstainLocation = true;
-	SDL_Event e;
-	
 	// setup time controller before game starts
 	TimeController::timeController.reset();
+	gameState = GameState::InGame;
 
-	switch (gameState) {
-	case GameState::MainMenu:
-		break;
-	case GameState::Loading:
-		break;
-	case GameState::InGame:
-		break;
-	case GameState::Paused:
-		break;
-	case GameState::None:
-		gameState = GameState::MainMenu;
-		break;
-	}
-
-	//game loop
 	while (!quit) {
-		TimeController::timeController.updateTime();
-
-		Entity::removeInactiveEntitiesFromList(&Entity::entities, false);
-
-		LivingEntity::saveDeadEnemiesIds(currentMapEnemies, deadEnemiesIds);
-
-		//remove and delete enemies in the list who are dead/inactive
-		Entity::removeInactiveEntitiesFromList(&currentMapEnemies, true);
-		
-		// check for any events that might have happened
-		while (SDL_PollEvent(&e)) {
-			// close the window
-			if (e.type == SDL_QUIT) {
-				quit = true;
-			}
-
-			// keydown event
-			if (e.type == SDL_KEYDOWN) {
-				switch (e.key.keysym.scancode) {
-				case SDL_SCANCODE_ESCAPE:
-					Globals::pause = !Globals::pause;
-					// quit = true;
-					break;
-				case SDL_SCANCODE_SPACE:
-					if (splashShowing) {
-						splashShowing = false;
-					}
-
-					if (overlayTimer <= 0 && hero->hp < 1) {
-						//cleanup and restart game
-						enemiesBuilt = 0;
-						enemyBuildTimer = 3;
-						overlayTimer = 2;
-						enemyWavesTillBoss = 3;
-						bossActive = false; 
-						buildBossNext = false;
-						//bossHpBar->entity = nullptr; // make hpbar point to no entities
-
-						RoundKing::roundKingsKilled = 0;
-						Glob::globsKilled = 0;
-						Grob::grobsKilled = 0;
-
-						if (scoreTexture != NULL) {
-							cleanup(scoreTexture);
-							scoreTexture = NULL;
-						}
-
-						deadEnemiesIds.clear();
-
-						//remove existing enemies
-						for (list<Entity*>::iterator enemy = currentMapEnemies.begin(); enemy != currentMapEnemies.end(); enemy++) {
-							(*enemy)->active = false;
-						}
-
-						mustSetBloodstainLocation = true;
-						mustSpawnEnemies = true;
-						handleMapChange(true);
-					}
-					
-					break;
-				}
-			}
-			if (!isFading) {
-				heroKeyboardInput.update(&e);
-				heroJoystickInput.update(&e);
-			}
-			else {
-				hero->moving = false;
-			}
+		switch (gameState) {
+		case GameState::MainMenu:
+			break;
+		case GameState::Loading:
+			break;
+		case GameState::InGame:
+			runMainGame();
+			break;
+		case GameState::Paused:
+			break;
+		case GameState::None:
+			gameState = GameState::MainMenu;
+			break;
 		}
-
-		if (hero->mustUpdateKeyJoyInput) {
-			heroKeyboardInput.update(&e);
-			heroJoystickInput.update(&e);
-			hero->mustUpdateKeyJoyInput = false;
-		}
-
-		// joystick axis must be updated outside the poll event loop because of how the
-		// interaction with the axis works. consider refactoring in the future
-		heroJoystickInput.checkAxis();
-
-		if (hero->hp < 1) {
-			if (overlayTimer > 0) {
-				overlayTimer -= TimeController::timeController.dT; //make overlay timer tick down
-			}
-			else {
-				if (mustSetBloodstainLocation) {
-					bloodstain->setLocation(
-						hero->x,
-						hero->y,
-						hero->essence,
-						currentMap->file);
-					hero->essence = 0;
-					mustSetBloodstainLocation = false;
-				}
-			}
-		}
-
-		//handle remove/spawn enemies
-		if (hero->hp > 0 && !splashShowing) {
-			if (mustRemoveAllEnemies) {
-				mustRemoveAllEnemies = false;
-				removeAllEnemiesInMap();
-			}
-			if (currentMapEnemies.size() <= 0 && mustSpawnEnemies) {
-				spawnBoss();
-				spawnEnemies();
-			}
-		}
-
-		// update all entites
-		if (!Globals::pause) {
-			for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
-				// update all entites in world at once (polymorphism)
-				(*entity)->update();
-
-				checkAndHandleEnemyLoot(*entity);
-				checkAndHandleNearItem(*entity);
-				checkAndHandleNearDoor(*entity);
-				checkAndHandleNearBloodstain(*entity);
-				checkAndHandleNearCheckpoint(*entity);
-			}
-		}
-
-		//If hero is in change map region, fade to change map
-		for (auto& waypoint : currentMap->currentMapWaypoints) {
-			if ((hero->x > waypoint.waypointRect.x) && 
-				(hero->x < waypoint.waypointRect.x + waypoint.waypointRect.w) &&
-				(hero->y > waypoint.waypointRect.y) && 
-				(hero->y < waypoint.waypointRect.y + waypoint.waypointRect.h)) {
-				currentMap->nextMapWaypoint = waypoint;
-				isFading = true;
-				fadeIn = true;
-			}
-		}
-
-		if (hero->mustSaveGame) {
-			hero->mustSaveGame = false;
-			hero->lastCheckpointMapFile = currentMap->file;
-			saveGame(true);
-		}
-
-		// draw all entites
-		draw();
-
-		// update camera position
-		camController.update();
-
-		// framerate
-		// cout << TimeController::timeController.dT << endl;
 	}
+	//game loop
+	
 }
 
 bool Game::isBossMap() {
@@ -400,12 +247,159 @@ bool Game::isLivingEntityDead(Entity* entity) {
 	return false;
 }
 
-void Game::runMainMenu()
-{
+void Game::runMainMenu() {
 }
 
-void Game::runMainGame()
-{
+void Game::runMainGame() {
+	TimeController::timeController.updateTime();
+
+	Entity::removeInactiveEntitiesFromList(&Entity::entities, false);
+
+	LivingEntity::saveDeadEnemiesIds(currentMapEnemies, deadEnemiesIds);
+
+	//remove and delete enemies in the list who are dead/inactive
+	Entity::removeInactiveEntitiesFromList(&currentMapEnemies, true);
+
+	// check for any events that might have happened
+	while (SDL_PollEvent(&event)) {
+		// close the window
+		if (event.type == SDL_QUIT) {
+			quit = true;
+		}
+
+		// keydown event
+		if (event.type == SDL_KEYDOWN) {
+			switch (event.key.keysym.scancode) {
+			case SDL_SCANCODE_ESCAPE:
+				//Globals::pause = !Globals::pause;
+				quit = true;
+				break;
+			case SDL_SCANCODE_SPACE:
+				if (splashShowing) {
+					splashShowing = false;
+				}
+
+				if (overlayTimer <= 0 && hero->hp < 1) {
+					//cleanup and restart game
+					overlayTimer = 2;
+					enemyWavesTillBoss = 3;
+					bossActive = false;
+					buildBossNext = false;
+					//bossHpBar->entity = nullptr; // make hpbar point to no entities
+
+					RoundKing::roundKingsKilled = 0;
+					Glob::globsKilled = 0;
+					Grob::grobsKilled = 0;
+
+					if (scoreTexture != NULL) {
+						cleanup(scoreTexture);
+						scoreTexture = NULL;
+					}
+
+					deadEnemiesIds.clear();
+
+					//remove existing enemies
+					for (list<Entity*>::iterator enemy = currentMapEnemies.begin(); enemy != currentMapEnemies.end(); enemy++) {
+						(*enemy)->active = false;
+					}
+
+					mustSetBloodstainLocation = true;
+					mustSpawnEnemies = true;
+					handleMapChange(true);
+				}
+
+				break;
+			}
+		}
+		if (!isFading) {
+			heroKeyboardInput.update(&event);
+			heroJoystickInput.update(&event);
+		}
+		else {
+			hero->moving = false;
+		}
+	}
+
+	if (hero->mustUpdateKeyJoyInput) {
+		heroKeyboardInput.update(&event);
+		heroJoystickInput.update(&event);
+		hero->mustUpdateKeyJoyInput = false;
+	}
+
+	// joystick axis must be updated outside the poll event loop because of how the
+	// interaction with the axis works. consider refactoring in the future
+	heroJoystickInput.checkAxis();
+
+	if (hero->hp < 1) {
+		if (overlayTimer > 0) {
+			overlayTimer -= TimeController::timeController.dT; //make overlay timer tick down
+		}
+		else {
+			if (mustSetBloodstainLocation) {
+				bloodstain->setLocation(
+					hero->x,
+					hero->y,
+					hero->essence,
+					currentMap->file);
+				hero->essence = 0;
+				mustSetBloodstainLocation = false;
+			}
+		}
+	}
+
+	//handle remove/spawn enemies
+	if (hero->hp > 0 && !splashShowing) {
+		if (mustRemoveAllEnemies) {
+			mustRemoveAllEnemies = false;
+			removeAllEnemiesInMap();
+		}
+		if (currentMapEnemies.size() <= 0 && mustSpawnEnemies) {
+			spawnBoss();
+			spawnEnemies();
+		}
+	}
+
+	// update all entites
+	if (!Globals::pause) {
+		for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
+			// update all entites in world at once (polymorphism)
+			(*entity)->update();
+
+			checkAndHandleEnemyLoot(*entity);
+			checkAndHandleNearItem(*entity);
+			checkAndHandleNearDoor(*entity);
+			checkAndHandleNearBloodstain(*entity);
+			checkAndHandleNearCheckpoint(*entity);
+		}
+	}
+
+	//If hero is in change map region, fade to change map
+	for (auto& waypoint : currentMap->currentMapWaypoints) {
+		if ((hero->x > waypoint.waypointRect.x) &&
+			(hero->x < waypoint.waypointRect.x + waypoint.waypointRect.w) &&
+			(hero->y > waypoint.waypointRect.y) &&
+			(hero->y < waypoint.waypointRect.y + waypoint.waypointRect.h)) {
+			currentMap->nextMapWaypoint = waypoint;
+			isFading = true;
+			fadeIn = true;
+		}
+	}
+
+	if (hero->mustSaveGame) {
+		hero->mustSaveGame = false;
+		hero->lastCheckpointMapFile = currentMap->file;
+		saveGame(true);
+	}
+
+	// draw all entites
+	draw();
+
+	// update camera position
+	camController.update();
+
+	// framerate
+	// cout << TimeController::timeController.dT << endl;
+
 }
 
 void Game::updateMaps() {
