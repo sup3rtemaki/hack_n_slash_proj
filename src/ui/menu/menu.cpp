@@ -8,12 +8,21 @@ const int FONT_SIZE = 32;
 const int FONT_X = (Globals::ScreenWidth / 2);
 const int FONT_Y = (Globals::ScreenHeight / 2);
 const SDL_Color color = { 255, 255, 255, 255 };
+const int MAX_INDEX = 1;
 
 Menu::Menu(Hero* hero) {
 	setUp();
 }
 
 void Menu::draw() {
+	if (index > MAX_INDEX) {
+		index = 0;
+	}
+
+	if (index < 0) {
+		index = MAX_INDEX;
+	}
+
 	drawMenuBackground();
 	drawText();
 	drawSelectionBox();
@@ -50,13 +59,32 @@ void Menu::drawText() {
 		(int)text.size() > 0 ?
 			digits = int(log10((int)text.size()) + 1) :
 			digits = 1;
-		int xOffsetAlign = (FONT_SIZE) * digits;
+		int textXOffset = (FONT_SIZE) * digits;
 
-		renderTexture(fontTexture, Globals::renderer, FONT_X - xOffsetAlign, FONT_Y + textYOffset);
+		renderTexture(fontTexture, Globals::renderer, FONT_X - textXOffset, FONT_Y + textYOffset);
 
 		textYOffset += FONT_SIZE + 5;
 	}
 }
 
 void Menu::drawSelectionBox() {
+	SDL_Rect selectionRect = { 0, 0, 0, 0 };
+	switch (index)
+	{
+	case 0:
+	default:
+		selectionRect.x = FONT_X - 35;
+		selectionRect.y = FONT_Y - 5;
+		selectionRect.w = 80;
+		selectionRect.h = FONT_SIZE + 4;
+		break;
+	case 1:
+		selectionRect.x = FONT_X - 35;
+		selectionRect.y = FONT_Y - 5 + FONT_SIZE + 5;
+		selectionRect.w = 80;
+		selectionRect.h = FONT_SIZE + 4;
+		break;
+	}
+
+	SDL_RenderDrawRect(Globals::renderer, &selectionRect);
 }

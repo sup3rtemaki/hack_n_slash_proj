@@ -35,7 +35,7 @@ Game::Game() {
 	splashImage = loadTexture(resPath + Ui::HUD_TEXTURES_PATH + "cyborgtitle.png", Globals::renderer);
 	overlayImage = loadTexture(resPath + Ui::HUD_TEXTURES_PATH + "overlay.png", Globals::renderer);
 
-	splashShowing = true;
+	splashShowing = false;
 	overlayTimer = 2;
 
 	//setup camera
@@ -193,11 +193,12 @@ Game::~Game() {
 void Game::update() {
 	// setup time controller before game starts
 	TimeController::timeController.reset();
-	gameState = GameState::InGame;
+	gameState = GameState::MainMenu;
 
 	while (!quit) {
 		switch (gameState) {
 		case GameState::MainMenu:
+			runMainMenu();
 			break;
 		case GameState::Loading:
 			break;
@@ -248,6 +249,40 @@ bool Game::isLivingEntityDead(Entity* entity) {
 }
 
 void Game::runMainMenu() {
+	while (SDL_PollEvent(&event)) {
+		// close the window
+		if (event.type == SDL_QUIT) {
+			quit = true;
+		}
+
+		if (event.type == SDL_KEYDOWN) {
+			switch (event.key.keysym.scancode) {
+			case SDL_SCANCODE_UP:
+				gameMenu->index++;
+				break;
+			case SDL_SCANCODE_DOWN:
+				gameMenu->index--;
+				break;
+			case SDL_SCANCODE_ESCAPE:
+				quit = true;
+				break;
+			case SDL_SCANCODE_SPACE:
+				switch (gameMenu->index) {
+				case 0:
+					gameState = GameState::InGame;
+					break;
+				case 1:
+					quit = true;
+					break;
+				}
+			}
+		}
+		// clear screen
+		SDL_SetRenderDrawColor(Globals::renderer, 145, 133, 129, SDL_ALPHA_OPAQUE);
+		SDL_RenderClear(Globals::renderer);
+		gameMenu->draw();
+		SDL_RenderPresent(Globals::renderer);
+	}
 }
 
 void Game::runMainGame() {
@@ -271,8 +306,8 @@ void Game::runMainGame() {
 		if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.scancode) {
 			case SDL_SCANCODE_ESCAPE:
-				//Globals::pause = !Globals::pause;
-				quit = true;
+				Globals::pause = !Globals::pause;
+				gameState = GameState::MainMenu;
 				break;
 			case SDL_SCANCODE_SPACE:
 				if (splashShowing) {
