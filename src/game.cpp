@@ -138,7 +138,7 @@ Game::Game() {
 	heroHpBar = new HPBar(hero, BarType::HERO_HEALTH_BAR);
 	heroStBar = new HPBar(hero, BarType::HERO_STAMINA_BAR);
 	hero->actionMessageUi = actionMessageUi;
-	gameMenu = new Menu(hero);
+	mainMenu = new MainMenu();
 
 	gui.push_back(quickItemUi);
 	gui.push_back(itemPickMessageUi);
@@ -213,7 +213,6 @@ void Game::update() {
 		}
 	}
 	//game loop
-	
 }
 
 bool Game::isBossMap() {
@@ -258,18 +257,19 @@ void Game::runMainMenu() {
 		if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.scancode) {
 			case SDL_SCANCODE_UP:
-				gameMenu->index++;
+				mainMenu->index++;
 				break;
 			case SDL_SCANCODE_DOWN:
-				gameMenu->index--;
+				mainMenu->index--;
 				break;
 			case SDL_SCANCODE_ESCAPE:
 				quit = true;
 				break;
 			case SDL_SCANCODE_SPACE:
-				switch (gameMenu->index) {
+				switch (mainMenu->index) {
 				case 0:
 					gameState = GameState::InGame;
+					Globals::pause = false;
 					break;
 				case 1:
 					quit = true;
@@ -277,12 +277,12 @@ void Game::runMainMenu() {
 				}
 			}
 		}
-		// clear screen
-		SDL_SetRenderDrawColor(Globals::renderer, 145, 133, 129, SDL_ALPHA_OPAQUE);
-		SDL_RenderClear(Globals::renderer);
-		gameMenu->draw();
-		SDL_RenderPresent(Globals::renderer);
 	}
+
+	SDL_SetRenderDrawColor(Globals::renderer, 145, 133, 129, SDL_ALPHA_OPAQUE);
+	SDL_RenderClear(Globals::renderer);
+	mainMenu->draw();
+	SDL_RenderPresent(Globals::renderer);
 }
 
 void Game::runMainGame() {
@@ -306,7 +306,7 @@ void Game::runMainGame() {
 		if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.scancode) {
 			case SDL_SCANCODE_ESCAPE:
-				Globals::pause = !Globals::pause;
+				Globals::pause = true;
 				gameState = GameState::MainMenu;
 				break;
 			case SDL_SCANCODE_SPACE:

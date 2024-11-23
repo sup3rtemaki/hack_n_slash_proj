@@ -24,7 +24,7 @@
 #include "ui/quickItemUi.h"
 #include "ui/itemPickMessageUi.h"
 #include "ui/essenceCounterUi.h"
-#include "ui/menu/menu.h"
+#include "ui/menu/mainMenu.h"
 
 #include<thread>
 
@@ -118,7 +118,7 @@ public:
 	ItemPickMessageUi* itemPickMessageUi;
 	ActionMessageUi* actionMessageUi;
 	EssenceCounterUi* essenceCounterUi;
-	Menu* gameMenu;
+	MainMenu* mainMenu;
 
 	GameState gameState;
 

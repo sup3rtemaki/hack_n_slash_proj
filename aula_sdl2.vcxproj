@@ -196,6 +196,7 @@
     <ClCompile Include="src\ui\essenceCounterUi.cpp" />
     <ClCompile Include="src\ui\hpBar.cpp" />
     <ClCompile Include="src\ui\itemPickMessageUi.cpp" />
+    <ClCompile Include="src\ui\menu\mainMenu.cpp" />
     <ClCompile Include="src\ui\menu\menu.cpp" />
     <ClCompile Include="src\ui\quickItemUi.cpp" />
     <ClCompile Include="src\ui\ui.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="inc\ui\essenceCounterUi.h" />
     <ClInclude Include="inc\ui\hpBar.h" />
     <ClInclude Include="inc\ui\itemPickMessageUi.h" />
+    <ClInclude Include="inc\ui\menu\mainMenu.h" />
     <ClInclude Include="inc\ui\menu\menu.h" />
     <ClInclude Include="inc\ui\quickItemUi.h" />
     <ClInclude Include="inc\ui\ui.h" />

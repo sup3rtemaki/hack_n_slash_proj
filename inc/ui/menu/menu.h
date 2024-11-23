@@ -5,25 +5,27 @@
 
 #include <vector>
 
+enum class MenuState {
+	Active,
+	Background,
+	Inactive
+};
+
 class Menu : public Ui {
 public:
-	Menu(class Hero* hero);
-
 	int index;
 
-	virtual void draw() override;
-	virtual void setUp() override;
-
-private:
-	Hero* hero = nullptr;
+protected:
+	class Hero* hero = nullptr;
 	SDL_Texture* bgImage;
 	SDL_Texture* fontTexture;
 	vector<string> menuItems;
 	int textYOffset;
+	MenuState menuState;
 
-	void drawMenuBackground();
-	void drawText();
-	void drawSelectionBox();
+	virtual void drawMenuBackground() = 0;
+	virtual void drawText() = 0;
+	virtual void drawSelectionBox() = 0;
 };
 
 #endif // !MENU
