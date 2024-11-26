@@ -3,10 +3,20 @@
 
 #include "menu.h"
 
+enum class MenuPage {
+	PAGE1,
+	PAGE2,
+	PAGE3,
+	PAGE4,
+	PAGE5
+};
+
 class PaginatedMenu : public Menu {
 public:
+	MenuPage currentPage;
+protected:
 	int maxPages;
-	int currentPage;
+
 };
 
 #endif // !PAGINATED_MENU
