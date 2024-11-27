@@ -139,6 +139,7 @@ Game::Game() {
 	heroStBar = new HPBar(hero, BarType::HERO_STAMINA_BAR);
 	hero->actionMessageUi = actionMessageUi;
 	mainMenu = new MainMenu();
+	pauseMenu = new PauseMenu(hero);
 
 	gui.push_back(quickItemUi);
 	gui.push_back(itemPickMessageUi);
@@ -146,6 +147,7 @@ Game::Game() {
 	gui.push_back(heroHpBar);
 	gui.push_back(heroStBar);
 	gui.push_back(essenceCounterUi);
+	gui.push_back(pauseMenu);
 	//TODO: descomentar quando implemetar rotina do menu
 	//gui.push_back(gameMenu);
 
@@ -206,6 +208,7 @@ void Game::update() {
 			runMainGame();
 			break;
 		case GameState::Paused:
+			runPausedGameMenu();
 			break;
 		case GameState::None:
 			gameState = GameState::MainMenu;
@@ -306,8 +309,9 @@ void Game::runMainGame() {
 		if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.scancode) {
 			case SDL_SCANCODE_ESCAPE:
+				pauseMenu->menuState = MenuState::Active;
 				Globals::pause = true;
-				gameState = GameState::MainMenu;
+				gameState = GameState::Paused;
 				break;
 			case SDL_SCANCODE_SPACE:
 				if (splashShowing) {
@@ -434,7 +438,54 @@ void Game::runMainGame() {
 
 	// framerate
 	// cout << TimeController::timeController.dT << endl;
+}
 
+void Game::runPausedGameMenu() {
+	TimeController::timeController.updateTime();
+
+	// check for any events that might have happened
+	while (SDL_PollEvent(&event)) {
+		// close the window
+		if (event.type == SDL_QUIT) {
+			quit = true;
+		}
+
+		// keydown event
+		if (event.type == SDL_KEYDOWN) {
+			switch (event.key.keysym.scancode) {
+			case SDL_SCANCODE_ESCAPE:
+				pauseMenu->menuState = MenuState::Inactive;
+				Globals::pause = false;
+				gameState = GameState::InGame;
+				break;
+			case SDL_SCANCODE_SPACE:
+				break;
+			}
+		}
+		if (!isFading) {
+			heroKeyboardInput.update(&event);
+			heroJoystickInput.update(&event);
+		}
+		else {
+			hero->moving = false;
+		}
+	}
+
+	if (hero->mustUpdateKeyJoyInput) {
+		heroKeyboardInput.update(&event);
+		heroJoystickInput.update(&event);
+		hero->mustUpdateKeyJoyInput = false;
+	}
+
+	// joystick axis must be updated outside the poll event loop because of how the
+	// interaction with the axis works. consider refactoring in the future
+	heroJoystickInput.checkAxis();
+
+	// draw all entites
+	draw();
+
+	// update camera position
+	camController.update();
 }
 
 void Game::updateMaps() {

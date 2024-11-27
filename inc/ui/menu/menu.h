@@ -14,6 +14,7 @@ enum class MenuState {
 class Menu : public Ui {
 public:
 	int index;
+	MenuState menuState;
 
 protected:
 	class Hero* hero = nullptr;
@@ -21,7 +22,6 @@ protected:
 	SDL_Texture* fontTexture;
 	vector<string> menuItems;
 	int textYOffset;
-	MenuState menuState;
 
 	virtual void drawMenuBackground() = 0;
 	virtual void drawText() = 0;

@@ -25,6 +25,7 @@
 #include "ui/itemPickMessageUi.h"
 #include "ui/essenceCounterUi.h"
 #include "ui/menu/mainMenu.h"
+#include "ui/menu/pauseMenu.h"
 
 #include<thread>
 
@@ -119,6 +120,7 @@ public:
 	ActionMessageUi* actionMessageUi;
 	EssenceCounterUi* essenceCounterUi;
 	MainMenu* mainMenu;
+	PauseMenu* pauseMenu;
 
 	GameState gameState;
 
@@ -138,6 +140,7 @@ private:
 
 	void runMainMenu();
 	void runMainGame();
+	void runPausedGameMenu();
 	void updateMaps();
 	void loadTiledMap(const string& mapFile);
 	void renderTiles();

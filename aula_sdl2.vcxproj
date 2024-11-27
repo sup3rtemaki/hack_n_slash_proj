@@ -198,6 +198,8 @@
     <ClCompile Include="src\ui\itemPickMessageUi.cpp" />
     <ClCompile Include="src\ui\menu\mainMenu.cpp" />
     <ClCompile Include="src\ui\menu\menu.cpp" />
+    <ClCompile Include="src\ui\menu\paginatedMenu.cpp" />
+    <ClCompile Include="src\ui\menu\pauseMenu.cpp" />
     <ClCompile Include="src\ui\quickItemUi.cpp" />
     <ClCompile Include="src\ui\ui.cpp" />
     <ClCompile Include="src\wall.cpp" />
@@ -253,6 +255,8 @@
     <ClInclude Include="inc\ui\itemPickMessageUi.h" />
     <ClInclude Include="inc\ui\menu\mainMenu.h" />
     <ClInclude Include="inc\ui\menu\menu.h" />
+    <ClInclude Include="inc\ui\menu\paginatedMenu.h" />
+    <ClInclude Include="inc\ui\menu\pauseMenu.h" />
     <ClInclude Include="inc\ui\quickItemUi.h" />
     <ClInclude Include="inc\ui\ui.h" />
     <ClInclude Include="inc\wall.h" />
