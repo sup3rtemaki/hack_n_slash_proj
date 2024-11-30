@@ -460,6 +460,12 @@ void Game::runPausedGameMenu() {
 				break;
 			case SDL_SCANCODE_SPACE:
 				break;
+			case SDL_SCANCODE_1:
+				pauseMenu->currentPage = MenuPage::PAGE1;
+				break;
+			case SDL_SCANCODE_2:
+				pauseMenu->currentPage = MenuPage::PAGE2;
+				break;
 			}
 		}
 		if (!isFading) {

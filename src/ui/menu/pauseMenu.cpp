@@ -23,36 +23,73 @@ void PauseMenu::draw() {
 
 void PauseMenu::setUp() {
 	__super::setUp();
+	menuState = MenuState::Inactive;
+	currentPage = MenuPage::PAGE1;
 }
 
 void PauseMenu::drawMenuBackground() {
 	SDL_Rect bgRect = { 50, Globals::ScreenHeight / 8, 150, MENU_MAX_HEIGHT };
-	SDL_SetRenderDrawColor(Globals::renderer, 50, 50, 50, SDL_ALPHA_OPAQUE);
+	SDL_SetRenderDrawBlendMode(Globals::renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(Globals::renderer, 50, 50, 50, 120);
 	SDL_RenderFillRect(Globals::renderer, &bgRect);
 }
 
 void PauseMenu::drawText() {
 	textYOffset = 0;
-	for (auto item : hero->inventory) {
-		string text = item.second->name;
-		fontTexture = renderText(
-			text,
-			Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
-			color,
-			FONT_SIZE,
-			Globals::renderer
-		);
 
-		int digits;
-		(int)text.size() > 0 ?
-			digits = int(log10((int)text.size()) + 1) :
-			digits = 1;
-		int textXOffset = (FONT_SIZE)*digits;
+	switch (currentPage) {
+	case MenuPage::PAGE1:
+		for (auto item : hero->inventory) {
+			string text = item.second->name;
+			fontTexture = renderText(
+				text,
+				Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+				color,
+				FONT_SIZE,
+				Globals::renderer
+			);
 
-		renderTexture(fontTexture, Globals::renderer, 100 - textXOffset, (Globals::ScreenHeight / 8) + 2 + textYOffset);
+			int digits;
+			(int)text.size() > 0 ?
+				digits = int(log10((int)text.size()) + 1) :
+				digits = 1;
+			int textXOffset = (FONT_SIZE)*digits;
 
-		textYOffset += FONT_SIZE + 2;
+			renderTexture(fontTexture, Globals::renderer, 90 - textXOffset, (Globals::ScreenHeight / 8) + 2 + textYOffset);
+
+			textYOffset += FONT_SIZE + 2;
+		}
+		break;
+	case MenuPage::PAGE2:
+		if (previousPage != currentPage) {
+			menuItems.clear();
+			menuItems.push_back("Resume");
+			menuItems.push_back("Exit");
+		}
+
+		for (auto text : menuItems) {
+			fontTexture = renderText(
+				text,
+				Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+				color,
+				FONT_SIZE,
+				Globals::renderer
+			);
+
+			int digits;
+			(int)text.size() > 0 ?
+				digits = int(log10((int)text.size()) + 1) :
+				digits = 1;
+			int textXOffset = (FONT_SIZE)*digits;
+
+			renderTexture(fontTexture, Globals::renderer, 90 - textXOffset, (Globals::ScreenHeight / 8) + 2 + textYOffset);
+
+			textYOffset += FONT_SIZE + 2;
+		}
+		break;
 	}
+
+	previousPage = currentPage;
 }
 
 void PauseMenu::drawSelectionBox() {

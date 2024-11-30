@@ -15,6 +15,7 @@ class PaginatedMenu : public Menu {
 public:
 	MenuPage currentPage;
 protected:
+	MenuPage previousPage;
 	int maxPages;
 
 };
