@@ -460,6 +460,12 @@ void Game::runPausedGameMenu() {
 				break;
 			case SDL_SCANCODE_SPACE:
 				break;
+			case SDL_SCANCODE_UP:
+				pauseMenu->index++;
+				break;
+			case SDL_SCANCODE_DOWN:
+				pauseMenu->index--;
+				break;
 			case SDL_SCANCODE_1:
 				pauseMenu->currentPage = MenuPage::PAGE1;
 				break;
