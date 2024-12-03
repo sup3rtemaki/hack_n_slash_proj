@@ -43,63 +43,15 @@ void PauseMenu::drawMenuBackground() {
 	SDL_RenderFillRect(Globals::renderer, &bgRect);
 }
 
-// TODO: Organizar o desenho de cada página em um método separado (drawPage1Text, drawPage1SelectionBox, etc)
 void PauseMenu::drawText() {
 	textYOffset = 0;
 
 	switch (currentPage) {
 	case MenuPage::PAGE1:
-		if (previousPage != currentPage) {
-			MAX_INDEX = 2;
-		}
-		for (auto item : hero->inventory) {
-			string text = item.second->name;
-			fontTexture = renderText(
-				text,
-				Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
-				color,
-				FONT_SIZE,
-				Globals::renderer
-			);
-
-			int digits;
-			(int)text.size() > 0 ?
-				digits = int(log10((int)text.size()) + 1) :
-				digits = 1;
-			int textXOffset = (FONT_SIZE)*digits;
-
-			renderTexture(fontTexture, Globals::renderer, 90 - textXOffset, (Globals::ScreenHeight / 8) + 2 + textYOffset);
-
-			textYOffset += FONT_SIZE + 2;
-		}
+		drawPage1();
 		break;
 	case MenuPage::PAGE2:
-		if (previousPage != currentPage) {
-			menuItems.clear();
-			menuItems.push_back("Resume");
-			menuItems.push_back("Exit");
-			MAX_INDEX = menuItems.size() - 1;
-		}
-
-		for (auto text : menuItems) {
-			fontTexture = renderText(
-				text,
-				Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
-				color,
-				FONT_SIZE,
-				Globals::renderer
-			);
-
-			int digits;
-			(int)text.size() > 0 ?
-				digits = int(log10((int)text.size()) + 1) :
-				digits = 1;
-			int textXOffset = (FONT_SIZE)*digits;
-
-			renderTexture(fontTexture, Globals::renderer, 90 - textXOffset, (Globals::ScreenHeight / 8) + 2 + textYOffset);
-
-			textYOffset += FONT_SIZE + 2;
-		}
+		drawPage2();
 		break;
 	}
 
@@ -112,11 +64,77 @@ void PauseMenu::drawSelectionBox() {
 	{
 	case 0:
 	default:
-		SDL_RenderDrawLine(Globals::renderer, 90, (Globals::ScreenHeight / 8) + FONT_SIZE, 150, (Globals::ScreenHeight / 8) + FONT_SIZE);
+		SDL_RenderDrawLine(
+			Globals::renderer, 90, (Globals::ScreenHeight / 8) + FONT_SIZE, 150, (Globals::ScreenHeight / 8) + FONT_SIZE);
 		break;
 	case 1:
-		SDL_RenderDrawLine(Globals::renderer, 90, (Globals::ScreenHeight / 8) + FONT_SIZE * 2, 150, (Globals::ScreenHeight / 8) + FONT_SIZE * 2);
+		SDL_RenderDrawLine(
+			Globals::renderer, 90, (Globals::ScreenHeight / 8) + FONT_SIZE * 2, 150, (Globals::ScreenHeight / 8) + FONT_SIZE * 2);
 		break;
 	}
 	
+}
+
+void PauseMenu::drawPage1() {
+	if (previousPage != currentPage) {
+		MAX_INDEX = 2;
+	}
+	for (auto item : hero->inventory) {
+		string text = item.second->name;
+		fontTexture = renderText(
+			text,
+			Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+			color,
+			FONT_SIZE,
+			Globals::renderer
+		);
+
+		int digits;
+		(int)text.size() > 0 ?
+			digits = int(log10((int)text.size()) + 1) :
+			digits = 1;
+		int textXOffset = (FONT_SIZE)*digits;
+
+		renderTexture(fontTexture, Globals::renderer, 90 - textXOffset, (Globals::ScreenHeight / 8) + 2 + textYOffset);
+
+		textYOffset += FONT_SIZE + 2;
+	}
+}
+
+void PauseMenu::drawPage2() {
+	if (previousPage != currentPage) {
+		menuItems.clear();
+		menuItems.push_back("Resume");
+		menuItems.push_back("Exit");
+		MAX_INDEX = menuItems.size() - 1;
+	}
+
+	for (auto text : menuItems) {
+		fontTexture = renderText(
+			text,
+			Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+			color,
+			FONT_SIZE,
+			Globals::renderer
+		);
+
+		int digits;
+		(int)text.size() > 0 ?
+			digits = int(log10((int)text.size()) + 1) :
+			digits = 1;
+		int textXOffset = (FONT_SIZE)*digits;
+
+		renderTexture(fontTexture, Globals::renderer, 90 - textXOffset, (Globals::ScreenHeight / 8) + 2 + textYOffset);
+
+		textYOffset += FONT_SIZE + 2;
+	}
+}
+
+void PauseMenu::drawPage3() {
+}
+
+void PauseMenu::drawPage4() {
+}
+
+void PauseMenu::drawPage5() {
 }

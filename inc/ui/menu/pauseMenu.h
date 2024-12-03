@@ -13,6 +13,11 @@ private:
 	virtual void drawMenuBackground() override;
 	virtual void drawText() override;
 	virtual void drawSelectionBox() override;
+	virtual void drawPage1() override;
+	virtual void drawPage2() override;
+	virtual void drawPage3() override;
+	virtual void drawPage4() override;
+	virtual void drawPage5() override;
 };
 
 #endif // !PAUSE_MENU
