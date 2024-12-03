@@ -34,6 +34,7 @@ void PauseMenu::setUp() {
 	__super::setUp();
 	menuState = MenuState::Inactive;
 	currentPage = MenuPage::PAGE1;
+	previousPage = MenuPage::PAGE5;
 }
 
 void PauseMenu::drawMenuBackground() {
@@ -59,30 +60,29 @@ void PauseMenu::drawText() {
 }
 
 void PauseMenu::drawSelectionBox() {
+	const int yLinePos = (Globals::ScreenHeight / 8) + (FONT_SIZE + 2) * (index + 1);
 	SDL_SetRenderDrawColor(Globals::renderer, 200, 200, 200, 255);
-	switch (index)
-	{
-	case 0:
-	default:
-		SDL_RenderDrawLine(
-			Globals::renderer, 90, (Globals::ScreenHeight / 8) + FONT_SIZE, 150, (Globals::ScreenHeight / 8) + FONT_SIZE);
-		break;
-	case 1:
-		SDL_RenderDrawLine(
-			Globals::renderer, 90, (Globals::ScreenHeight / 8) + FONT_SIZE * 2, 150, (Globals::ScreenHeight / 8) + FONT_SIZE * 2);
-		break;
-	}
-	
+	SDL_RenderDrawLine(
+		Globals::renderer,
+		90,
+		yLinePos,
+		150,
+		yLinePos);
 }
 
 void PauseMenu::drawPage1() {
 	if (previousPage != currentPage) {
-		MAX_INDEX = 2;
+		menuItems.clear();
+		for (auto item : hero->inventory) {
+			menuItems.push_back(item.second->name);
+		}
+		MAX_INDEX = menuItems.size() - 1;
+		index = 1;
 	}
-	for (auto item : hero->inventory) {
-		string text = item.second->name;
+
+	for (const string& itemName : menuItems) {
 		fontTexture = renderText(
-			text,
+			itemName,
 			Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
 			color,
 			FONT_SIZE,
@@ -90,8 +90,8 @@ void PauseMenu::drawPage1() {
 		);
 
 		int digits;
-		(int)text.size() > 0 ?
-			digits = int(log10((int)text.size()) + 1) :
+		(int)itemName.size() > 0 ?
+			digits = int(log10((int)itemName.size()) + 1) :
 			digits = 1;
 		int textXOffset = (FONT_SIZE)*digits;
 
@@ -107,6 +107,7 @@ void PauseMenu::drawPage2() {
 		menuItems.push_back("Resume");
 		menuItems.push_back("Exit");
 		MAX_INDEX = menuItems.size() - 1;
+		index = 1;
 	}
 
 	for (auto text : menuItems) {
