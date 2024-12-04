@@ -9,6 +9,9 @@ public:
 	virtual void draw() override;
 
 private:
+	vector<class Item*> inventory;
+	Item* selectedItem;
+
 	virtual void setUp() override;
 	virtual void drawMenuBackground() override;
 	virtual void drawText() override;

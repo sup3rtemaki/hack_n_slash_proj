@@ -1,6 +1,7 @@
 #include "ui/menu/pauseMenu.h"
 
 #include "hero.h"
+#include "item.h"
 #include "globals.h"
 
 const string FONT_FILE = "alagard.ttf";
@@ -35,10 +36,20 @@ void PauseMenu::setUp() {
 	menuState = MenuState::Inactive;
 	currentPage = MenuPage::PAGE1;
 	previousPage = MenuPage::PAGE5;
+
+	if (hero == nullptr) return;
+
+	for (auto item : hero->inventory) {
+		inventory.push_back(item.second);
+	}
 }
 
 void PauseMenu::drawMenuBackground() {
-	SDL_Rect bgRect = { 50, Globals::ScreenHeight / 8, 150, MENU_MAX_HEIGHT };
+	const int bgRectX = Globals::ScreenWidth / 16;
+	const int bgRectY = Globals::ScreenHeight / 16;
+	const int bgRectWidth = Globals::ScreenWidth - Globals::ScreenWidth / 8;
+	const int bgRectHeight = Globals::ScreenHeight - Globals::ScreenHeight / 8;
+	SDL_Rect bgRect = { bgRectX, bgRectY, bgRectWidth, bgRectHeight };
 	SDL_SetRenderDrawBlendMode(Globals::renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(Globals::renderer, 50, 50, 50, 120);
 	SDL_RenderFillRect(Globals::renderer, &bgRect);
@@ -71,15 +82,25 @@ void PauseMenu::drawSelectionBox() {
 }
 
 void PauseMenu::drawPage1() {
+	// Atualiza inventario
+	if (inventory.size() != hero->inventory.size()) {
+		inventory.clear();
+		for (auto item : hero->inventory) {
+			inventory.push_back(item.second);
+		}
+	}
+
+	// Atualiza menuItems caso mude de pagina
 	if (previousPage != currentPage) {
 		menuItems.clear();
-		for (auto item : hero->inventory) {
-			menuItems.push_back(item.second->name);
+		for (auto item : inventory) {
+			menuItems.push_back(item->name);
 		}
 		MAX_INDEX = menuItems.size() - 1;
 		index = 1;
 	}
 
+	// Desenha nomes dos itens
 	for (const string& itemName : menuItems) {
 		fontTexture = renderText(
 			itemName,
@@ -98,6 +119,18 @@ void PauseMenu::drawPage1() {
 		renderTexture(fontTexture, Globals::renderer, 90 - textXOffset, (Globals::ScreenHeight / 8) + 2 + textYOffset);
 
 		textYOffset += FONT_SIZE + 2;
+	}
+
+	// Desenha item selecionado
+	for (auto item : inventory) {
+		if (item->name == menuItems[index]) {
+			renderTexture(
+				item->image,
+				Globals::renderer,
+				(Globals::ScreenWidth / 2) + 5,
+				(Globals::ScreenHeight / 8) + 5
+			);
+		}
 	}
 }
 
