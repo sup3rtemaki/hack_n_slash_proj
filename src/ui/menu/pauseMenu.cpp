@@ -121,13 +121,26 @@ void PauseMenu::drawPage1() {
 		textYOffset += FONT_SIZE + 2;
 	}
 
-	// Desenha item selecionado
+	// Desenha item selecionado e texto de descrição do item
 	for (auto item : inventory) {
 		if (item->name == menuItems[index]) {
 			renderTexture(
 				item->image,
 				Globals::renderer,
 				(Globals::ScreenWidth / 2) + 5,
+				(Globals::ScreenHeight / 8) + 5
+			);
+
+			TTF_Font* font = nullptr;
+			font = TTF_OpenFont((Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE).c_str(), FONT_SIZE);
+
+			auto textSurf = TTF_RenderText_Blended_Wrapped(font, item->description.c_str(), color, 200);
+			SDL_Texture*  itemDescTexture = SDL_CreateTextureFromSurface(Globals::renderer, textSurf);
+
+			renderTexture(
+				itemDescTexture,
+				Globals::renderer,
+				(Globals::ScreenWidth / 2) + 5 + 32 + 2,
 				(Globals::ScreenHeight / 8) + 5
 			);
 		}
