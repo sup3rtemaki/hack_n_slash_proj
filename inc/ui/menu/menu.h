@@ -26,6 +26,10 @@ protected:
 	virtual void drawMenuBackground() = 0;
 	virtual void drawText() = 0;
 	virtual void drawSelectionBox() = 0;
+	virtual void onIndexUp() = 0;
+	virtual void onIndexDown() = 0;
+	virtual void onIndexLeft() = 0;
+	virtual void onIndexRight() = 0;
 };
 
 #endif // !MENU

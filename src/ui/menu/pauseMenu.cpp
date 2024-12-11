@@ -4,9 +4,9 @@
 #include "item.h"
 #include "globals.h"
 
-const string FONT_FILE = "alagard.ttf";
+const string FONT_FILE = "Berylium.ttf";
 const int MENU_MAX_HEIGHT = Globals::ScreenHeight - (Globals::ScreenHeight / 4);
-const int FONT_SIZE = 16;
+const int FONT_SIZE = 25;
 const SDL_Color color = { 255, 255, 255, 255 };
 int MAX_INDEX = 1;
 
@@ -19,11 +19,11 @@ void PauseMenu::draw() {
 	if (menuState == MenuState::Inactive) return;
 
 	if (index > MAX_INDEX) {
-		index = 0;
+		index = MAX_INDEX;
 	}
 
 	if (index < 0) {
-		index = MAX_INDEX;
+		index = 0;
 	}
 
 	drawMenuBackground();
@@ -97,7 +97,7 @@ void PauseMenu::drawPage1() {
 			menuItems.push_back(item->name);
 		}
 		MAX_INDEX = menuItems.size() - 1;
-		index = 1;
+		index = 0;
 	}
 
 	// Desenha nomes dos itens
@@ -109,6 +109,7 @@ void PauseMenu::drawPage1() {
 			FONT_SIZE,
 			Globals::renderer
 		);
+		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 
 		int digits;
 		(int)itemName.size() > 0 ?
@@ -116,7 +117,7 @@ void PauseMenu::drawPage1() {
 			digits = 1;
 		int textXOffset = (FONT_SIZE)*digits;
 
-		renderTexture(fontTexture, Globals::renderer, 90 - textXOffset, (Globals::ScreenHeight / 8) + 2 + textYOffset);
+		renderTexture(fontTexture, Globals::renderer, 95 - textXOffset, (Globals::ScreenHeight / 8) + 2 + textYOffset);
 
 		textYOffset += FONT_SIZE + 2;
 	}
@@ -149,14 +150,26 @@ void PauseMenu::drawPage1() {
 
 void PauseMenu::drawPage2() {
 	if (previousPage != currentPage) {
+		maxTextLines = 2;
 		menuItems.clear();
 		menuItems.push_back("Resume");
+		menuItems.push_back("Options");
+		menuItems.push_back("Credits");
 		menuItems.push_back("Exit");
-		MAX_INDEX = menuItems.size() - 1;
-		index = 1;
+		/*MAX_INDEX = menuItems.size() - 1;*/
+		index = 0;
+	}
+	vector<string> menuItemsToShow;
+	int firstMenuItemsLine = (index - maxTextLines) > 0 ?
+		index - maxTextLines :
+		0;
+	for (int i = firstMenuItemsLine; i < maxTextLines; i++) {
+		menuItemsToShow.push_back(menuItems[i]);
 	}
 
-	for (auto text : menuItems) {
+	MAX_INDEX = menuItemsToShow.size() - 1;
+
+	for (auto text : menuItemsToShow) {
 		fontTexture = renderText(
 			text,
 			Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
@@ -184,4 +197,16 @@ void PauseMenu::drawPage4() {
 }
 
 void PauseMenu::drawPage5() {
+}
+
+void PauseMenu::onIndexUp() {
+}
+
+void PauseMenu::onIndexDown() {
+}
+
+void PauseMenu::onIndexLeft() {
+}
+
+void PauseMenu::onIndexRight() {
 }

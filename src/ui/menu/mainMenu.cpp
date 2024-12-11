@@ -91,3 +91,19 @@ void MainMenu::drawSelectionBox() {
 
 	SDL_RenderDrawRect(Globals::renderer, &selectionRect);
 }
+
+void MainMenu::onIndexUp()
+{
+}
+
+void MainMenu::onIndexDown()
+{
+}
+
+void MainMenu::onIndexLeft()
+{
+}
+
+void MainMenu::onIndexRight()
+{
+}

@@ -11,6 +11,7 @@ public:
 private:
 	vector<class Item*> inventory;
 	Item* selectedItem;
+	int maxTextLines;
 
 	virtual void setUp() override;
 	virtual void drawMenuBackground() override;
@@ -21,6 +22,10 @@ private:
 	virtual void drawPage3() override;
 	virtual void drawPage4() override;
 	virtual void drawPage5() override;
+	virtual void onIndexUp() override;
+	virtual void onIndexDown() override;
+	virtual void onIndexLeft() override;
+	virtual void onIndexRight() override;
 };
 
 #endif // !PAUSE_MENU

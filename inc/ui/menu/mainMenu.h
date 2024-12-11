@@ -12,6 +12,10 @@ public:
 	virtual void drawMenuBackground() override;
 	virtual void drawText() override;
 	virtual void drawSelectionBox() override;
+	virtual void onIndexUp() override;
+	virtual void onIndexDown() override;
+	virtual void onIndexLeft() override;
+	virtual void onIndexRight() override;
 };
 
 #endif // !MAIN_MENU
