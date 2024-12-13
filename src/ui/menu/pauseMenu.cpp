@@ -18,14 +18,6 @@ PauseMenu::PauseMenu(Hero* hero) {
 void PauseMenu::draw() {
 	if (menuState == MenuState::Inactive) return;
 
-	if (index > MAX_INDEX) {
-		index = MAX_INDEX;
-	}
-
-	if (index < 0) {
-		index = 0;
-	}
-
 	drawMenuBackground();
 	drawText();
 	drawSelectionBox();
@@ -150,24 +142,21 @@ void PauseMenu::drawPage1() {
 
 void PauseMenu::drawPage2() {
 	if (previousPage != currentPage) {
-		maxTextLines = 2;
+		MAX_INDEX = 2;
+		supVisibleItemsLimit = MAX_INDEX;
+		infVisibleItemsLimit = 0;
 		menuItems.clear();
 		menuItems.push_back("Resume");
 		menuItems.push_back("Options");
 		menuItems.push_back("Credits");
 		menuItems.push_back("Exit");
-		/*MAX_INDEX = menuItems.size() - 1;*/
 		index = 0;
 	}
+
 	vector<string> menuItemsToShow;
-	int firstMenuItemsLine = (index - maxTextLines) > 0 ?
-		index - maxTextLines :
-		0;
-	for (int i = firstMenuItemsLine; i < maxTextLines; i++) {
+	for (int i = infVisibleItemsLimit; i < supVisibleItemsLimit; i++) {
 		menuItemsToShow.push_back(menuItems[i]);
 	}
-
-	MAX_INDEX = menuItemsToShow.size() - 1;
 
 	for (auto text : menuItemsToShow) {
 		fontTexture = renderText(
@@ -200,9 +189,29 @@ void PauseMenu::drawPage5() {
 }
 
 void PauseMenu::onIndexUp() {
+	index--;
+
+	if (index < 0) {
+		index = 0;
+	}
+
+	if (infVisibleItemsLimit > 0) {
+		supVisibleItemsLimit--;
+		infVisibleItemsLimit--;
+	}
 }
 
 void PauseMenu::onIndexDown() {
+	index++;
+
+	if (index >= MAX_INDEX) {
+		index = MAX_INDEX - 1;
+		
+		if (menuItems.size() > supVisibleItemsLimit) {
+			supVisibleItemsLimit++;
+			infVisibleItemsLimit++;
+		}
+	}
 }
 
 void PauseMenu::onIndexLeft() {
