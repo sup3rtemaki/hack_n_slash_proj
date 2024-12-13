@@ -74,6 +74,45 @@ void PauseMenu::drawSelectionBox() {
 }
 
 void PauseMenu::drawPage1() {
+	if (previousPage != currentPage) {
+		MAX_INDEX = 2;
+		supVisibleItemsLimit = MAX_INDEX;
+		infVisibleItemsLimit = 0;
+		menuItems.clear();
+		menuItems.push_back("Resume");
+		menuItems.push_back("Options");
+		menuItems.push_back("Credits");
+		menuItems.push_back("Exit");
+		index = 0;
+	}
+
+	vector<string> menuItemsToShow;
+	for (int i = infVisibleItemsLimit; i < supVisibleItemsLimit; i++) {
+		menuItemsToShow.push_back(menuItems[i]);
+	}
+
+	for (auto text : menuItemsToShow) {
+		fontTexture = renderText(
+			text,
+			Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+			color,
+			FONT_SIZE,
+			Globals::renderer
+		);
+
+		int digits;
+		(int)text.size() > 0 ?
+			digits = int(log10((int)text.size()) + 1) :
+			digits = 1;
+		int textXOffset = (FONT_SIZE)*digits;
+
+		renderTexture(fontTexture, Globals::renderer, 90 - textXOffset, (Globals::ScreenHeight / 8) + 2 + textYOffset);
+
+		textYOffset += FONT_SIZE + 2;
+	}
+}
+
+void PauseMenu::drawPage2() {
 	// Atualiza inventario
 	if (inventory.size() != hero->inventory.size()) {
 		inventory.clear();
@@ -128,7 +167,7 @@ void PauseMenu::drawPage1() {
 			font = TTF_OpenFont((Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE).c_str(), FONT_SIZE);
 
 			auto textSurf = TTF_RenderText_Blended_Wrapped(font, item->description.c_str(), color, 200);
-			SDL_Texture*  itemDescTexture = SDL_CreateTextureFromSurface(Globals::renderer, textSurf);
+			SDL_Texture* itemDescTexture = SDL_CreateTextureFromSurface(Globals::renderer, textSurf);
 
 			renderTexture(
 				itemDescTexture,
@@ -137,45 +176,6 @@ void PauseMenu::drawPage1() {
 				(Globals::ScreenHeight / 8) + 5
 			);
 		}
-	}
-}
-
-void PauseMenu::drawPage2() {
-	if (previousPage != currentPage) {
-		MAX_INDEX = 2;
-		supVisibleItemsLimit = MAX_INDEX;
-		infVisibleItemsLimit = 0;
-		menuItems.clear();
-		menuItems.push_back("Resume");
-		menuItems.push_back("Options");
-		menuItems.push_back("Credits");
-		menuItems.push_back("Exit");
-		index = 0;
-	}
-
-	vector<string> menuItemsToShow;
-	for (int i = infVisibleItemsLimit; i < supVisibleItemsLimit; i++) {
-		menuItemsToShow.push_back(menuItems[i]);
-	}
-
-	for (auto text : menuItemsToShow) {
-		fontTexture = renderText(
-			text,
-			Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
-			color,
-			FONT_SIZE,
-			Globals::renderer
-		);
-
-		int digits;
-		(int)text.size() > 0 ?
-			digits = int(log10((int)text.size()) + 1) :
-			digits = 1;
-		int textXOffset = (FONT_SIZE)*digits;
-
-		renderTexture(fontTexture, Globals::renderer, 90 - textXOffset, (Globals::ScreenHeight / 8) + 2 + textYOffset);
-
-		textYOffset += FONT_SIZE + 2;
 	}
 }
 
@@ -193,11 +193,11 @@ void PauseMenu::onIndexUp() {
 
 	if (index < 0) {
 		index = 0;
-	}
 
-	if (infVisibleItemsLimit > 0) {
-		supVisibleItemsLimit--;
-		infVisibleItemsLimit--;
+		if (infVisibleItemsLimit > 0) {
+			supVisibleItemsLimit--;
+			infVisibleItemsLimit--;
+		}
 	}
 }
 
