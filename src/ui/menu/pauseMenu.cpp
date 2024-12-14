@@ -124,59 +124,74 @@ void PauseMenu::drawPage2() {
 	// Atualiza menuItems caso mude de pagina
 	if (previousPage != currentPage) {
 		menuItems.clear();
+		itemsImages.clear();
 		for (auto item : inventory) {
-			menuItems.push_back(item->name);
+			//menuItems.push_back(item->name);
+			itemsImages.push_back(item->image);
 		}
-		MAX_INDEX = menuItems.size() - 1;
+		// MAX_INDEX = menuItems.size() - 1;
+		MAX_INDEX = 32;
 		index = 0;
 	}
 
-	// Desenha nomes dos itens
-	for (const string& itemName : menuItems) {
-		fontTexture = renderText(
-			itemName,
-			Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
-			color,
-			FONT_SIZE,
-			Globals::renderer
+	int x = (Globals::ScreenWidth / 6);
+	int y = (Globals::ScreenHeight / 8) + 5;
+	for (auto image : itemsImages) {
+		renderTexture(
+			image,
+			Globals::renderer,
+			x,
+			y
 		);
-		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-
-		int digits;
-		(int)itemName.size() > 0 ?
-			digits = int(log10((int)itemName.size()) + 1) :
-			digits = 1;
-		int textXOffset = (FONT_SIZE)*digits;
-
-		renderTexture(fontTexture, Globals::renderer, 95 - textXOffset, (Globals::ScreenHeight / 8) + 2 + textYOffset);
-
-		textYOffset += FONT_SIZE + 2;
+		x += 50;
 	}
+
+	// Desenha nomes dos itens
+	//for (const string& itemName : menuItems) {
+	//	fontTexture = renderText(
+	//		itemName,
+	//		Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+	//		color,
+	//		FONT_SIZE,
+	//		Globals::renderer
+	//	);
+	//	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+
+	//	int digits;
+	//	(int)itemName.size() > 0 ?
+	//		digits = int(log10((int)itemName.size()) + 1) :
+	//		digits = 1;
+	//	int textXOffset = (FONT_SIZE)*digits;
+
+	//	renderTexture(fontTexture, Globals::renderer, 95 - textXOffset, (Globals::ScreenHeight / 8) + 2 + textYOffset);
+
+	//	textYOffset += FONT_SIZE + 2;
+	//}
 
 	// Desenha item selecionado e texto de descrição do item
-	for (auto item : inventory) {
-		if (item->name == menuItems[index]) {
-			renderTexture(
-				item->image,
-				Globals::renderer,
-				(Globals::ScreenWidth / 2) + 5,
-				(Globals::ScreenHeight / 8) + 5
-			);
+	//for (auto item : inventory) {
+	//	if (item->name == menuItems[index]) {
+	//		renderTexture(
+	//			item->image,
+	//			Globals::renderer,
+	//			(Globals::ScreenWidth / 2) + 5,
+	//			(Globals::ScreenHeight / 8) + 5
+	//		);
 
-			TTF_Font* font = nullptr;
-			font = TTF_OpenFont((Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE).c_str(), FONT_SIZE);
+	//		TTF_Font* font = nullptr;
+	//		font = TTF_OpenFont((Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE).c_str(), FONT_SIZE);
 
-			auto textSurf = TTF_RenderText_Blended_Wrapped(font, item->description.c_str(), color, 200);
-			SDL_Texture* itemDescTexture = SDL_CreateTextureFromSurface(Globals::renderer, textSurf);
+	//		auto textSurf = TTF_RenderText_Blended_Wrapped(font, item->description.c_str(), color, 200);
+	//		SDL_Texture* itemDescTexture = SDL_CreateTextureFromSurface(Globals::renderer, textSurf);
 
-			renderTexture(
-				itemDescTexture,
-				Globals::renderer,
-				(Globals::ScreenWidth / 2) + 5 + 32 + 2,
-				(Globals::ScreenHeight / 8) + 5
-			);
-		}
-	}
+	//		renderTexture(
+	//			itemDescTexture,
+	//			Globals::renderer,
+	//			(Globals::ScreenWidth / 2) + 5 + 32 + 2,
+	//			(Globals::ScreenHeight / 8) + 5
+	//		);
+	//	}
+	//}
 }
 
 void PauseMenu::drawPage3() {
