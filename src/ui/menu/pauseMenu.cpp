@@ -84,6 +84,7 @@ void PauseMenu::drawPage1() {
 		menuItems.push_back("Credits");
 		menuItems.push_back("Exit");
 		index = 0;
+		currentPage = MenuPage::PAGE1;
 	}
 
 	vector<string> menuItemsToShow;
@@ -132,6 +133,7 @@ void PauseMenu::drawPage2() {
 		// MAX_INDEX = menuItems.size() - 1;
 		MAX_INDEX = 32;
 		index = 0;
+		currentPage = MenuPage::PAGE2;
 	}
 
 	int x = (Globals::ScreenWidth / 6);
@@ -204,28 +206,44 @@ void PauseMenu::drawPage5() {
 }
 
 void PauseMenu::onIndexUp() {
-	index--;
+	switch (currentPage) {
+	case MenuPage::PAGE1:
+		index--;
 
-	if (index < 0) {
-		index = 0;
+		if (index < 0) {
+			index = 0;
 
-		if (infVisibleItemsLimit > 0) {
-			supVisibleItemsLimit--;
-			infVisibleItemsLimit--;
+			if (infVisibleItemsLimit > 0) {
+				supVisibleItemsLimit--;
+				infVisibleItemsLimit--;
+			}
 		}
+		break;
+	case MenuPage::PAGE2:
+		break;
+	default:
+		break;
 	}
 }
 
 void PauseMenu::onIndexDown() {
-	index++;
+	switch (currentPage) {
+	case MenuPage::PAGE1:
+		index++;
 
-	if (index >= MAX_INDEX) {
-		index = MAX_INDEX - 1;
-		
-		if (menuItems.size() > supVisibleItemsLimit) {
-			supVisibleItemsLimit++;
-			infVisibleItemsLimit++;
+		if (index >= MAX_INDEX) {
+			index = MAX_INDEX - 1;
+
+			if (menuItems.size() > supVisibleItemsLimit) {
+				supVisibleItemsLimit++;
+				infVisibleItemsLimit++;
+			}
 		}
+		break;
+	case MenuPage::PAGE2:
+		break;
+	default:
+		break;
 	}
 }
 
