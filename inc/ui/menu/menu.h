@@ -22,6 +22,8 @@ protected:
 	SDL_Texture* fontTexture;
 	vector<string> menuItems;
 	int textYOffset;
+	int indexXPosition;
+	int indexYPosition;
 
 	virtual void drawMenuBackground() = 0;
 	virtual void drawText() = 0;

@@ -28,6 +28,10 @@ void PauseMenu::setUp() {
 	menuState = MenuState::Inactive;
 	currentPage = MenuPage::PAGE1;
 	previousPage = MenuPage::PAGE5;
+	selectionRect = new SDL_Rect();
+
+	selectionRect->w = 36;
+	selectionRect->h = 36;
 
 	if (hero == nullptr) return;
 
@@ -63,14 +67,20 @@ void PauseMenu::drawText() {
 }
 
 void PauseMenu::drawSelectionBox() {
-	const int yLinePos = (Globals::ScreenHeight / 8) + (FONT_SIZE + 2) * (index + 1);
+	selectionRect->x = indexXPosition;
+	selectionRect->y = indexYPosition;
+
 	SDL_SetRenderDrawColor(Globals::renderer, 200, 200, 200, 255);
-	SDL_RenderDrawLine(
-		Globals::renderer,
-		90,
-		yLinePos,
-		150,
-		yLinePos);
+	SDL_RenderDrawRect(Globals::renderer, selectionRect);
+
+	//const int yLinePos = (Globals::ScreenHeight / 8) + (FONT_SIZE + 2) * (index + 1);
+	//SDL_SetRenderDrawColor(Globals::renderer, 200, 200, 200, 255);
+	//SDL_RenderDrawLine(
+	//	Globals::renderer,
+	//	90,
+	//	yLinePos,
+	//	150,
+	//	yLinePos);
 }
 
 void PauseMenu::drawPage1() {
@@ -205,6 +215,15 @@ void PauseMenu::drawPage4() {
 void PauseMenu::drawPage5() {
 }
 
+SDL_Point PauseMenu::calculateRectSelectionBoxPosition() {
+	SDL_Point position;
+
+	position.x = (Globals::ScreenWidth / 6) * ((index % 3) + 1);
+	position.y = (Globals::ScreenHeight / 8) * ((index / 3) + 1);
+
+	return position;
+}
+
 void PauseMenu::onIndexUp() {
 	switch (currentPage) {
 	case MenuPage::PAGE1:
@@ -220,6 +239,16 @@ void PauseMenu::onIndexUp() {
 		}
 		break;
 	case MenuPage::PAGE2:
+		index -= 3;
+
+		if (index < 0) {
+			index = 0;
+
+			if (infVisibleItemsLimit > 0) {
+				supVisibleItemsLimit--;
+				infVisibleItemsLimit--;
+			}
+		}
 		break;
 	default:
 		break;
@@ -241,6 +270,16 @@ void PauseMenu::onIndexDown() {
 		}
 		break;
 	case MenuPage::PAGE2:
+		index += 3;
+
+		if (index >= MAX_INDEX) {
+			index = MAX_INDEX - 1;
+
+			if (menuItems.size() > supVisibleItemsLimit) {
+				supVisibleItemsLimit++;
+				infVisibleItemsLimit++;
+			}
+		}
 		break;
 	default:
 		break;
@@ -248,7 +287,43 @@ void PauseMenu::onIndexDown() {
 }
 
 void PauseMenu::onIndexLeft() {
+	switch (currentPage) {
+	case MenuPage::PAGE1:
+		break;
+	case MenuPage::PAGE2:
+		index--;
+
+		if (index < 0) {
+			index = 0;
+
+			if (infVisibleItemsLimit > 0) {
+				supVisibleItemsLimit--;
+				infVisibleItemsLimit--;
+			}
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void PauseMenu::onIndexRight() {
+	switch (currentPage) {
+	case MenuPage::PAGE1:
+		break;
+	case MenuPage::PAGE2:
+		index++;
+
+		if (index >= MAX_INDEX) {
+			index = MAX_INDEX - 1;
+
+			if (menuItems.size() > supVisibleItemsLimit) {
+				supVisibleItemsLimit++;
+				infVisibleItemsLimit++;
+			}
+		}
+		break;
+	default:
+		break;
+	}
 }

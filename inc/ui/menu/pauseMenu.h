@@ -18,6 +18,7 @@ private:
 	Item* selectedItem;
 	int infVisibleItemsLimit;
 	int supVisibleItemsLimit;
+	SDL_Rect* selectionRect;
 
 	virtual void setUp() override;
 	virtual void drawMenuBackground() override;
@@ -28,6 +29,8 @@ private:
 	virtual void drawPage3() override;
 	virtual void drawPage4() override;
 	virtual void drawPage5() override;
+
+	SDL_Point calculateRectSelectionBoxPosition();
 };
 
 #endif // !PAUSE_MENU
