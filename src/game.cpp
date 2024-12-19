@@ -260,10 +260,10 @@ void Game::runMainMenu() {
 		if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.scancode) {
 			case SDL_SCANCODE_UP:
-				mainMenu->index++;
+				mainMenu->onIndexUp();
 				break;
 			case SDL_SCANCODE_DOWN:
-				mainMenu->index--;
+				mainMenu->onIndexDown();
 				break;
 			case SDL_SCANCODE_ESCAPE:
 				quit = true;
@@ -470,7 +470,7 @@ void Game::runPausedGameMenu() {
 				pauseMenu->onIndexLeft();
 				break;
 			case SDL_SCANCODE_RIGHT:
-				pauseMenu->onIndexLeft();
+				pauseMenu->onIndexRight();
 				break;
 			case SDL_SCANCODE_1:
 				pauseMenu->currentPage = MenuPage::PAGE1;
@@ -489,15 +489,15 @@ void Game::runPausedGameMenu() {
 		}
 	}
 
-	if (hero->mustUpdateKeyJoyInput) {
-		heroKeyboardInput.update(&event);
-		heroJoystickInput.update(&event);
-		hero->mustUpdateKeyJoyInput = false;
-	}
+	//if (hero->mustUpdateKeyJoyInput) {
+	//	heroKeyboardInput.update(&event);
+	//	heroJoystickInput.update(&event);
+	//	hero->mustUpdateKeyJoyInput = false;
+	//}
 
 	// joystick axis must be updated outside the poll event loop because of how the
 	// interaction with the axis works. consider refactoring in the future
-	heroJoystickInput.checkAxis();
+	//heroJoystickInput.checkAxis();
 
 	// draw all entites
 	draw();

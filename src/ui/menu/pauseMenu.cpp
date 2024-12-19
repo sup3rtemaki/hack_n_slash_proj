@@ -7,6 +7,9 @@
 const string FONT_FILE = "Berylium.ttf";
 const int MENU_MAX_HEIGHT = Globals::ScreenHeight - (Globals::ScreenHeight / 4);
 const int FONT_SIZE = 25;
+const int ITEMS_IMAGES_GRID_X_POSITION = Globals::ScreenWidth / 6;
+const int ITEMS_IMAGES_GRID_Y_POSITION = Globals::ScreenHeight / 8;
+const int ITEMS_IMAGES_X_OFFSET = 50;
 const SDL_Color color = { 255, 255, 255, 255 };
 int MAX_INDEX = 1;
 
@@ -52,6 +55,8 @@ void PauseMenu::drawMenuBackground() {
 }
 
 void PauseMenu::drawText() {
+	if (menuState == MenuState::Inactive) return;
+
 	textYOffset = 0;
 
 	switch (currentPage) {
@@ -67,20 +72,12 @@ void PauseMenu::drawText() {
 }
 
 void PauseMenu::drawSelectionBox() {
-	selectionRect->x = indexXPosition;
-	selectionRect->y = indexYPosition;
+	SDL_Point selectionRectPos = calculateRectSelectionBoxPosition();
+	selectionRect->x = selectionRectPos.x;
+	selectionRect->y = selectionRectPos.y;
 
 	SDL_SetRenderDrawColor(Globals::renderer, 200, 200, 200, 255);
 	SDL_RenderDrawRect(Globals::renderer, selectionRect);
-
-	//const int yLinePos = (Globals::ScreenHeight / 8) + (FONT_SIZE + 2) * (index + 1);
-	//SDL_SetRenderDrawColor(Globals::renderer, 200, 200, 200, 255);
-	//SDL_RenderDrawLine(
-	//	Globals::renderer,
-	//	90,
-	//	yLinePos,
-	//	150,
-	//	yLinePos);
 }
 
 void PauseMenu::drawPage1() {
@@ -141,13 +138,13 @@ void PauseMenu::drawPage2() {
 			itemsImages.push_back(item->image);
 		}
 		// MAX_INDEX = menuItems.size() - 1;
-		MAX_INDEX = 32;
+		MAX_INDEX = 18;
 		index = 0;
 		currentPage = MenuPage::PAGE2;
 	}
 
-	int x = (Globals::ScreenWidth / 6);
-	int y = (Globals::ScreenHeight / 8) + 5;
+	int x = ITEMS_IMAGES_GRID_X_POSITION;
+	int y = ITEMS_IMAGES_GRID_Y_POSITION;
 	for (auto image : itemsImages) {
 		renderTexture(
 			image,
@@ -155,55 +152,8 @@ void PauseMenu::drawPage2() {
 			x,
 			y
 		);
-		x += 50;
+		x += ITEMS_IMAGES_X_OFFSET;
 	}
-
-	// Desenha nomes dos itens
-	//for (const string& itemName : menuItems) {
-	//	fontTexture = renderText(
-	//		itemName,
-	//		Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
-	//		color,
-	//		FONT_SIZE,
-	//		Globals::renderer
-	//	);
-	//	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-
-	//	int digits;
-	//	(int)itemName.size() > 0 ?
-	//		digits = int(log10((int)itemName.size()) + 1) :
-	//		digits = 1;
-	//	int textXOffset = (FONT_SIZE)*digits;
-
-	//	renderTexture(fontTexture, Globals::renderer, 95 - textXOffset, (Globals::ScreenHeight / 8) + 2 + textYOffset);
-
-	//	textYOffset += FONT_SIZE + 2;
-	//}
-
-	// Desenha item selecionado e texto de descrição do item
-	//for (auto item : inventory) {
-	//	if (item->name == menuItems[index]) {
-	//		renderTexture(
-	//			item->image,
-	//			Globals::renderer,
-	//			(Globals::ScreenWidth / 2) + 5,
-	//			(Globals::ScreenHeight / 8) + 5
-	//		);
-
-	//		TTF_Font* font = nullptr;
-	//		font = TTF_OpenFont((Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE).c_str(), FONT_SIZE);
-
-	//		auto textSurf = TTF_RenderText_Blended_Wrapped(font, item->description.c_str(), color, 200);
-	//		SDL_Texture* itemDescTexture = SDL_CreateTextureFromSurface(Globals::renderer, textSurf);
-
-	//		renderTexture(
-	//			itemDescTexture,
-	//			Globals::renderer,
-	//			(Globals::ScreenWidth / 2) + 5 + 32 + 2,
-	//			(Globals::ScreenHeight / 8) + 5
-	//		);
-	//	}
-	//}
 }
 
 void PauseMenu::drawPage3() {
@@ -217,9 +167,14 @@ void PauseMenu::drawPage5() {
 
 SDL_Point PauseMenu::calculateRectSelectionBoxPosition() {
 	SDL_Point position;
+	int xMultiplier;
+	int yMultiplier;
 
-	position.x = (Globals::ScreenWidth / 6) * ((index % 3) + 1);
-	position.y = (Globals::ScreenHeight / 8) * ((index / 3) + 1);
+	xMultiplier = index % 3;
+	yMultiplier = (index / 3);
+
+	position.x = (Globals::ScreenWidth / 6) + (ITEMS_IMAGES_X_OFFSET * xMultiplier);
+	position.y = (Globals::ScreenHeight / 8) * yMultiplier + 5 + 40;
 
 	return position;
 }
@@ -244,10 +199,10 @@ void PauseMenu::onIndexUp() {
 		if (index < 0) {
 			index = 0;
 
-			if (infVisibleItemsLimit > 0) {
-				supVisibleItemsLimit--;
-				infVisibleItemsLimit--;
-			}
+			//if (infVisibleItemsLimit > 0) {
+			//	supVisibleItemsLimit--;
+			//	infVisibleItemsLimit--;
+			//}
 		}
 		break;
 	default:
@@ -275,10 +230,10 @@ void PauseMenu::onIndexDown() {
 		if (index >= MAX_INDEX) {
 			index = MAX_INDEX - 1;
 
-			if (menuItems.size() > supVisibleItemsLimit) {
-				supVisibleItemsLimit++;
-				infVisibleItemsLimit++;
-			}
+			//if (menuItems.size() > supVisibleItemsLimit) {
+			//	supVisibleItemsLimit++;
+			//	infVisibleItemsLimit++;
+			//}
 		}
 		break;
 	default:
@@ -296,10 +251,10 @@ void PauseMenu::onIndexLeft() {
 		if (index < 0) {
 			index = 0;
 
-			if (infVisibleItemsLimit > 0) {
-				supVisibleItemsLimit--;
-				infVisibleItemsLimit--;
-			}
+			//if (infVisibleItemsLimit > 0) {
+			//	supVisibleItemsLimit--;
+			//	infVisibleItemsLimit--;
+			//}
 		}
 		break;
 	default:
@@ -317,10 +272,10 @@ void PauseMenu::onIndexRight() {
 		if (index >= MAX_INDEX) {
 			index = MAX_INDEX - 1;
 
-			if (menuItems.size() > supVisibleItemsLimit) {
-				supVisibleItemsLimit++;
-				infVisibleItemsLimit++;
-			}
+			//if (menuItems.size() > supVisibleItemsLimit) {
+			//	supVisibleItemsLimit++;
+			//	infVisibleItemsLimit++;
+			//}
 		}
 		break;
 	default:
