@@ -19,6 +19,7 @@ private:
 	int infVisibleItemsLimit;
 	int supVisibleItemsLimit;
 	SDL_Rect* selectionRect;
+	SDL_Texture* itemsBg;
 
 	virtual void setUp() override;
 	virtual void drawMenuBackground() override;

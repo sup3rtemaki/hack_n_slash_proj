@@ -5,6 +5,7 @@
 #include "globals.h"
 
 const string FONT_FILE = "Berylium.ttf";
+const string PAUSE_MENU_ITEMS_BG_FILE = "\\Assets\\Textures\\HUD\\pause_menu_items_bg.png";
 const int MENU_MAX_HEIGHT = Globals::ScreenHeight - (Globals::ScreenHeight / 4);
 const int FONT_SIZE = 25;
 const int ITEMS_IMAGES_GRID_X_POSITION = Globals::ScreenWidth / 6;
@@ -32,6 +33,10 @@ void PauseMenu::setUp() {
 	currentPage = MenuPage::PAGE1;
 	previousPage = MenuPage::PAGE5;
 	selectionRect = new SDL_Rect();
+	itemsBg = loadTexture(
+		Ui::RES_PATH + PAUSE_MENU_ITEMS_BG_FILE,
+		Globals::renderer
+	);
 
 	selectionRect->w = 36;
 	selectionRect->h = 36;
@@ -143,6 +148,15 @@ void PauseMenu::drawPage2() {
 		currentPage = MenuPage::PAGE2;
 	}
 
+	// Desenha a imagem de fundo dos items
+	renderTexture(
+		itemsBg,
+		Globals::renderer,
+		ITEMS_IMAGES_GRID_X_POSITION,
+		ITEMS_IMAGES_GRID_Y_POSITION
+	);
+
+	// Desenha imagens dos itens no inventario
 	int x = ITEMS_IMAGES_GRID_X_POSITION;
 	int y = ITEMS_IMAGES_GRID_Y_POSITION;
 	for (auto image : itemsImages) {
@@ -173,8 +187,8 @@ SDL_Point PauseMenu::calculateRectSelectionBoxPosition() {
 	xMultiplier = index % 3;
 	yMultiplier = (index / 3);
 
-	position.x = (Globals::ScreenWidth / 6) + (ITEMS_IMAGES_X_OFFSET * xMultiplier);
-	position.y = (Globals::ScreenHeight / 8) * yMultiplier + 5 + 40;
+	position.x = (Globals::ScreenWidth / 6) + (ITEMS_IMAGES_X_OFFSET * xMultiplier) - 2;
+	position.y = ((Globals::ScreenHeight / 8) * yMultiplier + 45) - 2;
 
 	return position;
 }
