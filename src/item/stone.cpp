@@ -1,4 +1,4 @@
-#include "stone.h"
+#include "item/stone.h"
 
 #include "projectiles/stoneProjectile.h"
 

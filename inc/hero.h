@@ -4,7 +4,7 @@
 #include "globals.h"
 #include "livingEntity.h"
 #include "soundManager.h"
-#include "itemsHub.h"
+#include "item/itemsHub.h"
 #include "map.h"
 #include <map>
 #include <unordered_map>

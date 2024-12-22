@@ -1,5 +1,5 @@
 #include "grob.h"
-#include "itemsHub.h"
+#include "item/itemsHub.h"
 
 const string Grob::GROB_ANIM_UP = "up";
 const string Grob::GROB_ANIM_DOWN = "down";

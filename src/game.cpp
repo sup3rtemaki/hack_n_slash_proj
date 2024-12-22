@@ -1,6 +1,6 @@
 #include "game.h"
 
-#include "door.h"
+#include "npcs/door.h"
 
 #include <iostream>
 #include <fstream>

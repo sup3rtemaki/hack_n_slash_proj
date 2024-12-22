@@ -1,5 +1,5 @@
 #include "glob.h"
-#include "itemsHub.h"
+#include "item/itemsHub.h"
 
 const string Glob::GLOB_ANIM_UP = "up";
 const string Glob::GLOB_ANIM_DOWN = "down";

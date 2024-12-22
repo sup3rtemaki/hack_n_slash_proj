@@ -2,7 +2,7 @@
 
 #include "bloodstain.h"
 #include "checkpoint.h"
-#include "door.h"
+#include "npcs/door.h"
 #include "ui/actionMessageUi.h"
 
 const string Hero::HERO_ANIM_UP = "up";

@@ -1,4 +1,4 @@
-#include "honeydewPotion.h"
+#include "item/honeydewPotion.h"
 
 HoneydewPotion::HoneydewPotion(AnimationSet* animSet, bool isOnGround, int quant) {
 	this->animSet = animSet;

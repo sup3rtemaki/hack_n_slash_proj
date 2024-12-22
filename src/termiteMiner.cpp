@@ -1,6 +1,6 @@
 #include "termiteMiner.h"
 
-#include "itemsHub.h"
+#include "item/itemsHub.h"
 #include "soundManager.h"
 
 const string TermiteMiner::TERMITE_MINER_ANIM_UP = "up";

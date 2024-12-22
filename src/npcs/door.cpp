@@ -1,4 +1,4 @@
-#include "door.h"
+#include "npcs/door.h"
 
 const int Door::DOOR_STATE_CLOSED = 0;
 const int Door::DOOR_STATE_OPENING = 1;
