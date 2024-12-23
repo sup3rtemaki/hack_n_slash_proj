@@ -14,7 +14,6 @@ public:
 
 private:
 	vector<class Item*> inventory;
-	vector<SDL_Texture*> itemsImages;
 	Item* selectedItem;
 	int infVisibleItemsLimit;
 	int supVisibleItemsLimit;

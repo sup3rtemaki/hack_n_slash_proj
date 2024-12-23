@@ -77,12 +77,26 @@ void PauseMenu::drawText() {
 }
 
 void PauseMenu::drawSelectionBox() {
-	SDL_Point selectionRectPos = calculateRectSelectionBoxPosition();
-	selectionRect->x = selectionRectPos.x;
-	selectionRect->y = selectionRectPos.y;
-
-	SDL_SetRenderDrawColor(Globals::renderer, 200, 200, 200, 255);
-	SDL_RenderDrawRect(Globals::renderer, selectionRect);
+	switch (currentPage) {
+	case MenuPage::PAGE1: {
+		const int yLinePos = (Globals::ScreenHeight / 8) + (FONT_SIZE + 2) * (index + 1);
+		SDL_SetRenderDrawColor(Globals::renderer, 200, 200, 200, 255);
+		SDL_RenderDrawLine(
+			Globals::renderer,
+			90,
+			yLinePos,
+			150,
+			yLinePos);
+		break;
+	}
+	case MenuPage::PAGE2:
+		SDL_Point selectionRectPos = calculateRectSelectionBoxPosition();
+		selectionRect->x = selectionRectPos.x;
+		selectionRect->y = selectionRectPos.y;
+		SDL_SetRenderDrawColor(Globals::renderer, 200, 200, 200, 255);
+		SDL_RenderDrawRect(Globals::renderer, selectionRect);
+		break;
+	}
 }
 
 void PauseMenu::drawPage1() {
@@ -137,13 +151,7 @@ void PauseMenu::drawPage2() {
 	// Atualiza menuItems caso mude de pagina
 	if (previousPage != currentPage) {
 		menuItems.clear();
-		itemsImages.clear();
-		for (auto item : inventory) {
-			//menuItems.push_back(item->name);
-			itemsImages.push_back(item->image);
-		}
-		// MAX_INDEX = menuItems.size() - 1;
-		MAX_INDEX = 18;
+		MAX_INDEX = inventory.size();
 		index = 0;
 		currentPage = MenuPage::PAGE2;
 	}
@@ -157,17 +165,37 @@ void PauseMenu::drawPage2() {
 	);
 
 	// Desenha imagens dos itens no inventario
-	int x = ITEMS_IMAGES_GRID_X_POSITION;
-	int y = ITEMS_IMAGES_GRID_Y_POSITION;
-	for (auto image : itemsImages) {
+	int textureXPos = ITEMS_IMAGES_GRID_X_POSITION;
+	for (auto item : inventory) {
 		renderTexture(
-			image,
+			item->image,
 			Globals::renderer,
-			x,
-			y
+			textureXPos,
+			ITEMS_IMAGES_GRID_Y_POSITION
 		);
-		x += ITEMS_IMAGES_X_OFFSET;
+		textureXPos += ITEMS_IMAGES_X_OFFSET;
 	}
+
+	// Desenha nome e descrição do item selecionado
+	const string& itemDesc = inventory.at(index)->name;
+	fontTexture = renderText(
+		itemDesc,
+		Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+		color,
+		FONT_SIZE,
+		Globals::renderer
+	);
+
+	int digits;
+	(int)itemDesc.size() > 0 ?
+		digits = int(log10((int)itemDesc.size()) + 1) :
+		digits = 1;
+	int textXOffset = (FONT_SIZE)*digits;
+
+	renderTexture(fontTexture,
+		Globals::renderer,
+		((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
+		(Globals::ScreenHeight / 8));
 }
 
 void PauseMenu::drawPage3() {
