@@ -176,10 +176,10 @@ void PauseMenu::drawPage2() {
 		textureXPos += ITEMS_IMAGES_X_OFFSET;
 	}
 
-	// Desenha nome e descrição do item selecionado
-	const string& itemDesc = inventory.at(index)->name;
+	// Desenha nome do item selecionado
+	const string& itemName = inventory.at(index)->name;
 	fontTexture = renderText(
-		itemDesc,
+		itemName,
 		Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
 		color,
 		FONT_SIZE,
@@ -187,15 +187,33 @@ void PauseMenu::drawPage2() {
 	);
 
 	int digits;
-	(int)itemDesc.size() > 0 ?
-		digits = int(log10((int)itemDesc.size()) + 1) :
+	(int)itemName.size() > 0 ?
+		digits = int(log10((int)itemName.size()) + 1) :
 		digits = 1;
-	int textXOffset = (FONT_SIZE)*digits;
+	int textXOffset = (FONT_SIZE) * digits;
 
 	renderTexture(fontTexture,
 		Globals::renderer,
 		((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
 		(Globals::ScreenHeight / 8));
+
+	// Desenha descrição do item selecionado
+	const string& itemDesc = inventory.at(index)->description;
+
+	TTF_Font* font = nullptr;
+	font = TTF_OpenFont((Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE).c_str(), (int)(FONT_SIZE / 1.5));
+	auto textSurf = TTF_RenderText_Blended_Wrapped(font, itemDesc.c_str(), color, 200);
+	fontTexture = SDL_CreateTextureFromSurface(Globals::renderer, textSurf);
+
+	(int)itemDesc.size() > 0 ?
+		digits = int(log10((int)itemDesc.size()) + 1) :
+		digits = 1;
+	textXOffset = (FONT_SIZE) * digits;
+
+	renderTexture(fontTexture,
+		Globals::renderer,
+		((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
+		(Globals::ScreenHeight / 8) + (FONT_SIZE * 1.2));
 }
 
 void PauseMenu::drawPage3() {
