@@ -1,3 +1,4 @@
+import glob
 import os
 import shutil
 
@@ -5,16 +6,20 @@ def copy_aseprite_files(src_folder, dest_folder, dest_folder_2):
     # Certifique-se de que a pasta de destino existe
     os.makedirs(dest_folder, exist_ok=True)
 
-    # Percorrer todos os arquivos na pasta de origem
+    # Copiar para dest_folder
+    for p in glob.glob('**/*.png', recursive=True, root_dir=src_folder):
+        if os.path.isfile(os.path.join(src_folder, p)):
+            os.makedirs(os.path.join(dest_folder, os.path.dirname(p)), exist_ok=True)
+            shutil.copy(os.path.join(src_folder, p), os.path.join(dest_folder, p))
+            print(f'{p} ---> {dest_folder}/{p}')
+
+    print(f'\n')
+
+    # Copiar para dest_folder_2
     for filename in os.listdir(src_folder):
         if filename.endswith('.png'):
             src_file_path = os.path.join(src_folder, filename)
-            dest_file_path = os.path.join(dest_folder, filename)
             dest_file_path_2 = os.path.join(dest_folder_2, filename)
-
-            # Copiar o arquivo png para a pasta de destino
-            shutil.copy(src_file_path, dest_file_path)
-            print(f'Arquivo {filename} copiado para: {dest_file_path}')
 
             shutil.copy(src_file_path, dest_file_path_2)
             print(f'Arquivo {filename} copiado para: {dest_file_path_2}')
