@@ -19,6 +19,8 @@ private:
 	int supVisibleItemsLimit;
 	SDL_Rect* selectionRect;
 	SDL_Texture* itemsBg;
+	SDL_Texture* leftArrowTexture;
+	SDL_Texture* rightArrowTexture;
 
 	virtual void setUp() override;
 	virtual void drawMenuBackground() override;

@@ -6,6 +6,8 @@
 
 const string FONT_FILE = "Berylium.ttf";
 const string PAUSE_MENU_ITEMS_BG_FILE = "\\Assets\\Textures\\HUD\\pause_menu_items_bg.png";
+const string PAUSE_ARROW_LEFT_FILE = "\\Assets\\Textures\\HUD\\arrow_left.png";
+const string PAUSE_ARROW_RIGHT_FILE = "\\Assets\\Textures\\HUD\\arrow_right.png";
 const int MENU_MAX_HEIGHT = Globals::ScreenHeight - (Globals::ScreenHeight / 4);
 const int FONT_SIZE = 25;
 const int ITEMS_IMAGES_GRID_X_POSITION = Globals::ScreenWidth / 6;
@@ -37,6 +39,14 @@ void PauseMenu::setUp() {
 		Ui::RES_PATH + PAUSE_MENU_ITEMS_BG_FILE,
 		Globals::renderer
 	);
+	leftArrowTexture = loadTexture(
+		Ui::RES_PATH + PAUSE_ARROW_LEFT_FILE,
+		Globals::renderer
+	);
+	rightArrowTexture = loadTexture(
+		Ui::RES_PATH + PAUSE_ARROW_RIGHT_FILE,
+		Globals::renderer
+	);
 
 	selectionRect->w = 36;
 	selectionRect->h = 36;
@@ -57,6 +67,25 @@ void PauseMenu::drawMenuBackground() {
 	SDL_SetRenderDrawBlendMode(Globals::renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(Globals::renderer, 50, 50, 50, 120);
 	SDL_RenderFillRect(Globals::renderer, &bgRect);
+
+	switch (currentPage) {
+	case MenuPage::PAGE1:
+		renderTexture(
+			rightArrowTexture,
+			Globals::renderer,
+			bgRectX + bgRectWidth - 5,
+			ITEMS_IMAGES_GRID_Y_POSITION + 100
+		);
+		break;
+	case MenuPage::PAGE2:
+		renderTexture(
+			leftArrowTexture,
+			Globals::renderer,
+			bgRectX - 5,
+			ITEMS_IMAGES_GRID_Y_POSITION + 100
+		);
+		break;
+	}
 }
 
 void PauseMenu::drawText() {
