@@ -1,13 +1,13 @@
 #include "ui/menu/pauseMenu.h"
 
+#include "ui/menu/subMenu.h"
 #include "hero.h"
 #include "item.h"
 #include "globals.h"
 
-const string FONT_FILE = "Berylium.ttf";
-const string PAUSE_MENU_ITEMS_BG_FILE = "\\Assets\\Textures\\HUD\\pause_menu_items_bg.png";
-const string PAUSE_ARROW_LEFT_FILE = "\\Assets\\Textures\\HUD\\arrow_left.png";
-const string PAUSE_ARROW_RIGHT_FILE = "\\Assets\\Textures\\HUD\\arrow_right.png";
+const string& PAUSE_MENU_ITEMS_BG_FILE = "\\Assets\\Textures\\HUD\\pause_menu_items_bg.png";
+const string& PAUSE_ARROW_LEFT_FILE = "\\Assets\\Textures\\HUD\\arrow_left.png";
+const string& PAUSE_ARROW_RIGHT_FILE = "\\Assets\\Textures\\HUD\\arrow_right.png";
 const int MENU_MAX_HEIGHT = Globals::ScreenHeight - (Globals::ScreenHeight / 4);
 const int FONT_SIZE = 25;
 const int ITEMS_IMAGES_GRID_X_POSITION = Globals::ScreenWidth / 6;
@@ -27,14 +27,25 @@ void PauseMenu::draw() {
 	drawMenuBackground();
 	drawText();
 	drawSelectionBox();
+
+	if (subMenu->menuState == MenuState::Active) {
+		subMenu->draw();
+	}
 }
 
 void PauseMenu::setUp() {
 	__super::setUp();
+	subMenu = new SubMenu(hero);
 	menuState = MenuState::Inactive;
 	currentPage = MenuPage::PAGE1;
 	previousPage = MenuPage::PAGE5;
+
 	selectionRect = new SDL_Rect();
+	selectionRect->w = 36;
+	selectionRect->h = 36;
+
+	bgRect = new SDL_Rect();
+
 	itemsBg = loadTexture(
 		Ui::RES_PATH + PAUSE_MENU_ITEMS_BG_FILE,
 		Globals::renderer
@@ -48,9 +59,6 @@ void PauseMenu::setUp() {
 		Globals::renderer
 	);
 
-	selectionRect->w = 36;
-	selectionRect->h = 36;
-
 	if (hero == nullptr) return;
 
 	for (auto item : hero->inventory) {
@@ -63,10 +71,10 @@ void PauseMenu::drawMenuBackground() {
 	const int bgRectY = Globals::ScreenHeight / 16;
 	const int bgRectWidth = Globals::ScreenWidth - Globals::ScreenWidth / 8;
 	const int bgRectHeight = Globals::ScreenHeight - Globals::ScreenHeight / 8;
-	SDL_Rect bgRect = { bgRectX, bgRectY, bgRectWidth, bgRectHeight };
+	*bgRect = { bgRectX, bgRectY, bgRectWidth, bgRectHeight };
 	SDL_SetRenderDrawBlendMode(Globals::renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(Globals::renderer, 50, 50, 50, 120);
-	SDL_RenderFillRect(Globals::renderer, &bgRect);
+	SDL_RenderFillRect(Globals::renderer, bgRect);
 
 	switch (currentPage) {
 	case MenuPage::PAGE1:
@@ -269,105 +277,133 @@ SDL_Point PauseMenu::calculateRectSelectionBoxPosition() {
 }
 
 void PauseMenu::onIndexUp() {
-	switch (currentPage) {
-	case MenuPage::PAGE1:
-		index--;
+	switch (menuState) {
+	case MenuState::Active:
+		switch (currentPage) {
+		case MenuPage::PAGE1:
+			index--;
 
-		if (index < 0) {
-			index = 0;
+			if (index < 0) {
+				index = 0;
 
-			if (infVisibleItemsLimit > 0) {
-				supVisibleItemsLimit--;
-				infVisibleItemsLimit--;
+				if (infVisibleItemsLimit > 0) {
+					supVisibleItemsLimit--;
+					infVisibleItemsLimit--;
+				}
 			}
+			break;
+		case MenuPage::PAGE2:
+			index -= 3;
+
+			if (index < 0) {
+				index = 0;
+
+				//if (infVisibleItemsLimit > 0) {
+				//	supVisibleItemsLimit--;
+				//	infVisibleItemsLimit--;
+				//}
+			}
+			break;
+		default:
+			break;
 		}
 		break;
-	case MenuPage::PAGE2:
-		index -= 3;
-
-		if (index < 0) {
-			index = 0;
-
-			//if (infVisibleItemsLimit > 0) {
-			//	supVisibleItemsLimit--;
-			//	infVisibleItemsLimit--;
-			//}
-		}
-		break;
-	default:
+	case MenuState::Background:
+		subMenu->onIndexUp();
 		break;
 	}
 }
 
 void PauseMenu::onIndexDown() {
-	switch (currentPage) {
-	case MenuPage::PAGE1:
-		index++;
+	switch (menuState) {
+	case MenuState::Active:
+		switch (currentPage) {
+		case MenuPage::PAGE1:
+			index++;
 
-		if (index >= MAX_INDEX) {
-			index = MAX_INDEX - 1;
+			if (index >= MAX_INDEX) {
+				index = MAX_INDEX - 1;
 
-			if (menuItems.size() > supVisibleItemsLimit) {
-				supVisibleItemsLimit++;
-				infVisibleItemsLimit++;
+				if (menuItems.size() > supVisibleItemsLimit) {
+					supVisibleItemsLimit++;
+					infVisibleItemsLimit++;
+				}
 			}
+			break;
+		case MenuPage::PAGE2:
+			index += 3;
+
+			if (index >= MAX_INDEX) {
+				index = MAX_INDEX - 1;
+
+				//if (menuItems.size() > supVisibleItemsLimit) {
+				//	supVisibleItemsLimit++;
+				//	infVisibleItemsLimit++;
+				//}
+			}
+			break;
+		default:
+			break;
 		}
 		break;
-	case MenuPage::PAGE2:
-		index += 3;
-
-		if (index >= MAX_INDEX) {
-			index = MAX_INDEX - 1;
-
-			//if (menuItems.size() > supVisibleItemsLimit) {
-			//	supVisibleItemsLimit++;
-			//	infVisibleItemsLimit++;
-			//}
-		}
-		break;
-	default:
+	case MenuState::Background:
+		subMenu->onIndexDown();
 		break;
 	}
 }
 
 void PauseMenu::onIndexLeft() {
-	switch (currentPage) {
-	case MenuPage::PAGE1:
-		break;
-	case MenuPage::PAGE2:
-		index--;
+	if (menuState == MenuState::Active) {
+		switch (currentPage) {
+		case MenuPage::PAGE1:
+			break;
+		case MenuPage::PAGE2:
+			index--;
 
-		if (index < 0) {
-			index = 0;
+			if (index < 0) {
+				index = 0;
 
-			//if (infVisibleItemsLimit > 0) {
-			//	supVisibleItemsLimit--;
-			//	infVisibleItemsLimit--;
-			//}
+				//if (infVisibleItemsLimit > 0) {
+				//	supVisibleItemsLimit--;
+				//	infVisibleItemsLimit--;
+				//}
+			}
+			break;
+		default:
+			break;
 		}
-		break;
-	default:
-		break;
 	}
 }
 
 void PauseMenu::onIndexRight() {
-	switch (currentPage) {
-	case MenuPage::PAGE1:
-		break;
-	case MenuPage::PAGE2:
-		index++;
+	if (menuState == MenuState::Active) {
+		switch (currentPage) {
+		case MenuPage::PAGE1:
+			break;
+		case MenuPage::PAGE2:
+			index++;
 
-		if (index >= MAX_INDEX) {
-			index = MAX_INDEX - 1;
+			if (index >= MAX_INDEX) {
+				index = MAX_INDEX - 1;
 
-			//if (menuItems.size() > supVisibleItemsLimit) {
-			//	supVisibleItemsLimit++;
-			//	infVisibleItemsLimit++;
-			//}
+				//if (menuItems.size() > supVisibleItemsLimit) {
+				//	supVisibleItemsLimit++;
+				//	infVisibleItemsLimit++;
+				//}
+			}
+			break;
+		default:
+			break;
 		}
-		break;
-	default:
-		break;
 	}
+}
+
+void PauseMenu::showSubMenu() {
+	subMenu->activateSubMenu(selectionRect->x + 32, selectionRect->y);
+	menuState = MenuState::Background;
+}
+
+void PauseMenu::hideSubMenu() {
+	subMenu->menuState = MenuState::Inactive;
+	menuState = MenuState::Active;
 }

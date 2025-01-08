@@ -7,6 +7,7 @@
 class Ui {
 public:
 	string RES_PATH;
+	string FONT_FILE = "Berylium.ttf";;
 	static const string HUD_TEXTURES_PATH;
 	static const string FONTS_PATH;
 

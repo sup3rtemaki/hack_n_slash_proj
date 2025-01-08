@@ -11,16 +11,18 @@ public:
 	virtual void onIndexDown() override;
 	virtual void onIndexLeft() override;
 	virtual void onIndexRight() override;
+	void showSubMenu();
+	void hideSubMenu();
 
 private:
 	vector<class Item*> inventory;
 	Item* selectedItem;
 	int infVisibleItemsLimit;
 	int supVisibleItemsLimit;
-	SDL_Rect* selectionRect;
 	SDL_Texture* itemsBg;
 	SDL_Texture* leftArrowTexture;
 	SDL_Texture* rightArrowTexture;
+	class SubMenu* subMenu;
 
 	virtual void setUp() override;
 	virtual void drawMenuBackground() override;

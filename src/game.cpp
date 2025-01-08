@@ -454,11 +454,21 @@ void Game::runPausedGameMenu() {
 		if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.scancode) {
 			case SDL_SCANCODE_ESCAPE:
-				pauseMenu->menuState = MenuState::Inactive;
-				Globals::pause = false;
-				gameState = GameState::InGame;
+				switch (pauseMenu->menuState) {
+				case MenuState::Active:
+					pauseMenu->menuState = MenuState::Inactive;
+					Globals::pause = false;
+					gameState = GameState::InGame;
+					break;
+				case MenuState::Background:
+					pauseMenu->hideSubMenu();
+					break;
+				}
 				break;
 			case SDL_SCANCODE_SPACE:
+				if (pauseMenu->currentPage == MenuPage::PAGE2) {
+					pauseMenu->showSubMenu();
+				}
 				break;
 			case SDL_SCANCODE_UP:
 				pauseMenu->onIndexUp();

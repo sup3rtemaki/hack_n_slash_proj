@@ -20,6 +20,8 @@ protected:
 	class Hero* hero = nullptr;
 	SDL_Texture* bgImage;
 	SDL_Texture* fontTexture;
+	SDL_Rect* selectionRect;
+	SDL_Rect* bgRect;
 	vector<string> menuItems;
 	int textYOffset;
 	int indexXPosition;

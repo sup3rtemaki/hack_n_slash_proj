@@ -3,7 +3,6 @@
 #include "hero.h"
 #include "globals.h"
 
-const string FONT_FILE = "alagard.ttf";
 const int FONT_SIZE = 32;
 const int FONT_X = (Globals::ScreenWidth / 2);
 const int FONT_Y = (Globals::ScreenHeight / 2);
@@ -16,6 +15,7 @@ MainMenu::MainMenu() {
 
 void MainMenu::setUp() {
 	__super::setUp();
+	FONT_FILE = "alagard.ttf";
 	menuState = MenuState::Active;
 	index = 0;
 	textYOffset = 0;
