@@ -33,6 +33,157 @@ void PauseMenu::draw() {
 	}
 }
 
+void PauseMenu::drawPageInitialCheck() {
+	switch (currentPage) {
+	case MenuPage::PAGE1:
+		// Atualiza menuItems caso mude de pagina
+		if (previousPage != currentPage) {
+			MAX_INDEX = 2;
+			supVisibleItemsLimit = MAX_INDEX;
+			infVisibleItemsLimit = 0;
+			menuItems.clear();
+			menuItems.push_back("Resume");
+			menuItems.push_back("Options");
+			menuItems.push_back("Credits");
+			menuItems.push_back("Exit");
+			index = 0;
+			currentPage = MenuPage::PAGE1;
+		}
+		break;
+	case MenuPage::PAGE2:
+		// Atualiza inventarios
+		if (inventory.size() != hero->inventory.size()) {
+			inventory.clear();
+			for (auto item : hero->inventory) {
+				inventory.push_back(item.second);
+			}
+		}
+
+		// Atualiza menuItems caso mude de pagina
+		if (previousPage != currentPage) {
+			menuItems.clear();
+			MAX_INDEX = inventory.size();
+			index = 0;
+			currentPage = MenuPage::PAGE2;
+		}
+		break;
+	}
+}
+
+void PauseMenu::drawInventoryItems() {
+	// Desenha a imagem de fundo dos items
+	renderTexture(
+		itemsBg,
+		Globals::renderer,
+		ITEMS_IMAGES_GRID_X_POSITION,
+		ITEMS_IMAGES_GRID_Y_POSITION
+	);
+
+	// Desenha imagens dos itens no inventario
+	int textureXPos = ITEMS_IMAGES_GRID_X_POSITION;
+	int textureYPos = ITEMS_IMAGES_GRID_Y_POSITION;
+	int textureXPosReset = 0;
+	int textureYPosOffset = 0;
+	for (auto item : inventory) {
+		renderTexture(
+			item->image,
+			Globals::renderer,
+			textureXPos,
+			textureYPos
+		);
+		textureXPos += ITEMS_IMAGES_X_OFFSET;
+		textureYPosOffset++;
+		textureXPosReset++;
+
+		if (textureXPosReset >= 3) {
+			textureXPosReset = 0;
+			textureXPos = ITEMS_IMAGES_GRID_X_POSITION;
+		}
+
+		if (textureYPosOffset > 0 && textureYPosOffset % 3 == 0) {
+			textureYPos += (Globals::ScreenHeight / 8);
+		}
+	}
+}
+
+void PauseMenu::drawSelectedItemNameAndDescription() {
+	// Desenha nome do item selecionado
+	const string& itemName = inventory.at(index)->name;
+	fontTexture = renderText(
+		itemName,
+		Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+		color,
+		FONT_SIZE,
+		Globals::renderer
+	);
+
+	int digits;
+	(int)itemName.size() > 0 ?
+		digits = int(log10((int)itemName.size()) + 1) :
+		digits = 1;
+	int textXOffset = (FONT_SIZE)*digits;
+
+	renderTexture(fontTexture,
+		Globals::renderer,
+		((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
+		(Globals::ScreenHeight / 8));
+
+	// Desenha descrição do item selecionado
+	const string& itemDesc = inventory.at(index)->description;
+
+	TTF_Font* font = nullptr;
+	font = TTF_OpenFont((Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE).c_str(), (int)(FONT_SIZE / 1.5));
+	auto textSurf = TTF_RenderText_Blended_Wrapped(font, itemDesc.c_str(), color, 200);
+	fontTexture = SDL_CreateTextureFromSurface(Globals::renderer, textSurf);
+
+	(int)itemDesc.size() > 0 ?
+		digits = int(log10((int)itemDesc.size()) + 1) :
+		digits = 1;
+	textXOffset = (FONT_SIZE)*digits;
+
+	renderTexture(fontTexture,
+		Globals::renderer,
+		((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
+		(Globals::ScreenHeight / 8) + (FONT_SIZE * 1.2));
+}
+
+void PauseMenu::drawQuickInventory() {
+	// Desenha imagens dos itens no inventario
+	int textureXPos = ((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION - 32);
+	int textureYPos = 270;
+	int textureXPosReset = 0;
+	int textureYPosOffset = 0;
+	for (auto item : inventory) {
+		if (
+			std::find(
+				hero->quickAccessInventory.begin(),
+				hero->quickAccessInventory.end(),
+				item->id) ==
+			hero->quickAccessInventory.end()) {
+			continue;
+		}
+
+		renderTexture(
+			item->image,
+			Globals::renderer,
+			textureXPos,
+			textureYPos
+		);
+		textureXPos += ITEMS_IMAGES_X_OFFSET - 10;
+		textureYPosOffset++;
+		textureXPosReset++;
+
+		if (textureXPosReset >= 5) {
+			textureXPosReset = 0;
+			textureXPos = ((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION);;
+		}
+
+		if (textureYPosOffset > 0 && textureYPosOffset % 5 == 0) {
+			textureYPos += (Globals::ScreenHeight / 8);
+		}
+	}
+}
+
 void PauseMenu::setUp() {
 	__super::setUp();
 	subMenu = new SubMenu(hero);
@@ -137,18 +288,7 @@ void PauseMenu::drawSelectionBox() {
 }
 
 void PauseMenu::drawPage1() {
-	if (previousPage != currentPage) {
-		MAX_INDEX = 2;
-		supVisibleItemsLimit = MAX_INDEX;
-		infVisibleItemsLimit = 0;
-		menuItems.clear();
-		menuItems.push_back("Resume");
-		menuItems.push_back("Options");
-		menuItems.push_back("Credits");
-		menuItems.push_back("Exit");
-		index = 0;
-		currentPage = MenuPage::PAGE1;
-	}
+	drawPageInitialCheck();
 
 	vector<string> menuItemsToShow;
 	for (int i = infVisibleItemsLimit; i < supVisibleItemsLimit; i++) {
@@ -177,80 +317,10 @@ void PauseMenu::drawPage1() {
 }
 
 void PauseMenu::drawPage2() {
-	// Atualiza inventario
-	if (inventory.size() != hero->inventory.size()) {
-		inventory.clear();
-		for (auto item : hero->inventory) {
-			inventory.push_back(item.second);
-		}
-	}
-
-	// Atualiza menuItems caso mude de pagina
-	if (previousPage != currentPage) {
-		menuItems.clear();
-		MAX_INDEX = inventory.size();
-		index = 0;
-		currentPage = MenuPage::PAGE2;
-	}
-
-	// Desenha a imagem de fundo dos items
-	renderTexture(
-		itemsBg,
-		Globals::renderer,
-		ITEMS_IMAGES_GRID_X_POSITION,
-		ITEMS_IMAGES_GRID_Y_POSITION
-	);
-
-	// Desenha imagens dos itens no inventario
-	int textureXPos = ITEMS_IMAGES_GRID_X_POSITION;
-	for (auto item : inventory) {
-		renderTexture(
-			item->image,
-			Globals::renderer,
-			textureXPos,
-			ITEMS_IMAGES_GRID_Y_POSITION
-		);
-		textureXPos += ITEMS_IMAGES_X_OFFSET;
-	}
-
-	// Desenha nome do item selecionado
-	const string& itemName = inventory.at(index)->name;
-	fontTexture = renderText(
-		itemName,
-		Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
-		color,
-		FONT_SIZE,
-		Globals::renderer
-	);
-
-	int digits;
-	(int)itemName.size() > 0 ?
-		digits = int(log10((int)itemName.size()) + 1) :
-		digits = 1;
-	int textXOffset = (FONT_SIZE) * digits;
-
-	renderTexture(fontTexture,
-		Globals::renderer,
-		((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
-		(Globals::ScreenHeight / 8));
-
-	// Desenha descrição do item selecionado
-	const string& itemDesc = inventory.at(index)->description;
-
-	TTF_Font* font = nullptr;
-	font = TTF_OpenFont((Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE).c_str(), (int)(FONT_SIZE / 1.5));
-	auto textSurf = TTF_RenderText_Blended_Wrapped(font, itemDesc.c_str(), color, 200);
-	fontTexture = SDL_CreateTextureFromSurface(Globals::renderer, textSurf);
-
-	(int)itemDesc.size() > 0 ?
-		digits = int(log10((int)itemDesc.size()) + 1) :
-		digits = 1;
-	textXOffset = (FONT_SIZE) * digits;
-
-	renderTexture(fontTexture,
-		Globals::renderer,
-		((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
-		(Globals::ScreenHeight / 8) + (FONT_SIZE * 1.2));
+	drawPageInitialCheck();
+	drawInventoryItems();
+	drawSelectedItemNameAndDescription();
+	drawQuickInventory();
 }
 
 void PauseMenu::drawPage3() {

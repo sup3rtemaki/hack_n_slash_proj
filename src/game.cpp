@@ -483,7 +483,9 @@ void Game::runPausedGameMenu() {
 				pauseMenu->onIndexRight();
 				break;
 			case SDL_SCANCODE_1:
-				pauseMenu->currentPage = MenuPage::PAGE1;
+				if (pauseMenu->menuState == MenuState::Active) {
+					pauseMenu->currentPage = MenuPage::PAGE1;
+				}
 				break;
 			case SDL_SCANCODE_2:
 				pauseMenu->currentPage = MenuPage::PAGE2;

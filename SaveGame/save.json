@@ -18,10 +18,14 @@
             "id": 1,
             "itemQty": 6
         },
-        {
-            "id": 3,
-            "itemQty": 1
-        }
+      {
+        "id": 3,
+        "itemQty": 1
+      },
+      {
+        "id": 2,
+        "itemQty": 1
+      }
     ],
     "mapFile": "warrior_halls_3.json"
 }

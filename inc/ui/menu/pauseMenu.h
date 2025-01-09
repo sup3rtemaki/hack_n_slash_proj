@@ -24,6 +24,11 @@ private:
 	SDL_Texture* rightArrowTexture;
 	class SubMenu* subMenu;
 
+	void drawPageInitialCheck();
+	void drawInventoryItems();
+	void drawSelectedItemNameAndDescription();
+	void drawQuickInventory();
+
 	virtual void setUp() override;
 	virtual void drawMenuBackground() override;
 	virtual void drawText() override;
