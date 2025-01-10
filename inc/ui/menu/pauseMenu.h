@@ -28,6 +28,7 @@ private:
 	void drawInventoryItems();
 	void drawSelectedItemNameAndDescription();
 	void drawQuickInventory();
+	void drawMenuForeground();
 
 	virtual void setUp() override;
 	virtual void drawMenuBackground() override;

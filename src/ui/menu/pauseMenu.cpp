@@ -13,6 +13,8 @@ const int FONT_SIZE = 25;
 const int ITEMS_IMAGES_GRID_X_POSITION = Globals::ScreenWidth / 6;
 const int ITEMS_IMAGES_GRID_Y_POSITION = Globals::ScreenHeight / 8;
 const int ITEMS_IMAGES_X_OFFSET = 50;
+const int QUICK_INVENTORY_ITEMS_GRID_X_POSITION = ((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION - 50);
+const int QUICK_INVENTORY_ITEMS_GRID_Y_POSITION = Globals::ScreenHeight - (Globals::ScreenHeight / 3);
 const SDL_Color color = { 255, 255, 255, 255 };
 int MAX_INDEX = 1;
 
@@ -149,8 +151,8 @@ void PauseMenu::drawSelectedItemNameAndDescription() {
 
 void PauseMenu::drawQuickInventory() {
 	// Desenha imagens dos itens no inventario
-	int textureXPos = ((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION - 32);
-	int textureYPos = 270;
+	int textureXPos = QUICK_INVENTORY_ITEMS_GRID_X_POSITION;
+	int textureYPos = QUICK_INVENTORY_ITEMS_GRID_Y_POSITION;
 	int textureXPosReset = 0;
 	int textureYPosOffset = 0;
 	for (auto item : inventory) {
@@ -173,14 +175,35 @@ void PauseMenu::drawQuickInventory() {
 		textureYPosOffset++;
 		textureXPosReset++;
 
-		if (textureXPosReset >= 5) {
+		if (textureXPosReset >= 3) {
 			textureXPosReset = 0;
-			textureXPos = ((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION);;
+			textureXPos = QUICK_INVENTORY_ITEMS_GRID_X_POSITION;
 		}
 
-		if (textureYPosOffset > 0 && textureYPosOffset % 5 == 0) {
+		if (textureYPosOffset > 0 && textureYPosOffset % 3 == 0) {
 			textureYPos += (Globals::ScreenHeight / 8);
 		}
+	}
+}
+
+void PauseMenu::drawMenuForeground() {
+	switch (currentPage) {
+	case MenuPage::PAGE2:
+		SDL_SetRenderDrawColor(Globals::renderer, 100, 100, 100, 200);
+		SDL_RenderDrawLine(
+			Globals::renderer,
+			Globals::ScreenWidth / 2,
+			Globals::ScreenHeight / 14,
+			Globals::ScreenWidth / 2,
+			Globals::ScreenHeight - Globals::ScreenHeight / 14);
+
+		SDL_RenderDrawLine(
+			Globals::renderer,
+			Globals::ScreenWidth - Globals::ScreenWidth / 3,
+			225,
+			Globals::ScreenWidth - 100,
+			225);
+		break;
 	}
 }
 
@@ -224,7 +247,7 @@ void PauseMenu::drawMenuBackground() {
 	const int bgRectHeight = Globals::ScreenHeight - Globals::ScreenHeight / 8;
 	*bgRect = { bgRectX, bgRectY, bgRectWidth, bgRectHeight };
 	SDL_SetRenderDrawBlendMode(Globals::renderer, SDL_BLENDMODE_BLEND);
-	SDL_SetRenderDrawColor(Globals::renderer, 50, 50, 50, 120);
+	SDL_SetRenderDrawColor(Globals::renderer, 50, 50, 50, 220);
 	SDL_RenderFillRect(Globals::renderer, bgRect);
 
 	switch (currentPage) {
@@ -317,6 +340,7 @@ void PauseMenu::drawPage1() {
 }
 
 void PauseMenu::drawPage2() {
+	drawMenuForeground();
 	drawPageInitialCheck();
 	drawInventoryItems();
 	drawSelectedItemNameAndDescription();
