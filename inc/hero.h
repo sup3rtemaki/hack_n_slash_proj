@@ -104,6 +104,7 @@ public:
 	int qtyItemsPicked;
 	int attackBufferIndex;
 	int prevAttackState;
+	int itemIdToUseAfterClosingMenu;
 
 	float attackTimer;
 

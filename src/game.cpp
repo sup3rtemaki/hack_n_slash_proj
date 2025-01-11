@@ -80,10 +80,10 @@ Game::Game() {
 	hero->essence = saveHandler.getEssence();
 	hero->inventory.clear();
 	hero->inventory = loadInventoryItems(saveHandler.getItems());
-	for (auto i : hero->inventory) {
-		hero->addItemToQuickAccess(i.first);
-		hero->quickAccessInventoryIndex++;
-	}
+	//for (auto i : hero->inventory) {
+	//	hero->addItemToQuickAccess(i.first);
+	//	hero->quickAccessInventoryIndex++;
+	//}
 	hero->quickAccessInventoryIndex = 0;
 	hero->lastCheckpointMapFile = currentMap->file;
 
@@ -454,6 +454,12 @@ void Game::runPausedGameMenu() {
 		if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.scancode) {
 			case SDL_SCANCODE_ESCAPE:
+				// Verifica se está no modo de seleção de quick slot
+				if (pauseMenu->inventoryMode == InventoryMode::SelectingQuickSlot) {
+					pauseMenu->cancelQuickSlotSelection();
+					break;
+				}
+
 				switch (pauseMenu->menuState) {
 				case MenuState::Active:
 					pauseMenu->menuState = MenuState::Inactive;
@@ -465,9 +471,25 @@ void Game::runPausedGameMenu() {
 					break;
 				}
 				break;
+
 			case SDL_SCANCODE_SPACE:
-				if (pauseMenu->currentPage == MenuPage::PAGE2) {
-					pauseMenu->showSubMenu();
+				// Verifica se está no modo de seleção de quick slot
+				if (pauseMenu->inventoryMode == InventoryMode::SelectingQuickSlot) {
+					pauseMenu->confirmQuickSlotSelection();
+					break;
+				}
+
+				switch (pauseMenu->currentPage) {
+				case (MenuPage::PAGE1):
+					break;
+				case (MenuPage::PAGE2):
+					if (pauseMenu->menuState == MenuState::Active) {
+						pauseMenu->showSubMenu();
+					}
+					else if (pauseMenu->menuState == MenuState::Background) {
+						pauseMenu->onSubMenuAction();
+					}
+					break;
 				}
 				break;
 			case SDL_SCANCODE_UP:

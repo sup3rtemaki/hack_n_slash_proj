@@ -29,6 +29,7 @@ void PauseMenu::draw() {
 	drawMenuBackground();
 	drawText();
 	drawSelectionBox();
+	drawQuickAccessSelectionBox(); // Adicione esta linha
 
 	if (subMenu->menuState == MenuState::Active) {
 		subMenu->draw();
@@ -93,6 +94,21 @@ void PauseMenu::drawInventoryItems() {
 			textureXPos,
 			textureYPos
 		);
+
+		// Desenha um indicador se o item está no quick access
+		bool isInQuickAccess = std::find(
+			hero->quickAccessInventory.begin(),
+			hero->quickAccessInventory.end(),
+			item->id
+		) != hero->quickAccessInventory.end();
+
+		if (isInQuickAccess) {
+			// Desenha um pequeno ícone ou borda colorida
+			SDL_Rect indicator = { textureXPos + 30, textureYPos, 10, 10 };
+			SDL_SetRenderDrawColor(Globals::renderer, 0, 255, 0, 255);
+			SDL_RenderFillRect(Globals::renderer, &indicator);
+		}
+
 		textureXPos += ITEMS_IMAGES_X_OFFSET;
 		textureYPosOffset++;
 		textureXPosReset++;
@@ -207,37 +223,110 @@ void PauseMenu::drawMenuForeground() {
 	}
 }
 
-void PauseMenu::setUp() {
-	__super::setUp();
-	subMenu = new SubMenu(hero);
-	menuState = MenuState::Inactive;
-	currentPage = MenuPage::PAGE1;
-	previousPage = MenuPage::PAGE5;
-
-	selectionRect = new SDL_Rect();
-	selectionRect->w = 36;
-	selectionRect->h = 36;
-
-	bgRect = new SDL_Rect();
-
-	itemsBg = loadTexture(
-		Ui::RES_PATH + PAUSE_MENU_ITEMS_BG_FILE,
-		Globals::renderer
-	);
-	leftArrowTexture = loadTexture(
-		Ui::RES_PATH + PAUSE_ARROW_LEFT_FILE,
-		Globals::renderer
-	);
-	rightArrowTexture = loadTexture(
-		Ui::RES_PATH + PAUSE_ARROW_RIGHT_FILE,
-		Globals::renderer
-	);
-
-	if (hero == nullptr) return;
-
-	for (auto item : hero->inventory) {
-		inventory.push_back(item.second);
+void PauseMenu::toggleQuickAccessItem() {
+	if (inventory.empty() || index >= inventory.size()) {
+		return;
 	}
+
+	Item* selectedItem = inventory.at(index);
+	int itemId = selectedItem->id;
+
+	// Verifica se o item já está no quick access inventory
+	auto it = std::find(
+		hero->quickAccessInventory.begin(),
+		hero->quickAccessInventory.end(),
+		itemId
+	);
+
+	if (it != hero->quickAccessInventory.end()) {
+		// Item já existe no quick access - remove
+		hero->quickAccessInventory.erase(it);
+		hideSubMenu();
+	}
+	else {
+		// Item não existe - entra no modo de seleção de slot
+		enterQuickSlotSelectionMode();
+	}
+}
+
+void PauseMenu::enterQuickSlotSelectionMode() {
+	if (inventory.empty() || index >= inventory.size()) {
+		return;
+	}
+
+	// Guarda o ID do item a ser adicionado
+	itemToAddId = inventory.at(index)->id;
+
+	// Muda para modo de seleção
+	inventoryMode = InventoryMode::SelectingQuickSlot;
+	quickAccessIndex = 0;
+
+	// Fecha o submenu
+	hideSubMenu();
+}
+
+SDL_Point PauseMenu::calculateQuickAccessRectSelectionBoxPosition() {
+	SDL_Point position;
+	int xMultiplier = quickAccessIndex % 3;
+	int yMultiplier = quickAccessIndex / 3;
+
+	position.x = QUICK_INVENTORY_ITEMS_GRID_X_POSITION + ((ITEMS_IMAGES_X_OFFSET - 10) * xMultiplier) - 2;
+	position.y = QUICK_INVENTORY_ITEMS_GRID_Y_POSITION + ((Globals::ScreenHeight / 8) * yMultiplier) - 2;
+
+	return position;
+}
+
+void PauseMenu::drawQuickAccessSelectionBox() {
+	if (inventoryMode != InventoryMode::SelectingQuickSlot) return;
+
+	SDL_Point selectionPos = calculateQuickAccessRectSelectionBoxPosition();
+	SDL_Rect quickSelectionRect = { selectionPos.x, selectionPos.y, 36, 36 };
+
+	// Desenha com uma cor diferente para indicar modo de seleção
+	SDL_SetRenderDrawColor(Globals::renderer, 255, 255, 0, 255); // Amarelo
+	SDL_RenderDrawRect(Globals::renderer, &quickSelectionRect);
+
+	// Desenha uma segunda linha para destacar
+	SDL_Rect quickSelectionRect2 = { selectionPos.x - 1, selectionPos.y - 1, 38, 38 };
+	SDL_RenderDrawRect(Globals::renderer, &quickSelectionRect2);
+}
+
+void PauseMenu::setUp() {
+    __super::setUp();
+    subMenu = new SubMenu(hero);
+    menuState = MenuState::Inactive;
+    currentPage = MenuPage::PAGE1;
+    previousPage = MenuPage::PAGE5;
+    
+    // Inicializa modo de inventário
+    inventoryMode = InventoryMode::Normal;
+    quickAccessIndex = 0;
+    itemToAddId = -1;
+
+    selectionRect = new SDL_Rect();
+    selectionRect->w = 36;
+    selectionRect->h = 36;
+
+    bgRect = new SDL_Rect();
+
+    itemsBg = loadTexture(
+        Ui::RES_PATH + PAUSE_MENU_ITEMS_BG_FILE,
+        Globals::renderer
+    );
+    leftArrowTexture = loadTexture(
+        Ui::RES_PATH + PAUSE_ARROW_LEFT_FILE,
+        Globals::renderer
+    );
+    rightArrowTexture = loadTexture(
+        Ui::RES_PATH + PAUSE_ARROW_RIGHT_FILE,
+        Globals::renderer
+    );
+
+    if (hero == nullptr) return;
+
+    for (auto item : hero->inventory) {
+        inventory.push_back(item.second);
+    }
 }
 
 void PauseMenu::drawMenuBackground() {
@@ -373,6 +462,15 @@ SDL_Point PauseMenu::calculateRectSelectionBoxPosition() {
 void PauseMenu::onIndexUp() {
 	switch (menuState) {
 	case MenuState::Active:
+		// Verifica se está no modo de seleção de quick slot
+		if (inventoryMode == InventoryMode::SelectingQuickSlot) {
+			quickAccessIndex -= 3;
+			if (quickAccessIndex < 0) {
+				quickAccessIndex = 0;
+			}
+			return;
+		}
+
 		switch (currentPage) {
 		case MenuPage::PAGE1:
 			index--;
@@ -391,11 +489,6 @@ void PauseMenu::onIndexUp() {
 
 			if (index < 0) {
 				index = 0;
-
-				//if (infVisibleItemsLimit > 0) {
-				//	supVisibleItemsLimit--;
-				//	infVisibleItemsLimit--;
-				//}
 			}
 			break;
 		default:
@@ -411,6 +504,16 @@ void PauseMenu::onIndexUp() {
 void PauseMenu::onIndexDown() {
 	switch (menuState) {
 	case MenuState::Active:
+		// Verifica se está no modo de seleção de quick slot
+		if (inventoryMode == InventoryMode::SelectingQuickSlot) {
+			int maxQuickAccessSlots = hero->quickAccessInventory.size();
+			quickAccessIndex += 3;
+			if (quickAccessIndex >= maxQuickAccessSlots) {
+				quickAccessIndex = maxQuickAccessSlots - 1;
+			}
+			return;
+		}
+
 		switch (currentPage) {
 		case MenuPage::PAGE1:
 			index++;
@@ -429,11 +532,6 @@ void PauseMenu::onIndexDown() {
 
 			if (index >= MAX_INDEX) {
 				index = MAX_INDEX - 1;
-
-				//if (menuItems.size() > supVisibleItemsLimit) {
-				//	supVisibleItemsLimit++;
-				//	infVisibleItemsLimit++;
-				//}
 			}
 			break;
 		default:
@@ -448,6 +546,15 @@ void PauseMenu::onIndexDown() {
 
 void PauseMenu::onIndexLeft() {
 	if (menuState == MenuState::Active) {
+		// Verifica se está no modo de seleção de quick slot
+		if (inventoryMode == InventoryMode::SelectingQuickSlot) {
+			quickAccessIndex--;
+			if (quickAccessIndex < 0) {
+				quickAccessIndex = 0;
+			}
+			return;
+		}
+
 		switch (currentPage) {
 		case MenuPage::PAGE1:
 			break;
@@ -456,11 +563,6 @@ void PauseMenu::onIndexLeft() {
 
 			if (index < 0) {
 				index = 0;
-
-				//if (infVisibleItemsLimit > 0) {
-				//	supVisibleItemsLimit--;
-				//	infVisibleItemsLimit--;
-				//}
 			}
 			break;
 		default:
@@ -471,6 +573,16 @@ void PauseMenu::onIndexLeft() {
 
 void PauseMenu::onIndexRight() {
 	if (menuState == MenuState::Active) {
+		// Verifica se está no modo de seleção de quick slot
+		if (inventoryMode == InventoryMode::SelectingQuickSlot) {
+			int maxQuickAccessSlots = hero->quickAccessInventory.size();
+			quickAccessIndex++;
+			if (quickAccessIndex >= maxQuickAccessSlots) {
+				quickAccessIndex = maxQuickAccessSlots - 1;
+			}
+			return;
+		}
+
 		switch (currentPage) {
 		case MenuPage::PAGE1:
 			break;
@@ -479,11 +591,6 @@ void PauseMenu::onIndexRight() {
 
 			if (index >= MAX_INDEX) {
 				index = MAX_INDEX - 1;
-
-				//if (menuItems.size() > supVisibleItemsLimit) {
-				//	supVisibleItemsLimit++;
-				//	infVisibleItemsLimit++;
-				//}
 			}
 			break;
 		default:
@@ -500,4 +607,37 @@ void PauseMenu::showSubMenu() {
 void PauseMenu::hideSubMenu() {
 	subMenu->menuState = MenuState::Inactive;
 	menuState = MenuState::Active;
+}
+
+void PauseMenu::onSubMenuAction() {
+	switch (subMenu->index) {
+	case 0:
+		// TODO: Usar item
+		break;
+	case 1:
+		toggleQuickAccessItem();
+		break;
+	case 2:
+		// Dropar item
+		break;
+	}
+}
+
+void PauseMenu::confirmQuickSlotSelection() {
+	if (itemToAddId < 0) return;
+
+	// Adiciona o item no slot selecionado
+	hero->addItemToQuickAccess(itemToAddId, quickAccessIndex);
+
+	// Volta ao modo normal
+	inventoryMode = InventoryMode::Normal;
+	itemToAddId = -1;
+	quickAccessIndex = 0;
+}
+
+void PauseMenu::cancelQuickSlotSelection() {
+	// Cancela a seleção e volta ao modo normal
+	inventoryMode = InventoryMode::Normal;
+	itemToAddId = -1;
+	quickAccessIndex = 0;
 }

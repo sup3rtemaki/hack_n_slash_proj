@@ -41,6 +41,9 @@ void QuickItemUi::drawItemFrame() {
 }
 
 void QuickItemUi::drawCurrentItem() {
+	if (hero->quickAccessInventory.empty() || 
+		hero->quickAccessInventory[hero->quickAccessInventoryIndex] < 0) return;
+
 	renderTexture(
 		hero->inventory.find(hero->quickAccessInventory[hero->quickAccessInventoryIndex])->second->image,
 		Globals::renderer,
@@ -49,6 +52,9 @@ void QuickItemUi::drawCurrentItem() {
 }
 
 void QuickItemUi::drawItemQuantity() {
+	if (hero->quickAccessInventory.empty() ||
+		hero->quickAccessInventory[hero->quickAccessInventoryIndex] < 0) return;
+
 	stringstream ss;
 	ss << hero->inventory.find(hero->quickAccessInventory[hero->quickAccessInventoryIndex])->second->quantity;
 	SDL_Texture* currentItemQuantity = renderText(
