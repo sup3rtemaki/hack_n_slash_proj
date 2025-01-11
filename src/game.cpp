@@ -466,8 +466,18 @@ void Game::runPausedGameMenu() {
 				}
 				break;
 			case SDL_SCANCODE_SPACE:
-				if (pauseMenu->currentPage == MenuPage::PAGE2) {
-					pauseMenu->showSubMenu();
+				switch (pauseMenu->currentPage) {
+				case (MenuPage::PAGE1):
+					break;
+				case (MenuPage::PAGE2):
+					if (pauseMenu->menuState == MenuState::Active) {
+						pauseMenu->showSubMenu();
+					}
+
+					if (pauseMenu->menuState == MenuState::Background) {
+						pauseMenu->onSubMenuAction();
+					}
+					break;
 				}
 				break;
 			case SDL_SCANCODE_UP:

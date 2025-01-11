@@ -501,3 +501,17 @@ void PauseMenu::hideSubMenu() {
 	subMenu->menuState = MenuState::Inactive;
 	menuState = MenuState::Active;
 }
+
+void PauseMenu::onSubMenuAction() {
+	switch (subMenu->index) {
+	case 0:
+		// TODO: Usar item
+		break;
+	case 1:
+		// TODO: Adicionar item ao Quick Access
+		break;
+	case 2:
+		// Dropar item
+		break;
+	}
+}

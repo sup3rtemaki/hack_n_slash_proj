@@ -33,6 +33,15 @@ void SubMenu::activateSubMenu(int x, int y) {
 	yPos = y;
 }
 
+void SubMenu::useSelectedItem(int itemId) {
+}
+
+void SubMenu::addSelectedItemToQuickAccess(int itemId) {
+}
+
+void SubMenu::dropItem(int itemId) {
+}
+
 void SubMenu::draw() {
 	if (menuState == MenuState::Inactive) return;
 

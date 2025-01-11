@@ -8,6 +8,9 @@ public:
 	SubMenu(Hero* hero);
 
 	void activateSubMenu(int x, int y);
+	void useSelectedItem(int itemId);
+	void addSelectedItemToQuickAccess(int itemId);
+	void dropItem(int itemId);
 
 	// Herdado por meio de Menu
 	virtual void draw() override;

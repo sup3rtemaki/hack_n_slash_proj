@@ -13,6 +13,7 @@ public:
 	virtual void onIndexRight() override;
 	void showSubMenu();
 	void hideSubMenu();
+	void onSubMenuAction();
 
 private:
 	vector<class Item*> inventory;
