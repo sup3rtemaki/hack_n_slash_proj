@@ -17,6 +17,7 @@ public:
 	bool isLocked;
 
 	Door(AnimationSet* animSet, int id, string prefix, bool isClosed, int posX, int posY, int width, int height, int collisionBoxYOffset);
+	virtual ~Door() = default;
 
 	void update();
 	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");

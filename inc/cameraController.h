@@ -6,7 +6,7 @@
 
 class CameraController {
 public:
-	Entity* target = NULL;
+	Entity* target = nullptr;
 	float lerp = 50.0f;
 	bool isLerping;
 

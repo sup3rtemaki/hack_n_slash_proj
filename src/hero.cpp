@@ -105,30 +105,36 @@ Hero::Hero(AnimationSet* animSet) {
 }
 
 Hero::~Hero() {
-	// ========== CORREÇÃO: Deletar items do inventário ==========
+	// PASSO 1: Limpar listas de referências PRIMEIRO
+	// (nearItems só tem ponteiros, não ownership)
+	nearItems.clear();
+
+	// PASSO 2: Deletar items do inventory com CUIDADO
+	// Só deletar items que NÃO estão ativos no mundo
 	for (auto& itemPair : inventory) {
 		if (itemPair.second != nullptr) {
-			delete itemPair.second;
+			// Se o item está ativo no mundo (Entity::entities vai deletar)
+			// Se está apenas no inventário (Hero deve deletar)
+			if (!itemPair.second->active && !itemPair.second->isOnGround) {
+				delete itemPair.second;
+			}
 			itemPair.second = nullptr;
 		}
 	}
 	inventory.clear();
 
-	// ========== CORREÇÃO: Limpar listas de items próximos ==========
-	// Não deletamos nearItems porque são referências a items em Entity::entities
-	nearItems.clear();
-
-	// ========== CORREÇÃO: Limpar attack buffer ==========
+	// PASSO 3: Limpar outras estruturas
 	attackBuffer.clear();
 	comboSequence.clear();
 	pheromoneTrail.clear();
+	quickAccessInventory.clear();
 
-	// ========== CORREÇÃO: Resetar ponteiros ==========
+	// PASSO 4: Resetar ponteiros (não deletar - são gerenciados por outros)
 	nearestDoor = nullptr;
 	nearestCheckpoint = nullptr;
 	nearestBloodstain = nullptr;
 	currentMap = nullptr;
-	actionMessageUi = nullptr; // Não deletar, é gerenciado por Game::gui
+	actionMessageUi = nullptr;
 }
 
 void Hero::update() {

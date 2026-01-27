@@ -15,6 +15,7 @@ public:
 	string mapFileName;
 
 	Checkpoint(AnimationSet* animSet, int id, string& mapFileName);
+	virtual ~Checkpoint() = default;
 
 	void activate();
 

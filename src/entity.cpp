@@ -391,11 +391,39 @@ void Entity::removeInactiveEntitiesFromList(list<Entity*>* entityList, bool dele
 }
 
 void Entity::removeAllFromList(list<Entity*>* entityList, bool deleteEntities) {
+	cout << "\n=== removeAllFromList ===" << endl;
+	cout << "Lista size: " << entityList->size() << endl;
+	cout << "DeleteEntities: " << (deleteEntities ? "TRUE" : "FALSE") << endl;
+
+	int index = 0;
 	for (auto entity = entityList->begin(); entity != entityList->end();) {
+		cout << "[" << index << "] Type: " << (*entity)->type
+			<< " | Active: " << (*entity)->active
+			<< " | Ptr: " << (*entity) << endl;
+
 		if (deleteEntities) {
-			delete (*entity);
+			cout << "  Deletando..." << flush;
+
+			// ADICIONAR TRY-CATCH para capturar onde crasha
+			try {
+				delete (*entity);
+				cout << " OK" << endl;
+			}
+			catch (const std::exception& e) {
+				cout << " CRASH!" << endl;
+				cerr << "ERRO ao deletar entity tipo '" << (*entity)->type << "': " << e.what() << endl;
+				throw; // Re-lança exceção
+			}
+			catch (...) {
+				cout << " CRASH (exceção desconhecida)!" << endl;
+				cerr << "ERRO DESCONHECIDO ao deletar entity tipo '" << (*entity)->type << "'" << endl;
+				throw;
+			}
 		}
+
 		entity = entityList->erase(entity);
-		
+		index++;
 	}
+
+	cout << "=== Fim removeAllFromList ===" << endl << endl;
 }

@@ -31,6 +31,7 @@ public:
 
 	deque<SDL_Point> pheromoneTrail;
 
+	virtual ~LivingEntity() = default;
 	virtual void updateHitBox();
 	virtual void updateDamages() = 0; // how we get damaged by other things
 	virtual void die() = 0;

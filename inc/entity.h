@@ -50,6 +50,7 @@ public:
 	
 
 	// virtual functions
+	virtual ~Entity() = default;
 	virtual void update();
 	virtual void draw();
 	virtual void move(float angle);

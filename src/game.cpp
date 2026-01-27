@@ -163,15 +163,17 @@ Game::Game() {
 }
 
 Game::~Game() {
+	// Limpeza de texturas SDL
 	cleanup(splashImage);
 	cleanup(overlayImage);
 	cleanup(fadeImage);
 
 	if (scoreTexture != NULL) {
 		cleanup(scoreTexture);
+		scoreTexture = NULL;
 	}
 
-	// ========== CORREÇÃO 1: Limpar texturas do cache ==========
+	// CORRIGIDO: Limpar texturas do cache
 	for (auto& texturePair : texturesCache) {
 		if (texturePair.second != nullptr) {
 			SDL_DestroyTexture(texturePair.second);
@@ -179,13 +181,37 @@ Game::~Game() {
 	}
 	texturesCache.clear();
 
+	// Limpeza de áudio
 	Mix_PausedMusic();
 	if (song != nullptr) {
 		Mix_FreeMusic(song);
 		song = nullptr;
 	}
 
-	// ========== CORREÇÃO 2: Deletar AnimationSets (verificar se tem destrutor!) ==========
+	// ORDEM CRÍTICA - MUITO IMPORTANTE:
+	// 1º Deletar GUI (pode ter referências a entities)
+	// 2º Deletar Entities (usam AnimationSets)
+	// 3º Deletar AnimationSets
+
+	// PASSO 1: Limpar GUI
+	for (auto ui : gui) {
+		delete ui;
+	}
+	gui.clear();
+
+	// PASSO 2: Limpar todas as listas de entities
+	Entity::removeAllFromList(&walls, false);
+	Entity::removeAllFromList(&currentMapEnemies, false);
+	Entity::removeAllFromList(&fogWalls, false);
+
+	// CRÍTICO: Mudar de 'false' para 'true' para deletar entities
+	Entity::removeAllFromList(&Entity::entities, true);
+
+	deadEnemiesIds.clear();
+	openDoorsIds.clear();
+	defeatedBossesIds.clear();
+
+	// PASSO 3: Deletar AnimationSets
 	delete heroAnimSet;
 	delete globAnimSet;
 	delete grobAnimSet;
@@ -200,42 +226,33 @@ Game::~Game() {
 	delete bloodstainAnimSet;
 	delete hDewPotionAnimSet;
 
-	// ========== CORREÇÃO 3: NÃO deletar hero manualmente (está em entities) ==========
-	// REMOVIDO: delete hero; 
-	// Hero será deletado junto com Entity::entities
+	// Boa prática: Setar nullptr após delete
+	heroAnimSet = nullptr;
+	globAnimSet = nullptr;
+	grobAnimSet = nullptr;
+	termiteMinerAnimSet = nullptr;
+	wallAnimSet = nullptr;
+	roundKingAnimSet = nullptr;
+	bulletAnimSet = nullptr;
+	stoneProjectileAnimSet = nullptr;
+	smallBrownSpiderAnimSet = nullptr;
+	doubleDoorsAnimSet = nullptr;
+	checkpointAnimSet = nullptr;
+	bloodstainAnimSet = nullptr;
+	hDewPotionAnimSet = nullptr;
 
-	// ========== CORREÇÃO 4: Deletar bloodstain (não está em removeAllFromList) ==========
-	// Bloodstain está em Entity::entities, será deletado abaixo
-
-	// ========== CORREÇÃO 5: Limpar GUI antes de deletar entities ==========
-	// Os elementos da GUI podem ter ponteiros para entities
-	for (auto ui : gui) {
-		delete ui;
-	}
-	gui.clear();
-
-	// ========== CORREÇÃO 6: Limpar listas de entities DELETANDO-AS ==========
-	Entity::removeAllFromList(&walls, true);
-	Entity::removeAllFromList(&currentMapEnemies, true);
-	Entity::removeAllFromList(&fogWalls, true);
-
-	// MUDANÇA CRÍTICA: Agora deletamos todas as entities!
-	Entity::removeAllFromList(&Entity::entities, true); // CORRIGIDO
-
-	deadEnemiesIds.clear();
-	openDoorsIds.clear();
-	defeatedBossesIds.clear();
-
-	// ========== CORREÇÃO 7: Limpar mapa atual ==========
+	// Limpeza de mapa
 	if (currentMap != nullptr) {
 		delete currentMap;
 		currentMap = nullptr;
 	}
 
-	// ========== CORREÇÃO 8: Resetar ponteiro de boss ==========
-	currentBoss = nullptr; // Já foi deletado em Entity::entities
+	// Resetar ponteiros (já foram deletados em Entity::entities)
+	currentBoss = nullptr;
+	bloodstain = nullptr;
+	hero = nullptr;
 
-	// ========== CORREÇÃO 9: Limpar tiledMap (é unique_ptr, mas boa prática) ==========
+	// Limpar unique_ptr
 	tiledMap.reset();
 }
 
@@ -621,7 +638,7 @@ void Game::updateMaps() {
 												prop["value"] == std::get<0>(i.second)) {
 												for (auto& prop2 : object["properties"]) {
 													if (prop2["name"] == "isPicked") {
-														std::ofstream outputFile(getResourcePath() + currentMap->file);
+														std::ofstream outputFile(getResourcePath() + MAPS_FOLDER_PATH + currentMap->file);
 														prop2["value"].clear();
 														prop2["value"] = true;
 														outputFile << std::setw(4) << mapFile << std::endl;
