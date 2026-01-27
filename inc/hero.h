@@ -123,6 +123,7 @@ public:
 	class ActionMessageUi* actionMessageUi;
 
 	Hero(AnimationSet* animSet);
+	~Hero();
 
 	void update();
 	void move(float angle);

@@ -187,16 +187,17 @@ void PauseMenu::drawQuickInventory() {
 			textureXPos,
 			textureYPos
 		);
+
 		textureXPos += ITEMS_IMAGES_X_OFFSET - 10;
 		textureYPosOffset++;
 		textureXPosReset++;
 
-		if (textureXPosReset >= 3) {
+		if (textureXPosReset >= 5) {
 			textureXPosReset = 0;
 			textureXPos = QUICK_INVENTORY_ITEMS_GRID_X_POSITION;
 		}
 
-		if (textureYPosOffset > 0 && textureYPosOffset % 3 == 0) {
+		if (textureYPosOffset > 0 && textureYPosOffset % 2 == 0) {
 			textureYPos += (Globals::ScreenHeight / 8);
 		}
 	}
@@ -267,8 +268,8 @@ void PauseMenu::enterQuickSlotSelectionMode() {
 
 SDL_Point PauseMenu::calculateQuickAccessRectSelectionBoxPosition() {
 	SDL_Point position;
-	int xMultiplier = quickAccessIndex % 3;
-	int yMultiplier = quickAccessIndex / 3;
+	int xMultiplier = quickAccessIndex % 5;
+	int yMultiplier = quickAccessIndex / 5;
 
 	position.x = QUICK_INVENTORY_ITEMS_GRID_X_POSITION + ((ITEMS_IMAGES_X_OFFSET - 10) * xMultiplier) - 2;
 	position.y = QUICK_INVENTORY_ITEMS_GRID_Y_POSITION + ((Globals::ScreenHeight / 8) * yMultiplier) - 2;
@@ -464,7 +465,7 @@ void PauseMenu::onIndexUp() {
 	case MenuState::Active:
 		// Verifica se está no modo de seleção de quick slot
 		if (inventoryMode == InventoryMode::SelectingQuickSlot) {
-			quickAccessIndex -= 3;
+			quickAccessIndex -= 5;
 			if (quickAccessIndex < 0) {
 				quickAccessIndex = 0;
 			}
@@ -507,7 +508,7 @@ void PauseMenu::onIndexDown() {
 		// Verifica se está no modo de seleção de quick slot
 		if (inventoryMode == InventoryMode::SelectingQuickSlot) {
 			int maxQuickAccessSlots = hero->quickAccessInventory.size();
-			quickAccessIndex += 3;
+			quickAccessIndex += 5;
 			if (quickAccessIndex >= maxQuickAccessSlots) {
 				quickAccessIndex = maxQuickAccessSlots - 1;
 			}

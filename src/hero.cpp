@@ -104,6 +104,33 @@ Hero::Hero(AnimationSet* animSet) {
 	}
 }
 
+Hero::~Hero() {
+	// ========== CORREÇÃO: Deletar items do inventário ==========
+	for (auto& itemPair : inventory) {
+		if (itemPair.second != nullptr) {
+			delete itemPair.second;
+			itemPair.second = nullptr;
+		}
+	}
+	inventory.clear();
+
+	// ========== CORREÇÃO: Limpar listas de items próximos ==========
+	// Não deletamos nearItems porque são referências a items em Entity::entities
+	nearItems.clear();
+
+	// ========== CORREÇÃO: Limpar attack buffer ==========
+	attackBuffer.clear();
+	comboSequence.clear();
+	pheromoneTrail.clear();
+
+	// ========== CORREÇÃO: Resetar ponteiros ==========
+	nearestDoor = nullptr;
+	nearestCheckpoint = nullptr;
+	nearestBloodstain = nullptr;
+	currentMap = nullptr;
+	actionMessageUi = nullptr; // Não deletar, é gerenciado por Game::gui
+}
+
 void Hero::update() {
 	// check if dead
 	if (hp < 1 && state != (int)HERO_STATE::DEAD) {
@@ -548,6 +575,8 @@ void Hero::addItemToInventory(Item* item) {
 }
 
 void Hero::addItemToQuickAccess(int itemId, int position) {
+	cout << position << endl;
+
 	if (position < 0 || position >= quickAccessInventory.size()) {
 		position = 0;
 		for (position; position < quickAccessInventory.size(); position++) {
@@ -565,6 +594,7 @@ void Hero::addItemToQuickAccess(int itemId, int position) {
 	}
 
 	quickAccessInventory[position] = itemId;
+	cout << position << ", " << quickAccessInventory[position] << endl;
 }
 
 void Hero::useSelectedItemQuickAccess() {
@@ -592,7 +622,7 @@ void Hero::pickNearItemFromGround() {
 	currentNearItem->active = false;
 	currentNearItem->isOnGround = false;
 	addItemToInventory(currentNearItem);
-	addItemToQuickAccess(currentNearItem->id);
+	//addItemToQuickAccess(currentNearItem->id);
 	int cont = 0;
 	for (auto const& i : currentMap->itemsInMap) {
 		cout << "Dentro for hero ";

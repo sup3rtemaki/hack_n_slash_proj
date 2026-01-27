@@ -171,12 +171,21 @@ Game::~Game() {
 		cleanup(scoreTexture);
 	}
 
+	// ========== CORREÇÃO 1: Limpar texturas do cache ==========
+	for (auto& texturePair : texturesCache) {
+		if (texturePair.second != nullptr) {
+			SDL_DestroyTexture(texturePair.second);
+		}
+	}
 	texturesCache.clear();
 
 	Mix_PausedMusic();
-	Mix_FreeMusic(song);
+	if (song != nullptr) {
+		Mix_FreeMusic(song);
+		song = nullptr;
+	}
 
-	Entity::removeAllFromList(&Entity::entities, false);
+	// ========== CORREÇÃO 2: Deletar AnimationSets (verificar se tem destrutor!) ==========
 	delete heroAnimSet;
 	delete globAnimSet;
 	delete grobAnimSet;
@@ -185,11 +194,49 @@ Game::~Game() {
 	delete roundKingAnimSet;
 	delete bulletAnimSet;
 	delete stoneProjectileAnimSet;
-	delete hero;
+	delete smallBrownSpiderAnimSet;
+	delete doubleDoorsAnimSet;
+	delete checkpointAnimSet;
+	delete bloodstainAnimSet;
+	delete hDewPotionAnimSet;
 
+	// ========== CORREÇÃO 3: NÃO deletar hero manualmente (está em entities) ==========
+	// REMOVIDO: delete hero; 
+	// Hero será deletado junto com Entity::entities
+
+	// ========== CORREÇÃO 4: Deletar bloodstain (não está em removeAllFromList) ==========
+	// Bloodstain está em Entity::entities, será deletado abaixo
+
+	// ========== CORREÇÃO 5: Limpar GUI antes de deletar entities ==========
+	// Os elementos da GUI podem ter ponteiros para entities
+	for (auto ui : gui) {
+		delete ui;
+	}
+	gui.clear();
+
+	// ========== CORREÇÃO 6: Limpar listas de entities DELETANDO-AS ==========
 	Entity::removeAllFromList(&walls, true);
 	Entity::removeAllFromList(&currentMapEnemies, true);
+	Entity::removeAllFromList(&fogWalls, true);
+
+	// MUDANÇA CRÍTICA: Agora deletamos todas as entities!
+	Entity::removeAllFromList(&Entity::entities, true); // CORRIGIDO
+
 	deadEnemiesIds.clear();
+	openDoorsIds.clear();
+	defeatedBossesIds.clear();
+
+	// ========== CORREÇÃO 7: Limpar mapa atual ==========
+	if (currentMap != nullptr) {
+		delete currentMap;
+		currentMap = nullptr;
+	}
+
+	// ========== CORREÇÃO 8: Resetar ponteiro de boss ==========
+	currentBoss = nullptr; // Já foi deletado em Entity::entities
+
+	// ========== CORREÇÃO 9: Limpar tiledMap (é unique_ptr, mas boa prática) ==========
+	tiledMap.reset();
 }
 
 void Game::update() {
@@ -1345,44 +1392,40 @@ void Game::removeAllEnemiesInMap() {
 }
 
 map<int, Item*> Game::loadInventoryItems(std::vector<std::pair<int, int>> items) {
-	map<int, Item*> loadedItems;
+    map<int, Item*> loadedItems;
 
-	if (!items.empty()) {
-		for (auto item : items) {
-			Item* loadItem = nullptr;
-			switch (item.first) {
-			case Item::HONEYDEW_POTION_ID:
-				loadItem = new HoneydewPotion(hDewPotionAnimSet, false, item.second);
-				loadItem->active = false;
-				break;
-			case Item::GREEN_BERRY_ID:
-				loadItem = new GreenBerry(hDewPotionAnimSet, false, item.second);
-				loadItem->active = false;
-				break;
-			case Item::STONE_ID:
-				loadItem = new Stone(hDewPotionAnimSet, false, item.second);
-				loadItem->projectileAnimSet = stoneProjectileAnimSet;
-				loadItem->active = false;
-				break;
-			case Item::COMMON_KEY_ID:
-				loadItem = new Key(hDewPotionAnimSet, false, item.second);
-				loadItem->active = false;
-				break;
-			default:
-				cout << "Item " << item.first << " nao mapeado\n";
-				break;
-			}
+    if (!items.empty()) {
+        for (auto item : items) {
+            Item* loadItem = nullptr;
+            switch (item.first) {
+            case Item::HONEYDEW_POTION_ID:
+                loadItem = new HoneydewPotion(hDewPotionAnimSet, false, item.second);
+                break;
+            case Item::GREEN_BERRY_ID:
+                loadItem = new GreenBerry(hDewPotionAnimSet, false, item.second);
+                break;
+            case Item::STONE_ID:
+                loadItem = new Stone(hDewPotionAnimSet, false, item.second);
+                loadItem->projectileAnimSet = stoneProjectileAnimSet;
+                break;
+            case Item::COMMON_KEY_ID:
+                loadItem = new Key(hDewPotionAnimSet, false, item.second);
+                break;
+            default:
+                cout << "Item " << item.first << " nao mapeado\n";
+                break;
+            }
 
-			if (loadItem != nullptr) {
-				loadedItems.emplace(std::make_pair(loadItem->id, loadItem));
-			}
-		}
-	}
-	else {
-		cout << "Vetor de items vazio!\n";
-	}
+            if (loadItem != nullptr) {
+                loadItem->active = false; // Item está no inventário, não no mundo
+                // ATENÇÃO: Não adicionar à Entity::entities se active = false
+                // O Hero vai gerenciar a vida desses items
+                loadedItems.emplace(std::make_pair(loadItem->id, loadItem));
+            }
+        }
+    }
 
-	return loadedItems;
+    return loadedItems;
 }
 
 void Game::saveGame(bool isCheckpointSave) {
