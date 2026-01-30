@@ -57,8 +57,8 @@ void PauseMenu::drawPageInitialCheck() {
 		// Atualiza inventarios
 		if (inventory.size() != hero->inventory.size()) {
 			inventory.clear();
-			for (auto item : hero->inventory) {
-				inventory.push_back(item.second);
+			for (auto& item : hero->inventory) {
+				inventory.push_back(item.second.get());
 			}
 		}
 
@@ -325,8 +325,8 @@ void PauseMenu::setUp() {
 
     if (hero == nullptr) return;
 
-    for (auto item : hero->inventory) {
-        inventory.push_back(item.second);
+    for (auto& item : hero->inventory) {
+        inventory.push_back(item.second.get());
     }
 }
 

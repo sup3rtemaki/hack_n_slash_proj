@@ -41,20 +41,6 @@ class Game {
 public:
 	Mix_Music* song;
 
-	AnimationSet* heroAnimSet;
-	AnimationSet* globAnimSet;
-	AnimationSet* grobAnimSet;
-	AnimationSet* termiteMinerAnimSet;
-	AnimationSet* wallAnimSet;
-	AnimationSet* roundKingAnimSet;
-	AnimationSet* smallBrownSpiderAnimSet;
-	AnimationSet* bulletAnimSet;
-	AnimationSet* hDewPotionAnimSet;
-	AnimationSet* stoneProjectileAnimSet;
-	AnimationSet* doubleDoorsAnimSet;
-	AnimationSet* checkpointAnimSet;
-	AnimationSet* bloodstainAnimSet;
-
 	SDL_Texture* fadeImage;
 	SDL_Texture* splashImage;
 	SDL_Texture* overlayImage;
@@ -66,7 +52,18 @@ public:
 	* Cache de texturas
 	* Lista que contem o nome da imagem e a textura SDL
 	*/
-	std::map<string, SDL_Texture*> texturesCache;
+	struct TextureDeleter {
+		void operator()(SDL_Texture* tex) const {
+			if (tex) {
+				SDL_DestroyTexture(tex);
+			}
+		}
+	};
+
+	// Alias para facilitar uso
+	using TexturePtr = std::unique_ptr<SDL_Texture, TextureDeleter>;
+
+	std::map<string, TexturePtr> texturesCache;
 
 	bool isFading = false;
 	bool fadeIn, fadeOut;
@@ -131,6 +128,20 @@ public:
 	void draw();
 
 private:
+	std::unique_ptr<AnimationSet> heroAnimSet;
+	std::unique_ptr<AnimationSet> globAnimSet;
+	std::unique_ptr<AnimationSet> grobAnimSet;
+	std::unique_ptr<AnimationSet> termiteMinerAnimSet;
+	std::unique_ptr<AnimationSet> wallAnimSet;
+	std::unique_ptr<AnimationSet> roundKingAnimSet;
+	std::unique_ptr<AnimationSet> smallBrownSpiderAnimSet;
+	std::unique_ptr<AnimationSet> bulletAnimSet;
+	std::unique_ptr<AnimationSet> hDewPotionAnimSet;
+	std::unique_ptr<AnimationSet> stoneProjectileAnimSet;
+	std::unique_ptr<AnimationSet> doubleDoorsAnimSet;
+	std::unique_ptr<AnimationSet> checkpointAnimSet;
+	std::unique_ptr<AnimationSet> bloodstainAnimSet;
+
 	string resPath;
 
 	class Bloodstain* bloodstain;
@@ -163,7 +174,7 @@ private:
 	void spawnItemsFromCurrentMap();
 	void inactivateCurrentMapItems();
 	void removeAllEnemiesInMap();
-	map<int, Item*> loadInventoryItems(std::vector<std::pair<int, int>> items);
+	map<int, std::unique_ptr<Item>> loadInventoryItems(std::vector<std::pair<int, int>> items);
 	void saveGame(bool isCheckpointSave = false);
 	void loadGame();
 	GameState getGameState();

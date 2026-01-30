@@ -111,7 +111,7 @@ public:
 	class Door* nearestDoor;
 	class Checkpoint* nearestCheckpoint;
 	class Bloodstain* nearestBloodstain;
-	map<int, Item*> inventory;
+	std::map<int, std::unique_ptr<Item>> inventory;
 	vector<int> quickAccessInventory = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 	vector<int> comboSequence;
 	deque<int> attackBuffer;
@@ -139,7 +139,7 @@ public:
 	void takeAction();
 	void addEssence(int essenceQty);
 	//void checkNearItem(Item* item);
-	void addItemToInventory(Item* item);
+	void addItemToInventory(std::unique_ptr<Item> item);
 	void addItemToQuickAccess(int itemId, int position = -1);
 	void useSelectedItem(int invIndex);
 	void useSelectedItemQuickAccess();

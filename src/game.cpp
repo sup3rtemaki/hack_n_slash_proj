@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <memory>
 
 #include "bloodstain.h"
 #include "tileson/tileson.hpp"
@@ -72,7 +73,7 @@ Game::Game() {
 	loadTiledMap(resPath + MAPS_FOLDER_PATH + currentMap->file);
 
 	// build hero entity
-	hero = new Hero(heroAnimSet);
+	hero = new Hero(heroAnimSet.get());
 	hero->invincibleTimer = 0;
 	hero->hp = saveHandler.getHeroHp();
 	hero->x = hero->lastCheckpointPos.x = saveHandler.getHeroX();
@@ -92,7 +93,7 @@ Game::Game() {
 	defeatedBossesIds = saveHandler.getDefeatedBossesIds();
 
 	// bloodstain
-	bloodstain = new Bloodstain(bloodstainAnimSet);
+	bloodstain = new Bloodstain(bloodstainAnimSet.get());
 	BloodstainInfo bloodstainInfo = saveHandler.getBloodstainInfo();
 	bloodstain->setLocation(
 		bloodstainInfo.x,
@@ -174,11 +175,6 @@ Game::~Game() {
 	}
 
 	// CORRIGIDO: Limpar texturas do cache
-	for (auto& texturePair : texturesCache) {
-		if (texturePair.second != nullptr) {
-			SDL_DestroyTexture(texturePair.second);
-		}
-	}
 	texturesCache.clear();
 
 	// Limpeza de áudio
@@ -210,21 +206,6 @@ Game::~Game() {
 	deadEnemiesIds.clear();
 	openDoorsIds.clear();
 	defeatedBossesIds.clear();
-
-	// PASSO 3: Deletar AnimationSets
-	delete heroAnimSet;
-	delete globAnimSet;
-	delete grobAnimSet;
-	delete termiteMinerAnimSet;
-	delete wallAnimSet;
-	delete roundKingAnimSet;
-	delete bulletAnimSet;
-	delete stoneProjectileAnimSet;
-	delete smallBrownSpiderAnimSet;
-	delete doubleDoorsAnimSet;
-	delete checkpointAnimSet;
-	delete bloodstainAnimSet;
-	delete hDewPotionAnimSet;
 
 	// Boa prática: Setar nullptr após delete
 	heroAnimSet = nullptr;
@@ -700,52 +681,57 @@ void Game::renderTiles() {
 		return;
 	}
 
-	int mapId = std::any_cast<int>(currentMap->getProp("id")->getValue());
-	if (mapId > 0 && mapId != this->currentMap->id) {
-		this->currentMap->id = mapId;
-	}
-
 	string tilesetName;
 	string tilesetTexturePath;
 	int x = 0;
 	int y = 0;
-	SDL_Texture* texture = nullptr;
+	SDL_Texture* texture = nullptr; // Continua usando raw pointer local
+
 	for (auto layer : currentMap->getLayers()) {
 		if (&layer == nullptr) {
 			cout << "layer null" << endl;
 		}
 
-		for (auto& [pos, tileObject] : layer.getTileObjects()) { //Loops through absolutely all existing tiles
+		for (auto& [pos, tileObject] : layer.getTileObjects()) {
 			if (tileObject.getTile() == nullptr) {
 				cout << "tile null" << endl;
 				return;
 			}
 
 			if (layer.getType() == tson::LayerType::TileLayer) {
-				//Set sprite data to draw the tile
 				tson::Tileset* tileset = tileObject.getTile()->getTileset();
 				bool hasAnimation = tileObject.getTile()->getAnimation().any();
 				tson::Rect drawingRect;
 
+				bool isTransparentTile = std::any_cast<bool>(
+					tileObject.getTile()->getProp("isTransparent")->getValue());
 
-				// Only render the tile if its not marked as transparent
-				// Some empty tiles are marked as transparent to fill the layer, but they doesnt
-				// need to be drawn
-				bool isTransparentTile = std::any_cast<bool>(tileObject.getTile()->getProp("isTransparent")->getValue());
 				if (!isTransparentTile) {
-
 					if (!hasAnimation) {
 						drawingRect = tileObject.getDrawingRect();
 					}
 
 					tilesetName = tileset->getImage().filename().string();
-					if (auto search = texturesCache.find(tilesetName); search != texturesCache.end()) {
-						texture = search->second;
+
+					// MUDANÇA AQUI: Buscar no map de unique_ptr
+					if (auto search = texturesCache.find(tilesetName);
+						search != texturesCache.end()) {
+						// Usar .get() para pegar o raw pointer
+						texture = search->second.get();
 					}
 					else {
-						tilesetTexturePath = resPath + TEXTURES_FOLDER_PATH + tileset->getImage().filename().string();
-						texture = loadTexture(tilesetTexturePath, Globals::renderer);
-						texturesCache.emplace(tilesetName, texture);
+						// Carregar nova textura
+						tilesetTexturePath = resPath + TEXTURES_FOLDER_PATH +
+							tileset->getImage().filename().string();
+
+						SDL_Texture* newTexture = loadTexture(tilesetTexturePath,
+							Globals::renderer);
+
+						// Criar unique_ptr e mover para o cache
+						TexturePtr texPtr(newTexture, TextureDeleter{});
+						texture = texPtr.get();
+
+						texturesCache.emplace(tilesetName, std::move(texPtr));
 					}
 
 					if (texture == nullptr) {
@@ -753,6 +739,7 @@ void Game::renderTiles() {
 						return;
 					}
 
+					// ... resto do código de renderização igual
 					SDL_Rect tileRect;
 					tileRect.x = tileObject.getDrawingRect().x;
 					tileRect.y = tileObject.getDrawingRect().y;
@@ -766,7 +753,7 @@ void Game::renderTiles() {
 					renderTile.h = tileRect.h;
 
 					SDL_RenderCopy(Globals::renderer, texture, &tileRect, &renderTile);
-				}			
+				}
 
 				y++;
 				if (y >= 32) {
@@ -974,7 +961,7 @@ void Game::buildDoors() {
 			}
 
 			Door* door = new Door(
-				doubleDoorsAnimSet,
+				doubleDoorsAnimSet.get(),
 				doorId,
 				std::any_cast<string>(animPrefixProp->getValue()),
 				isDoorClosed,
@@ -1120,7 +1107,7 @@ void Game::spawnEnemies() {
 		case 0: // Glob
 			if (deadEnemiesIds.empty() ||
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
-				TermiteMiner* enemy = new TermiteMiner(termiteMinerAnimSet);
+				TermiteMiner* enemy = new TermiteMiner(termiteMinerAnimSet.get());
 					enemy->x = enemyPosX;
 					enemy->y = enemyPosY;
 					enemy->invincibleTimer = 0.1;
@@ -1132,7 +1119,7 @@ void Game::spawnEnemies() {
 		case 1: // Termite
 			if (deadEnemiesIds.empty() ||
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
-					TermiteMiner* enemy = new TermiteMiner(termiteMinerAnimSet);
+					TermiteMiner* enemy = new TermiteMiner(termiteMinerAnimSet.get());
 					enemy->x = enemyPosX;
 					enemy->y = enemyPosY;
 					enemy->invincibleTimer = 0.1;
@@ -1170,7 +1157,7 @@ void Game::spawnBoss() {
 		int bossPosY = object.getPosition().y;
 		switch (bossId) {
 			case 990001: // Small Brown Spider
-				currentBoss = new SmallBrownSpider(smallBrownSpiderAnimSet);
+				currentBoss = new SmallBrownSpider(smallBrownSpiderAnimSet.get());
 				currentBoss->x = bossPosX;
 				currentBoss->y = bossPosY;
 				currentBoss->id = bossId;
@@ -1194,14 +1181,14 @@ void Game::spawnItem(int itemId, int quant, int xPos, int yPos) {
 
 	switch (itemId) {
 	case Item::HONEYDEW_POTION_ID:
-		spawnItem = new HoneydewPotion(hDewPotionAnimSet, canSpawn, quant);
+		spawnItem = new HoneydewPotion(hDewPotionAnimSet.get(), canSpawn, quant);
 		break;
 	case Item::GREEN_BERRY_ID:
-		spawnItem = new GreenBerry(hDewPotionAnimSet, canSpawn, quant);
+		spawnItem = new GreenBerry(hDewPotionAnimSet.get(), canSpawn, quant);
 		break;
 	case Item::STONE_ID:
-		spawnItem = new Stone(hDewPotionAnimSet, canSpawn, quant);
-		spawnItem->projectileAnimSet = stoneProjectileAnimSet;
+		spawnItem = new Stone(hDewPotionAnimSet.get(), canSpawn, quant);
+		spawnItem->projectileAnimSet = stoneProjectileAnimSet.get();
 		break;
 	default:
 		return;
@@ -1229,7 +1216,7 @@ void Game::spawnCheckpoints() {
 		int cpPosX = object.getPosition().x;
 		int cpPosY = object.getPosition().y;
 
-		Checkpoint* checkpoint = new Checkpoint(checkpointAnimSet, cpId, currentMap->file);
+		Checkpoint* checkpoint = new Checkpoint(checkpointAnimSet.get(), cpId, currentMap->file);
 		checkpoint->x = cpPosX;
 		checkpoint->y = cpPosY;
 		if (isActive) checkpoint->activate();
@@ -1312,44 +1299,57 @@ void Game::loadAnimationSets() {
 	dataGroupTypes.push_back(hitBoxType);
 	dataGroupTypes.push_back(dmgType);
 
-	hDewPotionAnimSet = new AnimationSet();
-	hDewPotionAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "groundConsumableItem.fdset", dataGroupTypes);
+	hDewPotionAnimSet = std::make_unique<AnimationSet>();
+	hDewPotionAnimSet->loadAnimationSet(
+		ANIMATIONS_FOLDER_PATH + "groundConsumableItem.fdset", dataGroupTypes);
 
-	heroAnimSet = new AnimationSet();
-	heroAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "antHero.fdset", dataGroupTypes, true, 0, true);//"udemyCyborg.fdset", dataGroupTypes, true, 0, true);
+	heroAnimSet = std::make_unique<AnimationSet>();
+	heroAnimSet->loadAnimationSet(
+		ANIMATIONS_FOLDER_PATH + "antHero.fdset", dataGroupTypes, true, 0, true);
 
-	globAnimSet = new AnimationSet();
-	globAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "glob.fdset", dataGroupTypes, true, 0, true);
+	globAnimSet = std::make_unique<AnimationSet>();
+	globAnimSet->loadAnimationSet(
+		ANIMATIONS_FOLDER_PATH + "glob.fdset", dataGroupTypes, true, 0, true);
 
-	grobAnimSet = new AnimationSet();
-	grobAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "grob.fdset", dataGroupTypes, true, 0, true);
+	grobAnimSet = std::make_unique<AnimationSet>();
+	grobAnimSet->loadAnimationSet(
+		ANIMATIONS_FOLDER_PATH + "grob.fdset", dataGroupTypes, true, 0, true);
 
-	termiteMinerAnimSet = new AnimationSet();
-	termiteMinerAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "termiteMiner.fdset", dataGroupTypes, true, 0, true);
+	termiteMinerAnimSet = std::make_unique<AnimationSet>();
+	termiteMinerAnimSet->loadAnimationSet(
+		ANIMATIONS_FOLDER_PATH + "termiteMiner.fdset", dataGroupTypes, true, 0, true);
 
-	wallAnimSet = new AnimationSet();
-	wallAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "wall.fdset", dataGroupTypes);
+	wallAnimSet = std::make_unique<AnimationSet>();
+	wallAnimSet->loadAnimationSet(
+		ANIMATIONS_FOLDER_PATH + "wall.fdset", dataGroupTypes);
 
-	roundKingAnimSet = new AnimationSet();
-	roundKingAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "roundKing.fdset", dataGroupTypes, true, 0, true);
+	roundKingAnimSet = std::make_unique<AnimationSet>();
+	roundKingAnimSet->loadAnimationSet(
+		ANIMATIONS_FOLDER_PATH + "roundKing.fdset", dataGroupTypes, true, 0, true);
 
-	smallBrownSpiderAnimSet = new AnimationSet();
-	smallBrownSpiderAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "spider_boss.fdset", dataGroupTypes);
+	smallBrownSpiderAnimSet = std::make_unique<AnimationSet>();
+	smallBrownSpiderAnimSet->loadAnimationSet(
+		ANIMATIONS_FOLDER_PATH + "spider_boss.fdset", dataGroupTypes);
 
-	bulletAnimSet = new AnimationSet();
-	bulletAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "bullet.fdset", dataGroupTypes, true, 0, true);
+	bulletAnimSet = std::make_unique<AnimationSet>();
+	bulletAnimSet->loadAnimationSet(
+		ANIMATIONS_FOLDER_PATH + "bullet.fdset", dataGroupTypes, true, 0, true);
 
-	stoneProjectileAnimSet = new AnimationSet();
-	stoneProjectileAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "stoneProjectile.fdset", dataGroupTypes, true, 0, true);
+	stoneProjectileAnimSet = std::make_unique<AnimationSet>();
+	stoneProjectileAnimSet->loadAnimationSet(
+		ANIMATIONS_FOLDER_PATH + "stoneProjectile.fdset", dataGroupTypes, true, 0, true);
 
-	doubleDoorsAnimSet = new AnimationSet();
-	doubleDoorsAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "double_doors.fdset", dataGroupTypes);
+	doubleDoorsAnimSet = std::make_unique<AnimationSet>();
+	doubleDoorsAnimSet->loadAnimationSet(
+		ANIMATIONS_FOLDER_PATH + "double_doors.fdset", dataGroupTypes);
 
-	checkpointAnimSet = new AnimationSet();
-	checkpointAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "checkpoint.fdset", dataGroupTypes);
+	checkpointAnimSet = std::make_unique<AnimationSet>();
+	checkpointAnimSet->loadAnimationSet(
+		ANIMATIONS_FOLDER_PATH + "checkpoint.fdset", dataGroupTypes);
 
-	bloodstainAnimSet = new AnimationSet();
-	bloodstainAnimSet->loadAnimationSet(ANIMATIONS_FOLDER_PATH + "bloodstain.fdset", dataGroupTypes);
+	bloodstainAnimSet = std::make_unique<AnimationSet>();
+	bloodstainAnimSet->loadAnimationSet(
+		ANIMATIONS_FOLDER_PATH + "bloodstain.fdset", dataGroupTypes);
 }
 
 void Game::spawnItemsFromCurrentMap() {
@@ -1408,41 +1408,50 @@ void Game::removeAllEnemiesInMap() {
 	deadEnemiesIds.clear();
 }
 
-map<int, Item*> Game::loadInventoryItems(std::vector<std::pair<int, int>> items) {
-    map<int, Item*> loadedItems;
+map<int, std::unique_ptr<Item>> Game::loadInventoryItems(
+	std::vector<std::pair<int, int>> items) {
 
-    if (!items.empty()) {
-        for (auto item : items) {
-            Item* loadItem = nullptr;
-            switch (item.first) {
-            case Item::HONEYDEW_POTION_ID:
-                loadItem = new HoneydewPotion(hDewPotionAnimSet, false, item.second);
-                break;
-            case Item::GREEN_BERRY_ID:
-                loadItem = new GreenBerry(hDewPotionAnimSet, false, item.second);
-                break;
-            case Item::STONE_ID:
-                loadItem = new Stone(hDewPotionAnimSet, false, item.second);
-                loadItem->projectileAnimSet = stoneProjectileAnimSet;
-                break;
-            case Item::COMMON_KEY_ID:
-                loadItem = new Key(hDewPotionAnimSet, false, item.second);
-                break;
-            default:
-                cout << "Item " << item.first << " nao mapeado\n";
-                break;
-            }
+	map<int, std::unique_ptr<Item>> loadedItems;
 
-            if (loadItem != nullptr) {
-                loadItem->active = false; // Item está no inventário, não no mundo
-                // ATENÇÃO: Não adicionar à Entity::entities se active = false
-                // O Hero vai gerenciar a vida desses items
-                loadedItems.emplace(std::make_pair(loadItem->id, loadItem));
-            }
-        }
-    }
+	if (!items.empty()) {
+		for (auto item : items) {
+			std::unique_ptr<Item> loadItem;
 
-    return loadedItems;
+			switch (item.first) {
+			case Item::HONEYDEW_POTION_ID:
+				loadItem = std::make_unique<HoneydewPotion>(
+					hDewPotionAnimSet.get(), false, item.second);
+				loadItem->active = false;
+				break;
+			case Item::GREEN_BERRY_ID:
+				loadItem = std::make_unique<GreenBerry>(
+					hDewPotionAnimSet.get(), false, item.second);
+				loadItem->active = false;
+				break;
+			case Item::STONE_ID:
+				loadItem = std::make_unique<Stone>(
+					hDewPotionAnimSet.get(), false, item.second);
+				loadItem->projectileAnimSet = stoneProjectileAnimSet.get();
+				loadItem->active = false;
+				break;
+			case Item::COMMON_KEY_ID:
+				loadItem = std::make_unique<Key>(
+					hDewPotionAnimSet.get(), false, item.second);
+				loadItem->active = false;
+				break;
+			default:
+				cout << "Item " << item.first << " nao mapeado\n";
+				continue;
+			}
+
+			if (loadItem != nullptr) {
+				int itemId = loadItem->id;
+				loadedItems.emplace(itemId, std::move(loadItem));
+			}
+		}
+	}
+
+	return loadedItems;
 }
 
 void Game::saveGame(bool isCheckpointSave) {
@@ -1466,8 +1475,8 @@ void Game::saveGame(bool isCheckpointSave) {
 	}
 
 	std::vector<std::pair<int, int>> inventory;
-	for (auto itemMap : hero->inventory) {
-		inventory.push_back(std::make_pair(itemMap.first, itemMap.second->quantity));
+	for (auto& [id, item] : hero->inventory) {
+		inventory.push_back(std::make_pair(id, item->quantity));
 	}
 
 	saveHandler.save(

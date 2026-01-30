@@ -109,18 +109,6 @@ Hero::~Hero() {
 	// (nearItems só tem ponteiros, não ownership)
 	nearItems.clear();
 
-	// PASSO 2: Deletar items do inventory com CUIDADO
-	// Só deletar items que NÃO estão ativos no mundo
-	for (auto& itemPair : inventory) {
-		if (itemPair.second != nullptr) {
-			// Se o item está ativo no mundo (Entity::entities vai deletar)
-			// Se está apenas no inventário (Hero deve deletar)
-			if (!itemPair.second->active && !itemPair.second->isOnGround) {
-				delete itemPair.second;
-			}
-			itemPair.second = nullptr;
-		}
-	}
 	inventory.clear();
 
 	// PASSO 3: Limpar outras estruturas
@@ -562,22 +550,23 @@ void Hero::takeAction() {
 	}
 }
 
-void Hero::addItemToInventory(Item* item) {
+void Hero::addItemToInventory(std::unique_ptr<Item> item) {
 	addedItemName = item->name;
 	qtyItemsPicked = item->quantity;
 
-	for (map<int, Item*>::iterator it = inventory.begin(); it != inventory.end(); it++) {
-		if (it->first == item->id) {
-			it->second->quantity += item->quantity;
-			cout << "Item qtd++: " << it->second->quantity << "\n";
+	// Procurar se item já existe no inventário
+	for (auto& [id, invItem] : inventory) {
+		if (id == item->id) {
+			// Item existe, só aumentar quantidade
+			invItem->quantity += item->quantity;
+			// item será destruído automaticamente ao sair da função
 			return;
 		}
 	}
 
-	auto itemMap = std::make_pair(item->id, item);
-	cout << "Adicionando item: " << itemMap.first << " " << itemMap.second << "\n";
-	inventory.insert(itemMap);
-	cout << "Item inserido: " << itemMap.second->name << "\n";
+	// Item novo, adicionar ao inventário
+	int itemId = item->id;
+	inventory.emplace(itemId, std::move(item));
 }
 
 void Hero::addItemToQuickAccess(int itemId, int position) {
@@ -625,33 +614,23 @@ void Hero::pickNearItemFromGround() {
 		cout << "currentNearItem nulo!\n";
 		return;
 	}
+
 	currentNearItem->active = false;
 	currentNearItem->isOnGround = false;
-	addItemToInventory(currentNearItem);
-	//addItemToQuickAccess(currentNearItem->id);
-	int cont = 0;
-	for (auto const& i : currentMap->itemsInMap) {
-		cout << "Dentro for hero ";
-		cout << i.first << " " 
-			<< (currentNearItem->id == get<0>(i.second)) << " " 
-			<< currentNearItem->id << " - " << get<0>(i.second) << " "
-			<< (currentNearItem->x == get<1>(i.second)) << " " 
-			<< currentNearItem->x << " - " << get<1>(i.second) << " "
-			<< (currentNearItem->y == get<2>(i.second)) << " "
-			<< currentNearItem->y << " - " << get<2>(i.second) << "\n";
-		if (!i.first && 
-			currentNearItem->id == get<0>(i.second) &&
-			currentNearItem->x == get<1>(i.second) &&
-			currentNearItem->y == get<2>(i.second)) {
-			cout << "-Achou item hero\n";
-			currentMap->itemsInMap[cont].first = true;
-			break;
-		}
-		else {
-			cont++;
-		}
-	}
-	
+
+	// MUDANÇA: Transferir ownership do item
+	// Criar unique_ptr a partir do raw pointer
+	// IMPORTANTE: Remover item de Entity::entities ANTES!
+
+	// Primeiro, remover de Entity::entities
+	Entity::entities.remove(currentNearItem);
+
+	// Agora transferir ownership para inventory
+	std::unique_ptr<Item> itemPtr(currentNearItem);
+	addItemToInventory(std::move(itemPtr));
+
+	addItemToQuickAccess(currentNearItem->id);
+
 	currentNearItem = nullptr;
 }
 
@@ -803,32 +782,38 @@ void Hero::findNearestItem() {
 
 void Hero::useSelectedItem(int invIndex) {
 	if (hp > 0 && (state == (int)HERO_STATE::MOVE || state == (int)HERO_STATE::IDLE)) {
-		auto item = inventory.find(invIndex);
-		if (item == inventory.end()) {
+		auto it = inventory.find(invIndex);
+		if (it == inventory.end()) {
 			cout << "Item na posicao " << invIndex << " não encontrado\n";
 			return;
 		}
 
-		if (item->second->quantity == 0) {
-			cout << "Item " << item->second->name << " zerado\n";
+		Item* item = it->second.get();
+
+		if (item->quantity == 0) {
+			cout << "Item " << item->name << " zerado\n";
 			return;
 		}
 
-		item->second->applyEffect(dynamic_cast<LivingEntity*>((this)));
-		item->second->quantity--;
-		cout << "Quantidade items " << item->second->name << ": " << item->second->quantity << "\n";
-		if ((item->first == -1) || (item->second->quantity <= 0)) {
-			//inventory.erase(item);
+		item->applyEffect(dynamic_cast<LivingEntity*>(this));
+		item->quantity--;
+
+		cout << "Quantidade items " << item->name << ": " << item->quantity << "\n";
+
+		if (item->quantity <= 0) {
+			// Item acabou, remover do inventário
+			// unique_ptr vai deletar automaticamente
+			inventory.erase(it);
 			return;
 		}
 
 		moving = false;
 		frameTimer = 0;
-		if (item->second->type == "cProjectileItem") {
+
+		if (item->type == "cProjectileItem") {
 			changeAnimation((int)HERO_STATE::SHOOTING, true);
 		}
-		else if (item->second->type == "kKeyItem") {
-			// TODO: Criar anim pra abrir porta
+		else if (item->type == "kKeyItem") {
 			changeAnimation((int)HERO_STATE::SHOOTING, true);
 		}
 		else {
