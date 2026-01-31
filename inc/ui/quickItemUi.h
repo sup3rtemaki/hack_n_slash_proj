@@ -19,6 +19,10 @@ private:
 	SDL_Texture* quickItemFrame;
 	Hero* hero = nullptr;
 
+	SDL_Texture* itemQuantityTexture;
+	int lastQuantity;
+	int lastItemId;
+
 	void drawItemFrame();
 	void drawCurrentItem();
 	void drawItemQuantity();

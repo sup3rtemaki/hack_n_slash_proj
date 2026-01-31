@@ -16,6 +16,7 @@ private:
 	SDL_Texture* fontTexture;
 	SDL_Texture* essenceCounterBarTexture;
 	Hero* hero = nullptr;
+	int lastEssence;
 
 	void drawBar();
 	void drawEssenceQuantity();

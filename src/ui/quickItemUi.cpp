@@ -15,10 +15,24 @@ const int ITEM_QUANTITY_FONT_SIZE = 16;
 const SDL_Color color = { 255, 255, 255, 255 };
 
 QuickItemUi::QuickItemUi(Hero* hero) : hero(hero) {
+	itemQuantityTexture = nullptr;
+	lastQuantity = -1;
+	lastItemId = -1;
+
 	setUp();
 }
 
 QuickItemUi::~QuickItemUi() {
+	if (quickItemFrame != nullptr) {
+		SDL_DestroyTexture(quickItemFrame);
+		quickItemFrame = nullptr;
+	}
+
+	if (itemQuantityTexture != nullptr) {
+		SDL_DestroyTexture(itemQuantityTexture);
+		itemQuantityTexture = nullptr;
+	}
+
 	hero = nullptr;
 }
 
@@ -52,17 +66,42 @@ void QuickItemUi::drawCurrentItem() {
 }
 
 void QuickItemUi::drawItemQuantity() {
-	if (hero->quickAccessInventory.empty() ||
-		hero->quickAccessInventory[hero->quickAccessInventoryIndex] < 0) return;
+    if (hero->quickAccessInventory.empty() ||
+        hero->quickAccessInventory[hero->quickAccessInventoryIndex] < 0) return;
 
-	stringstream ss;
-	ss << hero->inventory.find(hero->quickAccessInventory[hero->quickAccessInventoryIndex])->second->quantity;
-	SDL_Texture* currentItemQuantity = renderText(
-		ss.str(),
-		Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
-		color, 
-		ITEM_QUANTITY_FONT_SIZE,
-		Globals::renderer
-	);
-	renderTexture(currentItemQuantity, Globals::renderer, ITEM_QUANTITY_FONT_X, ITEM_QUANTITY_FONT_Y);
+    int currentItemId = hero->quickAccessInventory[hero->quickAccessInventoryIndex];
+    auto it = hero->inventory.find(currentItemId);
+    if (it == hero->inventory.end()) return;
+
+    int currentQuantity = it->second->quantity;
+
+    // SO criar nova textura se quantidade mudou
+    if (itemQuantityTexture == nullptr ||
+        currentQuantity != lastQuantity ||
+        currentItemId != lastItemId) {
+
+        // Liberar textura antiga
+        if (itemQuantityTexture != nullptr) {
+            SDL_DestroyTexture(itemQuantityTexture);
+            itemQuantityTexture = nullptr;
+        }
+
+        // Criar nova textura
+        stringstream ss;
+        ss << currentQuantity;
+        itemQuantityTexture = renderText(
+            ss.str(),
+            Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+            color,
+            ITEM_QUANTITY_FONT_SIZE,
+            Globals::renderer
+        );
+
+        lastQuantity = currentQuantity;
+        lastItemId = currentItemId;
+    }
+
+    // Renderizar textura cacheada
+    renderTexture(itemQuantityTexture, Globals::renderer,
+        ITEM_QUANTITY_FONT_X, ITEM_QUANTITY_FONT_Y);
 }

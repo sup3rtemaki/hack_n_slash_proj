@@ -14,10 +14,23 @@ const int FONT_SIZE = 16;
 const SDL_Color color = { 255, 255, 255, 255 };
 
 EssenceCounterUi::EssenceCounterUi(Hero* hero) : hero{ hero } {
+	fontTexture = nullptr;
+	lastEssence = -1;
+
 	setUp();
 }
 
 EssenceCounterUi::~EssenceCounterUi() {
+	if (essenceCounterBarTexture != nullptr) {
+		SDL_DestroyTexture(essenceCounterBarTexture);
+		essenceCounterBarTexture = nullptr;
+	}
+
+	if (fontTexture != nullptr) {
+		SDL_DestroyTexture(fontTexture);
+		fontTexture = nullptr;
+	}
+
 	hero = nullptr;
 	fontTexture = nullptr;
 }
@@ -40,22 +53,36 @@ void EssenceCounterUi::drawBar() {
 }
 
 void EssenceCounterUi::drawEssenceQuantity() {
-	stringstream message;
-	message << std::to_string(hero->essence);
+    int currentEssence = hero->essence;
 
-	fontTexture = renderText(
-		message.str(),
-		Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
-		color,
-		FONT_SIZE,
-		Globals::renderer
-	);
+    // SO criar nova textura se essence mudou
+    if (fontTexture == nullptr || currentEssence != lastEssence) {
 
-	int digits;
-	hero->essence > 0 ?
-		digits = int(log10(hero->essence) + 1) :
-		digits = 1;
-	int xOffsetAlign = (FONT_SIZE / 2) * digits;
+        // Liberar textura antiga
+        if (fontTexture != nullptr) {
+            SDL_DestroyTexture(fontTexture);
+            fontTexture = nullptr;
+        }
 
-	renderTexture(fontTexture, Globals::renderer, FONT_X - xOffsetAlign, FONT_Y);
+        // Criar nova textura
+        stringstream message;
+        message << std::to_string(currentEssence);
+        fontTexture = renderText(
+            message.str(),
+            Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+            color,
+            FONT_SIZE,
+            Globals::renderer
+        );
+
+        lastEssence = currentEssence;
+    }
+
+    // Renderizar textura cacheada
+    int digits;
+    currentEssence > 0 ?
+        digits = int(log10(currentEssence) + 1) :
+        digits = 1;
+    int xOffsetAlign = (FONT_SIZE / 2) * digits;
+    renderTexture(fontTexture, Globals::renderer, FONT_X - xOffsetAlign, FONT_Y);
 }

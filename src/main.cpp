@@ -39,6 +39,8 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+
 	SDL_RenderSetLogicalSize(Globals::renderer, 
 		Globals::ScreenWidth,
 		Globals::ScreenHeight);
@@ -63,21 +65,6 @@ int main(int argc, char** argv) {
 		cout << "mixer didnt initialize" << endl;
 		return 1;
 	}
-
-	//Load a texture to draw
-	/*string resPath = getResourcePath();
-	SDL_Texture* texture = loadTexture(resPath + "map.png", Globals::renderer);
-
-	//run game for 5000 ticks
-	while (SDL_GetTicks() < 5000){
-		//clear screen
-		SDL_RenderClear(Globals::renderer);
-		//draw
-		renderTexture(texture, Globals::renderer, 0, 0);
-		//show image
-		SDL_RenderPresent(Globals::renderer);
-	}*/
-
 
 	try {
 		Game game;

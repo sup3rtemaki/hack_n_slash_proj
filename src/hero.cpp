@@ -803,7 +803,7 @@ void Hero::useSelectedItem(int invIndex) {
 		if (item->quantity <= 0) {
 			// Item acabou, remover do inventário
 			// unique_ptr vai deletar automaticamente
-			inventory.erase(it);
+			//inventory.erase(it);
 			return;
 		}
 

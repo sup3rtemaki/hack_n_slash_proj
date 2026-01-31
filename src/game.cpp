@@ -132,6 +132,14 @@ Game::Game() {
 	//get camera to follow hero
 	camController.target = hero;
 
+	gameCanvas = SDL_CreateTexture(
+		Globals::renderer,
+		SDL_PIXELFORMAT_RGBA8888,
+		SDL_TEXTUREACCESS_TARGET,
+		Globals::ScreenWidth,
+		Globals::ScreenHeight
+	);
+
 	quickItemUi = new QuickItemUi(hero);
 	itemPickMessageUi = new ItemPickMessageUi(hero);
 	actionMessageUi = new ActionMessageUi();
@@ -235,6 +243,10 @@ Game::~Game() {
 
 	// Limpar unique_ptr
 	tiledMap.reset();
+
+	if (gameCanvas) {
+		SDL_DestroyTexture(gameCanvas);
+	}
 }
 
 void Game::update() {
@@ -334,6 +346,13 @@ void Game::runMainMenu() {
 }
 
 void Game::runMainGame() {
+	static int frameCount = 0;
+	frameCount++;
+
+	if (frameCount % 60 == 0) {
+		cout << "Entities: " << Entity::entities.size() << endl;
+	}
+
 	TimeController::timeController.updateTime();
 
 	Entity::removeInactiveEntitiesFromList(&Entity::entities, false);
@@ -747,10 +766,10 @@ void Game::renderTiles() {
 					tileRect.h = tileObject.getDrawingRect().height;
 
 					SDL_Rect renderTile;
-					renderTile.x = (x * tileRect.w) - Globals::camera.x;
-					renderTile.y = (y * tileRect.h) - Globals::camera.y;
+					renderTile.x = (int)((x * tileRect.w) - Globals::camera.x);
+					renderTile.y = (int)((y * tileRect.h) - Globals::camera.y);
 					renderTile.w = tileRect.w;
-					renderTile.h = tileRect.h;
+					renderTile.h = tileRect.h ;
 
 					SDL_RenderCopy(Globals::renderer, texture, &tileRect, &renderTile);
 				}
@@ -1036,9 +1055,16 @@ void Game::buildWaypoints() {
 }
 
 void Game::draw() {
-	// clear screen
-	SDL_SetRenderDrawColor(Globals::renderer, 145, 133, 129, SDL_ALPHA_OPAQUE);
+	// 1. Tudo o que for desenhado agora vai para o gameCanvas
+	SDL_SetRenderTarget(Globals::renderer, gameCanvas);
+
+	// 2. Limpa o canvas virtual
+	SDL_SetRenderDrawColor(Globals::renderer, 20, 20, 20, 255); // Cor de fundo
 	SDL_RenderClear(Globals::renderer);
+
+	// clear screen
+	//SDL_SetRenderDrawColor(Globals::renderer, 145, 133, 129, SDL_ALPHA_OPAQUE);
+	//SDL_RenderClear(Globals::renderer);
 
 	if (splashShowing) {
 		renderTexture(splashImage, Globals::renderer, 0, 0);
@@ -1077,8 +1103,22 @@ void Game::draw() {
 		}
 	}
 
-	// after done drawing, show it to the screen
+	// 4. Volta o alvo para a tela real (janela)
+	SDL_SetRenderTarget(Globals::renderer, NULL);
+
+	// 5. Limpa a tela real (opcional, mas boa prática)
+	SDL_RenderClear(Globals::renderer);
+
+	// 6. Desenha o canvas inteiro na tela de uma vez só
+	// Como o LogicalSize está ativo no main.cpp, o SDL vai esticar 
+	// o canvas perfeitamente para preencher a janela.
+	SDL_RenderCopy(Globals::renderer, gameCanvas, NULL, NULL);
+	SDL_SetRenderDrawColor(Globals::renderer, 20, 20, 20, 255);
+
+	// 7. Apresenta o frame
 	SDL_RenderPresent(Globals::renderer);
+	// after done drawing, show it to the screen
+	//SDL_RenderPresent(Globals::renderer);
 }
 
 void Game::spawnEnemies() {
