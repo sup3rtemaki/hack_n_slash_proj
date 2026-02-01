@@ -142,7 +142,7 @@ private:
 	std::unique_ptr<AnimationSet> checkpointAnimSet;
 	std::unique_ptr<AnimationSet> bloodstainAnimSet;
 	SDL_Texture* gameCanvas = nullptr;
-
+	int frameCount = 0;
 	string resPath;
 
 	class Bloodstain* bloodstain;

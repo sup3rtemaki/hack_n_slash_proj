@@ -18,6 +18,8 @@ public:
 private:
 	string resPath;
 	string itemName;
+	string message;
+	string prevMessage;
 	SDL_Texture* fontTexture;
 	Hero* hero = nullptr;
 	float timer;

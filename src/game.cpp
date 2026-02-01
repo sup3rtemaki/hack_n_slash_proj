@@ -346,11 +346,11 @@ void Game::runMainMenu() {
 }
 
 void Game::runMainGame() {
-	static int frameCount = 0;
 	frameCount++;
 
 	if (frameCount % 60 == 0) {
-		cout << "Entities: " << Entity::entities.size() << endl;
+		cout << frameCount << endl;
+		frameCount = 0;
 	}
 
 	TimeController::timeController.updateTime();

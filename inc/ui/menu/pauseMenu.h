@@ -15,6 +15,8 @@ public:
     InventoryMode inventoryMode;
 
     PauseMenu(Hero* hero);
+    ~PauseMenu();
+
     virtual void draw() override;
     virtual void onIndexUp() override;
     virtual void onIndexDown() override;
@@ -27,6 +29,14 @@ public:
     void cancelQuickSlotSelection();
 
 private:
+    vector<SDL_Texture*> menuTextTextures;
+    vector<string> cachedMenuTexts;
+
+    SDL_Texture* itemNameTexture;
+    SDL_Texture* itemDescTexture;
+    string lastItemName;
+    string lastItemDesc;
+
     vector<class Item*> inventory;
     Item* selectedItem;
     int infVisibleItemsLimit;

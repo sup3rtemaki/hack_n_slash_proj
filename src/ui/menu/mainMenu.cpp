@@ -50,6 +50,11 @@ void MainMenu::drawText() {
 	textYOffset = 0;
 
 	for (auto text : menuItems) {
+		if (fontTexture != nullptr) {
+			SDL_DestroyTexture(fontTexture);
+			fontTexture = nullptr;
+		}
+
 		fontTexture = renderText(
 			text,
 			Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,

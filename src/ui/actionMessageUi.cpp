@@ -23,6 +23,11 @@ void ActionMessageUi::draw() {
 			prevMessage = message;
             fontX = SCREEN_CENTER_X - ((message.length() * FONT_SIZE) / 4);
 
+			if (fontTexture != nullptr) {
+				SDL_DestroyTexture(fontTexture);
+				fontTexture = nullptr;
+			}
+
 			fontTexture = renderText(
 				message,
 				resPath + FONTS_PATH + FONT_FILE,

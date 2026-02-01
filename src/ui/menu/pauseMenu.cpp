@@ -20,7 +20,75 @@ int MAX_INDEX = 1;
 
 PauseMenu::PauseMenu(Hero* hero) {
 	this->hero = hero;
+	fontTexture = nullptr;
+	itemNameTexture = nullptr;
+	itemDescTexture = nullptr;
+	lastItemName = "";
+	lastItemDesc = ""; 
 	setUp();
+}
+
+PauseMenu::~PauseMenu() {
+	hero = nullptr;
+
+	// Limpar submenu
+	if (subMenu != nullptr) {
+		delete subMenu;
+		subMenu = nullptr;
+	}
+
+	// Limpar texturas do menu
+	for (auto texture : menuTextTextures) {
+		if (texture != nullptr) {
+			SDL_DestroyTexture(texture);
+		}
+	}
+	menuTextTextures.clear();
+	cachedMenuTexts.clear();
+
+	// Limpar textura generica
+	if (fontTexture != nullptr) {
+		SDL_DestroyTexture(fontTexture);
+		fontTexture = nullptr;
+	}
+
+	// Limpar texturas de item
+	if (itemNameTexture != nullptr) {
+		SDL_DestroyTexture(itemNameTexture);
+		itemNameTexture = nullptr;
+	}
+
+	if (itemDescTexture != nullptr) {
+		SDL_DestroyTexture(itemDescTexture);
+		itemDescTexture = nullptr;
+	}
+
+	// Limpar outras texturas
+	if (itemsBg != nullptr) {
+		SDL_DestroyTexture(itemsBg);
+		itemsBg = nullptr;
+	}
+
+	if (leftArrowTexture != nullptr) {
+		SDL_DestroyTexture(leftArrowTexture);
+		leftArrowTexture = nullptr;
+	}
+
+	if (rightArrowTexture != nullptr) {
+		SDL_DestroyTexture(rightArrowTexture);
+		rightArrowTexture = nullptr;
+	}
+
+	// Limpar rects
+	if (selectionRect != nullptr) {
+		delete selectionRect;
+		selectionRect = nullptr;
+	}
+
+	if (bgRect != nullptr) {
+		delete bgRect;
+		bgRect = nullptr;
+	}
 }
 
 void PauseMenu::draw() {
@@ -51,6 +119,14 @@ void PauseMenu::drawPageInitialCheck() {
 			menuItems.push_back("Exit");
 			index = 0;
 			currentPage = MenuPage::PAGE1;
+
+			for (auto texture : menuTextTextures) {
+				if (texture != nullptr) {
+					SDL_DestroyTexture(texture);
+				}
+			}
+			menuTextTextures.clear();
+			cachedMenuTexts.clear();
 		}
 		break;
 	case MenuPage::PAGE2:
@@ -68,6 +144,17 @@ void PauseMenu::drawPageInitialCheck() {
 			MAX_INDEX = inventory.size();
 			index = 0;
 			currentPage = MenuPage::PAGE2;
+
+			if (itemNameTexture != nullptr) {
+				SDL_DestroyTexture(itemNameTexture);
+				itemNameTexture = nullptr;
+			}
+			if (itemDescTexture != nullptr) {
+				SDL_DestroyTexture(itemDescTexture);
+				itemDescTexture = nullptr;
+			}
+			lastItemName = "";
+			lastItemDesc = "";
 		}
 		break;
 	}
@@ -125,44 +212,92 @@ void PauseMenu::drawInventoryItems() {
 }
 
 void PauseMenu::drawSelectedItemNameAndDescription() {
-	// Desenha nome do item selecionado
+	// Verificar se item mudou
 	const string& itemName = inventory.at(index)->name;
-	fontTexture = renderText(
-		itemName,
-		Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
-		color,
-		FONT_SIZE,
-		Globals::renderer
-	);
+	const string& itemDesc = inventory.at(index)->description;
 
+	// SO recriar textura se nome mudou
+	if (itemNameTexture == nullptr || itemName != lastItemName) {
+		// Limpar textura antiga
+		if (itemNameTexture != nullptr) {
+			SDL_DestroyTexture(itemNameTexture);
+			itemNameTexture = nullptr;
+		}
+
+		// Criar nova textura do nome
+		itemNameTexture = renderText(
+			itemName,
+			Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+			color,
+			FONT_SIZE,
+			Globals::renderer
+		);
+
+		lastItemName = itemName;
+	}
+
+	// Renderizar nome
 	int digits;
 	(int)itemName.size() > 0 ?
 		digits = int(log10((int)itemName.size()) + 1) :
 		digits = 1;
 	int textXOffset = (FONT_SIZE)*digits;
 
-	renderTexture(fontTexture,
+	renderTexture(
+		itemNameTexture,
 		Globals::renderer,
 		((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
-		(Globals::ScreenHeight / 8));
+		(Globals::ScreenHeight / 8)
+	);
 
-	// Desenha descrição do item selecionado
-	const string& itemDesc = inventory.at(index)->description;
+	// SO recriar textura se descricao mudou
+	if (itemDescTexture == nullptr || itemDesc != lastItemDesc) {
+		// Limpar textura antiga
+		if (itemDescTexture != nullptr) {
+			SDL_DestroyTexture(itemDescTexture);
+			itemDescTexture = nullptr;
+		}
 
-	TTF_Font* font = nullptr;
-	font = TTF_OpenFont((Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE).c_str(), (int)(FONT_SIZE / 1.5));
-	auto textSurf = TTF_RenderText_Blended_Wrapped(font, itemDesc.c_str(), color, 200);
-	fontTexture = SDL_CreateTextureFromSurface(Globals::renderer, textSurf);
+		// Criar nova textura da descricao
+		TTF_Font* font = TTF_OpenFont(
+			(Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE).c_str(),
+			(int)(FONT_SIZE / 1.5)
+		);
 
-	(int)itemDesc.size() > 0 ?
-		digits = int(log10((int)itemDesc.size()) + 1) :
-		digits = 1;
-	textXOffset = (FONT_SIZE)*digits;
+		if (font != nullptr) {
+			auto textSurf = TTF_RenderText_Blended_Wrapped(
+				font,
+				itemDesc.c_str(),
+				color,
+				200
+			);
 
-	renderTexture(fontTexture,
-		Globals::renderer,
-		((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
-		(Globals::ScreenHeight / 8) + (FONT_SIZE * 1.2));
+			if (textSurf != nullptr) {
+				itemDescTexture = SDL_CreateTextureFromSurface(Globals::renderer, textSurf);
+				SDL_FreeSurface(textSurf);
+			}
+
+			TTF_CloseFont(font); // IMPORTANTE: Fechar fonte!
+			font = nullptr;
+		}
+
+		lastItemDesc = itemDesc;
+	}
+
+	// Renderizar descricao
+	if (itemDescTexture != nullptr) {
+		(int)itemDesc.size() > 0 ?
+			digits = int(log10((int)itemDesc.size()) + 1) :
+			digits = 1;
+		textXOffset = (FONT_SIZE)*digits;
+
+		renderTexture(
+			itemDescTexture,
+			Globals::renderer,
+			((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
+			(Globals::ScreenHeight / 8) + (FONT_SIZE * 1.2)
+		);
+	}
 }
 
 void PauseMenu::drawQuickInventory() {
@@ -408,14 +543,48 @@ void PauseMenu::drawPage1() {
 		menuItemsToShow.push_back(menuItems[i]);
 	}
 
-	for (auto text : menuItemsToShow) {
-		fontTexture = renderText(
-			text,
-			Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
-			color,
-			FONT_SIZE,
-			Globals::renderer
-		);
+	// Verificar se precisa recriar texturas do menu
+	bool needsRecreate = false;
+	if (menuTextTextures.size() != menuItemsToShow.size()) {
+		needsRecreate = true;
+	}
+	else {
+		for (size_t i = 0; i < menuItemsToShow.size(); i++) {
+			if (i >= cachedMenuTexts.size() || menuItemsToShow[i] != cachedMenuTexts[i]) {
+				needsRecreate = true;
+				break;
+			}
+		}
+	}
+
+	if (needsRecreate) {
+		// Limpar texturas antigas
+		for (auto texture : menuTextTextures) {
+			if (texture != nullptr) {
+				SDL_DestroyTexture(texture);
+			}
+		}
+		menuTextTextures.clear();
+		cachedMenuTexts.clear();
+
+		// Criar novas texturas
+		for (const auto& text : menuItemsToShow) {
+			SDL_Texture* texture = renderText(
+				text,
+				Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+				color,
+				FONT_SIZE,
+				Globals::renderer
+			);
+			menuTextTextures.push_back(texture);
+			cachedMenuTexts.push_back(text);
+		}
+	}
+
+	// Renderizar texturas cacheadas
+	textYOffset = 0;
+	for (size_t i = 0; i < menuTextTextures.size(); i++) {
+		const string& text = menuItemsToShow[i];
 
 		int digits;
 		(int)text.size() > 0 ?
@@ -423,7 +592,12 @@ void PauseMenu::drawPage1() {
 			digits = 1;
 		int textXOffset = (FONT_SIZE)*digits;
 
-		renderTexture(fontTexture, Globals::renderer, 90 - textXOffset, (Globals::ScreenHeight / 8) + 2 + textYOffset);
+		renderTexture(
+			menuTextTextures[i],
+			Globals::renderer,
+			90 - textXOffset,
+			(Globals::ScreenHeight / 8) + 2 + textYOffset
+		);
 
 		textYOffset += FONT_SIZE + 2;
 	}

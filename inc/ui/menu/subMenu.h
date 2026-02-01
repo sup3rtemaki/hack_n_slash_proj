@@ -6,6 +6,7 @@
 class SubMenu : public Menu {
 public:
 	SubMenu(Hero* hero);
+	~SubMenu();
 
 	void activateSubMenu(int x, int y);
 	void useSelectedItem(int itemId);
@@ -23,8 +24,12 @@ public:
 	virtual void onIndexRight() override;
 
 private:
+	vector<SDL_Texture*> menuTextTextures;
+	bool texturesCreated;
+
 	int xPos;
 	int yPos;
+
 	void setUp();
 
 };

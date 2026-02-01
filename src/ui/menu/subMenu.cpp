@@ -13,7 +13,40 @@ int SUB_MENU_MAX_INDEX = 1;
 SubMenu::SubMenu(Hero* hero) {
 	__super::setUp();
 	this->hero = hero;
+	fontTexture = nullptr;
+	texturesCreated = false;
 	setUp();
+}
+
+SubMenu::~SubMenu() {
+	hero = nullptr;
+
+	// Limpar texturas do menu
+	for (auto texture : menuTextTextures) {
+		if (texture != nullptr) {
+			SDL_DestroyTexture(texture);
+		}
+	}
+	menuTextTextures.clear();
+
+	// Limpar textura generica (se ainda estiver alocada)
+	if (fontTexture != nullptr) {
+		SDL_DestroyTexture(fontTexture);
+		fontTexture = nullptr;
+	}
+
+	// Limpar rects
+	if (selectionRect != nullptr) {
+		delete selectionRect;
+		selectionRect = nullptr;
+	}
+
+	if (bgRect != nullptr) {
+		delete bgRect;
+		bgRect = nullptr;
+	}
+
+	menuItems.clear();
 }
 
 void SubMenu::setUp() {
@@ -60,15 +93,33 @@ void SubMenu::drawMenuBackground() {
 }
 
 void SubMenu::drawText() {
+	// Verificar se items mudaram
+	if (menuTextTextures.size() != menuItems.size()) {
+		// Limpar texturas antigas
+		for (auto texture : menuTextTextures) {
+			if (texture != nullptr) {
+				SDL_DestroyTexture(texture);
+			}
+		}
+		menuTextTextures.clear();
+
+		// Criar novas texturas
+		for (const auto& text : menuItems) {
+			SDL_Texture* texture = renderText(
+				text,
+				Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+				color,
+				FONT_SIZE,
+				Globals::renderer
+			);
+			menuTextTextures.push_back(texture);
+		}
+	}
+
+	// Renderizar texturas cacheadas
 	textYOffset = 0;
-	for (const auto& text : menuItems) {
-		fontTexture = renderText(
-			text,
-			Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
-			color,
-			FONT_SIZE,
-			Globals::renderer
-		);
+	for (size_t i = 0; i < menuTextTextures.size(); i++) {
+		const string& text = menuItems[i];
 
 		int digits;
 		(int)text.size() > 0 ?
@@ -77,10 +128,11 @@ void SubMenu::drawText() {
 		int textXOffset = (FONT_SIZE)*digits;
 
 		renderTexture(
-			fontTexture,
+			menuTextTextures[i],
 			Globals::renderer,
 			(bgRect->x + bgRect->w / 4) - textXOffset,
-			bgRect->y + 2 + textYOffset);
+			bgRect->y + 2 + textYOffset
+		);
 
 		textYOffset += FONT_SIZE + 2;
 	}
