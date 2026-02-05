@@ -42,24 +42,51 @@ void LivingEntity::draw() {
 				x - (Globals::camera.x * 1.f),
 				y - (Globals::camera.y * 1.f));
 		}
-		
 	}
+
 	//draw collision box
 	if (solid && Globals::debugging) {
+		// Criar rects temporários ajustados pela câmera
+		SDL_Rect screenLastCollisionBox = {
+			lastCollisionBox.x - Globals::camera.x,
+			lastCollisionBox.y - Globals::camera.y,
+			lastCollisionBox.w,
+			lastCollisionBox.h
+		};
+
+		SDL_Rect screenCollisionBox = {
+			collisionBox.x - Globals::camera.x,
+			collisionBox.y - Globals::camera.y,
+			collisionBox.w,
+			collisionBox.h
+		};
+
+		SDL_Rect screenHitBox = {
+			hitBox.x - Globals::camera.x,
+			hitBox.y - Globals::camera.y,
+			hitBox.w,
+			hitBox.h
+		};
+
+		// Desenhar com os rects ajustados
 		SDL_SetRenderDrawColor(Globals::renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
-		SDL_RenderDrawRect(Globals::renderer, &lastCollisionBox);
+		SDL_RenderDrawRect(Globals::renderer, &screenLastCollisionBox);
 
 		SDL_SetRenderDrawColor(Globals::renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-		SDL_RenderDrawRect(Globals::renderer, &collisionBox);
+		SDL_RenderDrawRect(Globals::renderer, &screenCollisionBox);
 
 		SDL_SetRenderDrawColor(Globals::renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
-		SDL_RenderDrawRect(Globals::renderer, &hitBox);
+		SDL_RenderDrawRect(Globals::renderer, &screenHitBox);
 
 		SDL_SetRenderDrawColor(Globals::renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-		SDL_RenderDrawPoint(Globals::renderer, x, y + (collisionBoxYOffset / 2));
+		SDL_RenderDrawPoint(Globals::renderer,
+			x - Globals::camera.x,
+			y + (collisionBoxYOffset / 2) - Globals::camera.y);
 
 		SDL_SetRenderDrawColor(Globals::renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-		SDL_RenderDrawPoint(Globals::renderer, x, y);
+		SDL_RenderDrawPoint(Globals::renderer,
+			x - Globals::camera.x,
+			y - Globals::camera.y);
 	}
 }
 

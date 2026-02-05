@@ -8,14 +8,23 @@ void Entity::draw() {
 	if (currentFrame != NULL && animSet != NULL && active) {
 		currentFrame->Draw(animSet->spriteSheet, x - Globals::camera.x, y - Globals::camera.y);
 	}
+
 	//draw collision box
 	if (solid && Globals::debugging) {
+		// Criar rect temporário ajustado pela câmera
+		SDL_Rect screenCollisionBox = {
+			collisionBox.x - Globals::camera.x,
+			collisionBox.y - Globals::camera.y,
+			collisionBox.w,
+			collisionBox.h
+		};
+
 		SDL_SetRenderDrawColor(Globals::renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-		SDL_RenderDrawRect(Globals::renderer, &collisionBox);
+		SDL_RenderDrawRect(Globals::renderer, &screenCollisionBox);  // usar rect ajustado
 		SDL_SetRenderDrawColor(Globals::renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-		SDL_RenderDrawPoint(Globals::renderer, x, y);
+		SDL_RenderDrawPoint(Globals::renderer, x - Globals::camera.x, y - Globals::camera.y);  // ajustar ponto também
 	}
-} 
+}
 
 void Entity::move(float angle) {
 	moving = true;
