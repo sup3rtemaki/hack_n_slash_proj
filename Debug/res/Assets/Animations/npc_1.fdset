@@ -1,0 +1,130 @@
+Assets\\Animations\\npc_1.png
+animations: 4
+idle_down
+frames: 5
+frame
+clip: 0 0 48 48
+offset: 23 40
+duration: 3.0
+index: 0
+collisionBox: 18 9 12 33
+frame
+clip: 48 0 48 48
+offset: 23 40
+duration: 0.1
+index: 1
+collisionBox: 17 10 10 32
+frame
+clip: 96 0 48 48
+offset: 23 40
+duration: 0.1
+index: 0
+collisionBox: 18 9 12 33
+frame
+clip: 144 0 48 48
+offset: 23 40
+duration: 0.1
+index: 1
+collisionBox: 17 10 10 32
+frame
+clip: 48 0 48 48
+offset: 23 40
+duration: 0.1
+index: 0
+collisionBox: 18 9 12 33
+idle_right
+frames: 5
+frame
+clip: 0 48 48 48
+offset: 23 40
+duration: 3.0
+index: 0
+collisionBox: 18 9 12 33
+frame
+clip: 48 48 48 48
+offset: 23 40
+duration: 0.1
+index: 1
+collisionBox: 17 10 10 32
+frame
+clip: 96 48 48 48
+offset: 23 40
+duration: 0.1
+index: 0
+collisionBox: 18 9 12 33
+frame
+clip: 144 48 48 48
+offset: 23 40
+duration: 0.1
+index: 1
+collisionBox: 17 10 10 32
+frame
+clip: 48 48 48 48
+offset: 23 40
+duration: 0.1
+index: 0
+collisionBox: 18 9 12 33
+idle_up
+frames: 5
+frame
+clip: 0 96 48 48
+offset: 23 40
+duration: 3.0
+index: 0
+collisionBox: 18 9 12 33
+frame
+clip: 48 96 48 48
+offset: 23 40
+duration: 0.1
+index: 1
+collisionBox: 17 10 10 32
+frame
+clip: 96 96 48 48
+offset: 23 40
+duration: 0.1
+index: 0
+collisionBox: 18 9 12 33
+frame
+clip: 144 96 48 48
+offset: 23 40
+duration: 0.1
+index: 1
+collisionBox: 17 10 10 32
+frame
+clip: 48 96 48 48
+offset: 23 40
+duration: 0.1
+index: 0
+collisionBox: 18 9 12 33
+idle_left
+frames: 5
+frame
+clip: 0 144 48 48
+offset: 23 40
+duration: 3.0
+index: 0
+collisionBox: 18 9 12 33
+frame
+clip: 48 144 48 48
+offset: 23 40
+duration: 0.1
+index: 1
+collisionBox: 17 10 10 32
+frame
+clip: 96 144 48 48
+offset: 23 40
+duration: 0.1
+index: 0
+collisionBox: 18 9 12 33
+frame
+clip: 144 144 48 48
+offset: 23 40
+duration: 0.1
+index: 1
+collisionBox: 17 10 10 32
+frame
+clip: 48 144 48 48
+offset: 23 40
+duration: 0.1
+index: 0
+collisionBox: 18 9 12 33
