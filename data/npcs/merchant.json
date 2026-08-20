@@ -1,0 +1,18 @@
+{
+    "npcId": "merchant",
+    "npcName": "Merchant Pete",
+    "portraitPath": "assets/portraits/merchant.png",
+    "dialogueLines": [
+        "I've got the best deals!",
+        "Want to see my wares?"
+    ],
+    "isMerchant": true,
+    "shopInventory": [
+        { "itemId": "potion", "price": 20, "stock": 10 },
+        { "itemId": "food", "price": 5, "stock": 50 }
+    ],
+    "hasQuests": false,
+    "questIds": [],
+    "interactionRange": 2.0,
+    "canMove": false
+}

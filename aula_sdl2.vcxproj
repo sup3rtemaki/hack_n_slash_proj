@@ -191,6 +191,9 @@
     <ClCompile Include="src\map.cpp" />
     <ClCompile Include="src\npcs\bosses\smallBrownSpider.cpp" />
     <ClCompile Include="src\npcs\door.cpp" />
+    <ClCompile Include="src\npcs\friendlies\friendlyNpc.cpp" />
+    <ClCompile Include="src\npcs\npcData.cpp" />
+    <ClCompile Include="src\npcs\npcFactory.cpp" />
     <ClCompile Include="src\projectiles\stoneProjectile.cpp" />
     <ClCompile Include="src\randomNumber.cpp" />
     <ClCompile Include="src\res_path.cpp" />
@@ -248,6 +251,9 @@
     <ClInclude Include="inc\map.h" />
     <ClInclude Include="inc\npcs\bosses\smallBrownSpider.h" />
     <ClInclude Include="inc\npcs\door.h" />
+    <ClInclude Include="inc\npcs\friendlies\friendlyNpc.h" />
+    <ClInclude Include="inc\npcs\npcData.h" />
+    <ClInclude Include="inc\npcs\npcFactory.h" />
     <ClInclude Include="inc\projectiles\stoneProjectile.h" />
     <ClInclude Include="inc\randomNumber.h" />
     <ClInclude Include="inc\res_path.h" />

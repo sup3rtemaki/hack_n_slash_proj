@@ -4,6 +4,7 @@
 #include "SDL_mixer.h"
 #include "globals.h"
 #include "game.h"
+#include "npcs/npcFactory.h"
 #include <cstdlib> //srand, rand
 #include <ctime> //time
 
@@ -65,6 +66,8 @@ int main(int argc, char** argv) {
 		cout << "mixer didnt initialize" << endl;
 		return 1;
 	}
+
+
 
 	try {
 		Game game;

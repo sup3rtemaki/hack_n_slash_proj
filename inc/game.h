@@ -141,6 +141,7 @@ private:
 	std::unique_ptr<AnimationSet> doubleDoorsAnimSet;
 	std::unique_ptr<AnimationSet> checkpointAnimSet;
 	std::unique_ptr<AnimationSet> bloodstainAnimSet;
+	std::unique_ptr<AnimationSet> friendlyNpcAnimSet;
 	SDL_Texture* gameCanvas = nullptr;
 	int frameCount = 0;
 	string resPath;

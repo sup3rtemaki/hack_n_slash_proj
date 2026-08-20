@@ -1,0 +1,19 @@
+{
+    "npcId": "blacksmith",
+    "npcName": "Blacksmith John",
+    "portraitPath": "assets/portraits/blacksmith.png",
+    "dialogueLines": [
+        "Welcome to my forge!",
+        "I can repair your weapons.",
+        "Come back anytime."
+    ],
+    "isMerchant": true,
+    "shopInventory": [
+        { "itemId": "sword", "price": 100, "stock": 5 },
+        { "itemId": "shield", "price": 80, "stock": 3 }
+    ],
+    "hasQuests": false,
+    "questIds": [],
+    "interactionRange": 2.5,
+    "canMove": false
+}

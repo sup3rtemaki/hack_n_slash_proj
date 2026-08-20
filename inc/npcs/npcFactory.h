@@ -1,1 +1,29 @@
-#pragma once#include "npcs/friendlies/friendlyNpc.h"#include <unordered_map>#include <memory>#include <filesystem>class NpcFactory {private:    std::unordered_map<std::string, NpcData> npcDatabase;    NpcFactory() = default; // Singletonpublic:    static NpcFactory& getInstance() {        static NpcFactory instance;        return instance;    }    // Carrega todos os NPCs de um diretório    void loadAllNpcs(const std::string& directory);    // Cria um NPC específico    std::unique_ptr<FriendlyNpc> createNpc(const std::string& npcId);    // Verifica se NPC existe    bool hasNpc(const std::string& npcId) const;};
+#pragma once
+
+#include "npcs/friendlies/friendlyNpc.h"
+
+#include <unordered_map>
+#include <memory>
+#include <filesystem>
+
+class NpcFactory {
+private:
+	std::unordered_map<std::string, NpcData> npcDatabase;
+
+	NpcFactory() = default; // Singleton
+
+public:
+	static NpcFactory& getInstance() {
+		static NpcFactory instance;
+		return instance;
+	}
+
+	// Carrega todos os NPCs de um diretÃ³rio
+	void loadAllNpcs(const std::string& directory);
+
+	// Cria um NPC especÃ­fico
+	std::unique_ptr<FriendlyNpc> createNpc(const std::string& npcId, AnimationSet* animSet);
+
+	// Verifica se NPC existe
+	bool hasNpc(const std::string& npcId) const;
+};

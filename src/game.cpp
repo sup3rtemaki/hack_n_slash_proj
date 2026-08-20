@@ -13,6 +13,7 @@
 #include "item/key.h"
 #include "npcs/bosses/smallBrownSpider.h"
 #include "checkpoint.h"
+#include "npcs/npcFactory.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -27,7 +28,7 @@ const string SOUNDS_FOLDER_PATH = "Assets\\Sounds\\";
 const string ANIMATIONS_FOLDER_PATH = "Assets\\Animations\\";
 
 Game::Game() {
-	//TODO: Criar método initialize ou algo do tipo pra encapsular tudo isso
+	//TODO: Criar mï¿½todo initialize ou algo do tipo pra encapsular tudo isso
 	resPath = getResourcePath();
 
 	mustSpawnEnemies = true;
@@ -122,6 +123,24 @@ Game::Game() {
 	hero->currentMap = currentMap;
 	Entity::entities.push_back(hero);
 
+	// Load NPC definitions and spawn a friendly NPC near the hero
+	try {
+		NpcFactory::getInstance().loadAllNpcs("data/npcs/");
+		if (NpcFactory::getInstance().hasNpc("blacksmith")) {
+			auto npcUP = NpcFactory::getInstance().createNpc("blacksmith", friendlyNpcAnimSet.get());
+			FriendlyNpc* npc = npcUP.release();
+			// place npc close to hero
+			npc->x = hero->x + 32;
+			npc->y = hero->y;
+			//npc->currentMap = currentMap;
+			Entity::entities.push_back(npc);
+			cout << "Spawned NPC: " << npc->getData().npcName << endl;
+		}
+	}
+	catch (const std::exception& e) {
+		cerr << "NPC spawn error: " << e.what() << std::endl;
+	}
+
 	buildWalls();
 	buildWaypoints();
 	buildDoors();
@@ -185,17 +204,17 @@ Game::~Game() {
 	// CORRIGIDO: Limpar texturas do cache
 	texturesCache.clear();
 
-	// Limpeza de áudio
+	// Limpeza de ï¿½udio
 	Mix_PausedMusic();
 	if (song != nullptr) {
 		Mix_FreeMusic(song);
 		song = nullptr;
 	}
 
-	// ORDEM CRÍTICA - MUITO IMPORTANTE:
-	// 1º Deletar GUI (pode ter referências a entities)
-	// 2º Deletar Entities (usam AnimationSets)
-	// 3º Deletar AnimationSets
+	// ORDEM CRï¿½TICA - MUITO IMPORTANTE:
+	// 1ï¿½ Deletar GUI (pode ter referï¿½ncias a entities)
+	// 2ï¿½ Deletar Entities (usam AnimationSets)
+	// 3ï¿½ Deletar AnimationSets
 
 	// PASSO 1: Limpar GUI
 	for (auto ui : gui) {
@@ -208,14 +227,14 @@ Game::~Game() {
 	Entity::removeAllFromList(&currentMapEnemies, false);
 	Entity::removeAllFromList(&fogWalls, false);
 
-	// CRÍTICO: Mudar de 'false' para 'true' para deletar entities
+	// CRï¿½TICO: Mudar de 'false' para 'true' para deletar entities
 	Entity::removeAllFromList(&Entity::entities, true);
 
 	deadEnemiesIds.clear();
 	openDoorsIds.clear();
 	defeatedBossesIds.clear();
 
-	// Boa prática: Setar nullptr após delete
+	// Boa prï¿½tica: Setar nullptr apï¿½s delete
 	heroAnimSet = nullptr;
 	globAnimSet = nullptr;
 	grobAnimSet = nullptr;
@@ -229,6 +248,7 @@ Game::~Game() {
 	checkpointAnimSet = nullptr;
 	bloodstainAnimSet = nullptr;
 	hDewPotionAnimSet = nullptr;
+	friendlyNpcAnimSet = nullptr;
 
 	// Limpeza de mapa
 	if (currentMap != nullptr) {
@@ -236,7 +256,7 @@ Game::~Game() {
 		currentMap = nullptr;
 	}
 
-	// Resetar ponteiros (já foram deletados em Entity::entities)
+	// Resetar ponteiros (jï¿½ foram deletados em Entity::entities)
 	currentBoss = nullptr;
 	bloodstain = nullptr;
 	hero = nullptr;
@@ -285,7 +305,7 @@ bool Game::isBossMap() {
 	auto layer = tMap->getLayer("BossSpawn");
 	if (layer == nullptr) return false;
 
-	// Aqui pode ter um problema futuramente, pois assumimos que só há um objeto de boss na layer
+	// Aqui pode ter um problema futuramente, pois assumimos que sï¿½ hï¿½ um objeto de boss na layer
 	for (auto obj : layer->getObjects()) {
 		int bossId = std::any_cast<int>(obj.getProp("bossId")->getValue());
 		std::vector<int>::iterator it;
@@ -518,7 +538,7 @@ void Game::runPausedGameMenu() {
 		if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.scancode) {
 			case SDL_SCANCODE_ESCAPE:
-				// Verifica se está no modo de seleção de quick slot
+				// Verifica se estï¿½ no modo de seleï¿½ï¿½o de quick slot
 				if (pauseMenu->inventoryMode == InventoryMode::SelectingQuickSlot) {
 					pauseMenu->cancelQuickSlotSelection();
 					break;
@@ -537,7 +557,7 @@ void Game::runPausedGameMenu() {
 				break;
 
 			case SDL_SCANCODE_SPACE:
-				// Verifica se está no modo de seleção de quick slot
+				// Verifica se estï¿½ no modo de seleï¿½ï¿½o de quick slot
 				if (pauseMenu->inventoryMode == InventoryMode::SelectingQuickSlot) {
 					pauseMenu->confirmQuickSlotSelection();
 					break;
@@ -732,7 +752,7 @@ void Game::renderTiles() {
 
 					tilesetName = tileset->getImage().filename().string();
 
-					// MUDANÇA AQUI: Buscar no map de unique_ptr
+					// MUDANï¿½A AQUI: Buscar no map de unique_ptr
 					if (auto search = texturesCache.find(tilesetName);
 						search != texturesCache.end()) {
 						// Usar .get() para pegar o raw pointer
@@ -758,7 +778,7 @@ void Game::renderTiles() {
 						return;
 					}
 
-					// ... resto do código de renderização igual
+					// ... resto do cï¿½digo de renderizaï¿½ï¿½o igual
 					SDL_Rect tileRect;
 					tileRect.x = tileObject.getDrawingRect().x;
 					tileRect.y = tileObject.getDrawingRect().y;
@@ -1106,11 +1126,11 @@ void Game::draw() {
 	// 4. Volta o alvo para a tela real (janela)
 	SDL_SetRenderTarget(Globals::renderer, NULL);
 
-	// 5. Limpa a tela real (opcional, mas boa prática)
+	// 5. Limpa a tela real (opcional, mas boa prï¿½tica)
 	SDL_RenderClear(Globals::renderer);
 
-	// 6. Desenha o canvas inteiro na tela de uma vez só
-	// Como o LogicalSize está ativo no main.cpp, o SDL vai esticar 
+	// 6. Desenha o canvas inteiro na tela de uma vez sï¿½
+	// Como o LogicalSize estï¿½ ativo no main.cpp, o SDL vai esticar 
 	// o canvas perfeitamente para preencher a janela.
 	SDL_RenderCopy(Globals::renderer, gameCanvas, NULL, NULL);
 	SDL_SetRenderDrawColor(Globals::renderer, 20, 20, 20, 255);
@@ -1390,6 +1410,10 @@ void Game::loadAnimationSets() {
 	bloodstainAnimSet = std::make_unique<AnimationSet>();
 	bloodstainAnimSet->loadAnimationSet(
 		ANIMATIONS_FOLDER_PATH + "bloodstain.fdset", dataGroupTypes);
+
+	friendlyNpcAnimSet = std::make_unique<AnimationSet>();
+	friendlyNpcAnimSet->loadAnimationSet(
+		ANIMATIONS_FOLDER_PATH + "npc_1.fdset", dataGroupTypes, true, 0, true);
 }
 
 void Game::spawnItemsFromCurrentMap() {

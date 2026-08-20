@@ -7,7 +7,7 @@ void LivingEntity::updateHitBox() {
 	damage = 0;
 
 	GroupBox* hitBoxes = (GroupBox*)GroupBuilder::findGroupByName("hitBox", currentFrame->frameData);
-	if (hitBoxes != NULL && hitBoxes->numberOfDataInGroup() > 0) {
+	if (hitBoxes != nullptr && hitBoxes->numberOfDataInGroup() > 0) {
 		//update hitbox
 		SDL_Rect hb = hitBoxes->data.front();
 		hitBox.x = x - currentFrame->offset.x + hb.x;
