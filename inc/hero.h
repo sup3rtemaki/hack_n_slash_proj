@@ -1,5 +1,4 @@
-#ifndef HERO
-#define HERO
+#pragma once
 
 #include "globals.h"
 #include "livingEntity.h"
@@ -10,6 +9,7 @@
 #include <unordered_map>
 #include <vector>
 #include <deque>
+#include <memory>
 
 enum class HeroActions {
 	PICK_NEAR_ITEM,
@@ -112,7 +112,7 @@ public:
 	class Checkpoint* nearestCheckpoint;
 	class Bloodstain* nearestBloodstain;
 	std::map<int, std::unique_ptr<Item>> inventory;
-	vector<int> quickAccessInventory = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+	vector<int> quickAccessInventory = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 	vector<int> comboSequence;
 	deque<int> attackBuffer;
 	unordered_map<int, Item*> passiveSlots;
@@ -122,7 +122,7 @@ public:
 	Map* currentMap;
 	class ActionMessageUi* actionMessageUi;
 
-	Hero(AnimationSet* animSet);
+	Hero();
 	~Hero();
 
 	void update();
@@ -151,6 +151,7 @@ public:
 	void attackTimerTick();
 
 private:
+	std::unique_ptr<AnimationSet> localAnimSet;
 	int newEssenceQty;
 	int prevEssence;
 
@@ -163,5 +164,3 @@ private:
 	void updatePheromoneTrail();
 	Item* currentNearItem;
 };
-
-#endif
