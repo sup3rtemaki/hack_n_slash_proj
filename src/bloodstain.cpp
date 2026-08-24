@@ -6,8 +6,28 @@ const string Bloodstain::BLOODSTAIN_ANIM_DIE = "die";
 const int Bloodstain::BLOODSTAIN_STATE_IDLE = 0;
 const int Bloodstain::BLOODSTAIN_STATE_DIE = 1;
 
-Bloodstain::Bloodstain(AnimationSet* animSet) {
-	this->animSet = animSet;
+Bloodstain::Bloodstain() {
+	list<DataGroupType> dataGroupTypes;
+	DataGroupType colBoxType;
+	colBoxType.groupName = "collisionBox";
+	colBoxType.dataType = DataGroupType::DATATYPE_BOX;
+
+	DataGroupType hitBoxType;
+	hitBoxType.groupName = "hitBox";
+	hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
+
+	DataGroupType dmgType;
+	dmgType.groupName = "damage";
+	dmgType.dataType = DataGroupType::DATATYPE_NUMBER;
+
+	dataGroupTypes.push_back(colBoxType);
+	dataGroupTypes.push_back(hitBoxType);
+	dataGroupTypes.push_back(dmgType);
+
+	localAnimSet = std::make_unique<AnimationSet>();
+	localAnimSet->loadAnimationSet("Assets\\Animations\\bloodstain.fdset", dataGroupTypes);
+	this->animSet = localAnimSet.get();
+
 	type = "bloodstain";
 	changeAnimation(BLOODSTAIN_STATE_IDLE, true);
 }

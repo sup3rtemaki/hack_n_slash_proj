@@ -127,21 +127,8 @@ public:
 	void update();
 	void draw();
 
+
 private:
-	std::unique_ptr<AnimationSet> heroAnimSet;
-	std::unique_ptr<AnimationSet> globAnimSet;
-	std::unique_ptr<AnimationSet> grobAnimSet;
-	std::unique_ptr<AnimationSet> termiteMinerAnimSet;
-	std::unique_ptr<AnimationSet> wallAnimSet;
-	std::unique_ptr<AnimationSet> roundKingAnimSet;
-	std::unique_ptr<AnimationSet> smallBrownSpiderAnimSet;
-	std::unique_ptr<AnimationSet> bulletAnimSet;
-	std::unique_ptr<AnimationSet> hDewPotionAnimSet;
-	std::unique_ptr<AnimationSet> stoneProjectileAnimSet;
-	std::unique_ptr<AnimationSet> doubleDoorsAnimSet;
-	std::unique_ptr<AnimationSet> checkpointAnimSet;
-	std::unique_ptr<AnimationSet> bloodstainAnimSet;
-	std::unique_ptr<AnimationSet> friendlyNpcAnimSet;
 	SDL_Texture* gameCanvas = nullptr;
 	int frameCount = 0;
 	string resPath;
@@ -172,7 +159,7 @@ private:
 	void spawnCheckpoints();
 	void checkBossDeath();
 	void saveCheckpointActivatedState(int checkpointId);
-	void loadAnimationSets();
+	// AnimationSets are initialized by entities themselves now.
 	void spawnItemsFromCurrentMap();
 	void inactivateCurrentMapItems();
 	void removeAllEnemiesInMap();

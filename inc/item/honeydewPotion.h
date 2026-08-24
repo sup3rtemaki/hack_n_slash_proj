@@ -5,7 +5,7 @@
 
 class HoneydewPotion : public Item {
 public:
-	HoneydewPotion(AnimationSet* animSet, bool isOnGround, int quant);
+	HoneydewPotion(bool isOnGround, int quant);
 	~HoneydewPotion();
 
 	void update();

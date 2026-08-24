@@ -30,8 +30,28 @@ const int Grob::GROB_AI_CHASE = 1;
 
 int Grob::grobsKilled = 0;
 
-Grob::Grob(AnimationSet* animSet) {
-	this->animSet = animSet;
+Grob::Grob() {
+	list<DataGroupType> dataGroupTypes;
+	DataGroupType colBoxType;
+	colBoxType.groupName = "collisionBox";
+	colBoxType.dataType = DataGroupType::DATATYPE_BOX;
+
+	DataGroupType hitBoxType;
+	hitBoxType.groupName = "hitBox";
+	hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
+
+	DataGroupType dmgType;
+	dmgType.groupName = "damage";
+	dmgType.dataType = DataGroupType::DATATYPE_NUMBER;
+
+	dataGroupTypes.push_back(colBoxType);
+	dataGroupTypes.push_back(hitBoxType);
+	dataGroupTypes.push_back(dmgType);
+
+	std::unique_ptr<AnimationSet> localAnim = std::make_unique<AnimationSet>();
+	localAnim->loadAnimationSet("Assets\\Animations\\grob.fdset", dataGroupTypes, true, 0, true);
+	this->animSet = localAnim.get();
+	this->localAnimSet = std::move(localAnim);
 	type = "enemy";
 	x = Globals::ScreenWidth / 2;
 	y = Globals::ScreenHeight / 2;

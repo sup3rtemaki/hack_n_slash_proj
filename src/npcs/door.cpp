@@ -8,8 +8,18 @@ const string Door::DOOR_CLOSED_ANIM_SUFFIX = "Closed";
 const string Door::DOOR_OPENING_ANIM_SUFFIX = "Opening";
 const string Door::DOOR_OPEN_ANIM_SUFFIX = "Open";
 
-Door::Door(AnimationSet* animSet, int id, string prefix, bool isClosed, int posX, int posY, int width, int height, int collisionBoxYOffset) {
-	this->animSet = animSet;
+Door::Door(int id, string prefix, bool isClosed, int posX, int posY, int width, int height, int collisionBoxYOffset) {
+	list<DataGroupType> dataGroupTypes;
+	DataGroupType colBoxType; colBoxType.groupName = "collisionBox"; colBoxType.dataType = DataGroupType::DATATYPE_BOX;
+	DataGroupType hitBoxType; hitBoxType.groupName = "hitBox"; hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
+	DataGroupType dmgType; dmgType.groupName = "damage"; dmgType.dataType = DataGroupType::DATATYPE_NUMBER;
+	dataGroupTypes.push_back(colBoxType);
+	dataGroupTypes.push_back(hitBoxType);
+	dataGroupTypes.push_back(dmgType);
+
+	localAnimSet = std::make_unique<AnimationSet>();
+	localAnimSet->loadAnimationSet("Assets\\Animations\\double_doors.fdset", dataGroupTypes);
+	this->animSet = localAnimSet.get();
 	this->id = id;
 	animPrefix = prefix;
 	this->isClosed = isClosed;

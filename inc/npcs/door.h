@@ -2,6 +2,7 @@
 #define DOOR
 
 #include "entity.h"
+#include <memory>
 class Door : public Entity {
 public:
 	static const int DOOR_STATE_CLOSED;
@@ -16,8 +17,10 @@ public:
 	bool isClosed;
 	bool isLocked;
 
-	Door(AnimationSet* animSet, int id, string prefix, bool isClosed, int posX, int posY, int width, int height, int collisionBoxYOffset);
+	Door(int id, string prefix, bool isClosed, int posX, int posY, int width, int height, int collisionBoxYOffset);
 	virtual ~Door() = default;
+
+	std::unique_ptr<AnimationSet> localAnimSet;
 
 	void update();
 	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");

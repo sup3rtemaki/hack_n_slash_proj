@@ -51,8 +51,29 @@ const int SmallBrownSpider::SMALL_BROWN_SPIDER_PHASE_FRANTIC = 3;
 const int SmallBrownSpider::SMALL_BROWN_SPIDER_AI_NORMAL = 0;
 const int SmallBrownSpider::SMALL_BROWN_SPIDER_AI_CHASE = 1;
 
-SmallBrownSpider::SmallBrownSpider(AnimationSet* animSet) {
-	this->animSet = animSet;
+SmallBrownSpider::SmallBrownSpider() {
+	list<DataGroupType> dataGroupTypes;
+	DataGroupType colBoxType;
+	colBoxType.groupName = "collisionBox";
+	colBoxType.dataType = DataGroupType::DATATYPE_BOX;
+
+	DataGroupType hitBoxType;
+	hitBoxType.groupName = "hitBox";
+	hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
+
+	DataGroupType dmgType;
+	dmgType.groupName = "damage";
+	dmgType.dataType = DataGroupType::DATATYPE_NUMBER;
+
+	dataGroupTypes.push_back(colBoxType);
+	dataGroupTypes.push_back(hitBoxType);
+	dataGroupTypes.push_back(dmgType);
+
+	std::unique_ptr<AnimationSet> localAnim = std::make_unique<AnimationSet>();
+	localAnim->loadAnimationSet("Assets\\Animations\\spider_boss.fdset", dataGroupTypes);
+	this->animSet = localAnim.get();
+	this->localAnimSet = std::move(localAnim);
+    
 	type = "boss";
 	x = Globals::ScreenWidth - 32;
 	y = Globals::ScreenHeight - 32;

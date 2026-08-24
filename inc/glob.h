@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include "entities/enemyEntity.h"
 #include "soundManager.h"
+#include <memory>
 
 class Glob : public EnemyEntity {
 public:
@@ -41,7 +42,7 @@ public:
 
 	int aiState = GLOB_AI_NORMAL;
 
-	Glob(AnimationSet* animSet);
+	Glob();
 	void update();
 	void think();
 	void telegraph();
@@ -53,7 +54,9 @@ public:
 	void updateDamages();
 	void populatePossibleDropItemsMap();
 	void pursueTarget(LivingEntity* entity);
+	std::unique_ptr<AnimationSet> localAnimSet;
 };
+
 
 #endif // !GLOB
 

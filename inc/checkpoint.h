@@ -2,6 +2,7 @@
 #define CHECKPOINT
 
 #include "entity.h"
+#include <memory>
 
 class Checkpoint : public Entity {
 public:
@@ -11,15 +12,17 @@ public:
 	static const int CHECKPOINT_STATE_ACTIVE;
 	static const int CHECKPOINT_STATE_INACTIVE;
 
+
 	bool isActivated;
 	string mapFileName;
 
-	Checkpoint(AnimationSet* animSet, int id, string& mapFileName);
+	Checkpoint(int id = 0, const string& mapFileName = "");
 	virtual ~Checkpoint() = default;
 
 	void activate();
 
 private:
+	std::unique_ptr<AnimationSet> localAnimSet;
 	void update();
 	void updateAnimation();
 	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");

@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include "entities/enemyEntity.h"
 #include "soundManager.h"
+#include <memory>
 
 class Grob : public EnemyEntity {
 public:
@@ -41,7 +42,9 @@ public:
 
 	int aiState = GROB_AI_NORMAL;
 
-	Grob(AnimationSet* animSet);
+	Grob();
+
+	std::unique_ptr<AnimationSet> localAnimSet;
 	void update();
 	void think();
 	void telegraph();

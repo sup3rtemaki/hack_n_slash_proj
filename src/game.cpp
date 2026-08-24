@@ -64,8 +64,7 @@ Game::Game() {
 	//	Mix_Volume(-1, 50);
 	//}
 
-	//TODO: Levar essa rotina pro loadGame
-	loadAnimationSets();
+	// AnimationSets: entities initialize their own sets when constructed.
 
 	saveHandler.load();
 	currentMap = new Map();
@@ -74,7 +73,7 @@ Game::Game() {
 	loadTiledMap(resPath + MAPS_FOLDER_PATH + currentMap->file);
 
 	// build hero entity
-	hero = new Hero(heroAnimSet.get());
+	hero = new Hero();
 	hero->invincibleTimer = 0;
 	hero->hp = saveHandler.getHeroHp();
 	hero->x = hero->lastCheckpointPos.x = saveHandler.getHeroX();
@@ -94,7 +93,7 @@ Game::Game() {
 	defeatedBossesIds = saveHandler.getDefeatedBossesIds();
 
 	// bloodstain
-	bloodstain = new Bloodstain(bloodstainAnimSet.get());
+	bloodstain = new Bloodstain();
 	BloodstainInfo bloodstainInfo = saveHandler.getBloodstainInfo();
 	bloodstain->setLocation(
 		bloodstainInfo.x,
@@ -127,7 +126,7 @@ Game::Game() {
 	try {
 		NpcFactory::getInstance().loadAllNpcs("data/npcs/");
 		if (NpcFactory::getInstance().hasNpc("blacksmith")) {
-			auto npcUP = NpcFactory::getInstance().createNpc("blacksmith", friendlyNpcAnimSet.get());
+			auto npcUP = NpcFactory::getInstance().createNpc("blacksmith");
 			FriendlyNpc* npc = npcUP.release();
 			// place npc close to hero
 			npc->x = hero->x + 32;
@@ -213,10 +212,7 @@ Game::~Game() {
 
 	// ORDEM CR�TICA - MUITO IMPORTANTE:
 	// 1� Deletar GUI (pode ter refer�ncias a entities)
-	// 2� Deletar Entities (usam AnimationSets)
-	// 3� Deletar AnimationSets
-
-	// PASSO 1: Limpar GUI
+	// 2� Deletar Entities (agora gerenciam seus AnimationSets)
 	for (auto ui : gui) {
 		delete ui;
 	}
@@ -234,21 +230,7 @@ Game::~Game() {
 	openDoorsIds.clear();
 	defeatedBossesIds.clear();
 
-	// Boa pr�tica: Setar nullptr ap�s delete
-	heroAnimSet = nullptr;
-	globAnimSet = nullptr;
-	grobAnimSet = nullptr;
-	termiteMinerAnimSet = nullptr;
-	wallAnimSet = nullptr;
-	roundKingAnimSet = nullptr;
-	bulletAnimSet = nullptr;
-	stoneProjectileAnimSet = nullptr;
-	smallBrownSpiderAnimSet = nullptr;
-	doubleDoorsAnimSet = nullptr;
-	checkpointAnimSet = nullptr;
-	bloodstainAnimSet = nullptr;
-	hDewPotionAnimSet = nullptr;
-	friendlyNpcAnimSet = nullptr;
+	// Game no longer holds AnimationSet pointers; individual entities clean up their own.
 
 	// Limpeza de mapa
 	if (currentMap != nullptr) {
@@ -1000,7 +982,6 @@ void Game::buildDoors() {
 			}
 
 			Door* door = new Door(
-				doubleDoorsAnimSet.get(),
 				doorId,
 				std::any_cast<string>(animPrefixProp->getValue()),
 				isDoorClosed,
@@ -1167,7 +1148,7 @@ void Game::spawnEnemies() {
 		case 0: // Glob
 			if (deadEnemiesIds.empty() ||
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
-				TermiteMiner* enemy = new TermiteMiner(termiteMinerAnimSet.get());
+					TermiteMiner* enemy = new TermiteMiner();
 					enemy->x = enemyPosX;
 					enemy->y = enemyPosY;
 					enemy->invincibleTimer = 0.1;
@@ -1179,7 +1160,7 @@ void Game::spawnEnemies() {
 		case 1: // Termite
 			if (deadEnemiesIds.empty() ||
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
-					TermiteMiner* enemy = new TermiteMiner(termiteMinerAnimSet.get());
+					TermiteMiner* enemy = new TermiteMiner();
 					enemy->x = enemyPosX;
 					enemy->y = enemyPosY;
 					enemy->invincibleTimer = 0.1;
@@ -1217,7 +1198,7 @@ void Game::spawnBoss() {
 		int bossPosY = object.getPosition().y;
 		switch (bossId) {
 			case 990001: // Small Brown Spider
-				currentBoss = new SmallBrownSpider(smallBrownSpiderAnimSet.get());
+				currentBoss = new SmallBrownSpider();
 				currentBoss->x = bossPosX;
 				currentBoss->y = bossPosY;
 				currentBoss->id = bossId;
@@ -1241,14 +1222,13 @@ void Game::spawnItem(int itemId, int quant, int xPos, int yPos) {
 
 	switch (itemId) {
 	case Item::HONEYDEW_POTION_ID:
-		spawnItem = new HoneydewPotion(hDewPotionAnimSet.get(), canSpawn, quant);
+		spawnItem = new HoneydewPotion(canSpawn, quant);
 		break;
 	case Item::GREEN_BERRY_ID:
-		spawnItem = new GreenBerry(hDewPotionAnimSet.get(), canSpawn, quant);
+		spawnItem = new GreenBerry(canSpawn, quant);
 		break;
 	case Item::STONE_ID:
-		spawnItem = new Stone(hDewPotionAnimSet.get(), canSpawn, quant);
-		spawnItem->projectileAnimSet = stoneProjectileAnimSet.get();
+		spawnItem = new Stone(canSpawn, quant);
 		break;
 	default:
 		return;
@@ -1276,7 +1256,7 @@ void Game::spawnCheckpoints() {
 		int cpPosX = object.getPosition().x;
 		int cpPosY = object.getPosition().y;
 
-		Checkpoint* checkpoint = new Checkpoint(checkpointAnimSet.get(), cpId, currentMap->file);
+		Checkpoint* checkpoint = new Checkpoint(cpId, currentMap->file);
 		checkpoint->x = cpPosX;
 		checkpoint->y = cpPosY;
 		if (isActive) checkpoint->activate();
@@ -1335,86 +1315,7 @@ void Game::saveCheckpointActivatedState(int checkpointId) {
 	}
 }
 
-void Game::loadAnimationSets() {
-	list<DataGroupType> dataGroupTypes; //describes the types of groups the data can have
-
-	// what data can the frame have?
-	// collisionBoxes
-	DataGroupType colBoxType;
-	colBoxType.groupName = "collisionBox";
-	colBoxType.dataType = DataGroupType::DATATYPE_BOX;
-
-	// hitboxes
-	DataGroupType hitBoxType;
-	hitBoxType.groupName = "hitBox";
-	hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
-
-	// damage
-	DataGroupType dmgType;
-	dmgType.groupName = "damage";
-	dmgType.dataType = DataGroupType::DATATYPE_NUMBER;
-
-	// add all of these to the list
-	dataGroupTypes.push_back(colBoxType);
-	dataGroupTypes.push_back(hitBoxType);
-	dataGroupTypes.push_back(dmgType);
-
-	hDewPotionAnimSet = std::make_unique<AnimationSet>();
-	hDewPotionAnimSet->loadAnimationSet(
-		ANIMATIONS_FOLDER_PATH + "groundConsumableItem.fdset", dataGroupTypes);
-
-	heroAnimSet = std::make_unique<AnimationSet>();
-	heroAnimSet->loadAnimationSet(
-		ANIMATIONS_FOLDER_PATH + "antHero.fdset", dataGroupTypes, true, 0, true);
-
-	globAnimSet = std::make_unique<AnimationSet>();
-	globAnimSet->loadAnimationSet(
-		ANIMATIONS_FOLDER_PATH + "glob.fdset", dataGroupTypes, true, 0, true);
-
-	grobAnimSet = std::make_unique<AnimationSet>();
-	grobAnimSet->loadAnimationSet(
-		ANIMATIONS_FOLDER_PATH + "grob.fdset", dataGroupTypes, true, 0, true);
-
-	termiteMinerAnimSet = std::make_unique<AnimationSet>();
-	termiteMinerAnimSet->loadAnimationSet(
-		ANIMATIONS_FOLDER_PATH + "termiteMiner.fdset", dataGroupTypes, true, 0, true);
-
-	wallAnimSet = std::make_unique<AnimationSet>();
-	wallAnimSet->loadAnimationSet(
-		ANIMATIONS_FOLDER_PATH + "wall.fdset", dataGroupTypes);
-
-	roundKingAnimSet = std::make_unique<AnimationSet>();
-	roundKingAnimSet->loadAnimationSet(
-		ANIMATIONS_FOLDER_PATH + "roundKing.fdset", dataGroupTypes, true, 0, true);
-
-	smallBrownSpiderAnimSet = std::make_unique<AnimationSet>();
-	smallBrownSpiderAnimSet->loadAnimationSet(
-		ANIMATIONS_FOLDER_PATH + "spider_boss.fdset", dataGroupTypes);
-
-	bulletAnimSet = std::make_unique<AnimationSet>();
-	bulletAnimSet->loadAnimationSet(
-		ANIMATIONS_FOLDER_PATH + "bullet.fdset", dataGroupTypes, true, 0, true);
-
-	stoneProjectileAnimSet = std::make_unique<AnimationSet>();
-	stoneProjectileAnimSet->loadAnimationSet(
-		ANIMATIONS_FOLDER_PATH + "stoneProjectile.fdset", dataGroupTypes, true, 0, true);
-
-	doubleDoorsAnimSet = std::make_unique<AnimationSet>();
-	doubleDoorsAnimSet->loadAnimationSet(
-		ANIMATIONS_FOLDER_PATH + "double_doors.fdset", dataGroupTypes);
-
-	checkpointAnimSet = std::make_unique<AnimationSet>();
-	checkpointAnimSet->loadAnimationSet(
-		ANIMATIONS_FOLDER_PATH + "checkpoint.fdset", dataGroupTypes);
-
-	bloodstainAnimSet = std::make_unique<AnimationSet>();
-	bloodstainAnimSet->loadAnimationSet(
-		ANIMATIONS_FOLDER_PATH + "bloodstain.fdset", dataGroupTypes);
-
-	friendlyNpcAnimSet = std::make_unique<AnimationSet>();
-	friendlyNpcAnimSet->loadAnimationSet(
-		ANIMATIONS_FOLDER_PATH + "npc_1.fdset", dataGroupTypes, true, 0, true);
-}
+// loadAnimationSets was removed: entities initialize their own AnimationSets now.
 
 void Game::spawnItemsFromCurrentMap() {
 	auto currentTiledMap = tiledMap.get();
@@ -1484,23 +1385,22 @@ map<int, std::unique_ptr<Item>> Game::loadInventoryItems(
 			switch (item.first) {
 			case Item::HONEYDEW_POTION_ID:
 				loadItem = std::make_unique<HoneydewPotion>(
-					hDewPotionAnimSet.get(), false, item.second);
+					false, item.second);
 				loadItem->active = false;
 				break;
 			case Item::GREEN_BERRY_ID:
 				loadItem = std::make_unique<GreenBerry>(
-					hDewPotionAnimSet.get(), false, item.second);
+					false, item.second);
 				loadItem->active = false;
 				break;
 			case Item::STONE_ID:
 				loadItem = std::make_unique<Stone>(
-					hDewPotionAnimSet.get(), false, item.second);
-				loadItem->projectileAnimSet = stoneProjectileAnimSet.get();
+					false, item.second);
 				loadItem->active = false;
 				break;
 			case Item::COMMON_KEY_ID:
 				loadItem = std::make_unique<Key>(
-					hDewPotionAnimSet.get(), false, item.second);
+					false, item.second);
 				loadItem->active = false;
 				break;
 			default:

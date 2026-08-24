@@ -30,8 +30,30 @@ const int Glob::GLOB_AI_CHASE = 1;
 
 int Glob::globsKilled = 0;
 
-Glob::Glob(AnimationSet* animSet) {
-	this->animSet = animSet;
+Glob::Glob() {
+	list<DataGroupType> dataGroupTypes;
+		DataGroupType colBoxType;
+		colBoxType.groupName = "collisionBox";
+		colBoxType.dataType = DataGroupType::DATATYPE_BOX;
+
+		DataGroupType hitBoxType;
+		hitBoxType.groupName = "hitBox";
+		hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
+
+		DataGroupType dmgType;
+		dmgType.groupName = "damage";
+		dmgType.dataType = DataGroupType::DATATYPE_NUMBER;
+
+		dataGroupTypes.push_back(colBoxType);
+		dataGroupTypes.push_back(hitBoxType);
+		dataGroupTypes.push_back(dmgType);
+
+		// own the anim set
+		std::unique_ptr<AnimationSet> localAnimSet = std::make_unique<AnimationSet>();
+		localAnimSet->loadAnimationSet("Assets\\Animations\\glob.fdset", dataGroupTypes, true, 0, true);
+		this->animSet = localAnimSet.get();
+		// transfer ownership to this object by storing it in the member
+		this->localAnimSet = std::move(localAnimSet);
 	type = "enemy";
 	x = Globals::ScreenWidth / 2;
 	y = Globals::ScreenHeight / 2;

@@ -2,6 +2,7 @@
 #define ITEM
 
 #include "livingEntity.h"
+#include <memory>
 
 class Item : public Entity {
 public:
@@ -23,9 +24,10 @@ public:
 	bool isOnGround;
 	bool isNearHero;
 	SDL_Texture* image;
-	AnimationSet* projectileAnimSet; // Apenas para itens projéteis
+	AnimationSet* projectileAnimSet; // Apenas para itens projï¿½teis
+	std::unique_ptr<AnimationSet> localAnimSet;
 
-	Item(SDL_Texture* image = nullptr, AnimationSet* animSet = nullptr);
+	Item(SDL_Texture* image = nullptr);
 	~Item();
 	void update();
 	void changeAnimation(int newState = 0, bool resetFrameToBeginning = true, string animName = "");

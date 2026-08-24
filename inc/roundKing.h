@@ -46,12 +46,11 @@ public:
 	//current phase for boss
 	int aiState = ROUND_KING_PHASE_NORMAL;
 
-	//reference to bullet anims
-	AnimationSet* bulletAnimSet;
+    
 
 	static int roundKingsKilled;
 
-	RoundKing(AnimationSet* animSet, AnimationSet* bulletAnimSet);
+	RoundKing();
 	void update();
 	void updateShoot();
 	void think();

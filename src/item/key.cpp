@@ -2,8 +2,18 @@
 
 #include "hero.h"
 
-Key::Key(AnimationSet* animSet, bool isOnGround, int quant = 1) {
-	this->animSet = animSet;
+Key::Key(bool isOnGround, int quant) {
+	list<DataGroupType> dataGroupTypes;
+	DataGroupType colBoxType; colBoxType.groupName = "collisionBox"; colBoxType.dataType = DataGroupType::DATATYPE_BOX;
+	DataGroupType hitBoxType; hitBoxType.groupName = "hitBox"; hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
+	DataGroupType dmgType; dmgType.groupName = "damage"; dmgType.dataType = DataGroupType::DATATYPE_NUMBER;
+	dataGroupTypes.push_back(colBoxType);
+	dataGroupTypes.push_back(hitBoxType);
+	dataGroupTypes.push_back(dmgType);
+
+	localAnimSet = std::make_unique<AnimationSet>();
+	localAnimSet->loadAnimationSet("Assets\\Animations\\groundConsumableItem.fdset", dataGroupTypes);
+	this->animSet = localAnimSet.get();
 	quantity = quant;
 	id = COMMON_KEY_ID;
 	name = "Common key";

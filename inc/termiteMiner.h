@@ -2,6 +2,7 @@
 #define TERMITEMINER
 
 #include "entities/enemyEntity.h"
+#include <memory>
 
 class TermiteMiner : public EnemyEntity {
 public:
@@ -35,7 +36,8 @@ public:
 
 	int aiState = TERMITE_MINER_AI_NORMAL;
 
-	TermiteMiner(AnimationSet* animSet);
+	TermiteMiner();
+	std::unique_ptr<AnimationSet> localAnimSet;
 	void update();
 	void think();
 	void attack();

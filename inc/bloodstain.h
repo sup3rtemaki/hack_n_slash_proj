@@ -2,6 +2,7 @@
 #define BLOODSTAIN
 
 #include "entity.h"
+#include <memory>
 
 class Bloodstain : public Entity {
 public:
@@ -14,7 +15,7 @@ public:
 	bool isLive;
 	string mapName;
 
-	Bloodstain(AnimationSet* animSet);
+	Bloodstain();
 	~Bloodstain();
 
 	void update();
@@ -26,6 +27,7 @@ public:
 	int recoverEssence();
 
 private:
+	std::unique_ptr<AnimationSet> localAnimSet;
 	int prevX;
 	int prevY;
 };

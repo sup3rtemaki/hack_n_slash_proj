@@ -3,9 +3,19 @@
 
 #include <iostream>
 
-FriendlyNpc::FriendlyNpc(const NpcData& npcData, AnimationSet* animSet) : data(npcData) {
-    // Inicializa com dados do JSON
-    this->animSet = animSet;
+FriendlyNpc::FriendlyNpc(const NpcData& npcData) : data(npcData) {
+    // Inicializa com dados do JSON e cria seu próprio AnimationSet
+    list<DataGroupType> dataGroupTypes;
+    DataGroupType colBoxType; colBoxType.groupName = "collisionBox"; colBoxType.dataType = DataGroupType::DATATYPE_BOX;
+    DataGroupType hitBoxType; hitBoxType.groupName = "hitBox"; hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
+    DataGroupType dmgType; dmgType.groupName = "damage"; dmgType.dataType = DataGroupType::DATATYPE_NUMBER;
+    dataGroupTypes.push_back(colBoxType);
+    dataGroupTypes.push_back(hitBoxType);
+    dataGroupTypes.push_back(dmgType);
+
+    localAnimSet = std::make_unique<AnimationSet>();
+    localAnimSet->loadAnimationSet("Assets\\Animations\\npc_1.fdset", dataGroupTypes, true, 0, true);
+    this->animSet = localAnimSet.get();
     type = "friendly";
     collisionBoxW = 16;
     collisionBoxH = 16;

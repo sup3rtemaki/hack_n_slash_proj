@@ -61,8 +61,51 @@ const int Hero::PHEROMONE_TRAIL_MAX_SIZE = 25;
 
 const float ATTACK_TIME = 0.8f;
 
-Hero::Hero(AnimationSet* animSet) {
-	this->animSet = animSet;
+Hero::Hero() {
+	// Initialize local AnimationSet for Hero
+	{
+		list<DataGroupType> dataGroupTypes;
+		DataGroupType colBoxType;
+		colBoxType.groupName = "collisionBox";
+		colBoxType.dataType = DataGroupType::DATATYPE_BOX;
+
+		DataGroupType hitBoxType;
+		hitBoxType.groupName = "hitBox";
+		hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
+
+		DataGroupType dmgType;
+		dmgType.groupName = "damage";
+		dmgType.dataType = DataGroupType::DATATYPE_NUMBER;
+
+		dataGroupTypes.push_back(colBoxType);
+		dataGroupTypes.push_back(hitBoxType);
+		dataGroupTypes.push_back(dmgType);
+
+		localAnimSet = std::make_unique<AnimationSet>();
+		localAnimSet->loadAnimationSet("Assets\\Animations\\antHero.fdset", dataGroupTypes, true, 0, true);
+		this->animSet = localAnimSet.get();
+	}
+    
+		list<DataGroupType> dataGroupTypes;
+		DataGroupType colBoxType;
+		colBoxType.groupName = "collisionBox";
+		colBoxType.dataType = DataGroupType::DATATYPE_BOX;
+
+		DataGroupType hitBoxType;
+		hitBoxType.groupName = "hitBox";
+		hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
+
+		DataGroupType dmgType;
+		dmgType.groupName = "damage";
+		dmgType.dataType = DataGroupType::DATATYPE_NUMBER;
+
+		dataGroupTypes.push_back(colBoxType);
+		dataGroupTypes.push_back(hitBoxType);
+		dataGroupTypes.push_back(dmgType);
+
+		localAnimSet = std::make_unique<AnimationSet>();
+		localAnimSet->loadAnimationSet("Assets\\Animations\\antHero.fdset", dataGroupTypes, true, 0, true);
+		this->animSet = localAnimSet.get();
 	type = "hero";
 
 	//setup default hero values
@@ -105,8 +148,8 @@ Hero::Hero(AnimationSet* animSet) {
 }
 
 Hero::~Hero() {
-	// PASSO 1: Limpar listas de referências PRIMEIRO
-	// (nearItems só tem ponteiros, não ownership)
+	// PASSO 1: Limpar listas de referï¿½ncias PRIMEIRO
+	// (nearItems sï¿½ tem ponteiros, nï¿½o ownership)
 	nearItems.clear();
 
 	inventory.clear();
@@ -117,7 +160,7 @@ Hero::~Hero() {
 	pheromoneTrail.clear();
 	quickAccessInventory.clear();
 
-	// PASSO 4: Resetar ponteiros (não deletar - são gerenciados por outros)
+	// PASSO 4: Resetar ponteiros (nï¿½o deletar - sï¿½o gerenciados por outros)
 	nearestDoor = nullptr;
 	nearestCheckpoint = nullptr;
 	nearestBloodstain = nullptr;
@@ -442,7 +485,7 @@ void Hero::updateAnimation() {
 	}
 
 	if (state == (int)HERO_STATE::RESTING) {
-		// TODO: Fazer anim e lógica de sentar na fogueira depois de implementar os menus
+		// TODO: Fazer anim e lï¿½gica de sentar na fogueira depois de implementar os menus
 		state = (int)HERO_STATE::IDLE;
 	}
 
@@ -554,17 +597,17 @@ void Hero::addItemToInventory(std::unique_ptr<Item> item) {
 	addedItemName = item->name;
 	qtyItemsPicked = item->quantity;
 
-	// Procurar se item já existe no inventário
+	// Procurar se item jï¿½ existe no inventï¿½rio
 	for (auto& [id, invItem] : inventory) {
 		if (id == item->id) {
-			// Item existe, só aumentar quantidade
+			// Item existe, sï¿½ aumentar quantidade
 			invItem->quantity += item->quantity;
-			// item será destruído automaticamente ao sair da função
+			// item serï¿½ destruï¿½do automaticamente ao sair da funï¿½ï¿½o
 			return;
 		}
 	}
 
-	// Item novo, adicionar ao inventário
+	// Item novo, adicionar ao inventï¿½rio
 	int itemId = item->id;
 	inventory.emplace(itemId, std::move(item));
 }
@@ -578,13 +621,13 @@ void Hero::addItemToQuickAccess(int itemId, int position) {
 			if (quickAccessInventory[position] == itemId) { // Item ja existe no quickAccessInventory
 				return;
 			}
-			if (quickAccessInventory[position] == -1) { // Achou proxima posição valida
-				break; // Sai do loop pra guardar a posição
+			if (quickAccessInventory[position] == -1) { // Achou proxima posiï¿½ï¿½o valida
+				break; // Sai do loop pra guardar a posiï¿½ï¿½o
 			}
 		}
 	}
 
-	if (position == quickAccessInventory.size()) { // quickAccessInventory está cheio
+	if (position == quickAccessInventory.size()) { // quickAccessInventory estï¿½ cheio
 		position = 0;
 	}
 
@@ -618,7 +661,7 @@ void Hero::pickNearItemFromGround() {
 	currentNearItem->active = false;
 	currentNearItem->isOnGround = false;
 
-	// MUDANÇA: Transferir ownership do item
+	// MUDANï¿½A: Transferir ownership do item
 	// Criar unique_ptr a partir do raw pointer
 	// IMPORTANTE: Remover item de Entity::entities ANTES!
 
@@ -784,7 +827,7 @@ void Hero::useSelectedItem(int invIndex) {
 	if (hp > 0 && (state == (int)HERO_STATE::MOVE || state == (int)HERO_STATE::IDLE)) {
 		auto it = inventory.find(invIndex);
 		if (it == inventory.end()) {
-			cout << "Item na posicao " << invIndex << " não encontrado\n";
+			cout << "Item na posicao " << invIndex << " nï¿½o encontrado\n";
 			return;
 		}
 
@@ -801,7 +844,7 @@ void Hero::useSelectedItem(int invIndex) {
 		cout << "Quantidade items " << item->name << ": " << item->quantity << "\n";
 
 		if (item->quantity <= 0) {
-			// Item acabou, remover do inventário
+			// Item acabou, remover do inventï¿½rio
 			// unique_ptr vai deletar automaticamente
 			//inventory.erase(it);
 			return;

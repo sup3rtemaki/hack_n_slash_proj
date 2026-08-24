@@ -2,6 +2,7 @@
 #define SMALLBROWNSPIDER
 
 #include "entities/enemyEntity.h"
+#include <memory>
 class SmallBrownSpider : public EnemyEntity {
 public:
 	// animations
@@ -63,7 +64,9 @@ public:
 
 	int phase;
 
-	SmallBrownSpider(AnimationSet* animSet);
+	SmallBrownSpider();
+
+	std::unique_ptr<AnimationSet> localAnimSet;
 	void update();
 	void think();
 	void slash();

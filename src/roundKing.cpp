@@ -24,9 +24,9 @@ const int RoundKing::ROUND_KING_PHASE_FRANTIC = 3;
 
 int RoundKing::roundKingsKilled = 0;
 
-RoundKing::RoundKing(AnimationSet* animSet, AnimationSet* bulletAnimSet) {
-	this->animSet = animSet;
-	this->bulletAnimSet = bulletAnimSet;
+RoundKing::RoundKing() {
+	// Local anim set could be loaded here if a file is available.
+	this->animSet = nullptr;
 	type = "boss";
 	x = Globals::ScreenWidth - 32;
 	y = Globals::ScreenHeight - 32;
@@ -74,7 +74,7 @@ void RoundKing::updateShoot() {
 		}
 		else if (shotTimer <= 0) { //otherwiseif still shooting and its time to take a shot
 			shotTimer = 0.5;
-			Bullet* bullet = new Bullet(bulletAnimSet, x, y);
+			Bullet* bullet = new Bullet(x, y);
 			SoundManager::soundManager.playSound("shoot");
 			bullet->angle = angle;
 			Entity::entities.push_back(bullet);

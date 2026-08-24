@@ -2,8 +2,12 @@
 
 const string Bullet::BULLET_ANIM_BULLET = "bullet";
 
-Bullet::Bullet(AnimationSet* animSet, int x, int y) {
-	this->animSet = animSet;
+Bullet::Bullet(int x, int y) {
+	list<DataGroupType> dataGroupTypes;
+
+	localAnimSet = std::make_unique<AnimationSet>();
+	localAnimSet->loadAnimationSet("Assets\\Animations\\bullet.fdset", dataGroupTypes);
+	this->animSet = localAnimSet.get();
 	solid = false;
 	collideWithSolids = true;
 	dieOnSolids = true;

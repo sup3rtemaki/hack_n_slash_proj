@@ -8,8 +8,14 @@ const string StoneProjectile::STONE_PROJECTILE_ANIM_DESTROY = "destroy";
  const int StoneProjectile::STONE_PROJECTILE_STATE_DOWN_RIGHT = 1;
  const int StoneProjectile::STONE_PROJECTILE_STATE_DESTROY = 2;
 
-StoneProjectile::StoneProjectile(AnimationSet* animSet, int x, int y) {
-	this->animSet = animSet;
+StoneProjectile::StoneProjectile(int x, int y) {
+	list<DataGroupType> dataGroupTypes;
+	DataGroupType dmgType; dmgType.groupName = "damage"; dmgType.dataType = DataGroupType::DATATYPE_NUMBER;
+	dataGroupTypes.push_back(dmgType);
+
+	localAnimSet = std::make_unique<AnimationSet>();
+	localAnimSet->loadAnimationSet("Assets\\Animations\\stoneProjectile.fdset", dataGroupTypes);
+	this->animSet = localAnimSet.get();
 	solid = false;
 	collideWithSolids = true;
 	dieOnSolids = true;
@@ -42,7 +48,7 @@ void StoneProjectile::update() {
 	if ((hp < 1 && state != STONE_PROJECTILE_STATE_DESTROY) || 
 		(lifetimeTimer > lifetime)) {
 		// Descomentar linha abaixo caso queira que o item pare de se mover ao 
-		// ser destruído pela distancia
+		// ser destruï¿½do pela distancia
 		// hp = 0;
 		lifetimeTimer = 0;
 		moving = false;

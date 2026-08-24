@@ -8,9 +8,9 @@ const string Item::ITEM_KEY = "key";
 
 const string Item::ITEMS_IMAGES_FOLDER = "\\Assets\\Textures\\Items\\";
 
-Item::Item(SDL_Texture* image, AnimationSet* animSet) {
+Item::Item(SDL_Texture* image) {
 	this->image = image;
-	this->animSet = animSet;
+	this->animSet = nullptr;
 	solid = false;
 	isNearHero = false;
 	type = "item";

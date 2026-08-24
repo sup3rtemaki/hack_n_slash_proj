@@ -27,13 +27,13 @@ void NpcFactory::loadAllNpcs(const std::string& directory) {
 	}
 }
 
-std::unique_ptr<FriendlyNpc> NpcFactory::createNpc(const std::string& npcId, AnimationSet* animSet) {
+std::unique_ptr<FriendlyNpc> NpcFactory::createNpc(const std::string& npcId) {
 	auto it = npcDatabase.find(npcId);
 	if (it == npcDatabase.end()) {
 		throw std::runtime_error("NPC not found: " + npcId);
 	}
 
-	return std::make_unique<FriendlyNpc>(it->second, animSet);
+	return std::make_unique<FriendlyNpc>(it->second);
 }
 
 bool NpcFactory::hasNpc(const std::string& npcId) const {

@@ -2,8 +2,18 @@
 
 #include "projectiles/stoneProjectile.h"
 
-Stone::Stone(AnimationSet* animSet, bool isOnGround, int quant) {
-	this->animSet = animSet;
+Stone::Stone(bool isOnGround, int quant) {
+	list<DataGroupType> dataGroupTypes;
+	DataGroupType colBoxType; colBoxType.groupName = "collisionBox"; colBoxType.dataType = DataGroupType::DATATYPE_BOX;
+	DataGroupType hitBoxType; hitBoxType.groupName = "hitBox"; hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
+	DataGroupType dmgType; dmgType.groupName = "damage"; dmgType.dataType = DataGroupType::DATATYPE_NUMBER;
+	dataGroupTypes.push_back(colBoxType);
+	dataGroupTypes.push_back(hitBoxType);
+	dataGroupTypes.push_back(dmgType);
+
+	localAnimSet = std::make_unique<AnimationSet>();
+	localAnimSet->loadAnimationSet("Assets\\Animations\\groundConsumableItem.fdset", dataGroupTypes);
+	this->animSet = localAnimSet.get();
 	id = STONE_ID;
 	quantity = quant;
 	name = "Throwing Stone";
@@ -54,10 +64,6 @@ void Stone::changeAnimation(int newState, bool resetFrameToBeginning, string ani
 }
 
 void Stone::applyEffect(LivingEntity* heroEntity) {
-	if (projectileAnimSet == nullptr) {
-		cout << "AnimSet nulo!\n";
-		return;
-	}
 	int xOffset = 0;
 	int yOffset = 0;
 	if (heroEntity->direction == DIR_DOWN) {
@@ -75,7 +81,6 @@ void Stone::applyEffect(LivingEntity* heroEntity) {
 		yOffset = -20;
 	}
 	StoneProjectile* stoneProjectile = new StoneProjectile(
-		projectileAnimSet, 
 		heroEntity->x + xOffset, 
 		heroEntity->y + yOffset);
 	stoneProjectile->angle = heroEntity->angle;

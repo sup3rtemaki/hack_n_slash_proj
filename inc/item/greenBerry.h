@@ -5,7 +5,7 @@
 
 class GreenBerry : public Item {
 public:
-	GreenBerry(AnimationSet* animSet, bool isOnGround, int quant);
+	GreenBerry(bool isOnGround, int quant);
 	~GreenBerry();
 
 	void update();

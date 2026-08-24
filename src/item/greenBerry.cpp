@@ -3,8 +3,18 @@
 const float HEAL_TIME = 1.0f;
 const float HEAL_AMOUNT = 5.0f;
 
-GreenBerry::GreenBerry(AnimationSet* animSet, bool isOnGround, int quant) {
-	this->animSet = animSet;
+GreenBerry::GreenBerry(bool isOnGround, int quant) {
+	list<DataGroupType> dataGroupTypes;
+	DataGroupType colBoxType; colBoxType.groupName = "collisionBox"; colBoxType.dataType = DataGroupType::DATATYPE_BOX;
+	DataGroupType hitBoxType; hitBoxType.groupName = "hitBox"; hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
+	DataGroupType dmgType; dmgType.groupName = "damage"; dmgType.dataType = DataGroupType::DATATYPE_NUMBER;
+	dataGroupTypes.push_back(colBoxType);
+	dataGroupTypes.push_back(hitBoxType);
+	dataGroupTypes.push_back(dmgType);
+
+	localAnimSet = std::make_unique<AnimationSet>();
+	localAnimSet->loadAnimationSet("Assets\\Animations\\groundConsumableItem.fdset", dataGroupTypes);
+	this->animSet = localAnimSet.get();
 	id = GREEN_BERRY_ID;
 	quantity = quant;
 	name = "Green Berry";

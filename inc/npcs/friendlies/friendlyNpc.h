@@ -9,7 +9,7 @@
 
 class FriendlyNpc : public LivingEntity {
 public:
-    FriendlyNpc(const NpcData& npcData, AnimationSet* animSet = nullptr);
+    FriendlyNpc(const NpcData& npcData);
 
     virtual void updateDamages() override;
     virtual void die() override;
@@ -25,6 +25,7 @@ public:
 
 private:
     NpcData data;
+    std::unique_ptr<AnimationSet> localAnimSet;
 
     void updateAnimation();
 
