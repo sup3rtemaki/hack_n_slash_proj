@@ -3,10 +3,11 @@
 
 #include <cstdlib>
 #include "livingEntity.h"
+#include "entities/lootDropSource.h"
 #include "soundManager.h"
 #include "bullet.h"
 
-class RoundKing : public LivingEntity {
+class RoundKing : public LivingEntity, public LootDropSource {
 public:
 	//animations
 	static const string ROUND_KING_ANIM_IDLE;

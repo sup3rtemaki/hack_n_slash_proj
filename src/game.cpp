@@ -792,14 +792,17 @@ void Game::renderTiles() {
 void Game::checkAndHandleEnemyLoot(Entity* entity) {
 	if (entity->type != "enemy") return;
 
-	if (entity->dropItemFlag)  {
-		spawnItem(entity->dropItemId, entity->dropItemQty, entity->dropItemXPos, entity->dropItemYPos);
-		entity->dropItemFlag = false; // Failsafe
+	LootDropSource* lootSource = dynamic_cast<LootDropSource*>(entity);
+	if (lootSource == nullptr) return;
+
+	PendingItemDrop itemDrop;
+	if (lootSource->takePendingItemDrop(itemDrop)) {
+		spawnItem(itemDrop.itemId, itemDrop.quantity, itemDrop.x, itemDrop.y);
 	}
 
-	if (isLivingEntityDead(entity) && !entity->dropEssenceFlag) {
-		hero->addEssence(entity->essence);
-		entity->dropEssenceFlag = true;
+	if (isLivingEntityDead(entity) && !lootSource->hasDroppedEssence()) {
+		hero->addEssence(lootSource->getEssence());
+		lootSource->markEssenceDropped();
 	}
 }
 
@@ -1278,9 +1281,10 @@ void Game::checkBossDeath() {
 		}
 
 		fogWalls.clear();
-		if (!currentBoss->dropEssenceFlag) {
-			hero->addEssence(currentBoss->essence);
-			currentBoss->dropEssenceFlag = true;
+		LootDropSource* lootSource = dynamic_cast<LootDropSource*>(currentBoss);
+		if (lootSource != nullptr && !lootSource->hasDroppedEssence()) {
+			hero->addEssence(lootSource->getEssence());
+			lootSource->markEssenceDropped();
 		}		
 		// currentBoss = nullptr;
 	}

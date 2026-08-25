@@ -2,8 +2,9 @@
 #define ENEMYENTITY
 
 #include "livingEntity.h"
+#include "entities/lootDropSource.h"
 
-class EnemyEntity : public LivingEntity {
+class EnemyEntity : public LivingEntity, public LootDropSource {
 public:
 	SDL_Point currentTargetPos;
 	int pheromoneTrailIndex = 0;

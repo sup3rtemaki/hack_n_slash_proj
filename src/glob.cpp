@@ -279,7 +279,7 @@ void Glob::updateAnimation() {
 				else {
 					active = false;
 
-					checkIfDropsItem();
+					checkIfDropsItem(x, y);
 				}
 			}
 			else {

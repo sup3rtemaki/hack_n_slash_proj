@@ -276,7 +276,7 @@ void Grob::updateAnimation() {
 				else {
 					active = false;
 
-					checkIfDropsItem();
+					checkIfDropsItem(x, y);
 				}
 			}
 			else {

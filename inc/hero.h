@@ -93,6 +93,7 @@ public:
 	bool mustSaveGame;
 	bool mustMoveAfterAction;
 	bool mustUpdateKeyJoyInput;
+	int essence = 0;
 
 	SDL_Point lastCheckpointPos;
 	string lastCheckpointMapFile;

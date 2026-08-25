@@ -14,6 +14,7 @@ public:
 
 	bool isLive;
 	string mapName;
+	int essence = 0;
 
 	Bloodstain();
 	~Bloodstain();

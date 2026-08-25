@@ -3,7 +3,6 @@
 
 #include <limits>
 #include <algorithm>
-#include <map>
 #include "globals.h"
 #include "timeController.h"
 #include "animationSet.h"
@@ -39,16 +38,6 @@ public:
 	Frame* currentFrame;
 	float frameTimer;
 
-	int dropItemXPos;
-	int dropItemYPos;
-	int dropItemId;
-	int dropItemQty;
-	bool dropItemFlag;
-	bool dropEssenceFlag;
-	map<int, pair<pair<int, int>, int>> possibleDropItemsMap; // itemId, dropRate, maxQty
-	int essence;
-	
-
 	// virtual functions
 	virtual ~Entity() = default;
 	virtual void update();
@@ -59,10 +48,6 @@ public:
 	virtual void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "") = 0; // abstract function
 	virtual void updateCollisions();
 	virtual void crashOntoSolid() { ; }; //if die on solids, then this will deal with dying
-	virtual void dropItem(int itemId, int quant, int xPos, int yPos);
-	virtual void checkIfDropsItem();
-	virtual void populatePossibleDropItemsMap() { ; }
-
 	// help functions
 	static float SweptAABB(SDL_Rect movingBox, float vx, float vy, SDL_Rect otherBox, float &normalX, float &normalY);
 	static float distanceBetweenTwoRects(SDL_Rect& r1, SDL_Rect& r2);

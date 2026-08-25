@@ -11,7 +11,7 @@ void Entity::draw() {
 
 	//draw collision box
 	if (solid && Globals::debugging) {
-		// Criar rect temporário ajustado pela câmera
+		// Criar rect temporï¿½rio ajustado pela cï¿½mera
 		SDL_Rect screenCollisionBox = {
 			collisionBox.x - Globals::camera.x,
 			collisionBox.y - Globals::camera.y,
@@ -22,7 +22,7 @@ void Entity::draw() {
 		SDL_SetRenderDrawColor(Globals::renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 		SDL_RenderDrawRect(Globals::renderer, &screenCollisionBox);  // usar rect ajustado
 		SDL_SetRenderDrawColor(Globals::renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-		SDL_RenderDrawPoint(Globals::renderer, x - Globals::camera.x, y - Globals::camera.y);  // ajustar ponto também
+		SDL_RenderDrawPoint(Globals::renderer, x - Globals::camera.x, y - Globals::camera.y);  // ajustar ponto tambï¿½m
 	}
 }
 
@@ -173,39 +173,6 @@ void Entity::updateCollisions() {
 			}
 		}
 	}
-}
-
-void Entity::dropItem(int itemId, int quant, int xPos, int yPos){
-	dropItemFlag = true;
-	dropItemId = itemId;
-	dropItemXPos = xPos;
-	dropItemYPos = yPos;
-	dropItemQty = quant;
-}
-
-void Entity::checkIfDropsItem(){
-	if (possibleDropItemsMap.empty()) {
-		return;
-	}
-
-	int dropChance = -1;
-	int itemId = -1;
-	int quant = -1;
-
-	for (auto it = possibleDropItemsMap.begin(); it != possibleDropItemsMap.end(); it++) {
-		dropChance = rand() % 100;
-		if ((dropChance >= it->second.first.first) && (dropChance < it->second.first.second)) {
-			itemId = it->first;
-			quant = 1 + rand() % it->second.second;
-			break;
-		}
-	}
-
-	if (itemId < 0 || quant < 1) {
-		return;
-	}
-
-	dropItem(itemId, quant, x, y);
 }
 
 // help functions
@@ -421,10 +388,10 @@ void Entity::removeAllFromList(list<Entity*>* entityList, bool deleteEntities) {
 			catch (const std::exception& e) {
 				cout << " CRASH!" << endl;
 				cerr << "ERRO ao deletar entity tipo '" << (*entity)->type << "': " << e.what() << endl;
-				throw; // Re-lança exceção
+				throw; // Re-lanï¿½a exceï¿½ï¿½o
 			}
 			catch (...) {
-				cout << " CRASH (exceção desconhecida)!" << endl;
+				cout << " CRASH (exceï¿½ï¿½o desconhecida)!" << endl;
 				cerr << "ERRO DESCONHECIDO ao deletar entity tipo '" << (*entity)->type << "'" << endl;
 				throw;
 			}
