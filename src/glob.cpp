@@ -96,7 +96,7 @@ void Glob::update() {
 
 void Glob::think() {
 	if (state == GLOB_STATE_IDLE || state == GLOB_STATE_MOVE) {
-		thinkTimer -= TimeController::timeController.dT;
+		thinkTimer -= deltaTime;
 
 		//time to choose an action
 		if (thinkTimer <= 0) {
@@ -258,7 +258,7 @@ void Glob::updateAnimation() {
 		changeAnimation(GLOB_STATE_MOVE, true);
 	}
 
-	frameTimer += TimeController::timeController.dT;
+	frameTimer += deltaTime;
 
 	if (frameTimer >= currentFrame->duration) {
 

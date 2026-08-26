@@ -73,7 +73,7 @@ SmallBrownSpider::SmallBrownSpider() {
 	localAnim->loadAnimationSet("Assets\\Animations\\spider_boss.fdset", dataGroupTypes);
 	this->animSet = localAnim.get();
 	this->localAnimSet = std::move(localAnim);
-    
+
 	type = "boss";
 	x = Globals::ScreenWidth - 32;
 	y = Globals::ScreenHeight - 32;
@@ -115,7 +115,7 @@ void SmallBrownSpider::update() {
 
 void SmallBrownSpider::think() {
 	if (state == SMALL_BROWN_SPIDER_STATE_IDLE || state == SMALL_BROWN_SPIDER_STATE_MOVE) {
-		thinkTimer -= TimeController::timeController.dT;
+		thinkTimer -= deltaTime;
 
 		//check wich phase we are in
 		if (hp > 250) {
@@ -350,7 +350,7 @@ void SmallBrownSpider::updateAnimation() {
 		changeAnimation(SMALL_BROWN_SPIDER_STATE_MOVE, true);
 	}
 
-	frameTimer += TimeController::timeController.dT;
+	frameTimer += deltaTime;
 	//change frames
 	if (frameTimer >= currentFrame->duration) {
 		//if we are at the end of animation

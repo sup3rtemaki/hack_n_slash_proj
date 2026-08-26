@@ -1,7 +1,6 @@
 #include "ui/actionMessageUi.h"
 
 #include "globals.h"
-#include "timeController.h"
 
 #include <sstream>
 
@@ -50,7 +49,7 @@ void ActionMessageUi::draw() {
 
 		renderTexture(fontTexture, Globals::renderer, fontX, FONT_Y);
 
-		timer -= TimeController::timeController.dT;
+		timer -= deltaTime;
 		if (timer < 0) timer = 0;
 		return;
 	}

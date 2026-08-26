@@ -91,7 +91,7 @@ void TermiteMiner::update() {
 
 void TermiteMiner::think() {
 	if (state == TERMITE_MINER_STATE_IDLE || state == TERMITE_MINER_STATE_MOVE) {
-		thinkTimer -= TimeController::timeController.dT;
+		thinkTimer -= deltaTime;
 
 		//time to choose an action
 		if (thinkTimer <= 0) {
@@ -238,7 +238,7 @@ void TermiteMiner::updateAnimation() {
 		changeAnimation(TERMITE_MINER_STATE_MOVE, true);
 	}
 
-	frameTimer += TimeController::timeController.dT;
+	frameTimer += deltaTime;
 
 	if (frameTimer >= currentFrame->duration) {
 

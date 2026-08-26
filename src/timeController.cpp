@@ -34,5 +34,3 @@ void TimeController::reset() {
 	lastUpdate = SDL_GetTicks();
 };
 
-//builds a global time controller object
-TimeController TimeController::timeController;

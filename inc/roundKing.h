@@ -47,7 +47,7 @@ public:
 	//current phase for boss
 	int aiState = ROUND_KING_PHASE_NORMAL;
 
-    
+
 
 	static int roundKingsKilled;
 

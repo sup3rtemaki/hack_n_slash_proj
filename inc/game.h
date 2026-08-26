@@ -16,6 +16,7 @@
 #include "cameraController.h"
 #include "roundKing.h"
 #include "map.h"
+#include "timeController.h"
 
 #include "helpers/saveHandler.h"
 
@@ -107,6 +108,7 @@ public:
 	float overlayTimer;
 
 	CameraController camController;
+	TimeController gameTime;
 
 	int mapQty;
 

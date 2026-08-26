@@ -114,7 +114,7 @@ void FriendlyNpc::changeAnimation(int newState, bool resetFrameToBeginning, stri
 void FriendlyNpc::updateAnimation() {
     if (currentFrame == nullptr || currentAnim == nullptr) return;
 
-    frameTimer += TimeController::timeController.dT;
+    frameTimer += deltaTime;
 
     if (frameTimer >= currentFrame->duration) {
         if (currentFrame->frameNumber == currentAnim->getEndFrameNumber()) {

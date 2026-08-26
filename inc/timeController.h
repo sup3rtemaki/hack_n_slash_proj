@@ -17,7 +17,6 @@ public:
 	void resume();
 	void reset();
 
-	static TimeController timeController;
 };
 
 #endif // !TIMECONTROLLER

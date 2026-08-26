@@ -75,7 +75,7 @@ void Door::updateAnimation() {
 		return;
 	}
 
-	frameTimer += TimeController::timeController.dT;
+	frameTimer += deltaTime;
 	//change frames
 	if (frameTimer >= currentFrame->duration) {
 		//if we are at the end of animation

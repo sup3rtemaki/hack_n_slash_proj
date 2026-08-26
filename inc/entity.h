@@ -4,7 +4,6 @@
 #include <limits>
 #include <algorithm>
 #include "globals.h"
-#include "timeController.h"
 #include "animationSet.h"
 
 //Abstract class
@@ -37,6 +36,7 @@ public:
 	Animation* currentAnim;
 	Frame* currentFrame;
 	float frameTimer;
+	float deltaTime = 0;
 
 	// virtual functions
 	virtual ~Entity() = default;

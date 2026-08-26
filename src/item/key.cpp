@@ -40,7 +40,7 @@ void Key::update() {
 		return;
 	}
 
-	frameTimer += TimeController::timeController.dT;
+	frameTimer += deltaTime;
 
 	if (frameTimer >= currentFrame->duration) {
 		currentFrame = currentAnim->getNextFrame(currentFrame);
@@ -55,7 +55,7 @@ void Key::changeAnimation(int newState, bool resetFrameToBeginning, string animN
 		return;
 	}
 
-	frameTimer += TimeController::timeController.dT;
+	frameTimer += deltaTime;
 
 	if (frameTimer >= currentFrame->duration) {
 		currentFrame = currentAnim->getNextFrame(currentFrame);

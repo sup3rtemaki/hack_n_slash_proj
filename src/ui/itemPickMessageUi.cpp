@@ -42,7 +42,7 @@ void ItemPickMessageUi::draw() {
 
 		renderTexture(fontTexture, Globals::renderer, FONT_X, FONT_Y);
 
-		timer -= TimeController::timeController.dT;
+		timer -= deltaTime;
 		hero->addedItemName = "";
 	}
 

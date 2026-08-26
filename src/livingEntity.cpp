@@ -25,7 +25,7 @@ void LivingEntity::updateHitBox() {
 
 void LivingEntity::updateInvincibleTimer() {
 	if (invincibleTimer > 0) {
-		invincibleTimer -= TimeController::timeController.dT;
+		invincibleTimer -= deltaTime;
 	}
 }
 
@@ -46,7 +46,7 @@ void LivingEntity::draw() {
 
 	//draw collision box
 	if (solid && Globals::debugging) {
-		// Criar rects temporários ajustados pela câmera
+		// Criar rects temporï¿½rios ajustados pela cï¿½mera
 		SDL_Rect screenLastCollisionBox = {
 			lastCollisionBox.x - Globals::camera.x,
 			lastCollisionBox.y - Globals::camera.y,

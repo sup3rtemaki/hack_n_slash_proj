@@ -94,7 +94,7 @@ void Grob::update() {
 
 void Grob::think() {
 	if (state == GROB_STATE_IDLE || state == GROB_STATE_MOVE) {
-		thinkTimer -= TimeController::timeController.dT;
+		thinkTimer -= deltaTime;
 
 		//time to choose an action
 		if (thinkTimer <= 0) {
@@ -255,7 +255,7 @@ void Grob::updateAnimation() {
 		changeAnimation(GROB_STATE_MOVE, true);
 	}
 
-	frameTimer += TimeController::timeController.dT;
+	frameTimer += deltaTime;
 
 	if (frameTimer >= currentFrame->duration) {
 

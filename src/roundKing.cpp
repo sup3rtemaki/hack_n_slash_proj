@@ -65,8 +65,8 @@ void RoundKing::update() {
 
 void RoundKing::updateShoot() {
 	if (state == ROUND_KING_STATE_SHOOT) {
-		shootTimer -= TimeController::timeController.dT;
-		shotTimer -= TimeController::timeController.dT;
+		shootTimer -= deltaTime;
+		shotTimer -= deltaTime;
 
 		//if shooting time is over, stop shooting
 		if (shootTimer <= 0) {
@@ -90,7 +90,7 @@ void RoundKing::think() {
 	if (target != NULL) {
 		//only tick down think timer if in idle state
 		if (state == ROUND_KING_STATE_IDLE) {
-			thinkTimer -= TimeController::timeController.dT;
+			thinkTimer -= deltaTime;
 		}
 
 		//keep setting angle to point to target
@@ -272,7 +272,7 @@ void RoundKing::updateAnimation() {
 		return;
 	}
 	
-	frameTimer += TimeController::timeController.dT;
+	frameTimer += deltaTime;
 
 	if (frameTimer >= currentFrame->duration) {
 		//if at the end of anim

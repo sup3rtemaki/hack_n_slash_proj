@@ -1,4 +1,5 @@
 #include "game.h"
+#include "timeController.h"
 
 #include "npcs/door.h"
 
@@ -253,7 +254,7 @@ Game::~Game() {
 
 void Game::update() {
 	// setup time controller before game starts
-	TimeController::timeController.reset();
+	gameTime.reset();
 	gameState = GameState::MainMenu;
 
 	while (!quit) {
@@ -283,7 +284,7 @@ bool Game::isBossMap() {
 		cout << "Mapa nulo" << endl;
 		return false;
 	}
-	
+
 	auto layer = tMap->getLayer("BossSpawn");
 	if (layer == nullptr) return false;
 
@@ -355,7 +356,7 @@ void Game::runMainGame() {
 		frameCount = 0;
 	}
 
-	TimeController::timeController.updateTime();
+	gameTime.updateTime();
 
 	Entity::removeInactiveEntitiesFromList(&Entity::entities, false);
 
@@ -437,7 +438,7 @@ void Game::runMainGame() {
 
 	if (hero->hp < 1) {
 		if (overlayTimer > 0) {
-			overlayTimer -= TimeController::timeController.dT; //make overlay timer tick down
+			overlayTimer -= gameTime.dT; //make overlay timer tick down
 		}
 		else {
 			if (mustSetBloodstainLocation) {
@@ -468,6 +469,7 @@ void Game::runMainGame() {
 	if (!Globals::pause) {
 		for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
 			// update all entites in world at once (polymorphism)
+			(*entity)->deltaTime = gameTime.dT;
 			(*entity)->update();
 
 			checkAndHandleEnemyLoot(*entity);
@@ -500,14 +502,15 @@ void Game::runMainGame() {
 	draw();
 
 	// update camera position
+	camController.deltaTime = gameTime.dT;
 	camController.update();
 
 	// framerate
-	// cout << TimeController::timeController.dT << endl;
+	// cout << gameTime.dT << endl;
 }
 
 void Game::runPausedGameMenu() {
-	TimeController::timeController.updateTime();
+	gameTime.updateTime();
 
 	// check for any events that might have happened
 	while (SDL_PollEvent(&event)) {
@@ -603,6 +606,7 @@ void Game::runPausedGameMenu() {
 	draw();
 
 	// update camera position
+	camController.deltaTime = gameTime.dT;
 	camController.update();
 }
 
@@ -1087,6 +1091,7 @@ void Game::draw() {
 
 		// draw all of the UI
 		for (list<Ui*>::iterator ui = gui.begin(); ui != gui.end(); ui++) {
+			(*ui)->deltaTime = gameTime.dT;
 			(*ui)->draw();
 		}
 
@@ -1114,7 +1119,7 @@ void Game::draw() {
 	SDL_RenderClear(Globals::renderer);
 
 	// 6. Desenha o canvas inteiro na tela de uma vez s�
-	// Como o LogicalSize est� ativo no main.cpp, o SDL vai esticar 
+	// Como o LogicalSize est� ativo no main.cpp, o SDL vai esticar
 	// o canvas perfeitamente para preencher a janela.
 	SDL_RenderCopy(Globals::renderer, gameCanvas, NULL, NULL);
 	SDL_SetRenderDrawColor(Globals::renderer, 20, 20, 20, 255);
@@ -1174,7 +1179,7 @@ void Game::spawnEnemies() {
 			break;
 		default:
 			break;
-			
+
 		}
 
 		idCounter++;
@@ -1236,7 +1241,7 @@ void Game::spawnItem(int itemId, int quant, int xPos, int yPos) {
 	default:
 		return;
 	}
-	
+
 	spawnItem->x = xPos;
 	spawnItem->y = yPos;
 	spawnItem->active = true;
@@ -1285,7 +1290,7 @@ void Game::checkBossDeath() {
 		if (lootSource != nullptr && !lootSource->hasDroppedEssence()) {
 			hero->addEssence(lootSource->getEssence());
 			lootSource->markEssenceDropped();
-		}		
+		}
 		// currentBoss = nullptr;
 	}
 }

@@ -49,7 +49,7 @@ void Entity::updateMovement() {
 
 	if (moveSpeed > 0) {
 		// works out move distance using speed, deltaTime
-		float moveDist = moveSpeed * (TimeController::timeController.dT) * moveLerp;
+		float moveDist = moveSpeed * deltaTime * moveLerp;
 		if (moveDist > 0) {
 			float xMove = moveDist * (cos(angle * Globals::PI / 180.f));
 			float yMove = moveDist * (sin(angle * Globals::PI / 180.f));
@@ -68,7 +68,7 @@ void Entity::updateMovement() {
 	}
 
 	if (slideAmount > 0) {
-		float slideDist = slideAmount * TimeController::timeController.dT * moveLerp;
+		float slideDist = slideAmount * deltaTime * moveLerp;
 		if (slideDist > 0) {
 			float xMove = slideDist * (cos(slideAngle * Globals::PI / 180.f));
 			float yMove = slideDist * (sin(slideAngle * Globals::PI / 180.f));
@@ -97,13 +97,13 @@ void Entity::updateCollisionBox() {
 
 void Entity::updateCollisions() {
 	if (active && collideWithSolids && (moveSpeed > 0 || slideAmount > 0)) {
-		
+
 		list<Entity*> collisions; //list of potential collisions
 
 		//broad phase
 		//if we collide with this entity
 		for (auto entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
-			
+
 			if ((*entity)->active &&
 				//(*entity)->type != this->type && //add this line if thing of same type cant collide
 				(*entity)->solid &&
@@ -201,7 +201,7 @@ float Entity::SweptAABB(SDL_Rect movingBox, float vx, float vy, SDL_Rect otherBo
 	}
 	else {
 		yInvEntry = (otherBox.y + otherBox.h) - movingBox.y;
-		yInvExit = otherBox.y - (movingBox.y + movingBox.h); 
+		yInvExit = otherBox.y - (movingBox.y + movingBox.h);
 	}
 
 	//find time of collision and time of leaving for each axis
@@ -305,7 +305,7 @@ bool Entity::checkCollision(SDL_Rect cbox1, SDL_Rect cbox2) {
 	if (SDL_IntersectRect(&cbox1, &cbox2, &intersection)) {
 		return true;
 	}
-	
+
 	return false;
 }
 

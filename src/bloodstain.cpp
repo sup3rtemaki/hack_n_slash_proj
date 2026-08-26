@@ -62,7 +62,7 @@ void Bloodstain::updateAnimation() {
 		return;
 	}
 
-	frameTimer += TimeController::timeController.dT;
+	frameTimer += deltaTime;
 
 	if (frameTimer >= currentFrame->duration) {
 		if (currentFrame->frameNumber == currentAnim->getEndFrameNumber()) { // end of animation

@@ -55,7 +55,7 @@ void StoneProjectile::update() {
 		die();
 	}
 	else if (hp >= 1) {
-		lifetimeTimer += TimeController::timeController.dT;
+		lifetimeTimer += deltaTime;
 		move(angle);
 		updateMovement();
 	}
@@ -96,7 +96,7 @@ void StoneProjectile::updateAnimation() {
 		return;
 	}
 
-	frameTimer += TimeController::timeController.dT;
+	frameTimer += deltaTime;
 
 	if (frameTimer >= currentFrame->duration) {
 		if (currentFrame->frameNumber == currentAnim->getEndFrameNumber()) {

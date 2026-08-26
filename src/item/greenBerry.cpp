@@ -45,7 +45,7 @@ void GreenBerry::update() {
 		return;
 	}
 
-	frameTimer += TimeController::timeController.dT;
+	frameTimer += deltaTime;
 
 	if (frameTimer >= currentFrame->duration) {
 		currentFrame = currentAnim->getNextFrame(currentFrame);

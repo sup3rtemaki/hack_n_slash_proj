@@ -489,7 +489,7 @@ void Hero::updateAnimation() {
 		state = (int)HERO_STATE::IDLE;
 	}
 
-	frameTimer += TimeController::timeController.dT;
+	frameTimer += deltaTime;
 	//change frames
 	if (frameTimer >= currentFrame->duration) {
 		//if we are at the end of animation
@@ -772,7 +772,7 @@ void Hero::updatePheromoneTrail() {
 		pheromoneTrail.push_back(point);
 	}
 	else {
-		pheromoneTimer -= TimeController::timeController.dT;
+		pheromoneTimer -= deltaTime;
 	}
 }
 
@@ -789,7 +789,7 @@ void Hero::healTimerTick() {
 	}
 	else {
 		hp += healStatusAmount;
-		healStatusTimer -= TimeController::timeController.dT;
+		healStatusTimer -= deltaTime;
 	}
 }
 
@@ -798,7 +798,7 @@ void Hero::attackTimerTick() {
 		attackTimer = 0.f;
 	}
 	else {
-		attackTimer -= TimeController::timeController.dT;
+		attackTimer -= deltaTime;
 	}
 }
 
