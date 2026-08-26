@@ -234,7 +234,7 @@ void SmallBrownSpider::findNearestTarget() {
 	target = nullptr;
 
 	//find closest target
-	for (auto entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
+	for (auto entity = Entity::getEntities().begin(); entity != Entity::getEntities().end(); entity++) {
 		if ((*entity)->type == "hero" && (*entity)->active) {
 			//found first hero in list, set it as target
 			if (target == nullptr) {
@@ -390,7 +390,7 @@ void SmallBrownSpider::updateAnimation() {
 void SmallBrownSpider::updateDamages() {
 	//am i hittable
 	if (active && hp > 0 && invincibleTimer <= 0) {
-		for (auto entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
+		for (auto entity = Entity::getEntities().begin(); entity != Entity::getEntities().end(); entity++) {
 			if ((*entity)->active && (*entity)->type == "hero") {
 				//cast entity pointer to livingentity pointer
 				LivingEntity* enemy = (LivingEntity*)(*entity);

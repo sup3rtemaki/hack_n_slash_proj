@@ -40,10 +40,10 @@ void ActionMessageUi::draw() {
         backgroundMessageRect.x = fontX - (FONT_SIZE * 2);
         backgroundMessageRect.y = FONT_Y;
         backgroundMessageRect.w = (message.length() * FONT_SIZE),
-        backgroundMessageRect.h = FONT_SIZE;        
+        backgroundMessageRect.h = FONT_SIZE;
 
         backgroundBarTexture = loadTexture(resPath + Ui::HUD_TEXTURES_PATH + MESSAGE_BAR_TEXTURE_FILE, Globals::renderer);
-        
+
 		// TODO: Descomentar linha abaixo quando fizer um sprite decente pro fundo do texto
         //SDL_RenderCopy(Globals::renderer, backgroundBarTexture, NULL, &backgroundMessageRect);
 

@@ -45,9 +45,9 @@ StoneProjectile::StoneProjectile(int x, int y) {
 void StoneProjectile::update() {
 	updateCollisionBox();
 
-	if ((hp < 1 && state != STONE_PROJECTILE_STATE_DESTROY) || 
+	if ((hp < 1 && state != STONE_PROJECTILE_STATE_DESTROY) ||
 		(lifetimeTimer > lifetime)) {
-		// Descomentar linha abaixo caso queira que o item pare de se mover ao 
+		// Descomentar linha abaixo caso queira que o item pare de se mover ao
 		// ser destru�do pela distancia
 		// hp = 0;
 		lifetimeTimer = 0;
@@ -118,7 +118,7 @@ void StoneProjectile::updateAnimation() {
 void StoneProjectile::hitLanded(LivingEntity* entity) {
 	//crashed into entity and damaged it, destroy bullet
 	hp = 0;
-	
+
 	//TODO create hit effect
 }
 

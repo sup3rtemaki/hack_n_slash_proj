@@ -342,6 +342,33 @@ float Entity::angleBetweenTwoRects(SDL_Rect& r1, SDL_Rect& r2) {
 }
 
 list<Entity*> Entity::entities;
+list<Entity*>* Entity::activeWorld = &Entity::entities;
+
+void Entity::setActiveWorld(list<Entity*>* world) {
+	if (world != nullptr) {
+		Entity::activeWorld = world;
+	}
+}
+
+void Entity::addEntity(Entity* entity) {
+	if (entity == nullptr) {
+		return;
+	}
+	Entity::entities.push_back(entity);
+	if (Entity::activeWorld != nullptr && Entity::activeWorld != &Entity::entities) {
+		Entity::activeWorld->push_back(entity);
+	}
+}
+
+void Entity::removeEntity(Entity* entity) {
+	if (entity == nullptr) {
+		return;
+	}
+	Entity::entities.remove(entity);
+	if (Entity::activeWorld != nullptr && Entity::activeWorld != &Entity::entities) {
+		Entity::activeWorld->remove(entity);
+	}
+}
 
 bool Entity::EntityCompare(const Entity* const& a, const Entity* const& b) {
 	if (a != 0 && b != 0) {

@@ -61,6 +61,13 @@ public:
 
 	// global entities list
 	static list<Entity*> entities;
+	static list<Entity*>* activeWorld;
+	static list<Entity*>& getEntities() {
+		return (activeWorld == nullptr) ? entities : *activeWorld;
+	}
+	static void setActiveWorld(list<Entity*>* world);
+	static void addEntity(Entity* entity);
+	static void removeEntity(Entity* entity);
 	static bool EntityCompare(const Entity* const& a, const Entity* const& b); // compare two entities in a list
 	static void removeInactiveEntitiesFromList(list<Entity*>* entityList, bool deleteEntities);
 	static void removeAllFromList(list<Entity*>* entityList, bool deleteEntities);

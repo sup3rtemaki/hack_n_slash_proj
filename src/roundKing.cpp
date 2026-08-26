@@ -77,7 +77,7 @@ void RoundKing::updateShoot() {
 			Bullet* bullet = new Bullet(x, y);
 			SoundManager::soundManager.playSound("shoot");
 			bullet->angle = angle;
-			Entity::entities.push_back(bullet);
+			Entity::addEntity(bullet);
 		}
 	}
 }
@@ -213,7 +213,7 @@ void RoundKing::findNearestTarget() {
 	target = NULL;
 
 	//find closest target
-	for (auto entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
+	for (auto entity = Entity::getEntities().begin(); entity != Entity::getEntities().end(); entity++) {
 		if ((*entity)->type == "hero" && (*entity)->active) {
 			//found first hero in list, set it as target
 			if (target == NULL) {
@@ -271,7 +271,7 @@ void RoundKing::updateAnimation() {
 	if (currentFrame == NULL || currentAnim == NULL) {
 		return;
 	}
-	
+
 	frameTimer += deltaTime;
 
 	if (frameTimer >= currentFrame->duration) {
@@ -306,7 +306,7 @@ void RoundKing::updateAnimation() {
 				if (state == ROUND_KING_STATE_SLAM) {
 					SoundManager::soundManager.playSound("smash");
 				}
-				else if (state == ROUND_KING_STATE_JUMP) { 
+				else if (state == ROUND_KING_STATE_JUMP) {
 					SoundManager::soundManager.playSound("crash");
 				}
 			}
@@ -319,7 +319,7 @@ void RoundKing::updateAnimation() {
 void RoundKing::updateDamages() {
 	//am i hittable
 	if (active && hp > 0 && invincibleTimer <= 0) {
-		for (auto entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
+		for (auto entity = Entity::getEntities().begin(); entity != Entity::getEntities().end(); entity++) {
 			if ((*entity)->active && (*entity)->type == "hero") {
 				//cast entity pointer to livingentity pointer
 				LivingEntity* enemy = (LivingEntity*)(*entity);

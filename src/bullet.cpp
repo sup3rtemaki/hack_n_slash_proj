@@ -25,7 +25,7 @@ Bullet::Bullet(int x, int y) {
 	collisionBox.h = collisionBoxH;
 	collisionBoxYOffset = 0;
 	direction = DIR_DOWN;
-	
+
 	changeAnimation(0, true);
 	updateCollisionBox();
 

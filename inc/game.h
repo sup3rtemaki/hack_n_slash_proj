@@ -85,6 +85,7 @@ public:
 	LivingEntity* currentBoss;
 
 	list<Entity*> currentMapEnemies;
+	list<Entity*> entities;
 	list<Entity*> walls;
 	list<Entity*> fogWalls;
 	list<Ui*> gui;
@@ -99,7 +100,7 @@ public:
 	bool quit = false;
 	bool mustSetBloodstainLocation = true;
 
-	
+
 	HPBar* heroHpBar;
 	HPBar* heroStBar;
 	HPBar* bossHpBar;
@@ -128,7 +129,7 @@ public:
 
 	void update();
 	void draw();
-
+	void syncEntityRegistry();
 
 private:
 	SDL_Texture* gameCanvas = nullptr;

@@ -31,6 +31,7 @@ const string ANIMATIONS_FOLDER_PATH = "Assets\\Animations\\";
 Game::Game() {
 	//TODO: Criar m�todo initialize ou algo do tipo pra encapsular tudo isso
 	resPath = getResourcePath();
+	entities.clear();
 
 	mustSpawnEnemies = true;
 
@@ -115,13 +116,15 @@ Game::Game() {
 	else {
 		bloodstain->destroy();
 	}
-	Entity::entities.push_back(bloodstain);
+	entities.push_back(bloodstain);
+	syncEntityRegistry();
 
 	//keyboard
 	heroKeyboardInput.hero = hero;
 	heroJoystickInput.hero = hero;
 	hero->currentMap = currentMap;
-	Entity::entities.push_back(hero);
+	entities.push_back(hero);
+	syncEntityRegistry();
 
 	// Load NPC definitions and spawn a friendly NPC near the hero
 	try {
@@ -133,7 +136,8 @@ Game::Game() {
 			npc->x = hero->x + 32;
 			npc->y = hero->y;
 			//npc->currentMap = currentMap;
-			Entity::entities.push_back(npc);
+			entities.push_back(npc);
+			syncEntityRegistry();
 			cout << "Spawned NPC: " << npc->getData().npcName << endl;
 		}
 	}
@@ -225,7 +229,8 @@ Game::~Game() {
 	Entity::removeAllFromList(&fogWalls, false);
 
 	// CR�TICO: Mudar de 'false' para 'true' para deletar entities
-	Entity::removeAllFromList(&Entity::entities, true);
+	Entity::removeAllFromList(&entities, true);
+	Entity::entities = entities;
 
 	deadEnemiesIds.clear();
 	openDoorsIds.clear();
@@ -250,6 +255,11 @@ Game::~Game() {
 	if (gameCanvas) {
 		SDL_DestroyTexture(gameCanvas);
 	}
+}
+
+void Game::syncEntityRegistry() {
+	Entity::setActiveWorld(&entities);
+	Entity::entities = entities;
 }
 
 void Game::update() {
@@ -358,7 +368,8 @@ void Game::runMainGame() {
 
 	gameTime.updateTime();
 
-	Entity::removeInactiveEntitiesFromList(&Entity::entities, false);
+	Entity::removeInactiveEntitiesFromList(&entities, false);
+	syncEntityRegistry();
 
 	LivingEntity::saveDeadEnemiesIds(currentMapEnemies, deadEnemiesIds);
 
@@ -467,7 +478,7 @@ void Game::runMainGame() {
 
 	// update all entites
 	if (!Globals::pause) {
-		for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
+		for (list<Entity*>::iterator entity = entities.begin(); entity != entities.end(); entity++) {
 			// update all entites in world at once (polymorphism)
 			(*entity)->deltaTime = gameTime.dT;
 			(*entity)->update();
@@ -927,7 +938,7 @@ void Game::handleMapChange(bool isHeroRespawn) {
 	}
 
 	// Remove walls, doors and checkpoints
-	for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
+	for (list<Entity*>::iterator entity = entities.begin(); entity != entities.end(); entity++) {
 		if ((*entity)->type == "wall" ||
 				(*entity)->type == "door" ||
 				(*entity)->type == "checkpoint" ||
@@ -935,6 +946,7 @@ void Game::handleMapChange(bool isHeroRespawn) {
 			(*entity)->active = false;
 		}
 	}
+	syncEntityRegistry();
 
 	currentBoss = nullptr;
 
@@ -998,7 +1010,8 @@ void Game::buildDoors() {
 				64,
 				-32);
 			door->isLocked = std::any_cast<bool>(isLockedProp->getValue()),
-			Entity::entities.push_back(door);
+			entities.push_back(door);
+			syncEntityRegistry();
 		}
 
 		idCounter++;
@@ -1021,7 +1034,8 @@ void Game::buildWalls() {
 				newWall->x = tileObject.getPosition().x + 16;
 				newWall->y = tileObject.getPosition().y;
 				walls.push_back(newWall);
-				Entity::entities.push_back(newWall);
+				entities.push_back(newWall);
+				syncEntityRegistry();
 			}
 		}
 	}
@@ -1056,7 +1070,8 @@ void Game::buildWaypoints() {
 			fogWall->x = waypoint.waypointRect.x - 1;
 			fogWall->y = waypoint.waypointRect.y - 1;
 			fogWalls.push_back(fogWall);
-			Entity::entities.push_back(fogWall);
+			entities.push_back(fogWall);
+			syncEntityRegistry();
 
 		}
 	}
@@ -1082,10 +1097,11 @@ void Game::draw() {
 		updateMaps();
 
 		// sort all entities based on y (depth)
-		Entity::entities.sort(Entity::EntityCompare);
+		entities.sort(Entity::EntityCompare);
+		syncEntityRegistry();
 
 		// draw all of the entities
-		for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
+		for (list<Entity*>::iterator entity = entities.begin(); entity != entities.end(); entity++) {
 			(*entity)->draw();
 		}
 
@@ -1162,7 +1178,8 @@ void Game::spawnEnemies() {
 					enemy->invincibleTimer = 0.1;
 					enemy->enemyId = uniqueId;
 					currentMapEnemies.push_back(enemy);
-					Entity::entities.push_back(enemy);
+					entities.push_back(enemy);
+					syncEntityRegistry();
 			}
 			break;
 		case 1: // Termite
@@ -1174,7 +1191,8 @@ void Game::spawnEnemies() {
 					enemy->invincibleTimer = 0.1;
 					enemy->enemyId = uniqueId;
 					currentMapEnemies.push_back(enemy);
-					Entity::entities.push_back(enemy);
+					entities.push_back(enemy);
+					syncEntityRegistry();
 			}
 			break;
 		default:
@@ -1212,7 +1230,8 @@ void Game::spawnBoss() {
 				currentBoss->id = bossId;
 				currentBoss->invincibleTimer = 0.1;
 				//currentMapEnemies.push_back(currentBoss);
-				Entity::entities.push_back(currentBoss);
+				entities.push_back(currentBoss);
+				syncEntityRegistry();
 				bossHpBar = new HPBar(currentBoss, BarType::BOSS_HEALTH_BAR); // Exemplo
 				gui.push_back(bossHpBar);
 				break;
@@ -1245,7 +1264,8 @@ void Game::spawnItem(int itemId, int quant, int xPos, int yPos) {
 	spawnItem->x = xPos;
 	spawnItem->y = yPos;
 	spawnItem->active = true;
-	Entity::entities.push_back(spawnItem);
+	entities.push_back(spawnItem);
+	syncEntityRegistry();
 }
 
 void Game::spawnCheckpoints() {
@@ -1269,7 +1289,8 @@ void Game::spawnCheckpoints() {
 		checkpoint->y = cpPosY;
 		if (isActive) checkpoint->activate();
 
-		Entity::entities.push_back(checkpoint);
+		entities.push_back(checkpoint);
+		syncEntityRegistry();
 	}
 }
 
@@ -1364,19 +1385,21 @@ void Game::spawnItemsFromCurrentMap() {
 }
 
 void Game::inactivateCurrentMapItems() {
-	for (list<Entity*>::iterator entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
+	for (list<Entity*>::iterator entity = entities.begin(); entity != entities.end(); entity++) {
 		if (dynamic_cast<Item*>((*entity)) != nullptr) {
 			Item* i = (Item*)(*entity);
 			i->active = false;
 		}
 	}
+	syncEntityRegistry();
 }
 
 void Game::removeAllEnemiesInMap() {
 	for (list<Entity*>::iterator enemy = currentMapEnemies.begin(); enemy != currentMapEnemies.end(); enemy++) {
 		(*enemy)->active = false;
 	}
-	Entity::removeInactiveEntitiesFromList(&Entity::entities, false);
+	Entity::removeInactiveEntitiesFromList(&entities, false);
+	syncEntityRegistry();
 	Entity::removeInactiveEntitiesFromList(&currentMapEnemies, true);
 	currentMapEnemies.clear();
 	deadEnemiesIds.clear();

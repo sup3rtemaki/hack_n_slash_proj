@@ -85,7 +85,7 @@ Hero::Hero() {
 		localAnimSet->loadAnimationSet("Assets\\Animations\\antHero.fdset", dataGroupTypes, true, 0, true);
 		this->animSet = localAnimSet.get();
 	}
-    
+
 		list<DataGroupType> dataGroupTypes;
 		DataGroupType colBoxType;
 		colBoxType.groupName = "collisionBox";
@@ -540,7 +540,7 @@ void Hero::updateAnimation() {
 
 void Hero::updateDamages() {
 	if (active && hp > 0 && invincibleTimer <= 0) {
-		for (auto entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
+		for (auto entity = Entity::getEntities().begin(); entity != Entity::getEntities().end(); entity++) {
 			if ((*entity)->active && ((*entity)->type == "enemy" || (*entity)->type == "boss")) {
 				LivingEntity* enemy = (LivingEntity*)(*entity); //enemies are living entites
 
@@ -665,8 +665,8 @@ void Hero::pickNearItemFromGround() {
 	// Criar unique_ptr a partir do raw pointer
 	// IMPORTANTE: Remover item de Entity::entities ANTES!
 
-	// Primeiro, remover de Entity::entities
-	Entity::entities.remove(currentNearItem);
+	// Primeiro, remover da lista ativa do mundo
+	Entity::removeEntity(currentNearItem);
 
 	// Agora transferir ownership para inventory
 	std::unique_ptr<Item> itemPtr(currentNearItem);
@@ -697,7 +697,7 @@ void Hero::addEssence(int essenceQty) {
 	if (newEssenceQty > 0) newEssenceQty += essenceQty;
 	else newEssenceQty = essenceQty;
 
-	prevEssence = essence;	
+	prevEssence = essence;
 }
 
 void Hero::updateEssence() {

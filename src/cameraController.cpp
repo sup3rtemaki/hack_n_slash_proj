@@ -18,7 +18,7 @@ void CameraController::update() {
 			}
 			else if (target->x < (Globals::camera.w / 2)) {
 					Globals::camera.x = 0;
-			} 
+			}
 
 			if ((target->y <= (1024 - (Globals::camera.h / 2))) &&
 				(target->y >= (Globals::camera.h / 2))) {

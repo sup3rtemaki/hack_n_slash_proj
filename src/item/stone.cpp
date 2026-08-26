@@ -81,9 +81,9 @@ void Stone::applyEffect(LivingEntity* heroEntity) {
 		yOffset = -20;
 	}
 	StoneProjectile* stoneProjectile = new StoneProjectile(
-		heroEntity->x + xOffset, 
+		heroEntity->x + xOffset,
 		heroEntity->y + yOffset);
 	stoneProjectile->angle = heroEntity->angle;
-	Entity::entities.push_back(stoneProjectile);
+	Entity::addEntity(stoneProjectile);
 }
 
