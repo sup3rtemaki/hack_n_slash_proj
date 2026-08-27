@@ -236,6 +236,9 @@
     <ClInclude Include="inc\hero.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="inc\inputCommand.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
     <ClInclude Include="inc\keyboardInput.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
@@ -249,6 +252,9 @@
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="inc\res_path.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\renderContext.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="inc\roundKing.h">

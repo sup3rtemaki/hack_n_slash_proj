@@ -120,8 +120,6 @@ Game::Game() {
 	syncEntityRegistry();
 
 	//keyboard
-	heroKeyboardInput.hero = hero;
-	heroJoystickInput.hero = hero;
 	hero->currentMap = currentMap;
 	entities.push_back(hero);
 	syncEntityRegistry();
@@ -260,6 +258,54 @@ Game::~Game() {
 void Game::syncEntityRegistry() {
 	Entity::setActiveWorld(&entities);
 	Entity::entities = entities;
+}
+
+void Game::handleInputCommand(const InputCommand& command) {
+	if (command.type == InputCommandType::Move) {
+		if (command.source == InputSource::Keyboard && hero->isMovingMethod == 2) {
+			return;
+		}
+		if (command.source == InputSource::Keyboard) {
+			hero->isMovingMethod = 1;
+		}
+		else {
+			hero->isMovingMethod = 2;
+		}
+		hero->move(command.angle);
+		return;
+	}
+
+	if (command.type == InputCommandType::Stop) {
+		if ((command.source == InputSource::Keyboard && hero->isMovingMethod != 2) ||
+			(command.source == InputSource::Joystick && hero->isMovingMethod != 1)) {
+			hero->moving = false;
+			hero->isMovingMethod = 0;
+		}
+		return;
+	}
+
+	switch (command.type) {
+	case InputCommandType::Dash:
+		hero->dash();
+		break;
+	case InputCommandType::Attack:
+		hero->attack();
+		break;
+	case InputCommandType::UseItem:
+		hero->useSelectedItemQuickAccess();
+		break;
+	case InputCommandType::Action:
+		hero->takeAction();
+		break;
+	case InputCommandType::NextQuickItem:
+		hero->quickAccessInventoryIndex++;
+		if (hero->quickAccessInventory[hero->quickAccessInventoryIndex] == -1) {
+			hero->quickAccessInventoryIndex = 0;
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void Game::update() {
@@ -429,8 +475,12 @@ void Game::runMainGame() {
 			}
 		}
 		if (!isFading) {
-			heroKeyboardInput.update(&event);
-			heroJoystickInput.update(&event);
+			for (const auto& command : heroKeyboardInput.update(&event)) {
+				handleInputCommand(command);
+			}
+			for (const auto& command : heroJoystickInput.update(&event)) {
+				handleInputCommand(command);
+			}
 		}
 		else {
 			hero->moving = false;
@@ -438,14 +488,20 @@ void Game::runMainGame() {
 	}
 
 	if (hero->mustUpdateKeyJoyInput) {
-		heroKeyboardInput.update(&event);
-		heroJoystickInput.update(&event);
+		for (const auto& command : heroKeyboardInput.update(&event)) {
+			handleInputCommand(command);
+		}
+		for (const auto& command : heroJoystickInput.update(&event)) {
+			handleInputCommand(command);
+		}
 		hero->mustUpdateKeyJoyInput = false;
 	}
 
 	// joystick axis must be updated outside the poll event loop because of how the
 	// interaction with the axis works. consider refactoring in the future
-	heroJoystickInput.checkAxis();
+	for (const auto& command : heroJoystickInput.checkAxis()) {
+		handleInputCommand(command);
+	}
 
 	if (hero->hp < 1) {
 		if (overlayTimer > 0) {
@@ -595,8 +651,12 @@ void Game::runPausedGameMenu() {
 			}
 		}
 		if (!isFading) {
-			heroKeyboardInput.update(&event);
-			heroJoystickInput.update(&event);
+			for (const auto& command : heroKeyboardInput.update(&event)) {
+				handleInputCommand(command);
+			}
+			for (const auto& command : heroJoystickInput.update(&event)) {
+				handleInputCommand(command);
+			}
 		}
 		else {
 			hero->moving = false;
@@ -1078,6 +1138,10 @@ void Game::buildWaypoints() {
 }
 
 void Game::draw() {
+	renderContext.renderer = Globals::renderer;
+	renderContext.camera = Globals::camera;
+	renderContext.debugging = Globals::debugging;
+
 	// 1. Tudo o que for desenhado agora vai para o gameCanvas
 	SDL_SetRenderTarget(Globals::renderer, gameCanvas);
 
@@ -1102,7 +1166,7 @@ void Game::draw() {
 
 		// draw all of the entities
 		for (list<Entity*>::iterator entity = entities.begin(); entity != entities.end(); entity++) {
-			(*entity)->draw();
+			(*entity)->draw(renderContext);
 		}
 
 		// draw all of the UI

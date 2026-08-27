@@ -17,6 +17,8 @@
 #include "roundKing.h"
 #include "map.h"
 #include "timeController.h"
+#include "renderContext.h"
+#include "inputCommand.h"
 
 #include "helpers/saveHandler.h"
 
@@ -110,6 +112,7 @@ public:
 
 	CameraController camController;
 	TimeController gameTime;
+	RenderContext renderContext;
 
 	int mapQty;
 
@@ -130,6 +133,7 @@ public:
 	void update();
 	void draw();
 	void syncEntityRegistry();
+	void handleInputCommand(const InputCommand& command);
 
 private:
 	SDL_Texture* gameCanvas = nullptr;

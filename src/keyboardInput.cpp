@@ -12,70 +12,69 @@ KeyboardInput::KeyboardInput() {
 	ACTION = SDL_SCANCODE_S;
 }
 
-void KeyboardInput::update(SDL_Event* e) {
+std::vector<InputCommand> KeyboardInput::update(SDL_Event* e) {
+	std::vector<InputCommand> commands;
+
 	//button presses
 	if (e->type == SDL_KEYDOWN) {
 		if (e->key.keysym.scancode == DASH) {
-			hero->dash();
+			commands.push_back({ InputCommandType::Dash, InputSource::Keyboard });
 		}
 		if (e->key.keysym.scancode == ATTACK) {
-			hero->attack();
+			commands.push_back({ InputCommandType::Attack, InputSource::Keyboard });
 		}
 		if (e->key.keysym.scancode == USE_ITEM) {
-			hero->useSelectedItemQuickAccess();
+			commands.push_back({ InputCommandType::UseItem, InputSource::Keyboard });
 		}
 		if (e->key.keysym.scancode == ACTION) {
-			hero->takeAction();
+			commands.push_back({ InputCommandType::Action, InputSource::Keyboard });
 		}
 
 		if (e->key.keysym.scancode == SDL_SCANCODE_F) {
-			hero->quickAccessInventoryIndex++;
-			if (hero->quickAccessInventory[hero->quickAccessInventoryIndex] == -1) {
-				hero->quickAccessInventoryIndex = 0;
-			}
+			commands.push_back({ InputCommandType::NextQuickItem, InputSource::Keyboard });
 		}
 	}
 
 	//button holds
 	const Uint8* keystates = SDL_GetKeyboardState(NULL); //check for keys still being held
-	if (((!keystates[UP] && !keystates[DOWN] && !keystates[RIGHT] && !keystates[LEFT])) &&
-			hero->isMovingMethod != 2) {
-		hero->moving = false;
-		hero->isMovingMethod = 0;
+	if (!keystates[UP] && !keystates[DOWN] && !keystates[RIGHT] && !keystates[LEFT]) {
+		commands.push_back({ InputCommandType::Stop, InputSource::Keyboard });
 	}
 	else {
-		hero->isMovingMethod = 1;
+		commands.push_back({ InputCommandType::Move, InputSource::Keyboard, 0 });
 		//up
 		if (keystates[UP]) {
 			if (keystates[RIGHT]) {
-				hero->move(270 + 45);
+				commands.back().angle = 270 + 45;
 			}
 			else if (keystates[LEFT]) {
-				hero->move(270 - 45);
+				commands.back().angle = 270 - 45;
 			}
 			else {
-				hero->move(270);
+				commands.back().angle = 270;
 			}
 		}
 		//down
 		if (keystates[DOWN]) {
 			if (keystates[RIGHT]) {
-				hero->move(90 - 45);
+				commands.back().angle = 90 - 45;
 			}
 			else if (keystates[LEFT]) {
-				hero->move(90 + 45);
+				commands.back().angle = 90 + 45;
 			}
 			else {
-				hero->move(90);
+				commands.back().angle = 90;
 			}
 		}
 		//left
 		if (!keystates[UP] && !keystates[DOWN] && !keystates[RIGHT] && keystates[LEFT]) {
-			hero->move(180);
+			commands.back().angle = 180;
 		}
 		//right
 		if (!keystates[UP] && !keystates[DOWN] && keystates[RIGHT] && !keystates[LEFT]) {
-			hero->move(0);
+			commands.back().angle = 0;
 		}
 	}
+
+	return commands;
 }

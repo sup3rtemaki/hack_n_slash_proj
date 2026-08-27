@@ -5,6 +5,7 @@
 #include <algorithm>
 #include "globals.h"
 #include "animationSet.h"
+#include "renderContext.h"
 
 //Abstract class
 class Entity {
@@ -41,7 +42,7 @@ public:
 	// virtual functions
 	virtual ~Entity() = default;
 	virtual void update();
-	virtual void draw();
+	virtual void draw(const RenderContext& context);
 	virtual void move(float angle);
 	virtual void updateMovement();
 	virtual void updateCollisionBox();

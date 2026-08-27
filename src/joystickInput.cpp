@@ -1,5 +1,11 @@
 #include "joystickInput.h"
 
+#include <cmath>
+
+namespace {
+const double PI = 3.14159265358979323846;
+}
+
 JoystickInput::JoystickInput() {
 	gGameController = NULL;
 
@@ -19,34 +25,33 @@ JoystickInput::JoystickInput() {
 	}
 }
 
-void JoystickInput::update(SDL_Event* e) {
+
+std::vector<InputCommand> JoystickInput::update(SDL_Event* e) {
+	std::vector<InputCommand> commands;
+
 	if (e->type == SDL_JOYBUTTONDOWN) {
 		if (e->jbutton.button == JOY_B) {
-			hero->dash();
+			commands.push_back({ InputCommandType::Dash, InputSource::Joystick });
 		}
 
 		if (e->jbutton.button == JOY_A) {
-			hero->takeAction();
+			commands.push_back({ InputCommandType::Action, InputSource::Joystick });
 		}
 
 		if (e->jbutton.button == JOY_Y) {
-			hero->useSelectedItemQuickAccess();
+			commands.push_back({ InputCommandType::UseItem, InputSource::Joystick });
 		}
 
 		if (e->jbutton.button == JOY_X) {
-			hero->attack();
+			commands.push_back({ InputCommandType::Attack, InputSource::Joystick });
 		}
 
 		if (e->jbutton.button == JOY_RB) {
-			hero->quickAccessInventoryIndex++;
-			if (hero->quickAccessInventory[hero->quickAccessInventoryIndex] == -1) {
-				hero->quickAccessInventoryIndex = 0;
-			}
+			commands.push_back({ InputCommandType::NextQuickItem, InputSource::Joystick });
 		}
 	}
 
 	if (e->type == SDL_JOYAXISMOTION) {
-		hero->isMovingMethod = 2;
 		////Motion on controller 0
 		if (e->jaxis.which == 0) {
 			//X axis motion
@@ -79,30 +84,32 @@ void JoystickInput::update(SDL_Event* e) {
 			}
 
 			//Calculate angle
-			double joystickAngle = atan2((double)yDir, (double)xDir) * (180.0 / M_PI);
+			double joystickAngle = atan2((double)yDir, (double)xDir) * (180.0 / PI);
 
 			//Correct angle
 			if (xDir == 0 && yDir == 0) {
-				hero->moving = false;
+				commands.push_back({ InputCommandType::Stop, InputSource::Joystick });
 			}
 			else {
-				hero->move(joystickAngle);
+				commands.push_back({ InputCommandType::Move, InputSource::Joystick, static_cast<float>(joystickAngle) });
 			}
 		}
 	}
 	else {
 		if (xDir != 0 || yDir != 0) {
-			double joystickAngle = atan2((double)yDir, (double)xDir) * (180.0 / M_PI);
-			hero->move(joystickAngle);
+			double joystickAngle = atan2((double)yDir, (double)xDir) * (180.0 / PI);
+			commands.push_back({ InputCommandType::Move, InputSource::Joystick, static_cast<float>(joystickAngle) });
 		}
-		else if (hero->isMovingMethod != 1) {
-			hero->moving = false;
-			hero->isMovingMethod = 0;
+		else {
+			commands.push_back({ InputCommandType::Stop, InputSource::Joystick });
 		}
 	}
+
+	return commands;
 }
 
-void JoystickInput::checkAxis() {
+std::vector<InputCommand> JoystickInput::checkAxis() {
+	std::vector<InputCommand> commands;
 	// pre-check both analog axis before checking the axis motion event
 	// this causes some code duplication, but solves resuming the movement after pressing a button
 	// (the axis dont generate a new event if they are interrupted e kept at the same position)
@@ -127,4 +134,14 @@ void JoystickInput::checkAxis() {
 	else {
 		yDir = 0;
 	}
+
+		if (xDir != 0 || yDir != 0) {
+			double joystickAngle = atan2((double)yDir, (double)xDir) * (180.0 / PI);
+			commands.push_back({ InputCommandType::Move, InputSource::Joystick, static_cast<float>(joystickAngle) });
+		}
+		else {
+			commands.push_back({ InputCommandType::Stop, InputSource::Joystick });
+		}
+
+		return commands;
 }

@@ -9,6 +9,7 @@
 #include "drawing_functions.h"
 #include "globals.h"
 #include "groupbuilder.h"
+#include "renderContext.h"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ public:
 
 	list<Group*> frameData;
 
-	void Draw(SDL_Texture* spriteSheet, float x, float y);
+	void Draw(SDL_Texture* spriteSheet, float x, float y, const RenderContext& context);
 
 	void loadFrame(ifstream& file, list<DataGroupType>& groupTypes);
 };

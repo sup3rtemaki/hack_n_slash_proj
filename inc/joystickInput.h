@@ -1,15 +1,15 @@
 #ifndef JOYSTICKINPUT
 #define JOYSTICKINPUT
 
-#include "hero.h"
+#include "SDL.h"
+#include "inputCommand.h"
+#include <vector>
 
 class JoystickInput {
 public:
-	class JoystickInput();
-	void update(SDL_Event* e);
-	void checkAxis();
-
-	Hero* hero;
+	JoystickInput();
+	std::vector<InputCommand> update(SDL_Event* e);
+	std::vector<InputCommand> checkAxis();
 
 private:
 	const int JOY_Y = 0;

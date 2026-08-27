@@ -38,7 +38,7 @@ public:
 	virtual void updateInvincibleTimer();
 	virtual void hitLanded(LivingEntity* entity) { ; }
 
-	void draw(); // override entites draw()
+	void draw(const RenderContext& context); // override entites draw()
 	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");
 
 	static void saveDeadEnemiesIds(list<Entity*> entityList, list<int>& enemiesIdList);

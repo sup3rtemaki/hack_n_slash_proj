@@ -29,64 +29,66 @@ void LivingEntity::updateInvincibleTimer() {
 	}
 }
 
-void LivingEntity::draw() {
+void LivingEntity::draw(const RenderContext& context) {
 	if (currentFrame != NULL && active) {
 		if (invincibleTimer > 0 && animSet->whiteSpriteSheet != NULL) {
 			currentFrame->Draw(
 				animSet->whiteSpriteSheet,
-				x - (Globals::camera.x * 1.f),
-				y - (Globals::camera.y * 1.f));
+				x - (context.camera.x * 1.f),
+				y - (context.camera.y * 1.f),
+				context);
 		}
 		else {
 			currentFrame->Draw(animSet->spriteSheet,
-				x - (Globals::camera.x * 1.f),
-				y - (Globals::camera.y * 1.f));
+				x - (context.camera.x * 1.f),
+				y - (context.camera.y * 1.f),
+				context);
 		}
 	}
 
 	//draw collision box
-	if (solid && Globals::debugging) {
+	if (solid && context.debugging) {
 		// Criar rects tempor�rios ajustados pela c�mera
 		SDL_Rect screenLastCollisionBox = {
-			lastCollisionBox.x - Globals::camera.x,
-			lastCollisionBox.y - Globals::camera.y,
+			lastCollisionBox.x - context.camera.x,
+			lastCollisionBox.y - context.camera.y,
 			lastCollisionBox.w,
 			lastCollisionBox.h
 		};
 
 		SDL_Rect screenCollisionBox = {
-			collisionBox.x - Globals::camera.x,
-			collisionBox.y - Globals::camera.y,
+			collisionBox.x - context.camera.x,
+			collisionBox.y - context.camera.y,
 			collisionBox.w,
 			collisionBox.h
 		};
 
 		SDL_Rect screenHitBox = {
-			hitBox.x - Globals::camera.x,
-			hitBox.y - Globals::camera.y,
+			hitBox.x - context.camera.x,
+			hitBox.y - context.camera.y,
 			hitBox.w,
 			hitBox.h
 		};
 
 		// Desenhar com os rects ajustados
-		SDL_SetRenderDrawColor(Globals::renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
-		SDL_RenderDrawRect(Globals::renderer, &screenLastCollisionBox);
+		SDL_SetRenderDrawColor(context.renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
+		SDL_RenderDrawRect(context.renderer, &screenLastCollisionBox);
 
-		SDL_SetRenderDrawColor(Globals::renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-		SDL_RenderDrawRect(Globals::renderer, &screenCollisionBox);
+		SDL_SetRenderDrawColor(context.renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+		SDL_RenderDrawRect(context.renderer, &screenCollisionBox);
 
-		SDL_SetRenderDrawColor(Globals::renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
-		SDL_RenderDrawRect(Globals::renderer, &screenHitBox);
+		SDL_SetRenderDrawColor(context.renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
+		SDL_RenderDrawRect(context.renderer, &screenHitBox);
 
-		SDL_SetRenderDrawColor(Globals::renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-		SDL_RenderDrawPoint(Globals::renderer,
-			x - Globals::camera.x,
-			y + (collisionBoxYOffset / 2) - Globals::camera.y);
+		SDL_SetRenderDrawColor(context.renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+		SDL_RenderDrawPoint(context.renderer,
+			x - context.camera.x,
+			y + (collisionBoxYOffset / 2) - context.camera.y);
 
-		SDL_SetRenderDrawColor(Globals::renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-		SDL_RenderDrawPoint(Globals::renderer,
-			x - Globals::camera.x,
-			y - Globals::camera.y);
+		SDL_SetRenderDrawColor(context.renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+		SDL_RenderDrawPoint(context.renderer,
+			x - context.camera.x,
+			y - context.camera.y);
 	}
 }
 

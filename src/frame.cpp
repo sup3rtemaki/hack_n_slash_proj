@@ -1,13 +1,13 @@
 #include "frame.h"
 
-void Frame::Draw(SDL_Texture* spriteSheet, float x, float y) {
+void Frame::Draw(SDL_Texture* spriteSheet, float x, float y, const RenderContext& context) {
 	SDL_Rect dest; //where to draw this frame
 	dest.x = x - offset.x;
 	dest.y = y - offset.y;
 	dest.w = clip.w;
 	dest.h = clip.h;
 
-	renderTexture(spriteSheet, Globals::renderer, dest, &clip);
+	renderTexture(spriteSheet, context.renderer, dest, &clip);
 }
 
 void Frame::loadFrame(ifstream& file, list<DataGroupType>& groupTypes) {
