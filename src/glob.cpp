@@ -51,7 +51,7 @@ Glob::Glob() {
 
 		// own the anim set
 		std::unique_ptr<AnimationSet> localAnimSet = std::make_unique<AnimationSet>();
-		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "glob.fdset", dataGroupTypes, true, 0, true);
+		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "glob.fdset", dataGroupTypes, Globals::renderer, true, 0, true);
 		this->animSet = localAnimSet.get();
 		// transfer ownership to this object by storing it in the member
 		this->localAnimSet = std::move(localAnimSet);

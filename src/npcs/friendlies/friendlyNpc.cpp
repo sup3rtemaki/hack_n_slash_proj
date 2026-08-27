@@ -15,7 +15,7 @@ FriendlyNpc::FriendlyNpc(const NpcData& npcData) : data(npcData) {
     dataGroupTypes.push_back(dmgType);
 
     localAnimSet = std::make_unique<AnimationSet>();
-    localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "npc_1.fdset", dataGroupTypes, true, 0, true);
+    localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "npc_1.fdset", dataGroupTypes, Globals::renderer, true, 0, true);
     this->animSet = localAnimSet.get();
     type = "friendly";
     collisionBoxW = 16;

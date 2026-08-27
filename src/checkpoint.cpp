@@ -17,7 +17,7 @@ Checkpoint::Checkpoint(int id, const string& mapFileName) {
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "checkpoint.fdset", dataGroupTypes);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "checkpoint.fdset", dataGroupTypes, Globals::renderer);
 	this->animSet = localAnimSet.get();
 	this->id = id;
 	this->mapFileName = mapFileName;

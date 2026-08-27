@@ -1,9 +1,10 @@
 #ifndef SAVEHANDLER
 #define SAVEHANDLER
 
-#include "item/itemsHub.h"
-
+#include <string>
 #include <vector>
+
+using namespace std;
 
 struct BloodstainInfo {
 	int x;

@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "nlohmann/json.hpp"
+#include "jsonFileStore.h"
 
 using json = nlohmann::json;
 
@@ -22,12 +23,6 @@ void SaveHandler::save(
 		std::vector<int>openDoorsIds,
 		std::vector<int> defeatedBossesIds,
 		int bloodstainX, int bloodstainY, int bloodstainEssence, string bloodstainMapName) {
-
-	std::ofstream file(SAVE_FILE_PATH);
-	if (!file.is_open()) {
-		std::cout << "Erro ao abrir arquivo SaveGame\\save.json\n";
-		return;
-	}
 
 	json save;
 	save["mapFile"] = currentMapFile;
@@ -68,21 +63,22 @@ void SaveHandler::save(
 	jBloodstain["bMapFile"] = bloodstainMapName;
 	save["bloodstain"] = jBloodstain;
 
-	file << std::setw(4) << save << std::endl;
-	file.close();
+	if (!JsonFileStore::writeJsonFile(SAVE_FILE_PATH, save)) {
+		std::cout << "Erro ao abrir arquivo SaveGame\\save.json\n";
+		return;
+	}
+
 	std::cout << "Save\n";
 }
 
 bool SaveHandler::load() {
-	std::ifstream file(SAVE_FILE_PATH);
-	if (!file.is_open()) {
+	json data;
+	JsonFileResult result = JsonFileStore::readJsonFile(SAVE_FILE_PATH, data);
+	if (result == JsonFileResult::FileNotFound) {
 		std::cout << "Erro ao abrir arquivo SaveGame\\save.json\n";
 		return false;
 	}
-
-	json data = json::parse(file);
-
-	if (data.empty()) {
+	if (result == JsonFileResult::ParseError || data.empty()) {
 		std::cout << "Erro ao parsear arquivo SaveGame\\save.json\n";
 		return false;
 	}

@@ -15,7 +15,7 @@ StoneProjectile::StoneProjectile(int x, int y) {
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "stoneProjectile.fdset", dataGroupTypes);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "stoneProjectile.fdset", dataGroupTypes, Globals::renderer);
 	this->animSet = localAnimSet.get();
 	solid = false;
 	collideWithSolids = true;

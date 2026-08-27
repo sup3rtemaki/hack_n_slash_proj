@@ -32,7 +32,7 @@ Animation* AnimationSet::getAnimation(string name) {
 //we would prefer to be transparent, then we can say yes to 'colorKeying'(make a colour in the palette actually equal full transparent)
 //and then just use the index of that transparentPixel (e.g, if its the third colour in the palette, then put in 2 as index starts at 0)
 //if you need an alternative white version of the sprite sheet, then make this last option true (maybe move this out of this class? not sure)	
-void AnimationSet::loadAnimationSet(string fileName, list<DataGroupType>& groupTypes, bool setColourKey, int transparentPixelIndex, bool createWhiteTexture) {
+void AnimationSet::loadAnimationSet(string fileName, list<DataGroupType>& groupTypes, SDL_Renderer* renderer, bool setColourKey, int transparentPixelIndex, bool createWhiteTexture) {
 
 	ifstream file;
 	const string resPath = getResourcePath();
@@ -41,24 +41,24 @@ void AnimationSet::loadAnimationSet(string fileName, list<DataGroupType>& groupT
 	{
 		getline(file, imageName);
 
-		SDL_Surface* spriteSurface = loadSurface(resPath + imageName, Globals::renderer);
+		SDL_Surface* spriteSurface = loadSurface(resPath + imageName, renderer);
 
 		if (setColourKey)
 		{
-			SDL_Surface* spriteSurface = loadSurface(resPath + imageName, Globals::renderer);
+			SDL_Surface* spriteSurface = loadSurface(resPath + imageName, renderer);
 
 			//for transparency, we will grab the [transparentPixelIndex] from the surface we just made
 			SDL_Color* transparentPixel = &spriteSurface->format->palette->colors[transparentPixelIndex];
 			SDL_SetColorKey(spriteSurface, 1, SDL_MapRGB(spriteSurface->format, transparentPixel->r, transparentPixel->g, transparentPixel->b));
 
-			spriteSheet = convertSurfaceToTexture(spriteSurface, Globals::renderer, false);
+			spriteSheet = convertSurfaceToTexture(spriteSurface, renderer, false);
 
 			if (createWhiteTexture)
 			{
-				SDL_Surface* whiteSurface = loadSurface(resPath + ResourcePaths::ALL_WHITE_TEXTURE, Globals::renderer);
+				SDL_Surface* whiteSurface = loadSurface(resPath + ResourcePaths::ALL_WHITE_TEXTURE, renderer);
 				surfacePaletteSwap(spriteSurface, whiteSurface);
 				SDL_SetColorKey(spriteSurface, 1, SDL_MapRGB(spriteSurface->format, transparentPixel->r, transparentPixel->g, transparentPixel->b));
-				whiteSpriteSheet = convertSurfaceToTexture(spriteSurface, Globals::renderer, false); //create the texture whilst destroying the surface
+				whiteSpriteSheet = convertSurfaceToTexture(spriteSurface, renderer, false); //create the texture whilst destroying the surface
 
 				cleanup(whiteSurface);
 			}
@@ -69,7 +69,7 @@ void AnimationSet::loadAnimationSet(string fileName, list<DataGroupType>& groupT
 			cleanup(spriteSurface);
 		}
 		else
-			spriteSheet = loadTexture(resPath + imageName, Globals::renderer);
+			spriteSheet = loadTexture(resPath + imageName, renderer);
 
 		string buffer;
 		getline(file, buffer);

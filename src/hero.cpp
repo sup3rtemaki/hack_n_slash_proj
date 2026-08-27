@@ -83,7 +83,7 @@ Hero::Hero() {
 		dataGroupTypes.push_back(dmgType);
 
 		localAnimSet = std::make_unique<AnimationSet>();
-		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "antHero.fdset", dataGroupTypes, true, 0, true);
+		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "antHero.fdset", dataGroupTypes, Globals::renderer, true, 0, true);
 		this->animSet = localAnimSet.get();
 	}
 
@@ -105,7 +105,7 @@ Hero::Hero() {
 		dataGroupTypes.push_back(dmgType);
 
 		localAnimSet = std::make_unique<AnimationSet>();
-		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "antHero.fdset", dataGroupTypes, true, 0, true);
+		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "antHero.fdset", dataGroupTypes, Globals::renderer, true, 0, true);
 		this->animSet = localAnimSet.get();
 	type = "hero";
 

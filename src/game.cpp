@@ -16,6 +16,7 @@
 #include "checkpoint.h"
 #include "npcs/npcFactory.h"
 #include "resourceConfig.h"
+#include "jsonFileStore.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -720,8 +721,9 @@ void Game::updateMaps() {
 
 				// TODO: Levar essa rotina de atualizar o status do item no arquivo json
 				// pra outro lugar, e tentar melhorar pq ta muito ruim e feio
-				std::ifstream ifs(getResourcePath() + ResourcePaths::MAPS + currentMap->file);
-				json mapFile = json::parse(ifs);
+				const string itemsMapFilePath = getResourcePath() + ResourcePaths::MAPS + currentMap->file;
+				json mapFile;
+				if (JsonFileStore::readJsonFile(itemsMapFilePath, mapFile) == JsonFileResult::Success) {
 
 				for (auto const& i : currentMap->itemsInMap) {
 					if (i.first) {
@@ -736,11 +738,9 @@ void Game::updateMaps() {
 												prop["value"] == std::get<0>(i.second)) {
 												for (auto& prop2 : object["properties"]) {
 													if (prop2["name"] == "isPicked") {
-																std::ofstream outputFile(getResourcePath() + ResourcePaths::MAPS + currentMap->file);
 														prop2["value"].clear();
 														prop2["value"] = true;
-														outputFile << std::setw(4) << mapFile << std::endl;
-														outputFile.close();
+														JsonFileStore::writeJsonFile(itemsMapFilePath, mapFile);
 													}
 												}
 											}
@@ -750,6 +750,7 @@ void Game::updateMaps() {
 							}
 						}
 					}
+				}
 				}
 
 				handleMapChange();
@@ -1391,8 +1392,10 @@ void Game::checkBossDeath() {
 
 void Game::saveCheckpointActivatedState(int checkpointId) {
 	const string mapFilePath = getResourcePath() + ResourcePaths::MAPS + currentMap->file;
-	std::ifstream ifs(mapFilePath);
-	json mapFile = json::parse(ifs);
+	json mapFile;
+	if (JsonFileStore::readJsonFile(mapFilePath, mapFile) != JsonFileResult::Success) {
+		return;
+	}
 	bool checkpointFound = false;
 
 	for (auto& layersIt : mapFile["layers"]) {
@@ -1404,11 +1407,9 @@ void Game::saveCheckpointActivatedState(int checkpointId) {
 						prop["value"] == checkpointId) {
 						for (auto& prop2 : object["properties"]) {
 							if (prop2["name"] == "isActive") {
-								std::ofstream outputFile(mapFilePath);
 								prop2["value"].clear();
 								prop2["value"] = true;
-								outputFile << std::setw(4) << mapFile << std::endl;
-								outputFile.close();
+								JsonFileStore::writeJsonFile(mapFilePath, mapFile);
 							}
 						}
 					}

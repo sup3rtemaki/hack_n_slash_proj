@@ -7,7 +7,7 @@ Bullet::Bullet(int x, int y) {
 	list<DataGroupType> dataGroupTypes;
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "bullet.fdset", dataGroupTypes);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "bullet.fdset", dataGroupTypes, Globals::renderer);
 	this->animSet = localAnimSet.get();
 	solid = false;
 	collideWithSolids = true;

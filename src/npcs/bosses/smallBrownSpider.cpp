@@ -71,7 +71,7 @@ SmallBrownSpider::SmallBrownSpider() {
 	dataGroupTypes.push_back(dmgType);
 
 	std::unique_ptr<AnimationSet> localAnim = std::make_unique<AnimationSet>();
-	localAnim->loadAnimationSet(ResourcePaths::ANIMATIONS + "spider_boss.fdset", dataGroupTypes);
+	localAnim->loadAnimationSet(ResourcePaths::ANIMATIONS + "spider_boss.fdset", dataGroupTypes, Globals::renderer);
 	this->animSet = localAnim.get();
 	this->localAnimSet = std::move(localAnim);
 

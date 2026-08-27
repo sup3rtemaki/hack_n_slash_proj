@@ -11,7 +11,7 @@ HoneydewPotion::HoneydewPotion(bool isOnGround, int quant) {
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "groundConsumableItem.fdset", dataGroupTypes);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "groundConsumableItem.fdset", dataGroupTypes, Globals::renderer);
 	this->animSet = localAnimSet.get();
 	id = HONEYDEW_POTION_ID;
 	quantity = quant;

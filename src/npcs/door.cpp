@@ -19,7 +19,7 @@ Door::Door(int id, string prefix, bool isClosed, int posX, int posY, int width, 
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "double_doors.fdset", dataGroupTypes);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "double_doors.fdset", dataGroupTypes, Globals::renderer);
 	this->animSet = localAnimSet.get();
 	this->id = id;
 	animPrefix = prefix;

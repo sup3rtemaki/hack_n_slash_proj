@@ -26,7 +26,7 @@ Bloodstain::Bloodstain() {
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "bloodstain.fdset", dataGroupTypes);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "bloodstain.fdset", dataGroupTypes, Globals::renderer);
 	this->animSet = localAnimSet.get();
 
 	type = "bloodstain";
