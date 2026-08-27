@@ -84,6 +84,9 @@
     <ClCompile Include="src\timeController.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="src\tiledMapLoader.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
     <ClCompile Include="src\wall.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
@@ -264,6 +267,9 @@
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="inc\timeController.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\tiledMapLoader.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="inc\wall.h">

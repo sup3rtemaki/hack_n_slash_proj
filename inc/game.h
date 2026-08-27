@@ -19,6 +19,7 @@
 #include "timeController.h"
 #include "renderContext.h"
 #include "inputCommand.h"
+#include "tiledMapLoader.h"
 
 #include "helpers/saveHandler.h"
 
@@ -117,6 +118,7 @@ public:
 	int mapQty;
 
 	SaveHandler saveHandler;
+	TiledMapLoader tiledMapLoader;
 
 	QuickItemUi* quickItemUi;
 	ItemPickMessageUi* itemPickMessageUi;

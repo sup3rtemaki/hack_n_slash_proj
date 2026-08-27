@@ -202,6 +202,7 @@
     <ClCompile Include="src\soundManager.cpp" />
     <ClCompile Include="src\termiteMiner.cpp" />
     <ClCompile Include="src\timeController.cpp" />
+    <ClCompile Include="src\tiledMapLoader.cpp" />
     <ClCompile Include="src\ui\actionMessageUi.cpp" />
     <ClCompile Include="src\ui\essenceCounterUi.cpp" />
     <ClCompile Include="src\ui\hpBar.cpp" />
@@ -266,6 +267,7 @@
     <ClInclude Include="inc\termiteMiner.h" />
     <ClInclude Include="inc\tileson\tileson.hpp" />
     <ClInclude Include="inc\timeController.h" />
+    <ClInclude Include="inc\tiledMapLoader.h" />
     <ClInclude Include="inc\ui\actionMessageUi.h" />
     <ClInclude Include="inc\ui\essenceCounterUi.h" />
     <ClInclude Include="inc\ui\hpBar.h" />

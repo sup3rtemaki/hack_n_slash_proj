@@ -19,7 +19,6 @@
 using json = nlohmann::json;
 using namespace std;
 
-tson::Tileson tileson; // Tileson global instance
 std::unique_ptr<tson::Map> tiledMap; // Tiled map
 std::map<std::tuple<int, int>, tson::Tile*> tileData;
 
@@ -784,10 +783,7 @@ void Game::updateMaps() {
 }
 
 void Game::loadTiledMap(const string& mapFile) {
-	tiledMap = tileson.parse(fs::path(mapFile));
-	if (tiledMap->getStatus() != tson::ParseStatus::OK) {
-		cout << tiledMap->getStatusMessage() << endl;
-	}
+	tiledMap = tiledMapLoader.load(mapFile);
 }
 
 void Game::renderTiles() {
