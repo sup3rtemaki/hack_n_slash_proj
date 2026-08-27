@@ -148,6 +148,9 @@ private:
 	void runMainMenu();
 	void runMainGame();
 	void runPausedGameMenu();
+	void updateEntities();
+	void drawEntities();
+	void drawMap();
 	void updateMaps();
 	void loadTiledMap(const string& mapFile);
 	void renderTiles();

@@ -532,19 +532,9 @@ void Game::runMainGame() {
 		}
 	}
 
-	// update all entites
+	// update all entities
 	if (!Globals::pause) {
-		for (list<Entity*>::iterator entity = entities.begin(); entity != entities.end(); entity++) {
-			// update all entites in world at once (polymorphism)
-			(*entity)->deltaTime = gameTime.dT;
-			(*entity)->update();
-
-			checkAndHandleEnemyLoot(*entity);
-			checkAndHandleNearItem(*entity);
-			checkAndHandleNearDoor(*entity);
-			checkAndHandleNearBloodstain(*entity);
-			checkAndHandleNearCheckpoint(*entity);
-		}
+		updateEntities();
 	}
 
 	//If hero is in change map region, fade to change map
@@ -565,6 +555,8 @@ void Game::runMainGame() {
 		saveGame(true);
 	}
 
+	updateMaps();
+
 	// draw all entites
 	draw();
 
@@ -574,6 +566,33 @@ void Game::runMainGame() {
 
 	// framerate
 	// cout << gameTime.dT << endl;
+}
+
+void Game::updateEntities() {
+	for (list<Entity*>::iterator entity = entities.begin(); entity != entities.end(); entity++) {
+		(*entity)->deltaTime = gameTime.dT;
+		(*entity)->update();
+
+		checkAndHandleEnemyLoot(*entity);
+		checkAndHandleNearItem(*entity);
+		checkAndHandleNearDoor(*entity);
+		checkAndHandleNearBloodstain(*entity);
+		checkAndHandleNearCheckpoint(*entity);
+	}
+}
+
+void Game::drawEntities() {
+	entities.sort(Entity::EntityCompare);
+	syncEntityRegistry();
+
+	for (list<Entity*>::iterator entity = entities.begin(); entity != entities.end(); entity++) {
+		(*entity)->draw(renderContext);
+	}
+}
+
+void Game::drawMap() {
+	renderTiles();
+	renderTexture(fadeImage, Globals::renderer, (-200) - Globals::camera.x, (-200) - Globals::camera.y);
 }
 
 void Game::runPausedGameMenu() {
@@ -673,6 +692,9 @@ void Game::runPausedGameMenu() {
 	// interaction with the axis works. consider refactoring in the future
 	//heroJoystickInput.checkAxis();
 
+	// update map state before drawing the paused frame
+	updateMaps();
+
 	// draw all entites
 	draw();
 
@@ -759,8 +781,6 @@ void Game::updateMaps() {
 	}
 
 	checkBossDeath();
-	renderTiles();
-	renderTexture(fadeImage, Globals::renderer, (-200) - Globals::camera.x, (-200) - Globals::camera.y);
 }
 
 void Game::loadTiledMap(const string& mapFile) {
@@ -1157,17 +1177,10 @@ void Game::draw() {
 		renderTexture(splashImage, Globals::renderer, 0, 0);
 	}
 	else {
-
-		updateMaps();
-
-		// sort all entities based on y (depth)
-		entities.sort(Entity::EntityCompare);
-		syncEntityRegistry();
+		drawMap();
 
 		// draw all of the entities
-		for (list<Entity*>::iterator entity = entities.begin(); entity != entities.end(); entity++) {
-			(*entity)->draw(renderContext);
-		}
+		drawEntities();
 
 		// draw all of the UI
 		for (list<Ui*>::iterator ui = gui.begin(); ui != gui.end(); ui++) {
