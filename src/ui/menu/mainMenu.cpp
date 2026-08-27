@@ -1,4 +1,5 @@
 #include "ui/menu/mainMenu.h"
+#include "resourceConfig.h"
 
 #include "hero.h"
 #include "globals.h"
@@ -21,7 +22,7 @@ void MainMenu::setUp() {
 	textYOffset = 0;
 	menuItems.push_back("Start");
 	menuItems.push_back("Exit");
-	bgImage = loadTexture(Ui::RES_PATH + Ui::HUD_TEXTURES_PATH + "main_menu_bg.png", Globals::renderer);
+	bgImage = loadTexture(Ui::RES_PATH + ResourcePaths::HUD_TEXTURES + "main_menu_bg.png", Globals::renderer);
 }
 
 void MainMenu::draw() {
@@ -57,7 +58,7 @@ void MainMenu::drawText() {
 
 		fontTexture = renderText(
 			text,
-			Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+			Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
 			color,
 			FONT_SIZE,
 			Globals::renderer

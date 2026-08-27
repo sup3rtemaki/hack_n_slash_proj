@@ -262,6 +262,7 @@
     <ClInclude Include="inc\randomNumber.h" />
     <ClInclude Include="inc\res_path.h" />
     <ClInclude Include="inc\renderContext.h" />
+    <ClInclude Include="inc\resourceConfig.h" />
     <ClInclude Include="inc\roundKing.h" />
     <ClInclude Include="inc\soundManager.h" />
     <ClInclude Include="inc\termiteMiner.h" />

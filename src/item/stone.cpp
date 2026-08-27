@@ -1,6 +1,7 @@
 #include "item/stone.h"
 
 #include "projectiles/stoneProjectile.h"
+#include "resourceConfig.h"
 
 Stone::Stone(bool isOnGround, int quant) {
 	list<DataGroupType> dataGroupTypes;
@@ -12,7 +13,7 @@ Stone::Stone(bool isOnGround, int quant) {
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet("Assets\\Animations\\groundConsumableItem.fdset", dataGroupTypes);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "groundConsumableItem.fdset", dataGroupTypes);
 	this->animSet = localAnimSet.get();
 	id = STONE_ID;
 	quantity = quant;

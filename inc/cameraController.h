@@ -1,7 +1,7 @@
 #ifndef CAMERACONTROLLER
 #define CAMERACONTROLLER
 
-#include "globals.h"
+#include <SDL.h>
 #include "entity.h"
 
 class CameraController {
@@ -11,7 +11,7 @@ public:
 	float deltaTime = 0;
 	bool isLerping;
 
-	void update();
+	void update(SDL_Rect& camera, int worldWidth, int worldHeight);
 };
 
 #endif // !CAMERACONTROLLER

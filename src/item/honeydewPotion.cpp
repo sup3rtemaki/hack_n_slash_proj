@@ -1,4 +1,5 @@
 #include "item/honeydewPotion.h"
+#include "resourceConfig.h"
 
 HoneydewPotion::HoneydewPotion(bool isOnGround, int quant) {
 	list<DataGroupType> dataGroupTypes;
@@ -10,7 +11,7 @@ HoneydewPotion::HoneydewPotion(bool isOnGround, int quant) {
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet("Assets\\Animations\\groundConsumableItem.fdset", dataGroupTypes);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "groundConsumableItem.fdset", dataGroupTypes);
 	this->animSet = localAnimSet.get();
 	id = HONEYDEW_POTION_ID;
 	quantity = quant;

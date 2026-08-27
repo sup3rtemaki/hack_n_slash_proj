@@ -260,6 +260,9 @@
     <ClInclude Include="inc\renderContext.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="inc\resourceConfig.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
     <ClInclude Include="inc\roundKing.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>

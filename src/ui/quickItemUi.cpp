@@ -1,4 +1,5 @@
 #include "ui/quickItemUi.h"
+#include "resourceConfig.h"
 
 #include "globals.h"
 
@@ -91,7 +92,7 @@ void QuickItemUi::drawItemQuantity() {
         ss << currentQuantity;
         itemQuantityTexture = renderText(
             ss.str(),
-            Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+            Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
             color,
             ITEM_QUANTITY_FONT_SIZE,
             Globals::renderer

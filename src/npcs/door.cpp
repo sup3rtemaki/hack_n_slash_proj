@@ -1,4 +1,5 @@
 #include "npcs/door.h"
+#include "resourceConfig.h"
 
 const int Door::DOOR_STATE_CLOSED = 0;
 const int Door::DOOR_STATE_OPENING = 1;
@@ -18,7 +19,7 @@ Door::Door(int id, string prefix, bool isClosed, int posX, int posY, int width, 
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet("Assets\\Animations\\double_doors.fdset", dataGroupTypes);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "double_doors.fdset", dataGroupTypes);
 	this->animSet = localAnimSet.get();
 	this->id = id;
 	animPrefix = prefix;

@@ -1,4 +1,5 @@
 #include "projectiles/stoneProjectile.h"
+#include "resourceConfig.h"
 
 const string StoneProjectile::STONE_PROJECTILE_ANIM_THROW_UP_LEFT = "throwUpLeft";
 const string StoneProjectile::STONE_PROJECTILE_ANIM_THROW_DOWN_RIGHT = "throwDownRight";
@@ -14,7 +15,7 @@ StoneProjectile::StoneProjectile(int x, int y) {
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet("Assets\\Animations\\stoneProjectile.fdset", dataGroupTypes);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "stoneProjectile.fdset", dataGroupTypes);
 	this->animSet = localAnimSet.get();
 	solid = false;
 	collideWithSolids = true;

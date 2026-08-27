@@ -1,4 +1,5 @@
 #include "ui/itemPickMessageUi.h"
+#include "resourceConfig.h"
 
 const string FONT_FILE = "alagard.ttf";
 const int FONT_X = 20;
@@ -31,7 +32,7 @@ void ItemPickMessageUi::draw() {
 			prevMessage != messageStr) {
 			fontTexture = renderText(
 				messageStr,
-				resPath + FONTS_PATH + FONT_FILE,
+				resPath + ResourcePaths::FONTS + FONT_FILE,
 				color,
 				FONT_SIZE,
 				Globals::renderer

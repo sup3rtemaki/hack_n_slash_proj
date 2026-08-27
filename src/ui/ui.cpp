@@ -1,8 +1,5 @@
 #include "ui/ui.h"
 
-const string Ui::HUD_TEXTURES_PATH = "\\Assets\\Textures\\HUD\\";
-const string Ui::FONTS_PATH = "\\Assets\\Fonts\\";
-
 Ui::Ui() {
 }
 

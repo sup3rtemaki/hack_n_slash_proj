@@ -1,5 +1,6 @@
 #include "grob.h"
 #include "item/itemsHub.h"
+#include "resourceConfig.h"
 
 const string Grob::GROB_ANIM_UP = "up";
 const string Grob::GROB_ANIM_DOWN = "down";
@@ -49,7 +50,7 @@ Grob::Grob() {
 	dataGroupTypes.push_back(dmgType);
 
 	std::unique_ptr<AnimationSet> localAnim = std::make_unique<AnimationSet>();
-	localAnim->loadAnimationSet("Assets\\Animations\\grob.fdset", dataGroupTypes, true, 0, true);
+	localAnim->loadAnimationSet(ResourcePaths::ANIMATIONS + "grob.fdset", dataGroupTypes, true, 0, true);
 	this->animSet = localAnim.get();
 	this->localAnimSet = std::move(localAnim);
 	type = "enemy";
@@ -146,7 +147,7 @@ void Grob::die() {
 	state = GROB_STATE_DEAD;
 	changeAnimation(state, true);
 
-	SoundManager::soundManager.playSound("enemyDie");
+	SoundManager::soundManager.playSound(SoundIds::ENEMY_DIE);
 
 	//add to score
 	Grob::grobsKilled++;
@@ -306,7 +307,7 @@ void Grob::updateDamages() {
 					hp -= enemy->damage;
 
 					if (hp > 0) {
-						SoundManager::soundManager.playSound("enemyHit");
+						SoundManager::soundManager.playSound(SoundIds::ENEMY_HIT);
 						invincibleTimer = 0.1;
 					}
 					//get thrown backwards

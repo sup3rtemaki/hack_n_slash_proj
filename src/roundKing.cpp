@@ -1,4 +1,5 @@
 #include "roundKing.h"
+#include "resourceConfig.h"
 
 const string RoundKing::ROUND_KING_ANIM_IDLE = "idle";
 const string RoundKing::ROUND_KING_ANIM_CHARGE = "charge";
@@ -75,7 +76,7 @@ void RoundKing::updateShoot() {
 		else if (shotTimer <= 0) { //otherwiseif still shooting and its time to take a shot
 			shotTimer = 0.5;
 			Bullet* bullet = new Bullet(x, y);
-			SoundManager::soundManager.playSound("shoot");
+			SoundManager::soundManager.playSound(SoundIds::SHOOT);
 			bullet->angle = angle;
 			Entity::addEntity(bullet);
 		}
@@ -164,7 +165,7 @@ void RoundKing::think() {
 
 void RoundKing::charge() {
 	moving = false;
-	SoundManager::soundManager.playSound("laugh");
+	SoundManager::soundManager.playSound(SoundIds::LAUGH);
 	changeAnimation(ROUND_KING_STATE_CHARGE, true);
 }
 
@@ -203,7 +204,7 @@ void RoundKing::jump() {
 void RoundKing::die() {
 	moving = false;
 	changeAnimation(ROUND_KING_STATE_DEAD, true);
-	SoundManager::soundManager.playSound("enemyDie");
+	SoundManager::soundManager.playSound(SoundIds::ENEMY_DIE);
 	roundKingsKilled++;
 }
 
@@ -304,10 +305,10 @@ void RoundKing::updateAnimation() {
 
 			if (damages != NULL && damages->numberOfDataInGroup() > 0) {
 				if (state == ROUND_KING_STATE_SLAM) {
-					SoundManager::soundManager.playSound("smash");
+					SoundManager::soundManager.playSound(SoundIds::SMASH);
 				}
 				else if (state == ROUND_KING_STATE_JUMP) {
-					SoundManager::soundManager.playSound("crash");
+					SoundManager::soundManager.playSound(SoundIds::CRASH);
 				}
 			}
 		}
@@ -330,7 +331,7 @@ void RoundKing::updateDamages() {
 					hp -= enemy->damage;
 
 					if (hp > 0) {
-						SoundManager::soundManager.playSound("enemyHit");
+						SoundManager::soundManager.playSound(SoundIds::ENEMY_HIT);
 						invincibleTimer = 0.1;
 					}
 				}

@@ -1,5 +1,6 @@
 #include "glob.h"
 #include "item/itemsHub.h"
+#include "resourceConfig.h"
 
 const string Glob::GLOB_ANIM_UP = "up";
 const string Glob::GLOB_ANIM_DOWN = "down";
@@ -50,7 +51,7 @@ Glob::Glob() {
 
 		// own the anim set
 		std::unique_ptr<AnimationSet> localAnimSet = std::make_unique<AnimationSet>();
-		localAnimSet->loadAnimationSet("Assets\\Animations\\glob.fdset", dataGroupTypes, true, 0, true);
+		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "glob.fdset", dataGroupTypes, true, 0, true);
 		this->animSet = localAnimSet.get();
 		// transfer ownership to this object by storing it in the member
 		this->localAnimSet = std::move(localAnimSet);
@@ -149,7 +150,7 @@ void Glob::die() {
 	state = GLOB_STATE_DEAD;
 	changeAnimation(state, true);
 
-	SoundManager::soundManager.playSound("enemyDie");
+	SoundManager::soundManager.playSound(SoundIds::ENEMY_DIE);
 
 	//add to score
 	Glob::globsKilled++;
@@ -309,7 +310,7 @@ void Glob::updateDamages() {
 					hp -= enemy->damage;
 
 					if (hp > 0) {
-						SoundManager::soundManager.playSound("enemyHit");
+						SoundManager::soundManager.playSound(SoundIds::ENEMY_HIT);
 						invincibleTimer = 0.1;
 					}
 					//get thrown backwards

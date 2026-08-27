@@ -1,4 +1,5 @@
 #include "ui/essenceCounterUi.h"
+#include "resourceConfig.h"
 
 #include "hero.h"
 #include <iomanip>
@@ -69,7 +70,7 @@ void EssenceCounterUi::drawEssenceQuantity() {
         message << std::to_string(currentEssence);
         fontTexture = renderText(
             message.str(),
-            Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+            Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
             color,
             FONT_SIZE,
             Globals::renderer

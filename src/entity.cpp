@@ -102,7 +102,8 @@ void Entity::updateCollisions() {
 
 		//broad phase
 		//if we collide with this entity
-		for (auto entity = Entity::entities.begin(); entity != Entity::entities.end(); entity++) {
+		list<Entity*>& activeEntities = Entity::getEntities();
+		for (auto entity = activeEntities.begin(); entity != activeEntities.end(); entity++) {
 
 			if ((*entity)->active &&
 				//(*entity)->type != this->type && //add this line if thing of same type cant collide

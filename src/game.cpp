@@ -15,6 +15,7 @@
 #include "npcs/bosses/smallBrownSpider.h"
 #include "checkpoint.h"
 #include "npcs/npcFactory.h"
+#include "resourceConfig.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -22,10 +23,9 @@ using namespace std;
 std::unique_ptr<tson::Map> tiledMap; // Tiled map
 std::map<std::tuple<int, int>, tson::Tile*> tileData;
 
-const string MAPS_FOLDER_PATH = "Maps\\";
-const string TEXTURES_FOLDER_PATH = "Assets\\Textures\\";
-const string SOUNDS_FOLDER_PATH = "Assets\\Sounds\\";
-const string ANIMATIONS_FOLDER_PATH = "Assets\\Animations\\";
+// Ant Hero maps are fixed-size square worlds; the camera controller receives this as a parameter.
+const int WORLD_WIDTH = 1024;
+const int WORLD_HEIGHT = 1024;
 
 Game::Game() {
 	//TODO: Criar m�todo initialize ou algo do tipo pra encapsular tudo isso
@@ -34,9 +34,9 @@ Game::Game() {
 
 	mustSpawnEnemies = true;
 
-	fadeImage = loadTexture(resPath + Ui::HUD_TEXTURES_PATH + "blackBG.png", Globals::renderer);
-	splashImage = loadTexture(resPath + Ui::HUD_TEXTURES_PATH + "cyborgtitle.png", Globals::renderer);
-	overlayImage = loadTexture(resPath + Ui::HUD_TEXTURES_PATH + "overlay.png", Globals::renderer);
+	fadeImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "blackBG.png", Globals::renderer);
+	splashImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "cyborgtitle.png", Globals::renderer);
+	overlayImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "overlay.png", Globals::renderer);
 
 	splashShowing = false;
 	overlayTimer = 2;
@@ -48,16 +48,16 @@ Game::Game() {
 	Globals::camera.h = Globals::ScreenHeight;
 
 	//loadup sounds
-	SoundManager::soundManager.loadSound("hit", resPath + SOUNDS_FOLDER_PATH + "Randomize2.wav");
-	SoundManager::soundManager.loadSound("enemyHit", resPath + SOUNDS_FOLDER_PATH + "Hit_Hurt9.wav");
-	SoundManager::soundManager.loadSound("swing", resPath + SOUNDS_FOLDER_PATH + "Randomize21.wav");
-	SoundManager::soundManager.loadSound("dash", resPath + SOUNDS_FOLDER_PATH + "dash.wav");
-	SoundManager::soundManager.loadSound("growl", resPath + SOUNDS_FOLDER_PATH + "Randomize34.wav");
-	SoundManager::soundManager.loadSound("enemyDie", resPath + SOUNDS_FOLDER_PATH + "Randomize41.wav");
-	SoundManager::soundManager.loadSound("crash", resPath + SOUNDS_FOLDER_PATH + "crash.wav");
-	SoundManager::soundManager.loadSound("smash", resPath + SOUNDS_FOLDER_PATH + "smash.wav");
-	SoundManager::soundManager.loadSound("shoot", resPath + SOUNDS_FOLDER_PATH + "shoot2.wav");
-	SoundManager::soundManager.loadSound("laugh", resPath + SOUNDS_FOLDER_PATH + "laugh2.wav");
+	SoundManager::soundManager.loadSound(SoundIds::HIT, resPath + ResourcePaths::SOUNDS + "Randomize2.wav");
+	SoundManager::soundManager.loadSound(SoundIds::ENEMY_HIT, resPath + ResourcePaths::SOUNDS + "Hit_Hurt9.wav");
+	SoundManager::soundManager.loadSound(SoundIds::SWING, resPath + ResourcePaths::SOUNDS + "Randomize21.wav");
+	SoundManager::soundManager.loadSound(SoundIds::DASH, resPath + ResourcePaths::SOUNDS + "dash.wav");
+	SoundManager::soundManager.loadSound(SoundIds::GROWL, resPath + ResourcePaths::SOUNDS + "Randomize34.wav");
+	SoundManager::soundManager.loadSound(SoundIds::ENEMY_DIE, resPath + ResourcePaths::SOUNDS + "Randomize41.wav");
+	SoundManager::soundManager.loadSound(SoundIds::CRASH, resPath + ResourcePaths::SOUNDS + "crash.wav");
+	SoundManager::soundManager.loadSound(SoundIds::SMASH, resPath + ResourcePaths::SOUNDS + "smash.wav");
+	SoundManager::soundManager.loadSound(SoundIds::SHOOT, resPath + ResourcePaths::SOUNDS + "shoot2.wav");
+	SoundManager::soundManager.loadSound(SoundIds::LAUGH, resPath + ResourcePaths::SOUNDS + "laugh2.wav");
 
 	//song = Mix_LoadMUS(string(resPath + "Fatal Theory.wav").c_str());
 	//if (song != NULL) {
@@ -71,7 +71,7 @@ Game::Game() {
 	currentMap = new Map();
 	currentMap->file = saveHandler.getCurrentMapFile();
 
-	loadTiledMap(resPath + MAPS_FOLDER_PATH + currentMap->file);
+	loadTiledMap(resPath + ResourcePaths::MAPS + currentMap->file);
 
 	// build hero entity
 	hero = new Hero();
@@ -561,7 +561,7 @@ void Game::runMainGame() {
 
 	// update camera position
 	camController.deltaTime = gameTime.dT;
-	camController.update();
+	camController.update(Globals::camera, WORLD_WIDTH, WORLD_HEIGHT);
 
 	// framerate
 	// cout << gameTime.dT << endl;
@@ -699,7 +699,7 @@ void Game::runPausedGameMenu() {
 
 	// update camera position
 	camController.deltaTime = gameTime.dT;
-	camController.update();
+	camController.update(Globals::camera, WORLD_WIDTH, WORLD_HEIGHT);
 }
 
 void Game::updateMaps() {
@@ -720,7 +720,7 @@ void Game::updateMaps() {
 
 				// TODO: Levar essa rotina de atualizar o status do item no arquivo json
 				// pra outro lugar, e tentar melhorar pq ta muito ruim e feio
-				std::ifstream ifs(getResourcePath() + MAPS_FOLDER_PATH + currentMap->file);
+				std::ifstream ifs(getResourcePath() + ResourcePaths::MAPS + currentMap->file);
 				json mapFile = json::parse(ifs);
 
 				for (auto const& i : currentMap->itemsInMap) {
@@ -736,7 +736,7 @@ void Game::updateMaps() {
 												prop["value"] == std::get<0>(i.second)) {
 												for (auto& prop2 : object["properties"]) {
 													if (prop2["name"] == "isPicked") {
-														std::ofstream outputFile(getResourcePath() + MAPS_FOLDER_PATH + currentMap->file);
+																std::ofstream outputFile(getResourcePath() + ResourcePaths::MAPS + currentMap->file);
 														prop2["value"].clear();
 														prop2["value"] = true;
 														outputFile << std::setw(4) << mapFile << std::endl;
@@ -833,7 +833,7 @@ void Game::renderTiles() {
 					}
 					else {
 						// Carregar nova textura
-						tilesetTexturePath = resPath + TEXTURES_FOLDER_PATH +
+						tilesetTexturePath = resPath + ResourcePaths::TEXTURES +
 							tileset->getImage().filename().string();
 
 						SDL_Texture* newTexture = loadTexture(tilesetTexturePath,
@@ -1006,7 +1006,7 @@ void Game::handleMapChange(bool isHeroRespawn) {
 	}
 
 	hero->attackBuffer.clear();
-	loadTiledMap(resPath + MAPS_FOLDER_PATH + currentMap->file);
+	loadTiledMap(resPath + ResourcePaths::MAPS + currentMap->file);
 
 	// Remove enemies
 	for (list<Entity*>::iterator enemy = currentMapEnemies.begin(); enemy != currentMapEnemies.end(); enemy++) {
@@ -1194,7 +1194,7 @@ void Game::draw() {
 				stringstream ss;
 				ss << "Enemies dispatched: " << Glob::globsKilled + Grob::grobsKilled + RoundKing::roundKingsKilled;
 
-				scoreTexture = renderText(ss.str(), resPath + Ui::FONTS_PATH + "vermin_vibes_1989.ttf", color, 30, Globals::renderer);
+				scoreTexture = renderText(ss.str(), resPath + ResourcePaths::FONTS + "vermin_vibes_1989.ttf", color, 30, Globals::renderer);
 			}
 
 			renderTexture(scoreTexture, Globals::renderer, 20, 50);
@@ -1390,7 +1390,7 @@ void Game::checkBossDeath() {
 }
 
 void Game::saveCheckpointActivatedState(int checkpointId) {
-	const string mapFilePath = getResourcePath() + MAPS_FOLDER_PATH + currentMap->file;
+	const string mapFilePath = getResourcePath() + ResourcePaths::MAPS + currentMap->file;
 	std::ifstream ifs(mapFilePath);
 	json mapFile = json::parse(ifs);
 	bool checkpointFound = false;

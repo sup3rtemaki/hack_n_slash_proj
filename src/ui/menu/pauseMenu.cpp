@@ -1,4 +1,5 @@
 #include "ui/menu/pauseMenu.h"
+#include "resourceConfig.h"
 
 #include "ui/menu/subMenu.h"
 #include "hero.h"
@@ -182,7 +183,7 @@ void PauseMenu::drawInventoryItems() {
 			textureYPos
 		);
 
-		// Desenha um indicador se o item está no quick access
+		// Desenha um indicador se o item estï¿½ no quick access
 		bool isInQuickAccess = std::find(
 			hero->quickAccessInventory.begin(),
 			hero->quickAccessInventory.end(),
@@ -190,7 +191,7 @@ void PauseMenu::drawInventoryItems() {
 		) != hero->quickAccessInventory.end();
 
 		if (isInQuickAccess) {
-			// Desenha um pequeno ícone ou borda colorida
+			// Desenha um pequeno ï¿½cone ou borda colorida
 			SDL_Rect indicator = { textureXPos + 30, textureYPos, 10, 10 };
 			SDL_SetRenderDrawColor(Globals::renderer, 0, 255, 0, 255);
 			SDL_RenderFillRect(Globals::renderer, &indicator);
@@ -227,7 +228,7 @@ void PauseMenu::drawSelectedItemNameAndDescription() {
 		// Criar nova textura do nome
 		itemNameTexture = renderText(
 			itemName,
-			Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+			Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
 			color,
 			FONT_SIZE,
 			Globals::renderer
@@ -260,7 +261,7 @@ void PauseMenu::drawSelectedItemNameAndDescription() {
 
 		// Criar nova textura da descricao
 		TTF_Font* font = TTF_OpenFont(
-			(Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE).c_str(),
+			(Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE).c_str(),
 			(int)(FONT_SIZE / 1.5)
 		);
 
@@ -367,7 +368,7 @@ void PauseMenu::toggleQuickAccessItem() {
 	Item* selectedItem = inventory.at(index);
 	int itemId = selectedItem->id;
 
-	// Verifica se o item já está no quick access inventory
+	// Verifica se o item jï¿½ estï¿½ no quick access inventory
 	auto it = std::find(
 		hero->quickAccessInventory.begin(),
 		hero->quickAccessInventory.end(),
@@ -375,12 +376,12 @@ void PauseMenu::toggleQuickAccessItem() {
 	);
 
 	if (it != hero->quickAccessInventory.end()) {
-		// Item já existe no quick access - remove
+		// Item jï¿½ existe no quick access - remove
 		hero->quickAccessInventory.erase(it);
 		hideSubMenu();
 	}
 	else {
-		// Item não existe - entra no modo de seleção de slot
+		// Item nï¿½o existe - entra no modo de seleï¿½ï¿½o de slot
 		enterQuickSlotSelectionMode();
 	}
 }
@@ -393,7 +394,7 @@ void PauseMenu::enterQuickSlotSelectionMode() {
 	// Guarda o ID do item a ser adicionado
 	itemToAddId = inventory.at(index)->id;
 
-	// Muda para modo de seleção
+	// Muda para modo de seleï¿½ï¿½o
 	inventoryMode = InventoryMode::SelectingQuickSlot;
 	quickAccessIndex = 0;
 
@@ -418,7 +419,7 @@ void PauseMenu::drawQuickAccessSelectionBox() {
 	SDL_Point selectionPos = calculateQuickAccessRectSelectionBoxPosition();
 	SDL_Rect quickSelectionRect = { selectionPos.x, selectionPos.y, 36, 36 };
 
-	// Desenha com uma cor diferente para indicar modo de seleção
+	// Desenha com uma cor diferente para indicar modo de seleï¿½ï¿½o
 	SDL_SetRenderDrawColor(Globals::renderer, 255, 255, 0, 255); // Amarelo
 	SDL_RenderDrawRect(Globals::renderer, &quickSelectionRect);
 
@@ -434,7 +435,7 @@ void PauseMenu::setUp() {
     currentPage = MenuPage::PAGE1;
     previousPage = MenuPage::PAGE5;
     
-    // Inicializa modo de inventário
+    // Inicializa modo de inventï¿½rio
     inventoryMode = InventoryMode::Normal;
     quickAccessIndex = 0;
     itemToAddId = -1;
@@ -571,7 +572,7 @@ void PauseMenu::drawPage1() {
 		for (const auto& text : menuItemsToShow) {
 			SDL_Texture* texture = renderText(
 				text,
-				Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+				Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
 				color,
 				FONT_SIZE,
 				Globals::renderer
@@ -637,7 +638,7 @@ SDL_Point PauseMenu::calculateRectSelectionBoxPosition() {
 void PauseMenu::onIndexUp() {
 	switch (menuState) {
 	case MenuState::Active:
-		// Verifica se está no modo de seleção de quick slot
+		// Verifica se estï¿½ no modo de seleï¿½ï¿½o de quick slot
 		if (inventoryMode == InventoryMode::SelectingQuickSlot) {
 			quickAccessIndex -= 5;
 			if (quickAccessIndex < 0) {
@@ -679,7 +680,7 @@ void PauseMenu::onIndexUp() {
 void PauseMenu::onIndexDown() {
 	switch (menuState) {
 	case MenuState::Active:
-		// Verifica se está no modo de seleção de quick slot
+		// Verifica se estï¿½ no modo de seleï¿½ï¿½o de quick slot
 		if (inventoryMode == InventoryMode::SelectingQuickSlot) {
 			int maxQuickAccessSlots = hero->quickAccessInventory.size();
 			quickAccessIndex += 5;
@@ -721,7 +722,7 @@ void PauseMenu::onIndexDown() {
 
 void PauseMenu::onIndexLeft() {
 	if (menuState == MenuState::Active) {
-		// Verifica se está no modo de seleção de quick slot
+		// Verifica se estï¿½ no modo de seleï¿½ï¿½o de quick slot
 		if (inventoryMode == InventoryMode::SelectingQuickSlot) {
 			quickAccessIndex--;
 			if (quickAccessIndex < 0) {
@@ -748,7 +749,7 @@ void PauseMenu::onIndexLeft() {
 
 void PauseMenu::onIndexRight() {
 	if (menuState == MenuState::Active) {
-		// Verifica se está no modo de seleção de quick slot
+		// Verifica se estï¿½ no modo de seleï¿½ï¿½o de quick slot
 		if (inventoryMode == InventoryMode::SelectingQuickSlot) {
 			int maxQuickAccessSlots = hero->quickAccessInventory.size();
 			quickAccessIndex++;
@@ -811,7 +812,7 @@ void PauseMenu::confirmQuickSlotSelection() {
 }
 
 void PauseMenu::cancelQuickSlotSelection() {
-	// Cancela a seleção e volta ao modo normal
+	// Cancela a seleï¿½ï¿½o e volta ao modo normal
 	inventoryMode = InventoryMode::Normal;
 	itemToAddId = -1;
 	quickAccessIndex = 0;

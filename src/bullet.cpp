@@ -1,4 +1,5 @@
 #include "bullet.h"
+#include "resourceConfig.h"
 
 const string Bullet::BULLET_ANIM_BULLET = "bullet";
 
@@ -6,7 +7,7 @@ Bullet::Bullet(int x, int y) {
 	list<DataGroupType> dataGroupTypes;
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet("Assets\\Animations\\bullet.fdset", dataGroupTypes);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "bullet.fdset", dataGroupTypes);
 	this->animSet = localAnimSet.get();
 	solid = false;
 	collideWithSolids = true;

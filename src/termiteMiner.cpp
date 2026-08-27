@@ -2,6 +2,7 @@
 
 #include "item/itemsHub.h"
 #include "soundManager.h"
+#include "resourceConfig.h"
 
 const string TermiteMiner::TERMITE_MINER_ANIM_UP = "up";
 const string TermiteMiner::TERMITE_MINER_ANIM_DOWN = "down";
@@ -47,7 +48,7 @@ TermiteMiner::TermiteMiner() {
 	dataGroupTypes.push_back(dmgType);
 
 	std::unique_ptr<AnimationSet> localAnim = std::make_unique<AnimationSet>();
-	localAnim->loadAnimationSet("Assets\\Animations\\termiteMiner.fdset", dataGroupTypes, true, 0, true);
+	localAnim->loadAnimationSet(ResourcePaths::ANIMATIONS + "termiteMiner.fdset", dataGroupTypes, true, 0, true);
 	this->animSet = localAnim.get();
 	this->localAnimSet = std::move(localAnim);
 	type = "enemy";
@@ -135,7 +136,7 @@ void TermiteMiner::die() {
 	state = TERMITE_MINER_STATE_DEAD;
 	changeAnimation(state, true);
 
-	SoundManager::soundManager.playSound("enemyDie");
+	SoundManager::soundManager.playSound(SoundIds::ENEMY_DIE);
 }
 
 void TermiteMiner::findNearestTarget() {
@@ -286,7 +287,7 @@ void TermiteMiner::updateDamages() {
 					hp -= enemy->damage;
 
 					if (hp > 0) {
-						SoundManager::soundManager.playSound("enemyHit");
+						SoundManager::soundManager.playSound(SoundIds::ENEMY_HIT);
 						invincibleTimer = 0.1;
 					}
 					//get thrown backwards

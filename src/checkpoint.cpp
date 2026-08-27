@@ -1,4 +1,5 @@
 #include "checkpoint.h"
+#include "resourceConfig.h"
 
 const string Checkpoint::CHECKPOINT_ANIM_ACTIVE = "active";
 const string Checkpoint::CHECKPOINT_ANIM_INACTIVE = "inactive";
@@ -16,7 +17,7 @@ Checkpoint::Checkpoint(int id, const string& mapFileName) {
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet("Assets\\Animations\\checkpoint.fdset", dataGroupTypes);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "checkpoint.fdset", dataGroupTypes);
 	this->animSet = localAnimSet.get();
 	this->id = id;
 	this->mapFileName = mapFileName;

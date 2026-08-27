@@ -1,4 +1,5 @@
 #include "ui/actionMessageUi.h"
+#include "resourceConfig.h"
 
 #include "globals.h"
 
@@ -29,7 +30,7 @@ void ActionMessageUi::draw() {
 
 			fontTexture = renderText(
 				message,
-				resPath + FONTS_PATH + FONT_FILE,
+				resPath + ResourcePaths::FONTS + FONT_FILE,
 				color,
 				FONT_SIZE,
 				Globals::renderer
@@ -42,7 +43,7 @@ void ActionMessageUi::draw() {
         backgroundMessageRect.w = (message.length() * FONT_SIZE),
         backgroundMessageRect.h = FONT_SIZE;
 
-        backgroundBarTexture = loadTexture(resPath + Ui::HUD_TEXTURES_PATH + MESSAGE_BAR_TEXTURE_FILE, Globals::renderer);
+		backgroundBarTexture = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + MESSAGE_BAR_TEXTURE_FILE, Globals::renderer);
 
 		// TODO: Descomentar linha abaixo quando fizer um sprite decente pro fundo do texto
         //SDL_RenderCopy(Globals::renderer, backgroundBarTexture, NULL, &backgroundMessageRect);

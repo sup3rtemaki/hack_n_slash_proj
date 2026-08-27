@@ -1,4 +1,5 @@
 #include "bloodstain.h"
+#include "resourceConfig.h"
 
 const string Bloodstain::BLOODSTAIN_ANIM_IDLE = "idle";
 const string Bloodstain::BLOODSTAIN_ANIM_DIE = "die";
@@ -25,7 +26,7 @@ Bloodstain::Bloodstain() {
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet("Assets\\Animations\\bloodstain.fdset", dataGroupTypes);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "bloodstain.fdset", dataGroupTypes);
 	this->animSet = localAnimSet.get();
 
 	type = "bloodstain";

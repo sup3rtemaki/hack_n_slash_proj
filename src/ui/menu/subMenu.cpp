@@ -1,4 +1,5 @@
 #include "ui/menu/subMenu.h"
+#include "resourceConfig.h"
 
 #include "hero.h"
 #include "item.h"
@@ -107,7 +108,7 @@ void SubMenu::drawText() {
 		for (const auto& text : menuItems) {
 			SDL_Texture* texture = renderText(
 				text,
-				Ui::RES_PATH + Ui::FONTS_PATH + FONT_FILE,
+				Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
 				color,
 				FONT_SIZE,
 				Globals::renderer

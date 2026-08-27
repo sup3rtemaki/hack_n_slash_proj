@@ -1,4 +1,5 @@
 #include "hero.h"
+#include "resourceConfig.h"
 
 #include "bloodstain.h"
 #include "checkpoint.h"
@@ -82,7 +83,7 @@ Hero::Hero() {
 		dataGroupTypes.push_back(dmgType);
 
 		localAnimSet = std::make_unique<AnimationSet>();
-		localAnimSet->loadAnimationSet("Assets\\Animations\\antHero.fdset", dataGroupTypes, true, 0, true);
+		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "antHero.fdset", dataGroupTypes, true, 0, true);
 		this->animSet = localAnimSet.get();
 	}
 
@@ -104,7 +105,7 @@ Hero::Hero() {
 		dataGroupTypes.push_back(dmgType);
 
 		localAnimSet = std::make_unique<AnimationSet>();
-		localAnimSet->loadAnimationSet("Assets\\Animations\\antHero.fdset", dataGroupTypes, true, 0, true);
+		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "antHero.fdset", dataGroupTypes, true, 0, true);
 		this->animSet = localAnimSet.get();
 	type = "hero";
 
@@ -550,7 +551,7 @@ void Hero::updateDamages() {
 
 					if (hp > 0) {
 						invincibleTimer = 0.3;
-						SoundManager::soundManager.playSound("hit");
+						SoundManager::soundManager.playSound(SoundIds::HIT);
 					}
 
 					slideAngle = Entity::angleBetweenTwoEntities((*entity), this);
@@ -749,7 +750,7 @@ void Hero::updateAttackSequence() {
 	}
 
 	changeAnimation(attackState, true);
-	SoundManager::soundManager.playSound("swing");
+	SoundManager::soundManager.playSound(SoundIds::SWING);
 	attackBuffer.pop_front();
 	attackTimer = ATTACK_TIME;
 }

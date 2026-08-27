@@ -1,6 +1,7 @@
 #include "npcs\bosses\smallBrownSpider.h"
 
 #include "soundManager.h"
+#include "resourceConfig.h"
 
 // animations
 const string SmallBrownSpider::SMALL_BROWN_SPIDER_ANIM_UP = "up";
@@ -70,7 +71,7 @@ SmallBrownSpider::SmallBrownSpider() {
 	dataGroupTypes.push_back(dmgType);
 
 	std::unique_ptr<AnimationSet> localAnim = std::make_unique<AnimationSet>();
-	localAnim->loadAnimationSet("Assets\\Animations\\spider_boss.fdset", dataGroupTypes);
+	localAnim->loadAnimationSet(ResourcePaths::ANIMATIONS + "spider_boss.fdset", dataGroupTypes);
 	this->animSet = localAnim.get();
 	this->localAnimSet = std::move(localAnim);
 
@@ -401,7 +402,7 @@ void SmallBrownSpider::updateDamages() {
 					hp -= enemy->damage;
 
 					if (hp > 0) {
-						SoundManager::soundManager.playSound("enemyHit");
+						SoundManager::soundManager.playSound(SoundIds::ENEMY_HIT);
 						invincibleTimer = 0.1;
 					}
 				}

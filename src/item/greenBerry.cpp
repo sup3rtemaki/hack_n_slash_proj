@@ -1,4 +1,5 @@
 #include "item/greenBerry.h"
+#include "resourceConfig.h"
 
 const float HEAL_TIME = 1.0f;
 const float HEAL_AMOUNT = 5.0f;
@@ -13,7 +14,7 @@ GreenBerry::GreenBerry(bool isOnGround, int quant) {
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet("Assets\\Animations\\groundConsumableItem.fdset", dataGroupTypes);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "groundConsumableItem.fdset", dataGroupTypes);
 	this->animSet = localAnimSet.get();
 	id = GREEN_BERRY_ID;
 	quantity = quant;
