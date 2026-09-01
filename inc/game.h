@@ -22,6 +22,7 @@
 #include "tiledMapLoader.h"
 
 #include "helpers/saveHandler.h"
+#include "helpers/gameSaveManager.h"
 
 #include "ui/actionMessageUi.h"
 #include "ui/hpBar.h"
@@ -118,6 +119,7 @@ public:
 	int mapQty;
 
 	SaveHandler saveHandler;
+	GameSaveManager gameSaveManager;
 	TiledMapLoader tiledMapLoader;
 
 	QuickItemUi* quickItemUi;
@@ -150,6 +152,7 @@ private:
 	void runMainMenu();
 	void runMainGame();
 	void runPausedGameMenu();
+	void renderFrame();
 	void updateEntities();
 	void drawEntities();
 	void drawMap();

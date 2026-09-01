@@ -178,6 +178,7 @@
     <ClCompile Include="src\globals.cpp" />
     <ClCompile Include="src\grob.cpp" />
     <ClCompile Include="src\groupBuilder.cpp" />
+    <ClCompile Include="src\helpers\gameSaveManager.cpp" />
     <ClCompile Include="src\helpers\saveHandler.cpp" />
     <ClCompile Include="src\hero.cpp" />
     <ClCompile Include="src\item.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="inc\groupNumber.h" />
     <ClInclude Include="inc\groupPosition.h" />
     <ClInclude Include="inc\groupString.h" />
+    <ClInclude Include="inc\helpers\gameSaveManager.h" />
     <ClInclude Include="inc\helpers\saveHandler.h" />
     <ClInclude Include="inc\hero.h" />
     <ClInclude Include="inc\inputCommand.h" />

@@ -402,7 +402,7 @@ void SmallBrownSpider::updateDamages() {
 					hp -= enemy->damage;
 
 					if (hp > 0) {
-						SoundManager::soundManager.playSound(SoundIds::ENEMY_HIT);
+								soundManager->playSound(SoundIds::ENEMY_HIT);
 						invincibleTimer = 0.1;
 					}
 				}

@@ -1,6 +1,7 @@
 #include "grob.h"
 #include "item/itemsHub.h"
 #include "resourceConfig.h"
+#include "soundManager.h"
 
 const string Grob::GROB_ANIM_UP = "up";
 const string Grob::GROB_ANIM_DOWN = "down";
@@ -307,7 +308,7 @@ void Grob::updateDamages() {
 					hp -= enemy->damage;
 
 					if (hp > 0) {
-						SoundManager::soundManager.playSound(SoundIds::ENEMY_HIT);
+								soundManager->playSound(SoundIds::ENEMY_HIT);
 						invincibleTimer = 0.1;
 					}
 					//get thrown backwards

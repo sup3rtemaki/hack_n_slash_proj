@@ -1,4 +1,5 @@
 #include "entity.h"
+#include "soundManager.h"
 
 const int Entity::DIR_UP = 0, Entity::DIR_DOWN = 1, Entity::DIR_LEFT = 2, Entity::DIR_RIGHT = 3, Entity::DIR_NONE = -1;
 
@@ -355,6 +356,7 @@ void Entity::addEntity(Entity* entity) {
 	if (entity == nullptr) {
 		return;
 	}
+	entity->setSoundManager(&SoundManager::soundManager);
 	Entity::entities.push_back(entity);
 	if (Entity::activeWorld != nullptr && Entity::activeWorld != &Entity::entities) {
 		Entity::activeWorld->push_back(entity);

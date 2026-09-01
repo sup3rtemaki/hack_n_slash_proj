@@ -287,7 +287,7 @@ void TermiteMiner::updateDamages() {
 					hp -= enemy->damage;
 
 					if (hp > 0) {
-						SoundManager::soundManager.playSound(SoundIds::ENEMY_HIT);
+								soundManager->playSound(SoundIds::ENEMY_DIE);
 						invincibleTimer = 0.1;
 					}
 					//get thrown backwards

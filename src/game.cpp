@@ -1,5 +1,6 @@
 #include "game.h"
 #include "timeController.h"
+#include "helpers/gameSaveManager.h"
 
 #include "npcs/door.h"
 
@@ -28,7 +29,7 @@ std::map<std::tuple<int, int>, tson::Tile*> tileData;
 const int WORLD_WIDTH = 1024;
 const int WORLD_HEIGHT = 1024;
 
-Game::Game() {
+Game::Game() : gameSaveManager(saveHandler) {
 	//TODO: Criar m�todo initialize ou algo do tipo pra encapsular tudo isso
 	resPath = getResourcePath();
 	entities.clear();
@@ -68,21 +69,22 @@ Game::Game() {
 
 	// AnimationSets: entities initialize their own sets when constructed.
 
-	saveHandler.load();
+	gameSaveManager.loadGame();
 	currentMap = new Map();
-	currentMap->file = saveHandler.getCurrentMapFile();
+	currentMap->file = gameSaveManager.getCurrentMapFile();
 
 	loadTiledMap(resPath + ResourcePaths::MAPS + currentMap->file);
 
 	// build hero entity
 	hero = new Hero();
+	hero->setSoundManager(&SoundManager::soundManager);
 	hero->invincibleTimer = 0;
-	hero->hp = saveHandler.getHeroHp();
-	hero->x = hero->lastCheckpointPos.x = saveHandler.getHeroX();
-	hero->y = hero->lastCheckpointPos.y = saveHandler.getHeroY();
-	hero->essence = saveHandler.getEssence();
+	hero->hp = gameSaveManager.getHeroHp();
+	hero->x = hero->lastCheckpointPos.x = gameSaveManager.getHeroX();
+	hero->y = hero->lastCheckpointPos.y = gameSaveManager.getHeroY();
+	hero->essence = gameSaveManager.getEssence();
 	hero->inventory.clear();
-	hero->inventory = loadInventoryItems(saveHandler.getItems());
+	hero->inventory = loadInventoryItems(gameSaveManager.getItems());
 	//for (auto i : hero->inventory) {
 	//	hero->addItemToQuickAccess(i.first);
 	//	hero->quickAccessInventoryIndex++;
@@ -91,12 +93,13 @@ Game::Game() {
 	hero->lastCheckpointMapFile = currentMap->file;
 
 	// open doors
-	openDoorsIds = saveHandler.getOpenDoorsIds();
-	defeatedBossesIds = saveHandler.getDefeatedBossesIds();
+	openDoorsIds = gameSaveManager.getOpenDoorsIds();
+	defeatedBossesIds = gameSaveManager.getDefeatedBossesIds();
 
 	// bloodstain
 	bloodstain = new Bloodstain();
-	BloodstainInfo bloodstainInfo = saveHandler.getBloodstainInfo();
+	bloodstain->setSoundManager(&SoundManager::soundManager);
+	BloodstainInfo bloodstainInfo = gameSaveManager.getBloodstainInfo();
 	bloodstain->setLocation(
 		bloodstainInfo.x,
 		bloodstainInfo.y,
@@ -555,14 +558,7 @@ void Game::runMainGame() {
 		saveGame(true);
 	}
 
-	updateMaps();
-
-	// draw all entites
-	draw();
-
-	// update camera position
-	camController.deltaTime = gameTime.dT;
-	camController.update(Globals::camera, WORLD_WIDTH, WORLD_HEIGHT);
+	renderFrame();
 
 	// framerate
 	// cout << gameTime.dT << endl;
@@ -692,7 +688,11 @@ void Game::runPausedGameMenu() {
 	// interaction with the axis works. consider refactoring in the future
 	//heroJoystickInput.checkAxis();
 
-	// update map state before drawing the paused frame
+	renderFrame();
+}
+
+void Game::renderFrame() {
+	// update map state before drawing the frame
 	updateMaps();
 
 	// draw all entites
@@ -992,10 +992,10 @@ void Game::handleMapChange(bool isHeroRespawn) {
 		saveGame(true);
 		hero->revive();
 		loadGame();
-		currentMap->file = saveHandler.getCurrentMapFile();
-		hero->hp = saveHandler.getHeroHp();
-		hero->x = saveHandler.getHeroX();
-		hero->y = saveHandler.getHeroY();
+		currentMap->file = gameSaveManager.getCurrentMapFile();
+		hero->hp = gameSaveManager.getHeroHp();
+		hero->x = gameSaveManager.getHeroX();
+		hero->y = gameSaveManager.getHeroY();
 	}
 	else {
 		currentMap->file = currentMap->nextMapWaypoint.nextMapFile;
@@ -1086,6 +1086,7 @@ void Game::buildDoors() {
 				64,
 				64,
 				-32);
+			door->setSoundManager(&SoundManager::soundManager);
 			door->isLocked = std::any_cast<bool>(isLockedProp->getValue()),
 			entities.push_back(door);
 			syncEntityRegistry();
@@ -1108,6 +1109,7 @@ void Game::buildWalls() {
 		for (auto& [pos, tileObject] : layer.getTileObjects()) {
 			for (auto it : tileObject.getTile()->getObjectgroup().getObjectsByName("Wall")) {
 				Wall* newWall = new Wall(it.getSize().x, it.getSize().y, 0);
+				newWall->setSoundManager(&SoundManager::soundManager);
 				newWall->x = tileObject.getPosition().x + 16;
 				newWall->y = tileObject.getPosition().y;
 				walls.push_back(newWall);
@@ -1247,6 +1249,7 @@ void Game::spawnEnemies() {
 			if (deadEnemiesIds.empty() ||
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
 					TermiteMiner* enemy = new TermiteMiner();
+					enemy->setSoundManager(&SoundManager::soundManager);
 					enemy->x = enemyPosX;
 					enemy->y = enemyPosY;
 					enemy->invincibleTimer = 0.1;
@@ -1260,6 +1263,7 @@ void Game::spawnEnemies() {
 			if (deadEnemiesIds.empty() ||
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
 					TermiteMiner* enemy = new TermiteMiner();
+					enemy->setSoundManager(&SoundManager::soundManager);
 					enemy->x = enemyPosX;
 					enemy->y = enemyPosY;
 					enemy->invincibleTimer = 0.1;
@@ -1299,6 +1303,7 @@ void Game::spawnBoss() {
 		switch (bossId) {
 			case 990001: // Small Brown Spider
 				currentBoss = new SmallBrownSpider();
+				currentBoss->setSoundManager(&SoundManager::soundManager);
 				currentBoss->x = bossPosX;
 				currentBoss->y = bossPosY;
 				currentBoss->id = bossId;
@@ -1359,6 +1364,7 @@ void Game::spawnCheckpoints() {
 		int cpPosY = object.getPosition().y;
 
 		Checkpoint* checkpoint = new Checkpoint(cpId, currentMap->file);
+		checkpoint->setSoundManager(&SoundManager::soundManager);
 		checkpoint->x = cpPosX;
 		checkpoint->y = cpPosY;
 		if (isActive) checkpoint->activate();
@@ -1479,94 +1485,16 @@ void Game::removeAllEnemiesInMap() {
 	deadEnemiesIds.clear();
 }
 
-map<int, std::unique_ptr<Item>> Game::loadInventoryItems(
-	std::vector<std::pair<int, int>> items) {
-
-	map<int, std::unique_ptr<Item>> loadedItems;
-
-	if (!items.empty()) {
-		for (auto item : items) {
-			std::unique_ptr<Item> loadItem;
-
-			switch (item.first) {
-			case Item::HONEYDEW_POTION_ID:
-				loadItem = std::make_unique<HoneydewPotion>(
-					false, item.second);
-				loadItem->active = false;
-				break;
-			case Item::GREEN_BERRY_ID:
-				loadItem = std::make_unique<GreenBerry>(
-					false, item.second);
-				loadItem->active = false;
-				break;
-			case Item::STONE_ID:
-				loadItem = std::make_unique<Stone>(
-					false, item.second);
-				loadItem->active = false;
-				break;
-			case Item::COMMON_KEY_ID:
-				loadItem = std::make_unique<Key>(
-					false, item.second);
-				loadItem->active = false;
-				break;
-			default:
-				cout << "Item " << item.first << " nao mapeado\n";
-				continue;
-			}
-
-			if (loadItem != nullptr) {
-				int itemId = loadItem->id;
-				loadedItems.emplace(itemId, std::move(loadItem));
-			}
-		}
-	}
-
-	return loadedItems;
+map<int, std::unique_ptr<Item>> Game::loadInventoryItems(std::vector<std::pair<int, int>> items) {
+	return gameSaveManager.loadInventoryItems(items);
 }
 
 void Game::saveGame(bool isCheckpointSave) {
-	cout << "Saving..." << endl;
-
-	float hp;
-	int x, y;
-	string mapFile;
-
-	if (isCheckpointSave) {
-		hp = hero->hpMax;
-		x = hero->lastCheckpointPos.x;
-		y = hero->lastCheckpointPos.y;
-		mapFile = hero->lastCheckpointMapFile;
-	}
-	else {
-		hp = hero->hp;
-		x = hero->x;
-		y = hero->y;
-		mapFile = currentMap->file;
-	}
-
-	std::vector<std::pair<int, int>> inventory;
-	for (auto& [id, item] : hero->inventory) {
-		inventory.push_back(std::make_pair(id, item->quantity));
-	}
-
-	saveHandler.save(
-		hp,
-		x,
-		y,
-		hero->essence,
-		mapFile,
-		inventory,
-		openDoorsIds,
-		defeatedBossesIds,
-		bloodstain->x,
-		bloodstain->y,
-		bloodstain->essence,
-		bloodstain->mapName);
+	gameSaveManager.saveGame(hero, currentMap, bloodstain, openDoorsIds, defeatedBossesIds, isCheckpointSave);
 }
 
 void Game::loadGame() {
-	//TODO: Trazer rotina de carregamento
-	if (!saveHandler.load()) {
+	if (!gameSaveManager.loadGame()) {
 		cerr << "Erro ao carregar savefile" << endl;
 		terminate();
 	}

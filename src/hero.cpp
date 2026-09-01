@@ -1,5 +1,6 @@
 #include "hero.h"
 #include "resourceConfig.h"
+#include "soundManager.h"
 
 #include "bloodstain.h"
 #include "checkpoint.h"
@@ -272,7 +273,7 @@ void Hero::dash() {
 
 		changeAnimation((int)HERO_STATE::DASH, true);
 
-		SoundManager::soundManager.playSound("dash");
+		soundManager->playSound("dash");
 	}
 }
 
@@ -291,7 +292,7 @@ void Hero::roll() {
 
 		changeAnimation((int)HERO_STATE::ROLL, true);
 
-		SoundManager::soundManager.playSound("dash");
+		soundManager->playSound("dash");
 	}
 }
 
@@ -551,7 +552,7 @@ void Hero::updateDamages() {
 
 					if (hp > 0) {
 						invincibleTimer = 0.3;
-						SoundManager::soundManager.playSound(SoundIds::HIT);
+						soundManager->playSound(SoundIds::HIT);
 					}
 
 					slideAngle = Entity::angleBetweenTwoEntities((*entity), this);
@@ -750,7 +751,7 @@ void Hero::updateAttackSequence() {
 	}
 
 	changeAnimation(attackState, true);
-	SoundManager::soundManager.playSound(SoundIds::SWING);
+		soundManager->playSound(SoundIds::SWING);
 	attackBuffer.pop_front();
 	attackTimer = ATTACK_TIME;
 }

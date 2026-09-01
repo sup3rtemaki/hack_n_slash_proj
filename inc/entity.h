@@ -7,6 +7,8 @@
 #include "animationSet.h"
 #include "renderContext.h"
 
+class SoundManager; // forward declaration
+
 //Abstract class
 class Entity {
 public:
@@ -38,6 +40,7 @@ public:
 	Frame* currentFrame;
 	float frameTimer;
 	float deltaTime = 0;
+	SoundManager* soundManager = nullptr;
 
 	// virtual functions
 	virtual ~Entity() = default;
@@ -72,6 +75,7 @@ public:
 	static bool EntityCompare(const Entity* const& a, const Entity* const& b); // compare two entities in a list
 	static void removeInactiveEntitiesFromList(list<Entity*>* entityList, bool deleteEntities);
 	static void removeAllFromList(list<Entity*>* entityList, bool deleteEntities);
+	void setSoundManager(SoundManager* sm) { soundManager = sm; }
 };
 
 #endif

@@ -1,6 +1,7 @@
 #include "glob.h"
 #include "item/itemsHub.h"
 #include "resourceConfig.h"
+#include "soundManager.h"
 
 const string Glob::GLOB_ANIM_UP = "up";
 const string Glob::GLOB_ANIM_DOWN = "down";
@@ -310,7 +311,7 @@ void Glob::updateDamages() {
 					hp -= enemy->damage;
 
 					if (hp > 0) {
-						SoundManager::soundManager.playSound(SoundIds::ENEMY_HIT);
+								soundManager->playSound(SoundIds::ENEMY_HIT);
 						invincibleTimer = 0.1;
 					}
 					//get thrown backwards
