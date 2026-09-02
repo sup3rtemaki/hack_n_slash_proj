@@ -24,6 +24,8 @@
 #include "helpers/saveHandler.h"
 #include "helpers/gameSaveManager.h"
 
+#include "systems/interactionSystem.h"
+
 #include "ui/actionMessageUi.h"
 #include "ui/hpBar.h"
 #include "ui/quickItemUi.h"
@@ -121,6 +123,7 @@ public:
 	SaveHandler saveHandler;
 	GameSaveManager gameSaveManager;
 	TiledMapLoader tiledMapLoader;
+	InteractionSystem* interactionSystem;
 
 	QuickItemUi* quickItemUi;
 	ItemPickMessageUi* itemPickMessageUi;
@@ -147,7 +150,6 @@ private:
 	class Bloodstain* bloodstain;
 
 	bool isBossMap();
-	bool isLivingEntityDead(Entity* entity);
 
 	void runMainMenu();
 	void runMainGame();
@@ -159,11 +161,6 @@ private:
 	void updateMaps();
 	void loadTiledMap(const string& mapFile);
 	void renderTiles();
-	void checkAndHandleEnemyLoot(Entity* entity);
-	void checkAndHandleNearItem(Entity* entity);
-	void checkAndHandleNearDoor(Entity* entity);
-	void checkAndHandleNearCheckpoint(Entity* entity);
-	void checkAndHandleNearBloodstain(Entity* entity);
 	void handleMapChange(bool isHeroRespawn = false);
 	void buildDoors();
 	void buildWalls();

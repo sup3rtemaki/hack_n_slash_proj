@@ -1,6 +1,7 @@
 #include "game.h"
 #include "timeController.h"
 #include "helpers/gameSaveManager.h"
+#include "systems/interactionSystem.h"
 
 #include "npcs/door.h"
 
@@ -174,6 +175,15 @@ Game::Game() : gameSaveManager(saveHandler) {
 	mainMenu = new MainMenu();
 	pauseMenu = new PauseMenu(hero);
 
+	// Initialize interaction system
+	interactionSystem = new InteractionSystem(hero, actionMessageUi, openDoorsIds, mustRemoveAllEnemies, mustSpawnEnemies);
+	interactionSystem->setSpawnItemCallback([this](int itemId, int quant, int xPos, int yPos) {
+		this->spawnItem(itemId, quant, xPos, yPos);
+	});
+	interactionSystem->setSaveCheckpointCallback([this](int cpId) {
+		this->saveCheckpointActivatedState(cpId);
+	});
+
 	gui.push_back(quickItemUi);
 	gui.push_back(itemPickMessageUi);
 	gui.push_back(actionMessageUi);
@@ -223,6 +233,12 @@ Game::~Game() {
 		delete ui;
 	}
 	gui.clear();
+
+	// Delete systems
+	if (interactionSystem != nullptr) {
+		delete interactionSystem;
+		interactionSystem = nullptr;
+	}
 
 	// PASSO 2: Limpar todas as listas de entities
 	Entity::removeAllFromList(&walls, false);
@@ -358,15 +374,6 @@ bool Game::isBossMap() {
 	}
 
 	return true;
-}
-
-bool Game::isLivingEntityDead(Entity* entity) {
-	if (entity->active &&
-		dynamic_cast<LivingEntity*>(entity) != nullptr &&
-		((LivingEntity*)entity)->hp <= 0) {
-		return true;
-	}
-	return false;
 }
 
 void Game::runMainMenu() {
@@ -569,11 +576,7 @@ void Game::updateEntities() {
 		(*entity)->deltaTime = gameTime.dT;
 		(*entity)->update();
 
-		checkAndHandleEnemyLoot(*entity);
-		checkAndHandleNearItem(*entity);
-		checkAndHandleNearDoor(*entity);
-		checkAndHandleNearBloodstain(*entity);
-		checkAndHandleNearCheckpoint(*entity);
+		interactionSystem->processEntity(*entity);
 	}
 }
 
@@ -881,111 +884,6 @@ void Game::renderTiles() {
 	}
 }
 
-void Game::checkAndHandleEnemyLoot(Entity* entity) {
-	if (entity->type != "enemy") return;
-
-	LootDropSource* lootSource = dynamic_cast<LootDropSource*>(entity);
-	if (lootSource == nullptr) return;
-
-	PendingItemDrop itemDrop;
-	if (lootSource->takePendingItemDrop(itemDrop)) {
-		spawnItem(itemDrop.itemId, itemDrop.quantity, itemDrop.x, itemDrop.y);
-	}
-
-	if (isLivingEntityDead(entity) && !lootSource->hasDroppedEssence()) {
-		hero->addEssence(lootSource->getEssence());
-		lootSource->markEssenceDropped();
-	}
-}
-
-void Game::checkAndHandleNearItem(Entity* entity) {
-	if (dynamic_cast<Item*>(entity) != nullptr) {
-		Item* i = (Item*)entity;
-		if (i->isOnGround &&
-			(Entity::distanceBetweenTwoPoints(hero->x, hero->y + (hero->collisionBoxYOffset / 2), i->x, i->y) < 40.0)) {
-			if (!i->isNearHero) {
-				i->isNearHero = true;
-				hero->nearItems.push_back(i);
-			}
-		}
-		else {
-			i->isNearHero = false;
-			hero->nearItems.remove(i);
-		}
-	}
-}
-
-void Game::checkAndHandleNearDoor(Entity* entity) {
-	if (dynamic_cast<Door*>(entity) != nullptr) {
-		Door* d = (Door*)entity;
-		if (d->isClosed &&
-			(Entity::distanceBetweenTwoPoints(
-				hero->x, hero->y + (hero->collisionBoxYOffset / 2), d->x + 32, d->y) < 60.0)) {
-			hero->nearestDoor = d;
-			if (!actionMessageUi->isUiLocked()) {
-				actionMessageUi->setMessage("Open door");
-			}
-		}
-		else {
-			hero->nearestDoor = nullptr;
-			actionMessageUi->unlock();
-
-			if (!d->isClosed) {
-				if (std::find(openDoorsIds.begin(), openDoorsIds.end(), d->id) == openDoorsIds.end()) {
-					openDoorsIds.push_back(d->id);
-				}
-			}
-		}
-	}
-}
-
-void Game::checkAndHandleNearCheckpoint(Entity* entity) {
-	if (dynamic_cast<Checkpoint*>(entity) != nullptr) {
-		Checkpoint* cp = (Checkpoint*)entity;
-		if (Entity::distanceBetweenTwoPoints(
-			hero->x, hero->y + (hero->collisionBoxYOffset / 2.f), cp->x + 32.f, cp->y) < 60.0) {
-			hero->nearestCheckpoint = cp;
-
-			cp->isActivated ?
-				actionMessageUi->unlock() :
-				actionMessageUi->setMessage("Activate checkpoint");
-		}
-		else {
-			hero->nearestCheckpoint = nullptr;
-			actionMessageUi->unlock();
-		}
-
-		if (hero->isCheckpointActivatedFlag) {
-			// saves checkpoint activated status
-			hero->isCheckpointActivatedFlag = false;
-			saveCheckpointActivatedState(cp->id);
-			actionMessageUi->setMessage("Checkpoint active!");
-			actionMessageUi->setTimer(3.f);
-		}
-
-		if (hero->state == (int)HERO_STATE::RESTING && hero->isRested) {
-			hero->isRested = false;
-			mustRemoveAllEnemies = true;
-			mustSpawnEnemies = true;
-		}
-	}
-}
-
-void Game::checkAndHandleNearBloodstain(Entity* entity) {
-	if (dynamic_cast<Bloodstain*>(entity) != nullptr) {
-		Bloodstain* bloodstain = (Bloodstain*)entity;
-		if (bloodstain->isLive) {
-			if (Entity::distanceBetweenTwoPoints(
-				hero->x, hero->y + (hero->collisionBoxYOffset / 2.f), bloodstain->x + 32.f, bloodstain->y) < 60.0) {
-				hero->nearestBloodstain = bloodstain;
-				actionMessageUi->setMessage("Recover lost essence");
-			}
-			else {
-				hero->nearestBloodstain = nullptr;
-			}
-		}
-	}
-}
 
 void Game::handleMapChange(bool isHeroRespawn) {
 	if (isHeroRespawn) {
