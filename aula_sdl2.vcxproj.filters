@@ -120,6 +120,9 @@
     <ClCompile Include="src\systems\interactionSystem.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="src\systems\mapPopulationSystem.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
     <ClCompile Include="src\ui\itemPickMessageUi.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
@@ -312,6 +315,9 @@
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="inc\systems\interactionSystem.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\systems\mapPopulationSystem.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="inc\item\greenBerry.h">

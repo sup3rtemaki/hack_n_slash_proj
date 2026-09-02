@@ -25,6 +25,7 @@
 #include "helpers/gameSaveManager.h"
 
 #include "systems/interactionSystem.h"
+#include "systems/mapPopulationSystem.h"
 
 #include "ui/actionMessageUi.h"
 #include "ui/hpBar.h"
@@ -88,7 +89,7 @@ public:
 	KeyboardInput heroKeyboardInput;
 	JoystickInput heroJoystickInput;
 
-	LivingEntity* currentBoss;
+	LivingEntity* currentBoss = nullptr;
 
 	list<Entity*> currentMapEnemies;
 	list<Entity*> entities;
@@ -124,6 +125,7 @@ public:
 	GameSaveManager gameSaveManager;
 	TiledMapLoader tiledMapLoader;
 	InteractionSystem* interactionSystem;
+	MapPopulationSystem* mapPopulationSystem;
 
 	QuickItemUi* quickItemUi;
 	ItemPickMessageUi* itemPickMessageUi;
@@ -162,14 +164,8 @@ private:
 	void loadTiledMap(const string& mapFile);
 	void renderTiles();
 	void handleMapChange(bool isHeroRespawn = false);
-	void buildDoors();
-	void buildWalls();
-	void buildWaypoints();
-	void spawnEnemies();
-	void spawnBoss();
-	void spawnItem(int itemId, int quant, int xPos, int yPos);
-	void spawnCheckpoints();
 	void checkBossDeath();
+	void spawnItem(int itemId, int quant, int xPos, int yPos);
 	void saveCheckpointActivatedState(int checkpointId);
 	// AnimationSets are initialized by entities themselves now.
 	void spawnItemsFromCurrentMap();

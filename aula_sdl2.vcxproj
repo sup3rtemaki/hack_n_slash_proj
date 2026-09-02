@@ -181,6 +181,7 @@
     <ClCompile Include="src\helpers\gameSaveManager.cpp" />
     <ClCompile Include="src\helpers\saveHandler.cpp" />
     <ClCompile Include="src\systems\interactionSystem.cpp" />
+    <ClCompile Include="src\systems\mapPopulationSystem.cpp" />
     <ClCompile Include="src\hero.cpp" />
     <ClCompile Include="src\item.cpp" />
     <ClCompile Include="src\item\greenBerry.cpp" />
@@ -246,6 +247,7 @@
     <ClInclude Include="inc\helpers\gameSaveManager.h" />
     <ClInclude Include="inc\helpers\saveHandler.h" />
     <ClInclude Include="inc\systems\interactionSystem.h" />
+    <ClInclude Include="inc\systems\mapPopulationSystem.h" />
     <ClInclude Include="inc\hero.h" />
     <ClInclude Include="inc\inputCommand.h" />
     <ClInclude Include="inc\item.h" />
