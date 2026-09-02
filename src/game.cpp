@@ -38,9 +38,11 @@ Game::Game() : gameSaveManager(saveHandler) {
 
 	mustSpawnEnemies = true;
 
-	fadeImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "blackBG.png", Globals::renderer);
-	splashImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "cyborgtitle.png", Globals::renderer);
-	overlayImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "overlay.png", Globals::renderer);
+	SDL_Renderer* renderer = Globals::renderer;  // Cache renderer reference
+
+	fadeImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "blackBG.png", renderer);
+	splashImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "cyborgtitle.png", renderer);
+	overlayImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "overlay.png", renderer);
 
 	splashShowing = false;
 	overlayTimer = 2;
@@ -50,6 +52,11 @@ Game::Game() : gameSaveManager(saveHandler) {
 	Globals::camera.y = 0;
 	Globals::camera.w = Globals::ScreenWidth;
 	Globals::camera.h = Globals::ScreenHeight;
+
+	// Initialize renderContext
+	renderContext.renderer = Globals::renderer;
+	renderContext.camera = Globals::camera;
+	renderContext.debugging = Globals::debugging;
 
 	//loadup sounds
 	SoundManager::soundManager.loadSound(SoundIds::HIT, resPath + ResourcePaths::SOUNDS + "Randomize2.wav");
@@ -174,7 +181,7 @@ Game::Game() : gameSaveManager(saveHandler) {
 	camController.target = hero;
 
 	gameCanvas = SDL_CreateTexture(
-		Globals::renderer,
+		renderer,
 		SDL_PIXELFORMAT_RGBA8888,
 		SDL_TEXTUREACCESS_TARGET,
 		Globals::ScreenWidth,
@@ -426,10 +433,10 @@ void Game::runMainMenu() {
 		}
 	}
 
-	SDL_SetRenderDrawColor(Globals::renderer, 145, 133, 129, SDL_ALPHA_OPAQUE);
-	SDL_RenderClear(Globals::renderer);
+	SDL_SetRenderDrawColor(renderContext.renderer, 145, 133, 129, SDL_ALPHA_OPAQUE);
+	SDL_RenderClear(renderContext.renderer);
 	mainMenu->draw();
-	SDL_RenderPresent(Globals::renderer);
+	SDL_RenderPresent(renderContext.renderer);
 }
 
 void Game::runMainGame() {
@@ -613,7 +620,7 @@ void Game::drawEntities() {
 
 void Game::drawMap() {
 	renderTiles();
-	renderTexture(fadeImage, Globals::renderer, (-200) - Globals::camera.x, (-200) - Globals::camera.y);
+	renderTexture(fadeImage, renderContext.renderer, (-200) - renderContext.camera.x, (-200) - renderContext.camera.y);
 }
 
 void Game::runPausedGameMenu() {
@@ -726,6 +733,9 @@ void Game::renderFrame() {
 	// update camera position
 	camController.deltaTime = gameTime.dT;
 	camController.update(Globals::camera, WORLD_WIDTH, WORLD_HEIGHT);
+	
+	// Sync camera to renderContext
+	renderContext.camera = Globals::camera;
 }
 
 void Game::updateMaps() {
@@ -863,7 +873,7 @@ void Game::renderTiles() {
 							tileset->getImage().filename().string();
 
 						SDL_Texture* newTexture = loadTexture(tilesetTexturePath,
-							Globals::renderer);
+							renderContext.renderer);
 
 						// Criar unique_ptr e mover para o cache
 						TexturePtr texPtr(newTexture, TextureDeleter{});
@@ -885,12 +895,12 @@ void Game::renderTiles() {
 					tileRect.h = tileObject.getDrawingRect().height;
 
 					SDL_Rect renderTile;
-					renderTile.x = (int)((x * tileRect.w) - Globals::camera.x);
-					renderTile.y = (int)((y * tileRect.h) - Globals::camera.y);
+					renderTile.x = (int)((x * tileRect.w) - renderContext.camera.x);
+					renderTile.y = (int)((y * tileRect.h) - renderContext.camera.y);
 					renderTile.w = tileRect.w;
 					renderTile.h = tileRect.h ;
 
-					SDL_RenderCopy(Globals::renderer, texture, &tileRect, &renderTile);
+					SDL_RenderCopy(renderContext.renderer, texture, &tileRect, &renderTile);
 				}
 
 				y++;
@@ -972,23 +982,21 @@ void Game::handleMapChange(bool isHeroRespawn) {
 
 
 void Game::draw() {
-	renderContext.renderer = Globals::renderer;
-	renderContext.camera = Globals::camera;
-	renderContext.debugging = Globals::debugging;
-
+	// renderContext is already synced from renderFrame()
+	
 	// 1. Tudo o que for desenhado agora vai para o gameCanvas
-	SDL_SetRenderTarget(Globals::renderer, gameCanvas);
+	SDL_SetRenderTarget(renderContext.renderer, gameCanvas);
 
 	// 2. Limpa o canvas virtual
-	SDL_SetRenderDrawColor(Globals::renderer, 20, 20, 20, 255); // Cor de fundo
-	SDL_RenderClear(Globals::renderer);
+	SDL_SetRenderDrawColor(renderContext.renderer, 20, 20, 20, 255); // Cor de fundo
+	SDL_RenderClear(renderContext.renderer);
 
 	// clear screen
-	//SDL_SetRenderDrawColor(Globals::renderer, 145, 133, 129, SDL_ALPHA_OPAQUE);
-	//SDL_RenderClear(Globals::renderer);
+	//SDL_SetRenderDrawColor(renderContext.renderer, 145, 133, 129, SDL_ALPHA_OPAQUE);
+	//SDL_RenderClear(renderContext.renderer);
 
 	if (splashShowing) {
-		renderTexture(splashImage, Globals::renderer, 0, 0);
+		renderTexture(splashImage, renderContext.renderer, 0, 0);
 	}
 	else {
 		drawMap();
@@ -1003,7 +1011,7 @@ void Game::draw() {
 		}
 
 		if (overlayTimer <= 0 && hero->hp < 1) {
-			renderTexture(overlayImage, Globals::renderer, 0, 0);
+			renderTexture(overlayImage, renderContext.renderer, 0, 0);
 
 			if (scoreTexture == NULL) {
 				//generate score text
@@ -1012,29 +1020,29 @@ void Game::draw() {
 				stringstream ss;
 				ss << "Enemies dispatched: " << Glob::globsKilled + Grob::grobsKilled + RoundKing::roundKingsKilled;
 
-				scoreTexture = renderText(ss.str(), resPath + ResourcePaths::FONTS + "vermin_vibes_1989.ttf", color, 30, Globals::renderer);
+				scoreTexture = renderText(ss.str(), resPath + ResourcePaths::FONTS + "vermin_vibes_1989.ttf", color, 30, renderContext.renderer);
 			}
 
-			renderTexture(scoreTexture, Globals::renderer, 20, 50);
+			renderTexture(scoreTexture, renderContext.renderer, 20, 50);
 		}
 	}
 
 	// 4. Volta o alvo para a tela real (janela)
-	SDL_SetRenderTarget(Globals::renderer, NULL);
+	SDL_SetRenderTarget(renderContext.renderer, NULL);
 
 	// 5. Limpa a tela real (opcional, mas boa pr�tica)
-	SDL_RenderClear(Globals::renderer);
+	SDL_RenderClear(renderContext.renderer);
 
 	// 6. Desenha o canvas inteiro na tela de uma vez s�
 	// Como o LogicalSize est� ativo no main.cpp, o SDL vai esticar
 	// o canvas perfeitamente para preencher a janela.
-	SDL_RenderCopy(Globals::renderer, gameCanvas, NULL, NULL);
-	SDL_SetRenderDrawColor(Globals::renderer, 20, 20, 20, 255);
+	SDL_RenderCopy(renderContext.renderer, gameCanvas, NULL, NULL);
+	SDL_SetRenderDrawColor(renderContext.renderer, 20, 20, 20, 255);
 
 	// 7. Apresenta o frame
-	SDL_RenderPresent(Globals::renderer);
+	SDL_RenderPresent(renderContext.renderer);
 	// after done drawing, show it to the screen
-	//SDL_RenderPresent(Globals::renderer);
+	//SDL_RenderPresent(renderContext.renderer);
 }
 
 
