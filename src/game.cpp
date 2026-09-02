@@ -1058,6 +1058,7 @@ void Game::spawnItem(int itemId, int quant, int xPos, int yPos) {
 		return;
 	}
 
+	spawnItem->setSoundManager(&SoundManager::soundManager);
 	spawnItem->x = xPos;
 	spawnItem->y = yPos;
 	spawnItem->active = true;

@@ -150,6 +150,7 @@ void MapPopulationSystem::buildWaypoints() {
 				waypoint.waypointRect.w + 2,
 				waypoint.waypointRect.h + 2,
 				0);
+			fogWall->setSoundManager(&SoundManager::soundManager);
 
 			fogWall->x = waypoint.waypointRect.x - 1;
 			fogWall->y = waypoint.waypointRect.y - 1;
