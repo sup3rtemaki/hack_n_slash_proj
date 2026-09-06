@@ -184,6 +184,7 @@
     <ClCompile Include="src\systems\mapPopulationSystem.cpp" />
     <ClCompile Include="src\systems\pauseMenuSystem.cpp" />
     <ClCompile Include="src\systems\mainMenuSystem.cpp" />
+    <ClCompile Include="src\systems\mapTransitionSystem.cpp" />
     <ClCompile Include="src\hero.cpp" />
     <ClCompile Include="src\item.cpp" />
     <ClCompile Include="src\item\greenBerry.cpp" />
@@ -252,6 +253,7 @@
     <ClInclude Include="inc\systems\mapPopulationSystem.h" />
     <ClInclude Include="inc\systems\pauseMenuSystem.h" />
     <ClInclude Include="inc\systems\mainMenuSystem.h" />
+    <ClInclude Include="inc\systems\mapTransitionSystem.h" />
     <ClInclude Include="inc\hero.h" />
     <ClInclude Include="inc\inputCommand.h" />
     <ClInclude Include="inc\item.h" />

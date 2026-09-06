@@ -28,6 +28,7 @@
 #include "systems/mapPopulationSystem.h"
 #include "systems/pauseMenuSystem.h"
 #include "systems/mainMenuSystem.h"
+#include "systems/mapTransitionSystem.h"
 
 #include "ui/actionMessageUi.h"
 #include "ui/hpBar.h"
@@ -74,11 +75,6 @@ public:
 	using TexturePtr = std::unique_ptr<SDL_Texture, TextureDeleter>;
 
 	std::map<string, TexturePtr> texturesCache;
-
-	bool isFading = false;
-	bool fadeIn, fadeOut;
-	int alpha = 0;
-	float alphaCalc;
 
 	int currentMapId, lastMapId;
 	int mapToDrawCount;
@@ -130,6 +126,7 @@ public:
 	MapPopulationSystem* mapPopulationSystem;
 	PauseMenuSystem* pauseMenuSystem;
 	MainMenuSystem* mainMenuSystem;
+	MapTransitionSystem* mapTransitionSystem;
 
 	QuickItemUi* quickItemUi;
 	ItemPickMessageUi* itemPickMessageUi;
@@ -165,6 +162,7 @@ private:
 	void drawEntities();
 	void drawMap();
 	void updateMaps();
+	void persistPickedMapItems();
 	void loadTiledMap(const string& mapFile);
 	void renderTiles();
 	void handleMapChange(bool isHeroRespawn = false);

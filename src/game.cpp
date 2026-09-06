@@ -226,6 +226,14 @@ Game::Game() : gameSaveManager(saveHandler) {
 		quit = true;
 	});
 
+	mapTransitionSystem = new MapTransitionSystem(fadeImage);
+	mapTransitionSystem->setMapChangeCallback([this]() {
+		inactivateCurrentMapItems();
+		persistPickedMapItems();
+		handleMapChange();
+		mapTransitionSystem->startFadeOut();
+	});
+
 	gui.push_back(quickItemUi);
 	gui.push_back(itemPickMessageUi);
 	gui.push_back(actionMessageUi);
@@ -292,6 +300,10 @@ Game::~Game() {
 	if (mainMenuSystem != nullptr) {
 		delete mainMenuSystem;
 		mainMenuSystem = nullptr;
+	}
+	if (mapTransitionSystem != nullptr) {
+		delete mapTransitionSystem;
+		mapTransitionSystem = nullptr;
 	}
 
 	// PASSO 2: Limpar todas as listas de entities
@@ -506,7 +518,7 @@ void Game::runMainGame() {
 				break;
 			}
 		}
-		if (!isFading) {
+		if (!mapTransitionSystem->isTransitioning()) {
 			for (const auto& command : heroKeyboardInput.update(&event)) {
 				handleInputCommand(command);
 			}
@@ -580,8 +592,7 @@ void Game::runMainGame() {
 			(hero->y > waypoint.waypointRect.y) &&
 			(hero->y < waypoint.waypointRect.y + waypoint.waypointRect.h)) {
 			currentMap->nextMapWaypoint = waypoint;
-			isFading = true;
-			fadeIn = true;
+			mapTransitionSystem->startFadeIn();
 		}
 	}
 
@@ -629,7 +640,7 @@ void Game::runPausedGameMenu() {
 		pauseMenuSystem->update(event);
 
 		// Also process hero input even while paused
-		if (!isFading) {
+		if (!mapTransitionSystem->isTransitioning()) {
 			for (const auto& command : heroKeyboardInput.update(&event)) {
 				handleInputCommand(command);
 			}
@@ -649,95 +660,76 @@ void Game::renderFrame() {
 	// update map state before drawing the frame
 	updateMaps();
 
-	// draw all entites
-	draw();
-
 	// update camera position
 	camController.deltaTime = gameTime.dT;
 	camController.update(Globals::camera, WORLD_WIDTH, WORLD_HEIGHT);
-	
-	// Sync camera to renderContext
+
+	// Sync camera before the render pass
 	renderContext.camera = Globals::camera;
+
+	// draw all entites
+	draw();
 }
 
 void Game::updateMaps() {
-	if (isFading) {
+	mapTransitionSystem->update();
+
+	if (mapTransitionSystem->isTransitioning()) {
 		hero->moving = false;
-
-		if (alpha < 255 && fadeIn) {
-			fadeIn = true;
-			fadeOut = false;
-			alphaCalc += 15.0f;
-			alpha = alphaCalc;
-			SDL_SetTextureAlphaMod(fadeImage, alpha);
-
-			if (alpha > 254) {
-				//camController.isLerping = false;
-
-				inactivateCurrentMapItems();
-
-				// TODO: Levar essa rotina de atualizar o status do item no arquivo json
-				// pra outro lugar, e tentar melhorar pq ta muito ruim e feio
-				const string itemsMapFilePath = getResourcePath() + ResourcePaths::MAPS + currentMap->file;
-				json mapFile;
-				if (JsonFileStore::readJsonFile(itemsMapFilePath, mapFile) == JsonFileResult::Success) {
-
-				for (auto const& i : currentMap->itemsInMap) {
-					if (i.first) {
-						for (auto& layersIt : mapFile["layers"]) {
-							string name = layersIt["name"];
-							if (name == "Items") {
-								for (auto& object : layersIt["objects"]) {
-									if ((int)object["x"] == std::get<1>(i.second) &&
-										(int)object["y"] == std::get<2>(i.second)) {
-										for (auto& prop : object["properties"]) {
-											if (prop["name"] == "itemId" &&
-												prop["value"] == std::get<0>(i.second)) {
-												for (auto& prop2 : object["properties"]) {
-													if (prop2["name"] == "isPicked") {
-														prop2["value"].clear();
-														prop2["value"] = true;
-														JsonFileStore::writeJsonFile(itemsMapFilePath, mapFile);
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-				}
-
-				handleMapChange();
-			}
-		}
-		else if (alpha >= 0 && fadeOut) {
-			fadeIn = false;
-			fadeOut = true;
-			alphaCalc -= 10.0f;
-			alpha = alphaCalc;
-			SDL_SetTextureAlphaMod(fadeImage, alpha);
-
-			if (alpha == 0) {
-				fadeOut = false;
-			}
-		}
-		else {
-			isFading = false;
-			fadeIn = false;
-			fadeOut = false;
-		}
 	}
 	else {
 		camController.isLerping = true;
-		SDL_SetTextureAlphaMod(fadeImage, 0);
-		alpha = 0;
-		alphaCalc = 0.0f;
 	}
 
 	checkBossDeath();
+}
+
+void Game::persistPickedMapItems() {
+	const string itemsMapFilePath = getResourcePath() + ResourcePaths::MAPS + currentMap->file;
+	json mapFile;
+	if (JsonFileStore::readJsonFile(itemsMapFilePath, mapFile) != JsonFileResult::Success) {
+		return;
+	}
+
+	for (auto const& item : currentMap->itemsInMap) {
+		if (!item.first) {
+			continue;
+		}
+
+		for (auto& layer : mapFile["layers"]) {
+			if (layer["name"] != "Items") {
+				continue;
+			}
+
+			for (auto& object : layer["objects"]) {
+				if ((int)object["x"] != std::get<1>(item.second) ||
+					(int)object["y"] != std::get<2>(item.second)) {
+					continue;
+				}
+
+				bool matchingItem = false;
+				for (auto& property : object["properties"]) {
+					if (property["name"] == "itemId" &&
+						property["value"] == std::get<0>(item.second)) {
+						matchingItem = true;
+						break;
+					}
+				}
+
+				if (!matchingItem) {
+					continue;
+				}
+
+				for (auto& property : object["properties"]) {
+					if (property["name"] == "isPicked") {
+						property["value"] = true;
+					}
+				}
+			}
+		}
+	}
+
+	JsonFileStore::writeJsonFile(itemsMapFilePath, mapFile);
 }
 
 void Game::loadTiledMap(const string& mapFile) {
@@ -854,8 +846,6 @@ void Game::handleMapChange(bool isHeroRespawn) {
 		hero->x = currentMap->nextMapWaypoint.xDestination;
 		hero->y = currentMap->nextMapWaypoint.yDestination;
 
-		fadeIn = false;
-		fadeOut = true;
 	}
 
 	hero->attackBuffer.clear();
