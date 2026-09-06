@@ -207,6 +207,15 @@ Game::Game() : gameSaveManager(saveHandler) {
 		this->saveCheckpointActivatedState(cpId);
 	});
 
+	// Initialize pause menu system
+	pauseMenuSystem = new PauseMenuSystem(pauseMenu, gameTime, renderContext);
+	pauseMenuSystem->setResumeGameCallback([this]() {
+		gameState = GameState::InGame;
+	});
+	pauseMenuSystem->setCheckQuitCallback([this]() {
+		return quit;
+	});
+
 	gui.push_back(quickItemUi);
 	gui.push_back(itemPickMessageUi);
 	gui.push_back(actionMessageUi);
@@ -263,6 +272,11 @@ Game::~Game() {
 	if (mapPopulationSystem != nullptr) {
 		delete mapPopulationSystem;
 		mapPopulationSystem = nullptr;
+	}
+
+	if (pauseMenuSystem != nullptr) {
+		delete pauseMenuSystem;
+		pauseMenuSystem = nullptr;
 	}
 
 	// PASSO 2: Limpar todas as listas de entities
@@ -628,75 +642,10 @@ void Game::runPausedGameMenu() {
 
 	// check for any events that might have happened
 	while (SDL_PollEvent(&event)) {
-		// close the window
-		if (event.type == SDL_QUIT) {
-			quit = true;
-		}
+		// Process pause menu events
+		pauseMenuSystem->update(event);
 
-		// keydown event
-		if (event.type == SDL_KEYDOWN) {
-			switch (event.key.keysym.scancode) {
-			case SDL_SCANCODE_ESCAPE:
-				// Verifica se est� no modo de sele��o de quick slot
-				if (pauseMenu->inventoryMode == InventoryMode::SelectingQuickSlot) {
-					pauseMenu->cancelQuickSlotSelection();
-					break;
-				}
-
-				switch (pauseMenu->menuState) {
-				case MenuState::Active:
-					pauseMenu->menuState = MenuState::Inactive;
-					Globals::pause = false;
-					gameState = GameState::InGame;
-					break;
-				case MenuState::Background:
-					pauseMenu->hideSubMenu();
-					break;
-				}
-				break;
-
-			case SDL_SCANCODE_SPACE:
-				// Verifica se est� no modo de sele��o de quick slot
-				if (pauseMenu->inventoryMode == InventoryMode::SelectingQuickSlot) {
-					pauseMenu->confirmQuickSlotSelection();
-					break;
-				}
-
-				switch (pauseMenu->currentPage) {
-				case (MenuPage::PAGE1):
-					break;
-				case (MenuPage::PAGE2):
-					if (pauseMenu->menuState == MenuState::Active) {
-						pauseMenu->showSubMenu();
-					}
-					else if (pauseMenu->menuState == MenuState::Background) {
-						pauseMenu->onSubMenuAction();
-					}
-					break;
-				}
-				break;
-			case SDL_SCANCODE_UP:
-				pauseMenu->onIndexUp();
-				break;
-			case SDL_SCANCODE_DOWN:
-				pauseMenu->onIndexDown();
-				break;
-			case SDL_SCANCODE_LEFT:
-				pauseMenu->onIndexLeft();
-				break;
-			case SDL_SCANCODE_RIGHT:
-				pauseMenu->onIndexRight();
-				break;
-			case SDL_SCANCODE_1:
-				if (pauseMenu->menuState == MenuState::Active) {
-					pauseMenu->currentPage = MenuPage::PAGE1;
-				}
-				break;
-			case SDL_SCANCODE_2:
-				pauseMenu->currentPage = MenuPage::PAGE2;
-				break;
-			}
-		}
+		// Also process hero input even while paused
 		if (!isFading) {
 			for (const auto& command : heroKeyboardInput.update(&event)) {
 				handleInputCommand(command);
@@ -709,16 +658,6 @@ void Game::runPausedGameMenu() {
 			hero->moving = false;
 		}
 	}
-
-	//if (hero->mustUpdateKeyJoyInput) {
-	//	heroKeyboardInput.update(&event);
-	//	heroJoystickInput.update(&event);
-	//	hero->mustUpdateKeyJoyInput = false;
-	//}
-
-	// joystick axis must be updated outside the poll event loop because of how the
-	// interaction with the axis works. consider refactoring in the future
-	//heroJoystickInput.checkAxis();
 
 	renderFrame();
 }

@@ -26,6 +26,7 @@
 
 #include "systems/interactionSystem.h"
 #include "systems/mapPopulationSystem.h"
+#include "systems/pauseMenuSystem.h"
 
 #include "ui/actionMessageUi.h"
 #include "ui/hpBar.h"
@@ -126,6 +127,7 @@ public:
 	TiledMapLoader tiledMapLoader;
 	InteractionSystem* interactionSystem;
 	MapPopulationSystem* mapPopulationSystem;
+	PauseMenuSystem* pauseMenuSystem;
 
 	QuickItemUi* quickItemUi;
 	ItemPickMessageUi* itemPickMessageUi;
