@@ -27,6 +27,7 @@
 #include "systems/interactionSystem.h"
 #include "systems/mapPopulationSystem.h"
 #include "systems/pauseMenuSystem.h"
+#include "systems/mainMenuSystem.h"
 
 #include "ui/actionMessageUi.h"
 #include "ui/hpBar.h"
@@ -128,6 +129,7 @@ public:
 	InteractionSystem* interactionSystem;
 	MapPopulationSystem* mapPopulationSystem;
 	PauseMenuSystem* pauseMenuSystem;
+	MainMenuSystem* mainMenuSystem;
 
 	QuickItemUi* quickItemUi;
 	ItemPickMessageUi* itemPickMessageUi;

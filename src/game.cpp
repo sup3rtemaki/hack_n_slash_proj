@@ -216,6 +216,16 @@ Game::Game() : gameSaveManager(saveHandler) {
 		return quit;
 	});
 
+	// Initialize main menu system
+	mainMenuSystem = new MainMenuSystem(mainMenu, renderContext);
+	mainMenuSystem->setStartGameCallback([this]() {
+		gameState = GameState::InGame;
+		Globals::pause = false;
+	});
+	mainMenuSystem->setQuitCallback([this]() {
+		quit = true;
+	});
+
 	gui.push_back(quickItemUi);
 	gui.push_back(itemPickMessageUi);
 	gui.push_back(actionMessageUi);
@@ -277,6 +287,11 @@ Game::~Game() {
 	if (pauseMenuSystem != nullptr) {
 		delete pauseMenuSystem;
 		pauseMenuSystem = nullptr;
+	}
+
+	if (mainMenuSystem != nullptr) {
+		delete mainMenuSystem;
+		mainMenuSystem = nullptr;
 	}
 
 	// PASSO 2: Limpar todas as listas de entities
@@ -417,40 +432,8 @@ bool Game::isBossMap() {
 
 void Game::runMainMenu() {
 	while (SDL_PollEvent(&event)) {
-		// close the window
-		if (event.type == SDL_QUIT) {
-			quit = true;
-		}
-
-		if (event.type == SDL_KEYDOWN) {
-			switch (event.key.keysym.scancode) {
-			case SDL_SCANCODE_UP:
-				mainMenu->onIndexUp();
-				break;
-			case SDL_SCANCODE_DOWN:
-				mainMenu->onIndexDown();
-				break;
-			case SDL_SCANCODE_ESCAPE:
-				quit = true;
-				break;
-			case SDL_SCANCODE_SPACE:
-				switch (mainMenu->index) {
-				case 0:
-					gameState = GameState::InGame;
-					Globals::pause = false;
-					break;
-				case 1:
-					quit = true;
-					break;
-				}
-			}
-		}
+		mainMenuSystem->update(event);
 	}
-
-	SDL_SetRenderDrawColor(renderContext.renderer, 145, 133, 129, SDL_ALPHA_OPAQUE);
-	SDL_RenderClear(renderContext.renderer);
-	mainMenu->draw();
-	SDL_RenderPresent(renderContext.renderer);
 }
 
 void Game::runMainGame() {
