@@ -57,6 +57,9 @@ Game::Game() : gameSaveManager(saveHandler) {
 	renderContext.renderer = Globals::renderer;
 	renderContext.camera = Globals::camera;
 	renderContext.debugging = Globals::debugging;
+	tileRenderer = new TileRenderer(
+		renderContext,
+		resPath + ResourcePaths::TEXTURES);
 
 	//loadup sounds
 	SoundManager::soundManager.loadSound(SoundIds::HIT, resPath + ResourcePaths::SOUNDS + "Randomize2.wav");
@@ -263,9 +266,6 @@ Game::~Game() {
 		scoreTexture = NULL;
 	}
 
-	// CORRIGIDO: Limpar texturas do cache
-	texturesCache.clear();
-
 	// Limpeza de �udio
 	Mix_PausedMusic();
 	if (song != nullptr) {
@@ -304,6 +304,10 @@ Game::~Game() {
 	if (mapTransitionSystem != nullptr) {
 		delete mapTransitionSystem;
 		mapTransitionSystem = nullptr;
+	}
+	if (tileRenderer != nullptr) {
+		delete tileRenderer;
+		tileRenderer = nullptr;
 	}
 
 	// PASSO 2: Limpar todas as listas de entities
@@ -737,97 +741,7 @@ void Game::loadTiledMap(const string& mapFile) {
 }
 
 void Game::renderTiles() {
-	auto currentMap = tiledMap.get();
-	if (currentMap == nullptr) {
-		cout << "Mapa nulo" << endl;
-		return;
-	}
-
-	string tilesetName;
-	string tilesetTexturePath;
-	int x = 0;
-	int y = 0;
-	SDL_Texture* texture = nullptr; // Continua usando raw pointer local
-
-	for (auto layer : currentMap->getLayers()) {
-		if (&layer == nullptr) {
-			cout << "layer null" << endl;
-		}
-
-		for (auto& [pos, tileObject] : layer.getTileObjects()) {
-			if (tileObject.getTile() == nullptr) {
-				cout << "tile null" << endl;
-				return;
-			}
-
-			if (layer.getType() == tson::LayerType::TileLayer) {
-				tson::Tileset* tileset = tileObject.getTile()->getTileset();
-				bool hasAnimation = tileObject.getTile()->getAnimation().any();
-				tson::Rect drawingRect;
-
-				bool isTransparentTile = std::any_cast<bool>(
-					tileObject.getTile()->getProp("isTransparent")->getValue());
-
-				if (!isTransparentTile) {
-					if (!hasAnimation) {
-						drawingRect = tileObject.getDrawingRect();
-					}
-
-					tilesetName = tileset->getImage().filename().string();
-
-					// MUDAN�A AQUI: Buscar no map de unique_ptr
-					if (auto search = texturesCache.find(tilesetName);
-						search != texturesCache.end()) {
-						// Usar .get() para pegar o raw pointer
-						texture = search->second.get();
-					}
-					else {
-						// Carregar nova textura
-						tilesetTexturePath = resPath + ResourcePaths::TEXTURES +
-							tileset->getImage().filename().string();
-
-						SDL_Texture* newTexture = loadTexture(tilesetTexturePath,
-							renderContext.renderer);
-
-						// Criar unique_ptr e mover para o cache
-						TexturePtr texPtr(newTexture, TextureDeleter{});
-						texture = texPtr.get();
-
-						texturesCache.emplace(tilesetName, std::move(texPtr));
-					}
-
-					if (texture == nullptr) {
-						cout << "texture null " << tilesetName << endl;
-						return;
-					}
-
-					// ... resto do c�digo de renderiza��o igual
-					SDL_Rect tileRect;
-					tileRect.x = tileObject.getDrawingRect().x;
-					tileRect.y = tileObject.getDrawingRect().y;
-					tileRect.w = tileObject.getDrawingRect().width;
-					tileRect.h = tileObject.getDrawingRect().height;
-
-					SDL_Rect renderTile;
-					renderTile.x = (int)((x * tileRect.w) - renderContext.camera.x);
-					renderTile.y = (int)((y * tileRect.h) - renderContext.camera.y);
-					renderTile.w = tileRect.w;
-					renderTile.h = tileRect.h ;
-
-					SDL_RenderCopy(renderContext.renderer, texture, &tileRect, &renderTile);
-				}
-
-				y++;
-				if (y >= 32) {
-					y = 0;
-					x++;
-					if (x >= 32) {
-						x = 0;
-					}
-				}
-			}
-		}
-	}
+	tileRenderer->render(tiledMap.get());
 }
 
 

@@ -29,6 +29,7 @@
 #include "systems/pauseMenuSystem.h"
 #include "systems/mainMenuSystem.h"
 #include "systems/mapTransitionSystem.h"
+#include "systems/tileRenderer.h"
 
 #include "ui/actionMessageUi.h"
 #include "ui/hpBar.h"
@@ -58,23 +59,6 @@ public:
 	SDL_Texture* scoreTexture = NULL; //draw string to screen
 
 	SDL_Event event;
-
-	/**
-	* Cache de texturas
-	* Lista que contem o nome da imagem e a textura SDL
-	*/
-	struct TextureDeleter {
-		void operator()(SDL_Texture* tex) const {
-			if (tex) {
-				SDL_DestroyTexture(tex);
-			}
-		}
-	};
-
-	// Alias para facilitar uso
-	using TexturePtr = std::unique_ptr<SDL_Texture, TextureDeleter>;
-
-	std::map<string, TexturePtr> texturesCache;
 
 	int currentMapId, lastMapId;
 	int mapToDrawCount;
@@ -127,6 +111,7 @@ public:
 	PauseMenuSystem* pauseMenuSystem;
 	MainMenuSystem* mainMenuSystem;
 	MapTransitionSystem* mapTransitionSystem;
+	TileRenderer* tileRenderer;
 
 	QuickItemUi* quickItemUi;
 	ItemPickMessageUi* itemPickMessageUi;
