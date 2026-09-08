@@ -234,6 +234,23 @@ Game::Game() : gameSaveManager(saveHandler) {
 	mapStateSystem->setSyncRegistryCallback([this]() {
 		this->syncEntityRegistry();
 	});
+	mapFlowSystem = new MapFlowSystem(
+		tiledMap,
+		currentMap,
+		entities,
+		fogWalls,
+		currentMapEnemies,
+		hero,
+		bloodstain,
+		openDoorsIds,
+		currentBoss,
+		mapPopulationSystem);
+	mapFlowSystem->setLoadTiledMapCallback([this](const std::string& mapFile) {
+		this->loadTiledMap(mapFile);
+	});
+	mapFlowSystem->setSyncRegistryCallback([this]() {
+		this->syncEntityRegistry();
+	});
 	mapTransitionSystem->setMapChangeCallback([this]() {
 		mapStateSystem->inactivateCurrentMapItems(entities);
 		mapStateSystem->persistPickedMapItems(currentMap);
@@ -316,6 +333,10 @@ Game::~Game() {
 	if (mapStateSystem != nullptr) {
 		delete mapStateSystem;
 		mapStateSystem = nullptr;
+	}
+	if (mapFlowSystem != nullptr) {
+		delete mapFlowSystem;
+		mapFlowSystem = nullptr;
 	}
 
 	// PASSO 2: Limpar todas as listas de entities
@@ -723,51 +744,10 @@ void Game::handleMapChange(bool isHeroRespawn) {
 		currentMap->file = currentMap->nextMapWaypoint.nextMapFile;
 		hero->x = currentMap->nextMapWaypoint.xDestination;
 		hero->y = currentMap->nextMapWaypoint.yDestination;
-
 	}
-
-	hero->attackBuffer.clear();
-	loadTiledMap(resPath + ResourcePaths::MAPS + currentMap->file);
-
-	// Remove enemies
-	for (list<Entity*>::iterator enemy = currentMapEnemies.begin(); enemy != currentMapEnemies.end(); enemy++) {
-		(*enemy)->active = false;
-	}
-
-	// Remove fog walls explicitly
-	for (list<Entity*>::iterator fogWall = fogWalls.begin(); fogWall != fogWalls.end(); fogWall++) {
-		(*fogWall)->active = false;
-	}
-	fogWalls.clear();
-
-	// Remove walls, doors and checkpoints
-	for (list<Entity*>::iterator entity = entities.begin(); entity != entities.end(); entity++) {
-		if ((*entity)->type == "wall" ||
-				(*entity)->type == "door" ||
-				(*entity)->type == "checkpoint" ||
-				(*entity)->type == "boss") {
-			(*entity)->active = false;
-		}
-	}
-	syncEntityRegistry();
-
-	currentBoss = nullptr;
 
 	mustSpawnEnemies = true;
-	hero->currentMap = currentMap;
-	mapPopulationSystem->spawnItemsFromCurrentMap();
-	mapPopulationSystem->buildWalls();
-	mapPopulationSystem->buildWaypoints();
-	mapPopulationSystem->buildDoors();
-	mapPopulationSystem->spawnCheckpoints();
-	if (bloodstain->isLive &&
-		currentMap->file == bloodstain->mapName) {
-		bloodstain->create();
-	}
-	else {
-		bloodstain->destroy();
-	}
-	openDoorsIds = {};
+	mapFlowSystem->applyMapTransition(currentMap->file);
 }
 
 

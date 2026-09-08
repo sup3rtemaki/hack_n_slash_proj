@@ -135,6 +135,9 @@
     <ClCompile Include="src\systems\mapStateSystem.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="src\systems\mapFlowSystem.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
     <ClCompile Include="src\systems\tileRenderer.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
