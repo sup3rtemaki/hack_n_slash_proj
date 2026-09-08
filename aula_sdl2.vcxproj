@@ -185,6 +185,7 @@
     <ClCompile Include="src\systems\pauseMenuSystem.cpp" />
     <ClCompile Include="src\systems\mainMenuSystem.cpp" />
     <ClCompile Include="src\systems\mapTransitionSystem.cpp" />
+    <ClCompile Include="src\systems\mapStateSystem.cpp" />
     <ClCompile Include="src\systems\tileRenderer.cpp" />
     <ClCompile Include="src\hero.cpp" />
     <ClCompile Include="src\item.cpp" />
@@ -255,6 +256,7 @@
     <ClInclude Include="inc\systems\pauseMenuSystem.h" />
     <ClInclude Include="inc\systems\mainMenuSystem.h" />
     <ClInclude Include="inc\systems\mapTransitionSystem.h" />
+    <ClInclude Include="inc\systems\mapStateSystem.h" />
     <ClInclude Include="inc\systems\tileRenderer.h" />
     <ClInclude Include="inc\hero.h" />
     <ClInclude Include="inc\inputCommand.h" />

@@ -30,6 +30,7 @@
 #include "systems/mainMenuSystem.h"
 #include "systems/mapTransitionSystem.h"
 #include "systems/tileRenderer.h"
+#include "systems/mapStateSystem.h"
 
 #include "ui/actionMessageUi.h"
 #include "ui/hpBar.h"
@@ -112,6 +113,7 @@ public:
 	MainMenuSystem* mainMenuSystem;
 	MapTransitionSystem* mapTransitionSystem;
 	TileRenderer* tileRenderer;
+	MapStateSystem* mapStateSystem;
 
 	QuickItemUi* quickItemUi;
 	ItemPickMessageUi* itemPickMessageUi;

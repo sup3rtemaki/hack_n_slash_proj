@@ -230,9 +230,13 @@ Game::Game() : gameSaveManager(saveHandler) {
 	});
 
 	mapTransitionSystem = new MapTransitionSystem(fadeImage);
+	mapStateSystem = new MapStateSystem();
+	mapStateSystem->setSyncRegistryCallback([this]() {
+		this->syncEntityRegistry();
+	});
 	mapTransitionSystem->setMapChangeCallback([this]() {
-		inactivateCurrentMapItems();
-		persistPickedMapItems();
+		mapStateSystem->inactivateCurrentMapItems(entities);
+		mapStateSystem->persistPickedMapItems(currentMap);
 		handleMapChange();
 		mapTransitionSystem->startFadeOut();
 	});
@@ -308,6 +312,10 @@ Game::~Game() {
 	if (tileRenderer != nullptr) {
 		delete tileRenderer;
 		tileRenderer = nullptr;
+	}
+	if (mapStateSystem != nullptr) {
+		delete mapStateSystem;
+		mapStateSystem = nullptr;
 	}
 
 	// PASSO 2: Limpar todas as listas de entities
@@ -689,51 +697,7 @@ void Game::updateMaps() {
 }
 
 void Game::persistPickedMapItems() {
-	const string itemsMapFilePath = getResourcePath() + ResourcePaths::MAPS + currentMap->file;
-	json mapFile;
-	if (JsonFileStore::readJsonFile(itemsMapFilePath, mapFile) != JsonFileResult::Success) {
-		return;
-	}
-
-	for (auto const& item : currentMap->itemsInMap) {
-		if (!item.first) {
-			continue;
-		}
-
-		for (auto& layer : mapFile["layers"]) {
-			if (layer["name"] != "Items") {
-				continue;
-			}
-
-			for (auto& object : layer["objects"]) {
-				if ((int)object["x"] != std::get<1>(item.second) ||
-					(int)object["y"] != std::get<2>(item.second)) {
-					continue;
-				}
-
-				bool matchingItem = false;
-				for (auto& property : object["properties"]) {
-					if (property["name"] == "itemId" &&
-						property["value"] == std::get<0>(item.second)) {
-						matchingItem = true;
-						break;
-					}
-				}
-
-				if (!matchingItem) {
-					continue;
-				}
-
-				for (auto& property : object["properties"]) {
-					if (property["name"] == "isPicked") {
-						property["value"] = true;
-					}
-				}
-			}
-		}
-	}
-
-	JsonFileStore::writeJsonFile(itemsMapFilePath, mapFile);
+	mapStateSystem->persistPickedMapItems(currentMap);
 }
 
 void Game::loadTiledMap(const string& mapFile) {
@@ -923,55 +887,17 @@ void Game::checkBossDeath() {
 }
 
 void Game::saveCheckpointActivatedState(int checkpointId) {
-	const string mapFilePath = getResourcePath() + ResourcePaths::MAPS + currentMap->file;
-	json mapFile;
-	if (JsonFileStore::readJsonFile(mapFilePath, mapFile) != JsonFileResult::Success) {
-		return;
-	}
-	bool checkpointFound = false;
-
-	for (auto& layersIt : mapFile["layers"]) {
-		string name = layersIt["name"];
-		if (name == "Checkpoints") {
-			for (auto& object : layersIt["objects"]) {
-				for (auto& prop : object["properties"]) {
-					if (prop["name"] == "checkpointId" &&
-						prop["value"] == checkpointId) {
-						for (auto& prop2 : object["properties"]) {
-							if (prop2["name"] == "isActive") {
-								prop2["value"].clear();
-								prop2["value"] = true;
-								JsonFileStore::writeJsonFile(mapFilePath, mapFile);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+	mapStateSystem->saveCheckpointActivatedState(currentMap, checkpointId);
 }
 
 // loadAnimationSets was removed: entities initialize their own AnimationSets now.
 
 void Game::inactivateCurrentMapItems() {
-	for (list<Entity*>::iterator entity = entities.begin(); entity != entities.end(); entity++) {
-		if (dynamic_cast<Item*>((*entity)) != nullptr) {
-			Item* i = (Item*)(*entity);
-			i->active = false;
-		}
-	}
-	syncEntityRegistry();
+	mapStateSystem->inactivateCurrentMapItems(entities);
 }
 
 void Game::removeAllEnemiesInMap() {
-	for (list<Entity*>::iterator enemy = currentMapEnemies.begin(); enemy != currentMapEnemies.end(); enemy++) {
-		(*enemy)->active = false;
-	}
-	Entity::removeInactiveEntitiesFromList(&entities, false);
-	syncEntityRegistry();
-	Entity::removeInactiveEntitiesFromList(&currentMapEnemies, true);
-	currentMapEnemies.clear();
-	deadEnemiesIds.clear();
+	mapStateSystem->removeAllEnemiesInMap(entities, currentMapEnemies, deadEnemiesIds);
 }
 
 map<int, std::unique_ptr<Item>> Game::loadInventoryItems(std::vector<std::pair<int, int>> items) {
