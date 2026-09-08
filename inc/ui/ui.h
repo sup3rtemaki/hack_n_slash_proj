@@ -9,9 +9,14 @@ public:
 	string RES_PATH;
 	string FONT_FILE = "Berylium.ttf";;
 	float deltaTime = 0;
+	SDL_Renderer* renderer = nullptr;
 
 	Ui();
 	~Ui();
+
+	virtual void setRenderer(SDL_Renderer* rendererContext) {
+		renderer = rendererContext;
+	}
 
 	virtual void draw() = 0;
 	virtual void setUp();

@@ -11,7 +11,6 @@ const SDL_Color color = { 255, 255, 255, 255 };
 const int MAX_INDEX = 1;
 
 MainMenu::MainMenu() {
-	setUp();
 }
 
 void MainMenu::setUp() {
@@ -22,7 +21,7 @@ void MainMenu::setUp() {
 	textYOffset = 0;
 	menuItems.push_back("Start");
 	menuItems.push_back("Exit");
-	bgImage = loadTexture(Ui::RES_PATH + ResourcePaths::HUD_TEXTURES + "main_menu_bg.png", Globals::renderer);
+	bgImage = loadTexture(Ui::RES_PATH + ResourcePaths::HUD_TEXTURES + "main_menu_bg.png", renderer);
 }
 
 void MainMenu::draw() {
@@ -42,7 +41,10 @@ void MainMenu::draw() {
 }
 
 void MainMenu::drawMenuBackground() {
-	renderTexture(bgImage, Globals::renderer, 0, 0);
+	if (bgImage == nullptr || renderer == nullptr) {
+		return;
+	}
+	renderTexture(bgImage, renderer, 0, 0);
 }
 
 void MainMenu::drawText() {
@@ -61,7 +63,7 @@ void MainMenu::drawText() {
 			Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
 			color,
 			FONT_SIZE,
-			Globals::renderer
+			renderer
 		);
 
 		int digits;
@@ -70,7 +72,7 @@ void MainMenu::drawText() {
 			digits = 1;
 		int textXOffset = (FONT_SIZE)*digits;
 
-		renderTexture(fontTexture, Globals::renderer, FONT_X - textXOffset, FONT_Y + textYOffset);
+		renderTexture(fontTexture, renderer, FONT_X - textXOffset, FONT_Y + textYOffset);
 
 		textYOffset += FONT_SIZE + 5;
 	}
@@ -95,7 +97,8 @@ void MainMenu::drawSelectionBox() {
 		break;
 	}
 
-	SDL_RenderDrawRect(Globals::renderer, &selectionRect);
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_RenderDrawRect(renderer, &selectionRect);
 }
 
 void MainMenu::onIndexUp()

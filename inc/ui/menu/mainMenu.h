@@ -7,6 +7,11 @@ class MainMenu : public Menu {
 public:
 	MainMenu();
 
+	void setRenderer(SDL_Renderer* rendererContext) override {
+		Ui::setRenderer(rendererContext);
+		setUp();
+	}
+
 	virtual void draw() override;
 	virtual void setUp() override;
 	virtual void drawMenuBackground() override;

@@ -192,14 +192,22 @@ Game::Game() : gameSaveManager(saveHandler) {
 	);
 
 	quickItemUi = new QuickItemUi(hero);
+	quickItemUi->setRenderer(renderContext.renderer);
 	itemPickMessageUi = new ItemPickMessageUi(hero);
+	itemPickMessageUi->setRenderer(renderContext.renderer);
 	actionMessageUi = new ActionMessageUi();
+	actionMessageUi->setRenderer(renderContext.renderer);
 	essenceCounterUi = new EssenceCounterUi(hero);
+	essenceCounterUi->setRenderer(renderContext.renderer);
 	heroHpBar = new HPBar(hero, BarType::HERO_HEALTH_BAR);
+	heroHpBar->setRenderer(renderContext.renderer);
 	heroStBar = new HPBar(hero, BarType::HERO_STAMINA_BAR);
+	heroStBar->setRenderer(renderContext.renderer);
 	hero->actionMessageUi = actionMessageUi;
 	mainMenu = new MainMenu();
+	mainMenu->setRenderer(renderContext.renderer);
 	pauseMenu = new PauseMenu(hero);
+	pauseMenu->setRenderer(renderContext.renderer);
 
 	// Initialize interaction system
 	interactionSystem = new InteractionSystem(hero, actionMessageUi, openDoorsIds, mustRemoveAllEnemies, mustSpawnEnemies);
