@@ -4,7 +4,7 @@
 #include <iostream>
 #include "resourceConfig.h"
 
-FriendlyNpc::FriendlyNpc(const NpcData& npcData) : data(npcData) {
+FriendlyNpc::FriendlyNpc(const NpcData& npcData, SDL_Renderer* renderer) : data(npcData) {
     // Inicializa com dados do JSON e cria seu próprio AnimationSet
     list<DataGroupType> dataGroupTypes;
     DataGroupType colBoxType; colBoxType.groupName = "collisionBox"; colBoxType.dataType = DataGroupType::DATATYPE_BOX;
@@ -15,7 +15,7 @@ FriendlyNpc::FriendlyNpc(const NpcData& npcData) : data(npcData) {
     dataGroupTypes.push_back(dmgType);
 
     localAnimSet = std::make_unique<AnimationSet>();
-    localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "npc_1.fdset", dataGroupTypes, Globals::renderer, true, 0, true);
+    localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "npc_1.fdset", dataGroupTypes, renderer, true, 0, true);
     this->animSet = localAnimSet.get();
     type = "friendly";
     collisionBoxW = 16;

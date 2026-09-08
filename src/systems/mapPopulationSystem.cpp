@@ -31,7 +31,8 @@ MapPopulationSystem::MapPopulationSystem(
 	std::vector<int>& openDoorsIds,
 	std::vector<int>& defeatedBossesIds,
 	std::list<int>& deadEnemiesIds,
-	HPBar*& bossHpBar
+	HPBar*& bossHpBar,
+	SDL_Renderer* renderer
 )
 	: tiledMap(tiledMap),
 	currentMap(currentMap),
@@ -45,7 +46,8 @@ MapPopulationSystem::MapPopulationSystem(
 	openDoorsIds(openDoorsIds),
 	defeatedBossesIds(defeatedBossesIds),
 	deadEnemiesIds(deadEnemiesIds),
-	bossHpBar(bossHpBar)
+	bossHpBar(bossHpBar),
+	renderer(renderer)
 {
 }
 
@@ -90,7 +92,8 @@ void MapPopulationSystem::buildDoors() {
 				tileObject.getTile()->getPosition(pos).y,
 				64,
 				64,
-				-32);
+				-32,
+				renderer);
 			door->setSoundManager(&SoundManager::soundManager);
 			door->isLocked = std::any_cast<bool>(isLockedProp->getValue()),
 			entities.push_back(door);
@@ -185,7 +188,7 @@ void MapPopulationSystem::spawnEnemies() {
 		case 0: // Glob
 			if (deadEnemiesIds.empty() ||
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
-					TermiteMiner* enemy = new TermiteMiner();
+					TermiteMiner* enemy = new TermiteMiner(renderer);
 					enemy->setSoundManager(&SoundManager::soundManager);
 					enemy->x = enemyPosX;
 					enemy->y = enemyPosY;
@@ -199,7 +202,7 @@ void MapPopulationSystem::spawnEnemies() {
 		case 1: // Termite
 			if (deadEnemiesIds.empty() ||
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
-					TermiteMiner* enemy = new TermiteMiner();
+					TermiteMiner* enemy = new TermiteMiner(renderer);
 					enemy->setSoundManager(&SoundManager::soundManager);
 					enemy->x = enemyPosX;
 					enemy->y = enemyPosY;
@@ -230,7 +233,7 @@ void MapPopulationSystem::spawnBoss() {
 
 	for (auto object : layer->getObjects()) {
 		int bossId = std::any_cast<int>(object.getProp("bossId")->getValue());
-		
+
 		// Check if this specific boss was already defeated
 		bool bossDefeated = false;
 		for (int i : defeatedBossesIds) {
@@ -245,7 +248,7 @@ void MapPopulationSystem::spawnBoss() {
 		int bossPosY = object.getPosition().y;
 		switch (bossId) {
 			case 990001: // Small Brown Spider
-				currentBoss = new SmallBrownSpider();
+				currentBoss = new SmallBrownSpider(renderer);
 				currentBoss->setSoundManager(&SoundManager::soundManager);
 				currentBoss->x = bossPosX;
 				currentBoss->y = bossPosY;
@@ -278,7 +281,7 @@ void MapPopulationSystem::spawnCheckpoints() {
 		int cpPosX = object.getPosition().x;
 		int cpPosY = object.getPosition().y;
 
-		Checkpoint* checkpoint = new Checkpoint(cpId, currentMap->file);
+		Checkpoint* checkpoint = new Checkpoint(cpId, currentMap->file, renderer);
 		checkpoint->setSoundManager(&SoundManager::soundManager);
 		checkpoint->x = cpPosX;
 		checkpoint->y = cpPosY;

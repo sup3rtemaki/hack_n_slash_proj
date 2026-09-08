@@ -123,7 +123,7 @@ public:
 	Map* currentMap;
 	class ActionMessageUi* actionMessageUi;
 
-	Hero();
+	Hero(SDL_Renderer* renderer);
 	~Hero();
 
 	void update();

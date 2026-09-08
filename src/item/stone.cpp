@@ -3,7 +3,7 @@
 #include "projectiles/stoneProjectile.h"
 #include "resourceConfig.h"
 
-Stone::Stone(bool isOnGround, int quant) {
+Stone::Stone(bool isOnGround, int quant, SDL_Renderer* renderer) : renderer(renderer) {
 	list<DataGroupType> dataGroupTypes;
 	DataGroupType colBoxType; colBoxType.groupName = "collisionBox"; colBoxType.dataType = DataGroupType::DATATYPE_BOX;
 	DataGroupType hitBoxType; hitBoxType.groupName = "hitBox"; hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
@@ -13,7 +13,7 @@ Stone::Stone(bool isOnGround, int quant) {
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "groundConsumableItem.fdset", dataGroupTypes, Globals::renderer);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "groundConsumableItem.fdset", dataGroupTypes, renderer);
 	this->animSet = localAnimSet.get();
 	id = STONE_ID;
 	quantity = quant;
@@ -24,7 +24,7 @@ Stone::Stone(bool isOnGround, int quant) {
 	this->isOnGround = isOnGround;
 
 	string resPath = getResourcePath() + Item::ITEMS_IMAGES_FOLDER;;
-	this->image = loadTexture(resPath + "stoneItem.png", Globals::renderer);
+	this->image = loadTexture(resPath + "stoneItem.png", renderer);
 
 	collisionBoxW = 8;
 	collisionBoxH = 8;
@@ -83,7 +83,8 @@ void Stone::applyEffect(LivingEntity* heroEntity) {
 	}
 	StoneProjectile* stoneProjectile = new StoneProjectile(
 		heroEntity->x + xOffset,
-		heroEntity->y + yOffset);
+		heroEntity->y + yOffset,
+		renderer);
 	stoneProjectile->angle = heroEntity->angle;
 	Entity::addEntity(stoneProjectile);
 }

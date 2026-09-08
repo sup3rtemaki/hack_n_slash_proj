@@ -42,7 +42,7 @@ public:
 
 	int aiState = GLOB_AI_NORMAL;
 
-	Glob();
+	Glob(SDL_Renderer* renderer);
 	void update();
 	void think();
 	void telegraph();

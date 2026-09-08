@@ -5,7 +5,7 @@
 
 class HoneydewPotion : public Item {
 public:
-	HoneydewPotion(bool isOnGround, int quant);
+	HoneydewPotion(bool isOnGround, int quant, SDL_Renderer* renderer);
 	~HoneydewPotion();
 
 	void update();

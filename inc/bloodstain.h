@@ -16,7 +16,7 @@ public:
 	string mapName;
 	int essence = 0;
 
-	Bloodstain();
+	Bloodstain(SDL_Renderer* renderer);
 	~Bloodstain();
 
 	void update();

@@ -46,10 +46,10 @@ private:
     SDL_Texture* leftArrowTexture;
     SDL_Texture* rightArrowTexture;
     class SubMenu* subMenu;
-    
+
 
     // Novos membros para controle de modo
-    
+
     int quickAccessIndex;
     int itemToAddId;
 

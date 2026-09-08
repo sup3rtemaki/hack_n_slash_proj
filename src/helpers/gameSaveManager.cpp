@@ -17,7 +17,8 @@ GameSaveManager::~GameSaveManager() {
 }
 
 map<int, unique_ptr<Item>> GameSaveManager::loadInventoryItems(
-	vector<pair<int, int>> items) {
+	vector<pair<int, int>> items,
+	SDL_Renderer* renderer) {
 
 	map<int, unique_ptr<Item>> loadedItems;
 
@@ -28,22 +29,22 @@ map<int, unique_ptr<Item>> GameSaveManager::loadInventoryItems(
 			switch (item.first) {
 			case Item::HONEYDEW_POTION_ID:
 				loadItem = make_unique<HoneydewPotion>(
-					false, item.second);
+					false, item.second, renderer);
 				loadItem->active = false;
 				break;
 			case Item::GREEN_BERRY_ID:
 				loadItem = make_unique<GreenBerry>(
-					false, item.second);
+					false, item.second, renderer);
 				loadItem->active = false;
 				break;
 			case Item::STONE_ID:
 				loadItem = make_unique<Stone>(
-					false, item.second);
+					false, item.second, renderer);
 				loadItem->active = false;
 				break;
 			case Item::COMMON_KEY_ID:
 				loadItem = make_unique<Key>(
-					false, item.second);
+					false, item.second, renderer);
 				loadItem->active = false;
 				break;
 			default:

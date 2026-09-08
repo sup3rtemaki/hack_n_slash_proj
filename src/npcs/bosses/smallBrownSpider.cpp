@@ -52,7 +52,7 @@ const int SmallBrownSpider::SMALL_BROWN_SPIDER_PHASE_FRANTIC = 3;
 const int SmallBrownSpider::SMALL_BROWN_SPIDER_AI_NORMAL = 0;
 const int SmallBrownSpider::SMALL_BROWN_SPIDER_AI_CHASE = 1;
 
-SmallBrownSpider::SmallBrownSpider() {
+SmallBrownSpider::SmallBrownSpider(SDL_Renderer* renderer) {
 	list<DataGroupType> dataGroupTypes;
 	DataGroupType colBoxType;
 	colBoxType.groupName = "collisionBox";
@@ -71,7 +71,7 @@ SmallBrownSpider::SmallBrownSpider() {
 	dataGroupTypes.push_back(dmgType);
 
 	std::unique_ptr<AnimationSet> localAnim = std::make_unique<AnimationSet>();
-	localAnim->loadAnimationSet(ResourcePaths::ANIMATIONS + "spider_boss.fdset", dataGroupTypes, Globals::renderer);
+	localAnim->loadAnimationSet(ResourcePaths::ANIMATIONS + "spider_boss.fdset", dataGroupTypes, renderer);
 	this->animSet = localAnim.get();
 	this->localAnimSet = std::move(localAnim);
 

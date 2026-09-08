@@ -32,7 +32,7 @@ const int Glob::GLOB_AI_CHASE = 1;
 
 int Glob::globsKilled = 0;
 
-Glob::Glob() {
+Glob::Glob(SDL_Renderer* renderer) {
 	list<DataGroupType> dataGroupTypes;
 		DataGroupType colBoxType;
 		colBoxType.groupName = "collisionBox";
@@ -52,7 +52,7 @@ Glob::Glob() {
 
 		// own the anim set
 		std::unique_ptr<AnimationSet> localAnimSet = std::make_unique<AnimationSet>();
-		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "glob.fdset", dataGroupTypes, Globals::renderer, true, 0, true);
+		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "glob.fdset", dataGroupTypes, renderer, true, 0, true);
 		this->animSet = localAnimSet.get();
 		// transfer ownership to this object by storing it in the member
 		this->localAnimSet = std::move(localAnimSet);

@@ -36,7 +36,7 @@ public:
 
 	int aiState = TERMITE_MINER_AI_NORMAL;
 
-	TermiteMiner();
+	TermiteMiner(SDL_Renderer* renderer);
 	std::unique_ptr<AnimationSet> localAnimSet;
 	void update();
 	void think();

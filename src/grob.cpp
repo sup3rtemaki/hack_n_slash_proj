@@ -32,7 +32,7 @@ const int Grob::GROB_AI_CHASE = 1;
 
 int Grob::grobsKilled = 0;
 
-Grob::Grob() {
+Grob::Grob(SDL_Renderer* renderer) {
 	list<DataGroupType> dataGroupTypes;
 	DataGroupType colBoxType;
 	colBoxType.groupName = "collisionBox";
@@ -51,7 +51,7 @@ Grob::Grob() {
 	dataGroupTypes.push_back(dmgType);
 
 	std::unique_ptr<AnimationSet> localAnim = std::make_unique<AnimationSet>();
-	localAnim->loadAnimationSet(ResourcePaths::ANIMATIONS + "grob.fdset", dataGroupTypes, Globals::renderer, true, 0, true);
+	localAnim->loadAnimationSet(ResourcePaths::ANIMATIONS + "grob.fdset", dataGroupTypes, renderer, true, 0, true);
 	this->animSet = localAnim.get();
 	this->localAnimSet = std::move(localAnim);
 	type = "enemy";

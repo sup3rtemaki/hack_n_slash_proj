@@ -5,7 +5,7 @@
 
 class GreenBerry : public Item {
 public:
-	GreenBerry(bool isOnGround, int quant);
+	GreenBerry(bool isOnGround, int quant, SDL_Renderer* renderer);
 	~GreenBerry();
 
 	void update();

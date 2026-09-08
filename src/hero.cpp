@@ -63,7 +63,7 @@ const int Hero::PHEROMONE_TRAIL_MAX_SIZE = 25;
 
 const float ATTACK_TIME = 0.8f;
 
-Hero::Hero() {
+Hero::Hero(SDL_Renderer* renderer) {
 	// Initialize local AnimationSet for Hero
 	{
 		list<DataGroupType> dataGroupTypes;
@@ -84,7 +84,7 @@ Hero::Hero() {
 		dataGroupTypes.push_back(dmgType);
 
 		localAnimSet = std::make_unique<AnimationSet>();
-		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "antHero.fdset", dataGroupTypes, Globals::renderer, true, 0, true);
+		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "antHero.fdset", dataGroupTypes, renderer, true, 0, true);
 		this->animSet = localAnimSet.get();
 	}
 
@@ -106,7 +106,7 @@ Hero::Hero() {
 		dataGroupTypes.push_back(dmgType);
 
 		localAnimSet = std::make_unique<AnimationSet>();
-		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "antHero.fdset", dataGroupTypes, Globals::renderer, true, 0, true);
+		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "antHero.fdset", dataGroupTypes, renderer, true, 0, true);
 		this->animSet = localAnimSet.get();
 	type = "hero";
 

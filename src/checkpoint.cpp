@@ -7,7 +7,7 @@ const string Checkpoint::CHECKPOINT_ANIM_INACTIVE = "inactive";
 const int Checkpoint::CHECKPOINT_STATE_ACTIVE = 0;
 const int Checkpoint::CHECKPOINT_STATE_INACTIVE = 1;
 
-Checkpoint::Checkpoint(int id, const string& mapFileName) {
+Checkpoint::Checkpoint(int id, const string& mapFileName, SDL_Renderer* renderer) {
 	list<DataGroupType> dataGroupTypes;
 	DataGroupType colBoxType; colBoxType.groupName = "collisionBox"; colBoxType.dataType = DataGroupType::DATATYPE_BOX;
 	DataGroupType hitBoxType; hitBoxType.groupName = "hitBox"; hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
@@ -17,7 +17,7 @@ Checkpoint::Checkpoint(int id, const string& mapFileName) {
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "checkpoint.fdset", dataGroupTypes, Globals::renderer);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "checkpoint.fdset", dataGroupTypes, renderer);
 	this->animSet = localAnimSet.get();
 	this->id = id;
 	this->mapFileName = mapFileName;

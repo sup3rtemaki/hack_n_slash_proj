@@ -51,7 +51,7 @@ public:
 
 	static int roundKingsKilled;
 
-	RoundKing();
+	RoundKing(SDL_Renderer* renderer);
 	void update();
 	void updateShoot();
 	void think();
@@ -65,6 +65,9 @@ public:
 	void changeAnimation(int newState, bool resetFrameToBeginning);
 	void updateAnimation();
 	void updateDamages();
+
+private:
+	SDL_Renderer* renderer;
 };
 
 #endif // !ROUNDKING

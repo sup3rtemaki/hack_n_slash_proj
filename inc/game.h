@@ -163,7 +163,9 @@ private:
 	void spawnItemsFromCurrentMap();
 	void inactivateCurrentMapItems();
 	void removeAllEnemiesInMap();
-	map<int, std::unique_ptr<Item>> loadInventoryItems(std::vector<std::pair<int, int>> items);
+	map<int, std::unique_ptr<Item>> loadInventoryItems(
+		std::vector<std::pair<int, int>> items,
+		SDL_Renderer* renderer);
 	void saveGame(bool isCheckpointSave = false);
 	void loadGame();
 	GameState getGameState();

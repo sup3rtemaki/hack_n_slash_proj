@@ -1,11 +1,11 @@
 {
     "bloodstain": {
-        "bEssence": 660,
-        "bMapFile": "warrior_halls_4.json",
-        "bX": -1,
-        "bY": -1
+        "bEssence": 195,
+        "bMapFile": "warrior_halls_3.json",
+        "bX": 602,
+        "bY": 427
     },
-    "essence": 195,
+    "essence": 0,
     "heroHp": 100,
     "heroX": 274,
     "heroY": 394,
@@ -16,16 +16,16 @@
         },
         {
             "id": 1,
-            "itemQty": 6
+            "itemQty": 4
         },
-      {
-        "id": 3,
-        "itemQty": 1
-      },
-      {
-        "id": 2,
-        "itemQty": 1
-      }
+        {
+            "id": 2,
+            "itemQty": 1
+        },
+        {
+            "id": 3,
+            "itemQty": 1
+        }
     ],
     "mapFile": "warrior_halls_3.json"
 }

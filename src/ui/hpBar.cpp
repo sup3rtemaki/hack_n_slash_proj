@@ -26,7 +26,7 @@ const int BOSS_HP_BAR_R = 200;
 const int BOSS_HP_BAR_G = 30;
 const int BOSS_HP_BAR_B = 75;
 
-HPBar::HPBar(LivingEntity* livingEntity, BarType barType) : 
+HPBar::HPBar(LivingEntity* livingEntity, BarType barType) :
 	entity(livingEntity), barType(barType) {
 	setUp();
 }
@@ -86,7 +86,7 @@ void HPBar::setUp() {
 			color.b = HERO_ST_BAR_B;
 			break;
 		case BarType::BOSS_HEALTH_BAR:
-			barWidth = BOSS_HP_BAR_W;	
+			barWidth = BOSS_HP_BAR_W;
 			barHeight = BOSS_HP_BAR_H;
 			x = Globals::ScreenWidth / 2.0f - (barWidth / 2.0f); // centered horizontally
 			y = Globals::ScreenHeight - barHeight - 20; // 20 pixels off the bottom

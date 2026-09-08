@@ -22,7 +22,7 @@ public:
 	void loadAllNpcs(const std::string& directory);
 
 	// Cria um NPC específico
-	std::unique_ptr<FriendlyNpc> createNpc(const std::string& npcId);
+	std::unique_ptr<FriendlyNpc> createNpc(const std::string& npcId, SDL_Renderer* renderer);
 
 	// Verifica se NPC existe
 	bool hasNpc(const std::string& npcId) const;

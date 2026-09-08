@@ -31,7 +31,7 @@ private:
 	void checkAndHandleNearDoor(Entity* entity);
 	void checkAndHandleNearCheckpoint(Entity* entity);
 	void checkAndHandleNearBloodstain(Entity* entity);
-	
+
 	bool isLivingEntityDead(Entity* entity);
 
 	// Callbacks - will be set by Game

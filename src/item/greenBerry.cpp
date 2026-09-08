@@ -4,7 +4,7 @@
 const float HEAL_TIME = 1.0f;
 const float HEAL_AMOUNT = 5.0f;
 
-GreenBerry::GreenBerry(bool isOnGround, int quant) {
+GreenBerry::GreenBerry(bool isOnGround, int quant, SDL_Renderer* renderer) {
 	list<DataGroupType> dataGroupTypes;
 	DataGroupType colBoxType; colBoxType.groupName = "collisionBox"; colBoxType.dataType = DataGroupType::DATATYPE_BOX;
 	DataGroupType hitBoxType; hitBoxType.groupName = "hitBox"; hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
@@ -14,7 +14,7 @@ GreenBerry::GreenBerry(bool isOnGround, int quant) {
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "groundConsumableItem.fdset", dataGroupTypes, Globals::renderer);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "groundConsumableItem.fdset", dataGroupTypes, renderer);
 	this->animSet = localAnimSet.get();
 	id = GREEN_BERRY_ID;
 	quantity = quant;
@@ -25,7 +25,7 @@ GreenBerry::GreenBerry(bool isOnGround, int quant) {
 	this->isOnGround = isOnGround;
 
 	string resPath = getResourcePath() + Item::ITEMS_IMAGES_FOLDER;;
-	this->image = loadTexture(resPath + "greenBerry.png", Globals::renderer);
+	this->image = loadTexture(resPath + "greenBerry.png", renderer);
 
 	collisionBoxW = 8;
 	collisionBoxH = 8;

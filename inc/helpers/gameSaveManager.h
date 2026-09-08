@@ -11,6 +11,7 @@ class Hero;
 class Item;
 class Map;
 class Bloodstain;
+struct SDL_Renderer;
 
 // Orchestrates save/load of game state
 // Marshals data between Game, Hero, SaveHandler, and Item factory
@@ -22,7 +23,8 @@ public:
 	// Load inventory items from save data
 	// Called during game initialization to restore hero inventory
 	std::map<int, std::unique_ptr<Item>> loadInventoryItems(
-		std::vector<std::pair<int, int>> items);
+		std::vector<std::pair<int, int>> items,
+		SDL_Renderer* renderer);
 
 	// Save current game state
 	// isCheckpointSave: if true, saves from checkpoint pos/hp; if false, saves current pos/hp

@@ -9,13 +9,13 @@ const string StoneProjectile::STONE_PROJECTILE_ANIM_DESTROY = "destroy";
  const int StoneProjectile::STONE_PROJECTILE_STATE_DOWN_RIGHT = 1;
  const int StoneProjectile::STONE_PROJECTILE_STATE_DESTROY = 2;
 
-StoneProjectile::StoneProjectile(int x, int y) {
+StoneProjectile::StoneProjectile(int x, int y, SDL_Renderer* renderer) {
 	list<DataGroupType> dataGroupTypes;
 	DataGroupType dmgType; dmgType.groupName = "damage"; dmgType.dataType = DataGroupType::DATATYPE_NUMBER;
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "stoneProjectile.fdset", dataGroupTypes, Globals::renderer);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "stoneProjectile.fdset", dataGroupTypes, renderer);
 	this->animSet = localAnimSet.get();
 	solid = false;
 	collideWithSolids = true;

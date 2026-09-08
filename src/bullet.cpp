@@ -3,11 +3,11 @@
 
 const string Bullet::BULLET_ANIM_BULLET = "bullet";
 
-Bullet::Bullet(int x, int y) {
+Bullet::Bullet(int x, int y, SDL_Renderer* renderer) {
 	list<DataGroupType> dataGroupTypes;
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "bullet.fdset", dataGroupTypes, Globals::renderer);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "bullet.fdset", dataGroupTypes, renderer);
 	this->animSet = localAnimSet.get();
 	solid = false;
 	collideWithSolids = true;

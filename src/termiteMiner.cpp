@@ -29,7 +29,7 @@ const int TermiteMiner::TERMITE_MINER_STATE_DEAD = 4;
 const int TermiteMiner::TERMITE_MINER_AI_NORMAL = 0;
 const int TermiteMiner::TERMITE_MINER_AI_CHASE = 1;
 
-TermiteMiner::TermiteMiner() {
+TermiteMiner::TermiteMiner(SDL_Renderer* renderer) {
 	list<DataGroupType> dataGroupTypes;
 	DataGroupType colBoxType;
 	colBoxType.groupName = "collisionBox";
@@ -48,7 +48,7 @@ TermiteMiner::TermiteMiner() {
 	dataGroupTypes.push_back(dmgType);
 
 	std::unique_ptr<AnimationSet> localAnim = std::make_unique<AnimationSet>();
-	localAnim->loadAnimationSet(ResourcePaths::ANIMATIONS + "termiteMiner.fdset", dataGroupTypes, Globals::renderer, true, 0, true);
+	localAnim->loadAnimationSet(ResourcePaths::ANIMATIONS + "termiteMiner.fdset", dataGroupTypes, renderer, true, 0, true);
 	this->animSet = localAnim.get();
 	this->localAnimSet = std::move(localAnim);
 	type = "enemy";

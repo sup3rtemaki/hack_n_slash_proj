@@ -42,7 +42,7 @@ public:
 
 	int aiState = GROB_AI_NORMAL;
 
-	Grob();
+	Grob(SDL_Renderer* renderer);
 
 	std::unique_ptr<AnimationSet> localAnimSet;
 	void update();

@@ -7,7 +7,7 @@ const string Bloodstain::BLOODSTAIN_ANIM_DIE = "die";
 const int Bloodstain::BLOODSTAIN_STATE_IDLE = 0;
 const int Bloodstain::BLOODSTAIN_STATE_DIE = 1;
 
-Bloodstain::Bloodstain() {
+Bloodstain::Bloodstain(SDL_Renderer* renderer) {
 	list<DataGroupType> dataGroupTypes;
 	DataGroupType colBoxType;
 	colBoxType.groupName = "collisionBox";
@@ -26,7 +26,7 @@ Bloodstain::Bloodstain() {
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "bloodstain.fdset", dataGroupTypes, Globals::renderer);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "bloodstain.fdset", dataGroupTypes, renderer);
 	this->animSet = localAnimSet.get();
 
 	type = "bloodstain";

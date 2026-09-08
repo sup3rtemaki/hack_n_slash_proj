@@ -64,7 +64,7 @@ public:
 
 	int phase;
 
-	SmallBrownSpider();
+	SmallBrownSpider(SDL_Renderer* renderer);
 
 	std::unique_ptr<AnimationSet> localAnimSet;
 	void update();

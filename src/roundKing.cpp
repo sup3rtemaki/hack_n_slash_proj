@@ -26,7 +26,7 @@ const int RoundKing::ROUND_KING_PHASE_FRANTIC = 3;
 
 int RoundKing::roundKingsKilled = 0;
 
-RoundKing::RoundKing() {
+RoundKing::RoundKing(SDL_Renderer* renderer) : renderer(renderer) {
 	// Local anim set could be loaded here if a file is available.
 	this->animSet = nullptr;
 	type = "boss";
@@ -76,7 +76,7 @@ void RoundKing::updateShoot() {
 		}
 		else if (shotTimer <= 0) { //otherwiseif still shooting and its time to take a shot
 			shotTimer = 0.5;
-			Bullet* bullet = new Bullet(x, y);
+			Bullet* bullet = new Bullet(x, y, renderer);
 			soundManager->playSound(SoundIds::SHOOT);
 			bullet->angle = angle;
 			Entity::addEntity(bullet);

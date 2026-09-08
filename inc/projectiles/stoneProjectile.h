@@ -17,7 +17,7 @@ public:
 	float lifetime;
 	float lifetimeTimer;
 
-	StoneProjectile(int x, int y);
+	StoneProjectile(int x, int y, SDL_Renderer* renderer);
 	void update();
 	void die();
 	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");

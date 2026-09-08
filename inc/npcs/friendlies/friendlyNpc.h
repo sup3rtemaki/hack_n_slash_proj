@@ -9,7 +9,7 @@
 
 class FriendlyNpc : public LivingEntity {
 public:
-    FriendlyNpc(const NpcData& npcData);
+    FriendlyNpc(const NpcData& npcData, SDL_Renderer* renderer);
 
     virtual void updateDamages() override;
     virtual void die() override;

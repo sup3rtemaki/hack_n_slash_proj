@@ -17,7 +17,7 @@ public:
 	bool isClosed;
 	bool isLocked;
 
-	Door(int id, string prefix, bool isClosed, int posX, int posY, int width, int height, int collisionBoxYOffset);
+	Door(int id, string prefix, bool isClosed, int posX, int posY, int width, int height, int collisionBoxYOffset, SDL_Renderer* renderer);
 	virtual ~Door() = default;
 
 	std::unique_ptr<AnimationSet> localAnimSet;

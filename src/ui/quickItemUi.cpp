@@ -66,7 +66,7 @@ void QuickItemUi::drawItemFrame() {
 }
 
 void QuickItemUi::drawCurrentItem() {
-	if (hero->quickAccessInventory.empty() || 
+	if (hero->quickAccessInventory.empty() ||
 		hero->quickAccessInventory[hero->quickAccessInventoryIndex] < 0) return;
 
 	if (renderer == nullptr) return;

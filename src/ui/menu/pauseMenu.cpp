@@ -25,7 +25,7 @@ PauseMenu::PauseMenu(Hero* hero) {
 	itemNameTexture = nullptr;
 	itemDescTexture = nullptr;
 	lastItemName = "";
-	lastItemDesc = ""; 
+	lastItemDesc = "";
 	setUp();
 }
 
@@ -461,7 +461,7 @@ void PauseMenu::setUp() {
     menuState = MenuState::Inactive;
     currentPage = MenuPage::PAGE1;
     previousPage = MenuPage::PAGE5;
-    
+
     // Inicializa modo de invent�rio
     inventoryMode = InventoryMode::Normal;
     quickAccessIndex = 0;

@@ -81,7 +81,7 @@ Game::Game() : gameSaveManager(saveHandler) {
 	loadTiledMap(resPath + ResourcePaths::MAPS + currentMap->file);
 
 	// build hero entity
-	hero = new Hero();
+	hero = new Hero(renderContext.renderer);
 	hero->setSoundManager(&SoundManager::soundManager);
 	hero->invincibleTimer = 0;
 	hero->hp = gameSaveManager.getHeroHp();
@@ -89,7 +89,7 @@ Game::Game() : gameSaveManager(saveHandler) {
 	hero->y = hero->lastCheckpointPos.y = gameSaveManager.getHeroY();
 	hero->essence = gameSaveManager.getEssence();
 	hero->inventory.clear();
-	hero->inventory = loadInventoryItems(gameSaveManager.getItems());
+	hero->inventory = loadInventoryItems(gameSaveManager.getItems(), renderContext.renderer);
 	//for (auto i : hero->inventory) {
 	//	hero->addItemToQuickAccess(i.first);
 	//	hero->quickAccessInventoryIndex++;
@@ -102,7 +102,7 @@ Game::Game() : gameSaveManager(saveHandler) {
 	defeatedBossesIds = gameSaveManager.getDefeatedBossesIds();
 
 	// bloodstain
-	bloodstain = new Bloodstain();
+	bloodstain = new Bloodstain(renderContext.renderer);
 	bloodstain->setSoundManager(&SoundManager::soundManager);
 	BloodstainInfo bloodstainInfo = gameSaveManager.getBloodstainInfo();
 	bloodstain->setLocation(
@@ -136,7 +136,7 @@ Game::Game() : gameSaveManager(saveHandler) {
 	try {
 		NpcFactory::getInstance().loadAllNpcs("data/npcs/");
 		if (NpcFactory::getInstance().hasNpc("blacksmith")) {
-			auto npcUP = NpcFactory::getInstance().createNpc("blacksmith");
+			auto npcUP = NpcFactory::getInstance().createNpc("blacksmith", renderContext.renderer);
 			FriendlyNpc* npc = npcUP.release();
 			// place npc close to hero
 			npc->x = hero->x + 32;
@@ -154,7 +154,8 @@ Game::Game() : gameSaveManager(saveHandler) {
 	// Initialize map population system BEFORE using it
 	mapPopulationSystem = new MapPopulationSystem(
 		tiledMap, currentMap, entities, walls, fogWalls, currentMapEnemies,
-		hero, currentBoss, gui, openDoorsIds, defeatedBossesIds, deadEnemiesIds, bossHpBar
+		hero, currentBoss, gui, openDoorsIds, defeatedBossesIds, deadEnemiesIds, bossHpBar,
+		renderContext.renderer
 	);
 	mapPopulationSystem->setSpawnItemCallback([this](int itemId, int quant, int xPos, int yPos) {
 		this->spawnItem(itemId, quant, xPos, yPos);
@@ -752,7 +753,7 @@ void Game::handleMapChange(bool isHeroRespawn) {
 
 void Game::draw() {
 	// renderContext is already synced from renderFrame()
-	
+
 	// 1. Tudo o que for desenhado agora vai para o gameCanvas
 	SDL_SetRenderTarget(renderContext.renderer, gameCanvas);
 
@@ -823,13 +824,13 @@ void Game::spawnItem(int itemId, int quant, int xPos, int yPos) {
 
 	switch (itemId) {
 	case Item::HONEYDEW_POTION_ID:
-		spawnItem = new HoneydewPotion(canSpawn, quant);
+		spawnItem = new HoneydewPotion(canSpawn, quant, renderContext.renderer);
 		break;
 	case Item::GREEN_BERRY_ID:
-		spawnItem = new GreenBerry(canSpawn, quant);
+		spawnItem = new GreenBerry(canSpawn, quant, renderContext.renderer);
 		break;
 	case Item::STONE_ID:
-		spawnItem = new Stone(canSpawn, quant);
+		spawnItem = new Stone(canSpawn, quant, renderContext.renderer);
 		break;
 	default:
 		return;
@@ -879,8 +880,10 @@ void Game::removeAllEnemiesInMap() {
 	mapStateSystem->removeAllEnemiesInMap(entities, currentMapEnemies, deadEnemiesIds);
 }
 
-map<int, std::unique_ptr<Item>> Game::loadInventoryItems(std::vector<std::pair<int, int>> items) {
-	return gameSaveManager.loadInventoryItems(items);
+map<int, std::unique_ptr<Item>> Game::loadInventoryItems(
+	vector<pair<int, int>> items,
+	SDL_Renderer* renderer) {
+	return gameSaveManager.loadInventoryItems(items, renderer);
 }
 
 void Game::saveGame(bool isCheckpointSave) {

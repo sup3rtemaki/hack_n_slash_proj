@@ -1,7 +1,7 @@
 #include "item/honeydewPotion.h"
 #include "resourceConfig.h"
 
-HoneydewPotion::HoneydewPotion(bool isOnGround, int quant) {
+HoneydewPotion::HoneydewPotion(bool isOnGround, int quant, SDL_Renderer* renderer) {
 	list<DataGroupType> dataGroupTypes;
 	DataGroupType colBoxType; colBoxType.groupName = "collisionBox"; colBoxType.dataType = DataGroupType::DATATYPE_BOX;
 	DataGroupType hitBoxType; hitBoxType.groupName = "hitBox"; hitBoxType.dataType = DataGroupType::DATATYPE_BOX;
@@ -11,7 +11,7 @@ HoneydewPotion::HoneydewPotion(bool isOnGround, int quant) {
 	dataGroupTypes.push_back(dmgType);
 
 	localAnimSet = std::make_unique<AnimationSet>();
-	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "groundConsumableItem.fdset", dataGroupTypes, Globals::renderer);
+	localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "groundConsumableItem.fdset", dataGroupTypes, renderer);
 	this->animSet = localAnimSet.get();
 	id = HONEYDEW_POTION_ID;
 	quantity = quant;
@@ -22,7 +22,7 @@ HoneydewPotion::HoneydewPotion(bool isOnGround, int quant) {
 	this->isOnGround = isOnGround;
 
 	string resPath = getResourcePath() + Item::ITEMS_IMAGES_FOLDER;
-	this->image = loadTexture(resPath + "honeyDewPotion.png", Globals::renderer);
+	this->image = loadTexture(resPath + "honeyDewPotion.png", renderer);
 
 	collisionBoxW = 8;
 	collisionBoxH = 8;

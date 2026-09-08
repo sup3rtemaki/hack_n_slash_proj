@@ -9,7 +9,7 @@ class Bullet : public LivingEntity {
 public:
 	static const string BULLET_ANIM_BULLET;
 
-	Bullet(int x, int y);
+	Bullet(int x, int y, SDL_Renderer* renderer);
 	void update();
 	void die() {};
 	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");

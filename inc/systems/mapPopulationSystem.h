@@ -12,6 +12,7 @@ class Hero;
 class Ui;
 class HPBar;
 class LivingEntity;
+struct SDL_Renderer;
 
 namespace tson {
 	class Map;
@@ -32,7 +33,8 @@ public:
 		std::vector<int>& openDoorsIds,
 		std::vector<int>& defeatedBossesIds,
 		std::list<int>& deadEnemiesIds,
-		HPBar*& bossHpBar
+		HPBar*& bossHpBar,
+		SDL_Renderer* renderer
 	);
 
 	void buildDoors();
@@ -70,6 +72,7 @@ private:
 	std::vector<int>& defeatedBossesIds;
 	std::list<int>& deadEnemiesIds;
 	HPBar*& bossHpBar;
+	SDL_Renderer* renderer;
 
 	std::function<void(int, int, int, int)> spawnItemCallback;
 	std::function<void()> syncRegistryCallback;

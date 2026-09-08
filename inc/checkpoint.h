@@ -16,7 +16,7 @@ public:
 	bool isActivated;
 	string mapFileName;
 
-	Checkpoint(int id = 0, const string& mapFileName = "");
+	Checkpoint(int id = 0, const string& mapFileName = "", SDL_Renderer* renderer = nullptr);
 	virtual ~Checkpoint() = default;
 
 	void activate();
