@@ -16,17 +16,12 @@ public:
 	//useful as a dev
 	static bool debugging;
 
-	static bool pause;
-
 	//sdl
 	static int ScreenWidth, ScreenHeight, ScreenScale;
 	static SDL_Renderer* renderer;
 
 	//clips off header
 	static string clipOffDataHeader(string data);
-
-	//camera
-	static SDL_Rect camera;
 };
 
 #endif // !GLOBALS

@@ -17,6 +17,7 @@ public:
     PauseMenu(Hero* hero);
     ~PauseMenu();
 
+    void setRenderer(SDL_Renderer* rendererContext) override;
     virtual void draw() override;
     virtual void onIndexUp() override;
     virtual void onIndexDown() override;

@@ -45,17 +45,27 @@ void EssenceCounterUi::draw() {
 
 void EssenceCounterUi::setUp() {
 	__super::setUp();
-	essenceCounterBarTexture =
-		loadTexture(Ui::RES_PATH + ESSENCE_COUNTER_BAR_FOLDER + ESSENCE_COUNTER_BAR_FILE, renderer ? renderer : Globals::renderer);
+    essenceCounterBarTexture = nullptr;
+}
+
+void EssenceCounterUi::setRenderer(SDL_Renderer* rendererContext) {
+    Ui::setRenderer(rendererContext);
+    if (renderer == nullptr || essenceCounterBarTexture != nullptr) return;
+
+    essenceCounterBarTexture = loadTexture(
+        Ui::RES_PATH + ESSENCE_COUNTER_BAR_FOLDER + ESSENCE_COUNTER_BAR_FILE,
+        renderer
+    );
 }
 
 void EssenceCounterUi::drawBar() {
-	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
-	if (targetRenderer == nullptr) return;
-	renderTexture(essenceCounterBarTexture, targetRenderer, FONT_X + BAR_X_OFFSET, FONT_Y + BAR_Y_OFFSET);
+    if (renderer == nullptr) return;
+    renderTexture(essenceCounterBarTexture, renderer, FONT_X + BAR_X_OFFSET, FONT_Y + BAR_Y_OFFSET);
 }
 
 void EssenceCounterUi::drawEssenceQuantity() {
+    if (renderer == nullptr) return;
+
     int currentEssence = hero->essence;
 
     // SO criar nova textura se essence mudou
@@ -75,7 +85,7 @@ void EssenceCounterUi::drawEssenceQuantity() {
             Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
             color,
             FONT_SIZE,
-            renderer ? renderer : Globals::renderer
+			renderer
         );
 
         lastEssence = currentEssence;
@@ -87,5 +97,5 @@ void EssenceCounterUi::drawEssenceQuantity() {
         digits = int(log10(currentEssence) + 1) :
         digits = 1;
     int xOffsetAlign = (FONT_SIZE / 2) * digits;
-    renderTexture(fontTexture, renderer ? renderer : Globals::renderer, FONT_X - xOffsetAlign, FONT_Y);
+	renderTexture(fontTexture, renderer, FONT_X - xOffsetAlign, FONT_Y);
 }

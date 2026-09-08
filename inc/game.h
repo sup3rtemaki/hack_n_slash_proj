@@ -88,6 +88,7 @@ public:
 	bool bossActive = false;
 	bool mustSpawnEnemies = false;
 	bool mustRemoveAllEnemies = false;
+	bool isPaused = false;
 	bool quit = false;
 	bool mustSetBloodstainLocation = true;
 

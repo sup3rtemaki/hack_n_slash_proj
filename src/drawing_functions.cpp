@@ -8,6 +8,11 @@
 * @return the loaded texture, or nullptr if something went wrong.
 */
 SDL_Texture* loadTexture(const std::string &file, SDL_Renderer *ren){
+	if (ren == nullptr) {
+		cout << "LoadTexture error: renderer is null" << endl;
+		return nullptr;
+	}
+
 	SDL_Texture *texture = IMG_LoadTexture(ren, file.c_str());
 	if (texture == nullptr){
 		cout<< "LoadTexture error"<<endl;
@@ -57,6 +62,10 @@ SDL_Texture *convertSurfaceToTexture(SDL_Surface* surface, SDL_Renderer *ren, bo
 void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, SDL_Rect dst,
 	SDL_Rect *clip)
 {
+	if (tex == nullptr || ren == nullptr) {
+		return;
+	}
+
 	SDL_RenderCopy(ren, tex, clip, &dst);
 }
 /**
@@ -74,6 +83,10 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, SDL_Rect dst,
 void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y,
 	SDL_Rect *clip)
 {
+	if (tex == nullptr || ren == nullptr) {
+		return;
+	}
+
 	SDL_Rect dst;
 	dst.x = x;
 	dst.y = y;
@@ -100,6 +113,11 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y,
 SDL_Texture* renderText(const std::string &message, const std::string &fontFile,
 	SDL_Color color, int fontSize, SDL_Renderer *renderer)
 {
+	if (renderer == nullptr) {
+		cout << "renderText error: renderer is null" << endl;
+		return nullptr;
+	}
+
 	//Open the font
 	//TODO: store fonts externally from this function call. Bad performance warning!!!
 	TTF_Font *font = TTF_OpenFont(fontFile.c_str(), fontSize);
@@ -137,6 +155,10 @@ SDL_Texture* renderText(const std::string &message, const std::string &fontFile,
 SDL_Texture* renderText(const std::string &message, TTF_Font *font,
 	SDL_Color color, SDL_Renderer *renderer)
 {
+	if (renderer == nullptr) {
+		cout << "renderText error: renderer is null" << endl;
+		return nullptr;
+	}
 	if (font == nullptr){
 		cout << "TTF_OpenFont" << endl;
 		return nullptr;
@@ -159,6 +181,11 @@ SDL_Texture* renderText(const std::string &message, TTF_Font *font,
 }
 
 bool saveScreenshotBMP(std::string filepath, SDL_Window* SDLWindow, SDL_Renderer* SDLRenderer) {
+	if (SDLRenderer == nullptr || SDLWindow == nullptr) {
+		std::cerr << "Failed to save screenshot: window or renderer is null\n";
+		return false;
+	}
+
 	SDL_Surface* saveSurface = NULL;
 	SDL_Surface* infoSurface = NULL;
 	infoSurface = SDL_GetWindowSurface(SDLWindow);

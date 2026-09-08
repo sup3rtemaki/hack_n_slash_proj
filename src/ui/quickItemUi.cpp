@@ -47,30 +47,39 @@ void QuickItemUi::draw() {
 
 void QuickItemUi::setUp() {
 	__super::setUp();
-	quickItemFrame =
-		loadTexture(Ui::RES_PATH + ITEM_FRAME_FOLDER + ITEM_FRAME_FILE, renderer ? renderer : Globals::renderer);
+	quickItemFrame = nullptr;
+}
+
+void QuickItemUi::setRenderer(SDL_Renderer* rendererContext) {
+	Ui::setRenderer(rendererContext);
+	if (renderer == nullptr || quickItemFrame != nullptr) return;
+
+	quickItemFrame = loadTexture(
+		Ui::RES_PATH + ITEM_FRAME_FOLDER + ITEM_FRAME_FILE,
+		renderer
+	);
 }
 
 void QuickItemUi::drawItemFrame() {
-	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
-	if (targetRenderer == nullptr) return;
-	renderTexture(quickItemFrame, targetRenderer, ITEM_X, ITEM_Y);
+	if (renderer == nullptr) return;
+	renderTexture(quickItemFrame, renderer, ITEM_X, ITEM_Y);
 }
 
 void QuickItemUi::drawCurrentItem() {
 	if (hero->quickAccessInventory.empty() || 
 		hero->quickAccessInventory[hero->quickAccessInventoryIndex] < 0) return;
 
-	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
-	if (targetRenderer == nullptr) return;
+	if (renderer == nullptr) return;
 	renderTexture(
 		hero->inventory.find(hero->quickAccessInventory[hero->quickAccessInventoryIndex])->second->image,
-		targetRenderer,
+		renderer,
 		ITEM_FRAME_X, ITEM_FRAME_Y
 	);
 }
 
 void QuickItemUi::drawItemQuantity() {
+	if (renderer == nullptr) return;
+
     if (hero->quickAccessInventory.empty() ||
         hero->quickAccessInventory[hero->quickAccessInventoryIndex] < 0) return;
 
@@ -99,7 +108,7 @@ void QuickItemUi::drawItemQuantity() {
             Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
             color,
             ITEM_QUANTITY_FONT_SIZE,
-            renderer ? renderer : Globals::renderer
+			renderer
         );
 
         lastQuantity = currentQuantity;
@@ -107,6 +116,6 @@ void QuickItemUi::drawItemQuantity() {
     }
 
     // Renderizar textura cacheada
-    renderTexture(itemQuantityTexture, renderer ? renderer : Globals::renderer,
+	renderTexture(itemQuantityTexture, renderer,
         ITEM_QUANTITY_FONT_X, ITEM_QUANTITY_FONT_Y);
 }

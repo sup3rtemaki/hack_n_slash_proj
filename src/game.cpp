@@ -38,25 +38,18 @@ Game::Game() : gameSaveManager(saveHandler) {
 
 	mustSpawnEnemies = true;
 
-	SDL_Renderer* renderer = Globals::renderer;  // Cache renderer reference
+	// setup camera
+	// Initialize renderContext as the explicit dependency source for subsequent bootstrap resources.
+	renderContext.renderer = Globals::renderer;
+	renderContext.camera = { 0, 0, Globals::ScreenWidth, Globals::ScreenHeight };
+	renderContext.debugging = Globals::debugging;
 
-	fadeImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "blackBG.png", renderer);
-	splashImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "cyborgtitle.png", renderer);
-	overlayImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "overlay.png", renderer);
+	fadeImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "blackBG.png", renderContext.renderer);
+	splashImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "cyborgtitle.png", renderContext.renderer);
+	overlayImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "overlay.png", renderContext.renderer);
 
 	splashShowing = false;
 	overlayTimer = 2;
-
-	//setup camera
-	Globals::camera.x = 0;
-	Globals::camera.y = 0;
-	Globals::camera.w = Globals::ScreenWidth;
-	Globals::camera.h = Globals::ScreenHeight;
-
-	// Initialize renderContext
-	renderContext.renderer = Globals::renderer;
-	renderContext.camera = Globals::camera;
-	renderContext.debugging = Globals::debugging;
 	tileRenderer = new TileRenderer(
 		renderContext,
 		resPath + ResourcePaths::TEXTURES);
@@ -184,7 +177,7 @@ Game::Game() : gameSaveManager(saveHandler) {
 	camController.target = hero;
 
 	gameCanvas = SDL_CreateTexture(
-		renderer,
+		renderContext.renderer,
 		SDL_PIXELFORMAT_RGBA8888,
 		SDL_TEXTUREACCESS_TARGET,
 		Globals::ScreenWidth,
@@ -222,6 +215,7 @@ Game::Game() : gameSaveManager(saveHandler) {
 	pauseMenuSystem = new PauseMenuSystem(pauseMenu, gameTime, renderContext);
 	pauseMenuSystem->setResumeGameCallback([this]() {
 		gameState = GameState::InGame;
+		isPaused = false;
 	});
 	pauseMenuSystem->setCheckQuitCallback([this]() {
 		return quit;
@@ -231,7 +225,7 @@ Game::Game() : gameSaveManager(saveHandler) {
 	mainMenuSystem = new MainMenuSystem(mainMenu, renderContext);
 	mainMenuSystem->setStartGameCallback([this]() {
 		gameState = GameState::InGame;
-		Globals::pause = false;
+		isPaused = false;
 	});
 	mainMenuSystem->setQuitCallback([this]() {
 		quit = true;
@@ -519,7 +513,7 @@ void Game::runMainGame() {
 			switch (event.key.keysym.scancode) {
 			case SDL_SCANCODE_ESCAPE:
 				pauseMenu->menuState = MenuState::Active;
-				Globals::pause = true;
+				isPaused = true;
 				gameState = GameState::Paused;
 				break;
 			case SDL_SCANCODE_SPACE:
@@ -622,7 +616,7 @@ void Game::runMainGame() {
 	}
 
 	// update all entities
-	if (!Globals::pause) {
+	if (!isPaused) {
 		updateEntities();
 	}
 
@@ -703,10 +697,7 @@ void Game::renderFrame() {
 
 	// update camera position
 	camController.deltaTime = gameTime.dT;
-	camController.update(Globals::camera, WORLD_WIDTH, WORLD_HEIGHT);
-
-	// Sync camera before the render pass
-	renderContext.camera = Globals::camera;
+	camController.update(renderContext.camera, WORLD_WIDTH, WORLD_HEIGHT);
 
 	// draw all entites
 	draw();

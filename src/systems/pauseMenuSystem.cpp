@@ -40,7 +40,6 @@ void PauseMenuSystem::handleKeyDown(SDL_Keycode keycode) {
 		switch (pauseMenu->menuState) {
 		case MenuState::Active:
 			pauseMenu->menuState = MenuState::Inactive;
-			Globals::pause = false;
 			if (resumeGameCallback) {
 				resumeGameCallback();
 			}

@@ -50,6 +50,10 @@ SubMenu::~SubMenu() {
 	menuItems.clear();
 }
 
+void SubMenu::setRenderer(SDL_Renderer* rendererContext) {
+	Ui::setRenderer(rendererContext);
+}
+
 void SubMenu::setUp() {
 	menuState = MenuState::Inactive;
 	selectionRect = new SDL_Rect();
@@ -85,20 +89,18 @@ void SubMenu::draw() {
 }
 
 void SubMenu::drawMenuBackground() {
-	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
-	if (targetRenderer == nullptr) return;
+	if (renderer == nullptr) return;
 
 	const int bgRectWidth = Globals::ScreenWidth / 8;
 	const int bgRectHeight = Globals::ScreenHeight / 6;
 	*bgRect = { xPos, yPos, bgRectWidth, bgRectHeight };
-	SDL_SetRenderDrawBlendMode(targetRenderer, SDL_BLENDMODE_BLEND);
-	SDL_SetRenderDrawColor(targetRenderer, 100, 100, 100, 150);
-	SDL_RenderFillRect(targetRenderer, bgRect);
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 150);
+	SDL_RenderFillRect(renderer, bgRect);
 }
 
 void SubMenu::drawText() {
-	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
-	if (targetRenderer == nullptr) return;
+	if (renderer == nullptr) return;
 
 	// Verificar se items mudaram
 	if (menuTextTextures.size() != menuItems.size()) {
@@ -117,7 +119,7 @@ void SubMenu::drawText() {
 				Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
 				color,
 				FONT_SIZE,
-				targetRenderer
+				renderer
 			);
 			menuTextTextures.push_back(texture);
 		}
@@ -136,7 +138,7 @@ void SubMenu::drawText() {
 
 		renderTexture(
 			menuTextTextures[i],
-			targetRenderer,
+			renderer,
 			(bgRect->x + bgRect->w / 4) - textXOffset,
 			bgRect->y + 2 + textYOffset
 		);
@@ -146,13 +148,12 @@ void SubMenu::drawText() {
 }
 
 void SubMenu::drawSelectionBox() {
-	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
-	if (targetRenderer == nullptr) return;
+	if (renderer == nullptr) return;
 
 	const int yLinePos = yPos + (FONT_SIZE + 2) * (index + 1);
-	SDL_SetRenderDrawColor(targetRenderer, 200, 200, 200, 255);
+	SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
 	SDL_RenderDrawLine(
-		targetRenderer,
+		renderer,
 		xPos + 2,
 		yLinePos,
 		xPos + bgRect->w - 2,

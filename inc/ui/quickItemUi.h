@@ -14,6 +14,7 @@ public:
 
 	virtual void draw() override;
 	virtual void setUp() override;
+	virtual void setRenderer(SDL_Renderer* rendererContext) override;
 
 private:
 	SDL_Texture* quickItemFrame;

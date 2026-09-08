@@ -8,6 +8,7 @@ public:
 	SubMenu(Hero* hero);
 	~SubMenu();
 
+	void setRenderer(SDL_Renderer* rendererContext) override;
 	void activateSubMenu(int x, int y);
 	void useSelectedItem(int itemId);
 	void addSelectedItemToQuickAccess(int itemId);
