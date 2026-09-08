@@ -33,16 +33,18 @@ HPBar::HPBar(LivingEntity* livingEntity, BarType barType) :
 
 void HPBar::draw() {
 	if (entity == nullptr || !entity->active || entity->hp <= 0) return;
+	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
+	if (targetRenderer == nullptr) return;
 
-	SDL_SetRenderDrawColor(Globals::renderer, color.r / 5, color.g / 5, color.b / 5, SDL_ALPHA_OPAQUE);
+	SDL_SetRenderDrawColor(targetRenderer, color.r / 5, color.g / 5, color.b / 5, SDL_ALPHA_OPAQUE);
 	SDL_Rect backgroundRect = { x + 2, y + 2, (barWidth - 4), (barHeight - 4) };
-	SDL_RenderFillRect(Globals::renderer, &backgroundRect);
+	SDL_RenderFillRect(targetRenderer, &backgroundRect);
 
-	SDL_SetRenderDrawColor(Globals::renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
+	SDL_SetRenderDrawColor(targetRenderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
 
 	//draw hp bar borders (TODO add image)
 	SDL_Rect barContainer = { x, y, barWidth, barHeight };
-	SDL_RenderDrawRect(Globals::renderer, &barContainer);
+	SDL_RenderDrawRect(targetRenderer, &barContainer);
 
 	//percentage of entities health remaining
 	float percent = entity->hp / (entity->hpMax * 1.0f);//1.0f to return a float
@@ -59,7 +61,7 @@ void HPBar::draw() {
 	}
 
 	SDL_Rect hpRect = { x + 2, y + 2, (barWidth - 4) * percent, (barHeight - 4) };
-	SDL_RenderFillRect(Globals::renderer, &hpRect);
+	SDL_RenderFillRect(targetRenderer, &hpRect);
 }
 
 void HPBar::setUp() {

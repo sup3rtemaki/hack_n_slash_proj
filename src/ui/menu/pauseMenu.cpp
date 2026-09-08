@@ -162,10 +162,13 @@ void PauseMenu::drawPageInitialCheck() {
 }
 
 void PauseMenu::drawInventoryItems() {
+	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
+	if (targetRenderer == nullptr) return;
+
 	// Desenha a imagem de fundo dos items
 	renderTexture(
 		itemsBg,
-		Globals::renderer,
+		targetRenderer,
 		ITEMS_IMAGES_GRID_X_POSITION,
 		ITEMS_IMAGES_GRID_Y_POSITION
 	);
@@ -193,8 +196,8 @@ void PauseMenu::drawInventoryItems() {
 		if (isInQuickAccess) {
 			// Desenha um pequeno �cone ou borda colorida
 			SDL_Rect indicator = { textureXPos + 30, textureYPos, 10, 10 };
-			SDL_SetRenderDrawColor(Globals::renderer, 0, 255, 0, 255);
-			SDL_RenderFillRect(Globals::renderer, &indicator);
+			SDL_SetRenderDrawColor(targetRenderer, 0, 255, 0, 255);
+			SDL_RenderFillRect(targetRenderer, &indicator);
 		}
 
 		textureXPos += ITEMS_IMAGES_X_OFFSET;
@@ -213,6 +216,9 @@ void PauseMenu::drawInventoryItems() {
 }
 
 void PauseMenu::drawSelectedItemNameAndDescription() {
+	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
+	if (targetRenderer == nullptr) return;
+
 	// Verificar se item mudou
 	const string& itemName = inventory.at(index)->name;
 	const string& itemDesc = inventory.at(index)->description;
@@ -231,7 +237,7 @@ void PauseMenu::drawSelectedItemNameAndDescription() {
 			Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
 			color,
 			FONT_SIZE,
-			Globals::renderer
+			targetRenderer
 		);
 
 		lastItemName = itemName;
@@ -246,7 +252,7 @@ void PauseMenu::drawSelectedItemNameAndDescription() {
 
 	renderTexture(
 		itemNameTexture,
-		Globals::renderer,
+		targetRenderer,
 		((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
 		(Globals::ScreenHeight / 8)
 	);
@@ -274,7 +280,7 @@ void PauseMenu::drawSelectedItemNameAndDescription() {
 			);
 
 			if (textSurf != nullptr) {
-				itemDescTexture = SDL_CreateTextureFromSurface(Globals::renderer, textSurf);
+				itemDescTexture = SDL_CreateTextureFromSurface(targetRenderer, textSurf);
 				SDL_FreeSurface(textSurf);
 			}
 
@@ -294,7 +300,7 @@ void PauseMenu::drawSelectedItemNameAndDescription() {
 
 		renderTexture(
 			itemDescTexture,
-			Globals::renderer,
+			targetRenderer,
 			((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
 			(Globals::ScreenHeight / 8) + (FONT_SIZE * 1.2)
 		);
@@ -302,6 +308,9 @@ void PauseMenu::drawSelectedItemNameAndDescription() {
 }
 
 void PauseMenu::drawQuickInventory() {
+	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
+	if (targetRenderer == nullptr) return;
+
 	// Desenha imagens dos itens no inventario
 	int textureXPos = QUICK_INVENTORY_ITEMS_GRID_X_POSITION;
 	int textureYPos = QUICK_INVENTORY_ITEMS_GRID_Y_POSITION;
@@ -340,18 +349,21 @@ void PauseMenu::drawQuickInventory() {
 }
 
 void PauseMenu::drawMenuForeground() {
+	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
+	if (targetRenderer == nullptr) return;
+
 	switch (currentPage) {
 	case MenuPage::PAGE2:
-		SDL_SetRenderDrawColor(Globals::renderer, 100, 100, 100, 200);
+		SDL_SetRenderDrawColor(targetRenderer, 100, 100, 100, 200);
 		SDL_RenderDrawLine(
-			Globals::renderer,
+			targetRenderer,
 			Globals::ScreenWidth / 2,
 			Globals::ScreenHeight / 14,
 			Globals::ScreenWidth / 2,
 			Globals::ScreenHeight - Globals::ScreenHeight / 14);
 
 		SDL_RenderDrawLine(
-			Globals::renderer,
+			targetRenderer,
 			Globals::ScreenWidth - Globals::ScreenWidth / 3,
 			225,
 			Globals::ScreenWidth - 100,
@@ -415,17 +427,19 @@ SDL_Point PauseMenu::calculateQuickAccessRectSelectionBoxPosition() {
 
 void PauseMenu::drawQuickAccessSelectionBox() {
 	if (inventoryMode != InventoryMode::SelectingQuickSlot) return;
+	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
+	if (targetRenderer == nullptr) return;
 
 	SDL_Point selectionPos = calculateQuickAccessRectSelectionBoxPosition();
 	SDL_Rect quickSelectionRect = { selectionPos.x, selectionPos.y, 36, 36 };
 
 	// Desenha com uma cor diferente para indicar modo de sele��o
-	SDL_SetRenderDrawColor(Globals::renderer, 255, 255, 0, 255); // Amarelo
-	SDL_RenderDrawRect(Globals::renderer, &quickSelectionRect);
+	SDL_SetRenderDrawColor(targetRenderer, 255, 255, 0, 255); // Amarelo
+	SDL_RenderDrawRect(targetRenderer, &quickSelectionRect);
 
 	// Desenha uma segunda linha para destacar
 	SDL_Rect quickSelectionRect2 = { selectionPos.x - 1, selectionPos.y - 1, 38, 38 };
-	SDL_RenderDrawRect(Globals::renderer, &quickSelectionRect2);
+	SDL_RenderDrawRect(targetRenderer, &quickSelectionRect2);
 }
 
 void PauseMenu::setUp() {
@@ -448,15 +462,15 @@ void PauseMenu::setUp() {
 
     itemsBg = loadTexture(
         Ui::RES_PATH + PAUSE_MENU_ITEMS_BG_FILE,
-        Globals::renderer
+        renderer ? renderer : Globals::renderer
     );
     leftArrowTexture = loadTexture(
         Ui::RES_PATH + PAUSE_ARROW_LEFT_FILE,
-        Globals::renderer
+        renderer ? renderer : Globals::renderer
     );
     rightArrowTexture = loadTexture(
         Ui::RES_PATH + PAUSE_ARROW_RIGHT_FILE,
-        Globals::renderer
+        renderer ? renderer : Globals::renderer
     );
 
     if (hero == nullptr) return;
@@ -467,20 +481,23 @@ void PauseMenu::setUp() {
 }
 
 void PauseMenu::drawMenuBackground() {
+	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
+	if (targetRenderer == nullptr) return;
+
 	const int bgRectX = Globals::ScreenWidth / 16;
 	const int bgRectY = Globals::ScreenHeight / 16;
 	const int bgRectWidth = Globals::ScreenWidth - Globals::ScreenWidth / 8;
 	const int bgRectHeight = Globals::ScreenHeight - Globals::ScreenHeight / 8;
 	*bgRect = { bgRectX, bgRectY, bgRectWidth, bgRectHeight };
-	SDL_SetRenderDrawBlendMode(Globals::renderer, SDL_BLENDMODE_BLEND);
-	SDL_SetRenderDrawColor(Globals::renderer, 50, 50, 50, 220);
-	SDL_RenderFillRect(Globals::renderer, bgRect);
+	SDL_SetRenderDrawBlendMode(targetRenderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(targetRenderer, 50, 50, 50, 220);
+	SDL_RenderFillRect(targetRenderer, bgRect);
 
 	switch (currentPage) {
 	case MenuPage::PAGE1:
 		renderTexture(
 			rightArrowTexture,
-			Globals::renderer,
+			targetRenderer,
 			bgRectX + bgRectWidth - 5,
 			ITEMS_IMAGES_GRID_Y_POSITION + 100
 		);
@@ -488,7 +505,7 @@ void PauseMenu::drawMenuBackground() {
 	case MenuPage::PAGE2:
 		renderTexture(
 			leftArrowTexture,
-			Globals::renderer,
+			targetRenderer,
 			bgRectX - 5,
 			ITEMS_IMAGES_GRID_Y_POSITION + 100
 		);
@@ -514,12 +531,15 @@ void PauseMenu::drawText() {
 }
 
 void PauseMenu::drawSelectionBox() {
+	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
+	if (targetRenderer == nullptr) return;
+
 	switch (currentPage) {
 	case MenuPage::PAGE1: {
 		const int yLinePos = (Globals::ScreenHeight / 8) + (FONT_SIZE + 2) * (index + 1);
-		SDL_SetRenderDrawColor(Globals::renderer, 200, 200, 200, 255);
+		SDL_SetRenderDrawColor(targetRenderer, 200, 200, 200, 255);
 		SDL_RenderDrawLine(
-			Globals::renderer,
+			targetRenderer,
 			90,
 			yLinePos,
 			150,
@@ -530,13 +550,16 @@ void PauseMenu::drawSelectionBox() {
 		SDL_Point selectionRectPos = calculateRectSelectionBoxPosition();
 		selectionRect->x = selectionRectPos.x;
 		selectionRect->y = selectionRectPos.y;
-		SDL_SetRenderDrawColor(Globals::renderer, 200, 200, 200, 255);
-		SDL_RenderDrawRect(Globals::renderer, selectionRect);
+		SDL_SetRenderDrawColor(targetRenderer, 200, 200, 200, 255);
+		SDL_RenderDrawRect(targetRenderer, selectionRect);
 		break;
 	}
 }
 
 void PauseMenu::drawPage1() {
+	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
+	if (targetRenderer == nullptr) return;
+
 	drawPageInitialCheck();
 
 	vector<string> menuItemsToShow;
@@ -575,7 +598,7 @@ void PauseMenu::drawPage1() {
 				Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
 				color,
 				FONT_SIZE,
-				Globals::renderer
+				targetRenderer
 			);
 			menuTextTextures.push_back(texture);
 			cachedMenuTexts.push_back(text);
@@ -595,7 +618,7 @@ void PauseMenu::drawPage1() {
 
 		renderTexture(
 			menuTextTextures[i],
-			Globals::renderer,
+			targetRenderer,
 			90 - textXOffset,
 			(Globals::ScreenHeight / 8) + 2 + textYOffset
 		);

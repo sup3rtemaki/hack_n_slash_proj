@@ -85,15 +85,21 @@ void SubMenu::draw() {
 }
 
 void SubMenu::drawMenuBackground() {
+	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
+	if (targetRenderer == nullptr) return;
+
 	const int bgRectWidth = Globals::ScreenWidth / 8;
 	const int bgRectHeight = Globals::ScreenHeight / 6;
 	*bgRect = { xPos, yPos, bgRectWidth, bgRectHeight };
-	SDL_SetRenderDrawBlendMode(Globals::renderer, SDL_BLENDMODE_BLEND);
-	SDL_SetRenderDrawColor(Globals::renderer, 100, 100, 100, 150);
-	SDL_RenderFillRect(Globals::renderer, bgRect);
+	SDL_SetRenderDrawBlendMode(targetRenderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(targetRenderer, 100, 100, 100, 150);
+	SDL_RenderFillRect(targetRenderer, bgRect);
 }
 
 void SubMenu::drawText() {
+	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
+	if (targetRenderer == nullptr) return;
+
 	// Verificar se items mudaram
 	if (menuTextTextures.size() != menuItems.size()) {
 		// Limpar texturas antigas
@@ -111,7 +117,7 @@ void SubMenu::drawText() {
 				Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
 				color,
 				FONT_SIZE,
-				Globals::renderer
+				targetRenderer
 			);
 			menuTextTextures.push_back(texture);
 		}
@@ -130,7 +136,7 @@ void SubMenu::drawText() {
 
 		renderTexture(
 			menuTextTextures[i],
-			Globals::renderer,
+			targetRenderer,
 			(bgRect->x + bgRect->w / 4) - textXOffset,
 			bgRect->y + 2 + textYOffset
 		);
@@ -140,10 +146,13 @@ void SubMenu::drawText() {
 }
 
 void SubMenu::drawSelectionBox() {
+	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
+	if (targetRenderer == nullptr) return;
+
 	const int yLinePos = yPos + (FONT_SIZE + 2) * (index + 1);
-	SDL_SetRenderDrawColor(Globals::renderer, 200, 200, 200, 255);
+	SDL_SetRenderDrawColor(targetRenderer, 200, 200, 200, 255);
 	SDL_RenderDrawLine(
-		Globals::renderer,
+		targetRenderer,
 		xPos + 2,
 		yLinePos,
 		xPos + bgRect->w - 2,

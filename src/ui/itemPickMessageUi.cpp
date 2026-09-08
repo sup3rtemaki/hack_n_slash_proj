@@ -24,6 +24,9 @@ void ItemPickMessageUi::draw() {
 	}
 
 	if (timer > 0) {
+		SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
+		if (targetRenderer == nullptr) return;
+
 		stringstream message;
 		message << "Looted " << hero->qtyItemsPicked << " " << itemName;
 		const string& messageStr = message.str();
@@ -35,13 +38,13 @@ void ItemPickMessageUi::draw() {
 				resPath + ResourcePaths::FONTS + FONT_FILE,
 				color,
 				FONT_SIZE,
-				Globals::renderer
+				targetRenderer
 			);
 
 			prevMessage = messageStr;
 		}
 
-		renderTexture(fontTexture, Globals::renderer, FONT_X, FONT_Y);
+		renderTexture(fontTexture, targetRenderer, FONT_X, FONT_Y);
 
 		timer -= deltaTime;
 		hero->addedItemName = "";

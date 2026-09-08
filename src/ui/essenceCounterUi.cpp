@@ -46,11 +46,13 @@ void EssenceCounterUi::draw() {
 void EssenceCounterUi::setUp() {
 	__super::setUp();
 	essenceCounterBarTexture =
-		loadTexture(Ui::RES_PATH + ESSENCE_COUNTER_BAR_FOLDER + ESSENCE_COUNTER_BAR_FILE, Globals::renderer);
+		loadTexture(Ui::RES_PATH + ESSENCE_COUNTER_BAR_FOLDER + ESSENCE_COUNTER_BAR_FILE, renderer ? renderer : Globals::renderer);
 }
 
 void EssenceCounterUi::drawBar() {
-	renderTexture(essenceCounterBarTexture, Globals::renderer, FONT_X + BAR_X_OFFSET, FONT_Y + BAR_Y_OFFSET);
+	SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
+	if (targetRenderer == nullptr) return;
+	renderTexture(essenceCounterBarTexture, targetRenderer, FONT_X + BAR_X_OFFSET, FONT_Y + BAR_Y_OFFSET);
 }
 
 void EssenceCounterUi::drawEssenceQuantity() {
@@ -73,7 +75,7 @@ void EssenceCounterUi::drawEssenceQuantity() {
             Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
             color,
             FONT_SIZE,
-            Globals::renderer
+            renderer ? renderer : Globals::renderer
         );
 
         lastEssence = currentEssence;
@@ -85,5 +87,5 @@ void EssenceCounterUi::drawEssenceQuantity() {
         digits = int(log10(currentEssence) + 1) :
         digits = 1;
     int xOffsetAlign = (FONT_SIZE / 2) * digits;
-    renderTexture(fontTexture, Globals::renderer, FONT_X - xOffsetAlign, FONT_Y);
+    renderTexture(fontTexture, renderer ? renderer : Globals::renderer, FONT_X - xOffsetAlign, FONT_Y);
 }

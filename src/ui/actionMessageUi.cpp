@@ -19,6 +19,9 @@ ActionMessageUi::ActionMessageUi() {
 
 void ActionMessageUi::draw() {
 	if (timer > 0 || uiLock) {
+		SDL_Renderer* targetRenderer = renderer ? renderer : Globals::renderer;
+		if (targetRenderer == nullptr) return;
+
 		if (fontTexture == nullptr || ((message != prevMessage) && !message.empty())) {
 			prevMessage = message;
             fontX = SCREEN_CENTER_X - ((message.length() * FONT_SIZE) / 4);
@@ -33,7 +36,7 @@ void ActionMessageUi::draw() {
 				resPath + ResourcePaths::FONTS + FONT_FILE,
 				color,
 				FONT_SIZE,
-				Globals::renderer
+				targetRenderer
 			);
 		}
 
@@ -43,12 +46,12 @@ void ActionMessageUi::draw() {
         backgroundMessageRect.w = (message.length() * FONT_SIZE),
         backgroundMessageRect.h = FONT_SIZE;
 
-		backgroundBarTexture = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + MESSAGE_BAR_TEXTURE_FILE, Globals::renderer);
+		backgroundBarTexture = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + MESSAGE_BAR_TEXTURE_FILE, targetRenderer);
 
 		// TODO: Descomentar linha abaixo quando fizer um sprite decente pro fundo do texto
-        //SDL_RenderCopy(Globals::renderer, backgroundBarTexture, NULL, &backgroundMessageRect);
+        //SDL_RenderCopy(targetRenderer, backgroundBarTexture, NULL, &backgroundMessageRect);
 
-		renderTexture(fontTexture, Globals::renderer, fontX, FONT_Y);
+		renderTexture(fontTexture, targetRenderer, fontX, FONT_Y);
 
 		timer -= deltaTime;
 		if (timer < 0) timer = 0;
