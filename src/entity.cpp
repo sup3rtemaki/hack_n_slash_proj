@@ -356,7 +356,6 @@ void Entity::addEntity(Entity* entity) {
 	if (entity == nullptr) {
 		return;
 	}
-	entity->setSoundManager(&SoundManager::soundManager);
 	Entity::entities.push_back(entity);
 	if (Entity::activeWorld != nullptr && Entity::activeWorld != &Entity::entities) {
 		Entity::activeWorld->push_back(entity);

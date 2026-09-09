@@ -85,6 +85,7 @@ void Stone::applyEffect(LivingEntity* heroEntity) {
 		heroEntity->x + xOffset,
 		heroEntity->y + yOffset,
 		renderer);
+	stoneProjectile->setSoundManager(soundManager);
 	stoneProjectile->angle = heroEntity->angle;
 	Entity::addEntity(stoneProjectile);
 }

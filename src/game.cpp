@@ -55,16 +55,16 @@ Game::Game(SDL_Renderer* renderer) : gameSaveManager(saveHandler) {
 		resPath + ResourcePaths::TEXTURES);
 
 	//loadup sounds
-	SoundManager::soundManager.loadSound(SoundIds::HIT, resPath + ResourcePaths::SOUNDS + "Randomize2.wav");
-	SoundManager::soundManager.loadSound(SoundIds::ENEMY_HIT, resPath + ResourcePaths::SOUNDS + "Hit_Hurt9.wav");
-	SoundManager::soundManager.loadSound(SoundIds::SWING, resPath + ResourcePaths::SOUNDS + "Randomize21.wav");
-	SoundManager::soundManager.loadSound(SoundIds::DASH, resPath + ResourcePaths::SOUNDS + "dash.wav");
-	SoundManager::soundManager.loadSound(SoundIds::GROWL, resPath + ResourcePaths::SOUNDS + "Randomize34.wav");
-	SoundManager::soundManager.loadSound(SoundIds::ENEMY_DIE, resPath + ResourcePaths::SOUNDS + "Randomize41.wav");
-	SoundManager::soundManager.loadSound(SoundIds::CRASH, resPath + ResourcePaths::SOUNDS + "crash.wav");
-	SoundManager::soundManager.loadSound(SoundIds::SMASH, resPath + ResourcePaths::SOUNDS + "smash.wav");
-	SoundManager::soundManager.loadSound(SoundIds::SHOOT, resPath + ResourcePaths::SOUNDS + "shoot2.wav");
-	SoundManager::soundManager.loadSound(SoundIds::LAUGH, resPath + ResourcePaths::SOUNDS + "laugh2.wav");
+	soundManager.loadSound(SoundIds::HIT, resPath + ResourcePaths::SOUNDS + "Randomize2.wav");
+	soundManager.loadSound(SoundIds::ENEMY_HIT, resPath + ResourcePaths::SOUNDS + "Hit_Hurt9.wav");
+	soundManager.loadSound(SoundIds::SWING, resPath + ResourcePaths::SOUNDS + "Randomize21.wav");
+	soundManager.loadSound(SoundIds::DASH, resPath + ResourcePaths::SOUNDS + "dash.wav");
+	soundManager.loadSound(SoundIds::GROWL, resPath + ResourcePaths::SOUNDS + "Randomize34.wav");
+	soundManager.loadSound(SoundIds::ENEMY_DIE, resPath + ResourcePaths::SOUNDS + "Randomize41.wav");
+	soundManager.loadSound(SoundIds::CRASH, resPath + ResourcePaths::SOUNDS + "crash.wav");
+	soundManager.loadSound(SoundIds::SMASH, resPath + ResourcePaths::SOUNDS + "smash.wav");
+	soundManager.loadSound(SoundIds::SHOOT, resPath + ResourcePaths::SOUNDS + "shoot2.wav");
+	soundManager.loadSound(SoundIds::LAUGH, resPath + ResourcePaths::SOUNDS + "laugh2.wav");
 
 	//song = Mix_LoadMUS(string(resPath + "Fatal Theory.wav").c_str());
 	//if (song != NULL) {
@@ -82,7 +82,7 @@ Game::Game(SDL_Renderer* renderer) : gameSaveManager(saveHandler) {
 
 	// build hero entity
 	hero = new Hero(renderContext.renderer);
-	hero->setSoundManager(&SoundManager::soundManager);
+	hero->setSoundManager(&soundManager);
 	hero->invincibleTimer = 0;
 	hero->hp = gameSaveManager.getHeroHp();
 	hero->x = hero->lastCheckpointPos.x = gameSaveManager.getHeroX();
@@ -103,7 +103,7 @@ Game::Game(SDL_Renderer* renderer) : gameSaveManager(saveHandler) {
 
 	// bloodstain
 	bloodstain = new Bloodstain(renderContext.renderer);
-	bloodstain->setSoundManager(&SoundManager::soundManager);
+	bloodstain->setSoundManager(&soundManager);
 	BloodstainInfo bloodstainInfo = gameSaveManager.getBloodstainInfo();
 	bloodstain->setLocation(
 		bloodstainInfo.x,
@@ -155,7 +155,7 @@ Game::Game(SDL_Renderer* renderer) : gameSaveManager(saveHandler) {
 	mapPopulationSystem = new MapPopulationSystem(
 		tiledMap, currentMap, entities, walls, fogWalls, currentMapEnemies,
 		hero, currentBoss, gui, openDoorsIds, defeatedBossesIds, deadEnemiesIds, bossHpBar,
-		renderContext.renderer
+		renderContext.renderer, soundManager
 	);
 	mapPopulationSystem->setSpawnItemCallback([this](int itemId, int quant, int xPos, int yPos) {
 		this->spawnItem(itemId, quant, xPos, yPos);
@@ -836,7 +836,7 @@ void Game::spawnItem(int itemId, int quant, int xPos, int yPos) {
 		return;
 	}
 
-	spawnItem->setSoundManager(&SoundManager::soundManager);
+	spawnItem->setSoundManager(&soundManager);
 	spawnItem->x = xPos;
 	spawnItem->y = yPos;
 	spawnItem->active = true;

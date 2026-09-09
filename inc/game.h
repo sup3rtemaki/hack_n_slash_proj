@@ -102,6 +102,7 @@ public:
 
 	CameraController camController;
 	TimeController gameTime;
+	SoundManager soundManager;
 	RenderContext renderContext;
 
 	int mapQty;

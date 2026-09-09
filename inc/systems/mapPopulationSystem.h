@@ -12,6 +12,7 @@ class Hero;
 class Ui;
 class HPBar;
 class LivingEntity;
+class SoundManager;
 struct SDL_Renderer;
 
 namespace tson {
@@ -34,7 +35,8 @@ public:
 		std::vector<int>& defeatedBossesIds,
 		std::list<int>& deadEnemiesIds,
 		HPBar*& bossHpBar,
-		SDL_Renderer* renderer
+		SDL_Renderer* renderer,
+		SoundManager& soundManager
 	);
 
 	void buildDoors();
@@ -73,6 +75,7 @@ private:
 	std::list<int>& deadEnemiesIds;
 	HPBar*& bossHpBar;
 	SDL_Renderer* renderer;
+	SoundManager& soundManager;
 
 	std::function<void(int, int, int, int)> spawnItemCallback;
 	std::function<void()> syncRegistryCallback;

@@ -151,7 +151,9 @@ void Glob::die() {
 	state = GLOB_STATE_DEAD;
 	changeAnimation(state, true);
 
-	SoundManager::soundManager.playSound(SoundIds::ENEMY_DIE);
+	if (soundManager != nullptr) {
+		soundManager->playSound(SoundIds::ENEMY_DIE);
+	}
 
 	//add to score
 	Glob::globsKilled++;

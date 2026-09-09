@@ -19,8 +19,6 @@ public:
 	~SoundManager();
 	void loadSound(string name, string file);
 	void playSound(string name);
-
-	static SoundManager soundManager;
 };
 
 #endif // !SOUNDMANAGER

@@ -77,6 +77,7 @@ void RoundKing::updateShoot() {
 		else if (shotTimer <= 0) { //otherwiseif still shooting and its time to take a shot
 			shotTimer = 0.5;
 			Bullet* bullet = new Bullet(x, y, renderer);
+			bullet->setSoundManager(soundManager);
 			soundManager->playSound(SoundIds::SHOOT);
 			bullet->angle = angle;
 			Entity::addEntity(bullet);

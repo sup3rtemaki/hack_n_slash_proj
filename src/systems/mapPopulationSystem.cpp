@@ -32,7 +32,8 @@ MapPopulationSystem::MapPopulationSystem(
 	std::vector<int>& defeatedBossesIds,
 	std::list<int>& deadEnemiesIds,
 	HPBar*& bossHpBar,
-	SDL_Renderer* renderer
+	SDL_Renderer* renderer,
+	SoundManager& soundManager
 )
 	: tiledMap(tiledMap),
 	currentMap(currentMap),
@@ -47,7 +48,8 @@ MapPopulationSystem::MapPopulationSystem(
 	defeatedBossesIds(defeatedBossesIds),
 	deadEnemiesIds(deadEnemiesIds),
 	bossHpBar(bossHpBar),
-	renderer(renderer)
+	renderer(renderer),
+	soundManager(soundManager)
 {
 }
 
@@ -94,7 +96,7 @@ void MapPopulationSystem::buildDoors() {
 				64,
 				-32,
 				renderer);
-			door->setSoundManager(&SoundManager::soundManager);
+			door->setSoundManager(&soundManager);
 			door->isLocked = std::any_cast<bool>(isLockedProp->getValue()),
 			entities.push_back(door);
 			if (syncRegistryCallback) syncRegistryCallback();
@@ -117,7 +119,7 @@ void MapPopulationSystem::buildWalls() {
 		for (auto& [pos, tileObject] : layer.getTileObjects()) {
 			for (auto it : tileObject.getTile()->getObjectgroup().getObjectsByName("Wall")) {
 				Wall* newWall = new Wall(it.getSize().x, it.getSize().y, 0);
-				newWall->setSoundManager(&SoundManager::soundManager);
+				newWall->setSoundManager(&soundManager);
 				newWall->x = tileObject.getPosition().x + 16;
 				newWall->y = tileObject.getPosition().y;
 				walls.push_back(newWall);
@@ -153,7 +155,7 @@ void MapPopulationSystem::buildWaypoints() {
 				waypoint.waypointRect.w + 2,
 				waypoint.waypointRect.h + 2,
 				0);
-			fogWall->setSoundManager(&SoundManager::soundManager);
+			fogWall->setSoundManager(&soundManager);
 
 			fogWall->x = waypoint.waypointRect.x - 1;
 			fogWall->y = waypoint.waypointRect.y - 1;
@@ -189,7 +191,7 @@ void MapPopulationSystem::spawnEnemies() {
 			if (deadEnemiesIds.empty() ||
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
 					TermiteMiner* enemy = new TermiteMiner(renderer);
-					enemy->setSoundManager(&SoundManager::soundManager);
+					enemy->setSoundManager(&soundManager);
 					enemy->x = enemyPosX;
 					enemy->y = enemyPosY;
 					enemy->invincibleTimer = 0.1;
@@ -203,7 +205,7 @@ void MapPopulationSystem::spawnEnemies() {
 			if (deadEnemiesIds.empty() ||
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
 					TermiteMiner* enemy = new TermiteMiner(renderer);
-					enemy->setSoundManager(&SoundManager::soundManager);
+					enemy->setSoundManager(&soundManager);
 					enemy->x = enemyPosX;
 					enemy->y = enemyPosY;
 					enemy->invincibleTimer = 0.1;
@@ -249,7 +251,7 @@ void MapPopulationSystem::spawnBoss() {
 		switch (bossId) {
 			case 990001: // Small Brown Spider
 				currentBoss = new SmallBrownSpider(renderer);
-				currentBoss->setSoundManager(&SoundManager::soundManager);
+				currentBoss->setSoundManager(&soundManager);
 				currentBoss->x = bossPosX;
 				currentBoss->y = bossPosY;
 				currentBoss->id = bossId;
@@ -282,7 +284,7 @@ void MapPopulationSystem::spawnCheckpoints() {
 		int cpPosY = object.getPosition().y;
 
 		Checkpoint* checkpoint = new Checkpoint(cpId, currentMap->file, renderer);
-		checkpoint->setSoundManager(&SoundManager::soundManager);
+		checkpoint->setSoundManager(&soundManager);
 		checkpoint->x = cpPosX;
 		checkpoint->y = cpPosY;
 		if (isActive) checkpoint->activate();

@@ -136,7 +136,9 @@ void TermiteMiner::die() {
 	state = TERMITE_MINER_STATE_DEAD;
 	changeAnimation(state, true);
 
-	SoundManager::soundManager.playSound(SoundIds::ENEMY_DIE);
+	if (soundManager != nullptr) {
+		soundManager->playSound(SoundIds::ENEMY_DIE);
+	}
 }
 
 void TermiteMiner::findNearestTarget() {
