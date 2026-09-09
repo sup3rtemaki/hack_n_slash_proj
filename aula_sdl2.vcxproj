@@ -161,23 +161,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\engine\rendering\animation.cpp" />
-    <ClCompile Include="src\engine\rendering\animationSet.cpp" />
     <ClCompile Include="src\game\world\bloodstain.cpp" />
     <ClCompile Include="src\game\actors\bullet.cpp" />
-    <ClCompile Include="src\engine\world\cameraController.cpp" />
     <ClCompile Include="src\game\world\checkpoint.cpp" />
-    <ClCompile Include="src\engine\data\cleanup.cpp" />
-    <ClCompile Include="src\engine\rendering\drawing_functions.cpp" />
     <ClCompile Include="src\game\actors\enemyEntity.cpp" />
     <ClCompile Include="src\game\actors\lootDropSource.cpp" />
-    <ClCompile Include="src\engine\core\entity.cpp" />
-    <ClCompile Include="src\engine\rendering\frame.cpp" />
     <ClCompile Include="src\game\game.cpp" />
     <ClCompile Include="src\game\actors\glob.cpp" />
-    <ClCompile Include="src\engine\data\stringUtils.cpp" />
     <ClCompile Include="src\game\actors\grob.cpp" />
-    <ClCompile Include="src\engine\data\groupBuilder.cpp" />
     <ClCompile Include="src\game\persistence\gameSaveManager.cpp" />
     <ClCompile Include="src\game\persistence\saveHandler.cpp" />
     <ClCompile Include="src\game\systems\interactionSystem.cpp" />
@@ -194,9 +185,6 @@
     <ClCompile Include="src\game\items\honeydewPotion.cpp" />
     <ClCompile Include="src\game\items\key.cpp" />
     <ClCompile Include="src\game\items\stone.cpp" />
-    <ClCompile Include="src\engine\input\joystickInput.cpp" />
-    <ClCompile Include="src\engine\input\keyboardInput.cpp" />
-    <ClCompile Include="src\engine\core\livingEntity.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\game\world\map.cpp" />
     <ClCompile Include="src\game\npcs\bosses\smallBrownSpider.cpp" />
@@ -205,14 +193,8 @@
     <ClCompile Include="src\game\npcs\npcData.cpp" />
     <ClCompile Include="src\game\npcs\npcFactory.cpp" />
     <ClCompile Include="src\game\items\stoneProjectile.cpp" />
-    <ClCompile Include="src\engine\core\randomNumber.cpp" />
-    <ClCompile Include="src\engine\data\res_path.cpp" />
     <ClCompile Include="src\game\actors\roundKing.cpp" />
-    <ClCompile Include="src\engine\audio\soundManager.cpp" />
     <ClCompile Include="src\game\actors\termiteMiner.cpp" />
-    <ClCompile Include="src\engine\core\timeController.cpp" />
-    <ClCompile Include="src\engine\data\tiledMapLoader.cpp" />
-    <ClCompile Include="src\engine\data\jsonFileStore.cpp" />
     <ClCompile Include="src\game\ui\actionMessageUi.cpp" />
     <ClCompile Include="src\game\ui\essenceCounterUi.cpp" />
     <ClCompile Include="src\game\ui\hpBar.cpp" />
@@ -227,31 +209,14 @@
     <ClCompile Include="src\game\world\wall.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inc\engine\rendering\animation.h" />
-    <ClInclude Include="inc\engine\rendering\animationSet.h" />
     <ClInclude Include="inc\game\world\bloodstain.h" />
     <ClInclude Include="inc\game\actors\bullet.h" />
-    <ClInclude Include="inc\engine\world\cameraController.h" />
     <ClInclude Include="inc\game\world\checkpoint.h" />
-    <ClInclude Include="inc\engine\data\cleanup.h" />
-    <ClInclude Include="inc\engine\data\dataGroupType.h" />
-  	<ClInclude Include="inc\engine\rendering\displayConfig.h" />
-    <ClInclude Include="inc\engine\rendering\drawing_functions.h" />
     <ClInclude Include="inc\game\actors\enemyEntity.h" />
     <ClInclude Include="inc\game\actors\lootDropSource.h" />
-    <ClInclude Include="inc\engine\core\entity.h" />
-    <ClInclude Include="inc\engine\rendering\frame.h" />
     <ClInclude Include="inc\game\game.h" />
     <ClInclude Include="inc\game\actors\glob.h" />
-    <ClInclude Include="inc\engine\core\mathUtils.h" />
-    <ClInclude Include="inc\engine\data\stringUtils.h" />
     <ClInclude Include="inc\game\actors\grob.h" />
-    <ClInclude Include="inc\engine\data\group.h" />
-    <ClInclude Include="inc\engine\data\groupBox.h" />
-    <ClInclude Include="inc\engine\data\groupBuilder.h" />
-    <ClInclude Include="inc\engine\data\groupNumber.h" />
-    <ClInclude Include="inc\engine\data\groupPosition.h" />
-    <ClInclude Include="inc\engine\data\groupString.h" />
     <ClInclude Include="inc\game\persistence\gameSaveManager.h" />
     <ClInclude Include="inc\game\persistence\saveHandler.h" />
     <ClInclude Include="inc\game\systems\interactionSystem.h" />
@@ -263,16 +228,12 @@
     <ClInclude Include="inc\game\systems\mapFlowSystem.h" />
     <ClInclude Include="inc\game\systems\tileRenderer.h" />
     <ClInclude Include="inc\game\actors\hero.h" />
-    <ClInclude Include="inc\engine\input\inputCommand.h" />
     <ClInclude Include="inc\game\items\item.h" />
     <ClInclude Include="inc\game\items\greenBerry.h" />
     <ClInclude Include="inc\game\items\honeydewPotion.h" />
     <ClInclude Include="inc\game\items\itemsHub.h" />
     <ClInclude Include="inc\game\items\key.h" />
     <ClInclude Include="inc\game\items\stone.h" />
-    <ClInclude Include="inc\engine\input\joystickInput.h" />
-    <ClInclude Include="inc\engine\input\keyboardInput.h" />
-    <ClInclude Include="inc\engine\core\livingEntity.h" />
     <ClInclude Include="inc\game\world\map.h" />
     <ClInclude Include="inc\game\npcs\bosses\smallBrownSpider.h" />
     <ClInclude Include="inc\game\npcs\door.h" />
@@ -280,17 +241,9 @@
     <ClInclude Include="inc\game\npcs\npcData.h" />
     <ClInclude Include="inc\game\npcs\npcFactory.h" />
     <ClInclude Include="inc\game\items\stoneProjectile.h" />
-    <ClInclude Include="inc\engine\core\randomNumber.h" />
-    <ClInclude Include="inc\engine\data\res_path.h" />
-    <ClInclude Include="inc\engine\rendering\renderContext.h" />
-    <ClInclude Include="inc\engine\rendering\resourceConfig.h" />
     <ClInclude Include="inc\game\actors\roundKing.h" />
-    <ClInclude Include="inc\engine\audio\soundManager.h" />
     <ClInclude Include="inc\game\actors\termiteMiner.h" />
     <ClInclude Include="inc\tileson\tileson.hpp" />
-    <ClInclude Include="inc\engine\core\timeController.h" />
-    <ClInclude Include="inc\engine\data\tiledMapLoader.h" />
-    <ClInclude Include="inc\engine\data\jsonFileStore.h" />
     <ClInclude Include="inc\game\ui\actionMessageUi.h" />
     <ClInclude Include="inc\game\ui\essenceCounterUi.h" />
     <ClInclude Include="inc\game\ui\hpBar.h" />
@@ -304,6 +257,11 @@
     <ClInclude Include="inc\game\ui\ui.h" />
     <ClInclude Include="inc\game\world\wall.h" />
     <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="engine.vcxproj">
+      <Project>{a2b3c4d5-6789-4123-abcd-ef0123456789}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="aula_sdl2.rc" />
