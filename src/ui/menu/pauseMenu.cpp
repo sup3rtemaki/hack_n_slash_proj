@@ -1,4 +1,5 @@
 #include "ui/menu/pauseMenu.h"
+#include "displayConfig.h"
 #include "resourceConfig.h"
 
 #include "ui/menu/subMenu.h"
@@ -9,13 +10,13 @@
 const string& PAUSE_MENU_ITEMS_BG_FILE = "\\Assets\\Textures\\HUD\\pause_menu_items_bg.png";
 const string& PAUSE_ARROW_LEFT_FILE = "\\Assets\\Textures\\HUD\\arrow_left.png";
 const string& PAUSE_ARROW_RIGHT_FILE = "\\Assets\\Textures\\HUD\\arrow_right.png";
-const int MENU_MAX_HEIGHT = Globals::ScreenHeight - (Globals::ScreenHeight / 4);
+const int MENU_MAX_HEIGHT = DisplayConfig::ScreenHeight - (DisplayConfig::ScreenHeight / 4);
 const int FONT_SIZE = 25;
-const int ITEMS_IMAGES_GRID_X_POSITION = Globals::ScreenWidth / 6;
-const int ITEMS_IMAGES_GRID_Y_POSITION = Globals::ScreenHeight / 8;
+const int ITEMS_IMAGES_GRID_X_POSITION = DisplayConfig::ScreenWidth / 6;
+const int ITEMS_IMAGES_GRID_Y_POSITION = DisplayConfig::ScreenHeight / 8;
 const int ITEMS_IMAGES_X_OFFSET = 50;
-const int QUICK_INVENTORY_ITEMS_GRID_X_POSITION = ((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION - 50);
-const int QUICK_INVENTORY_ITEMS_GRID_Y_POSITION = Globals::ScreenHeight - (Globals::ScreenHeight / 3);
+const int QUICK_INVENTORY_ITEMS_GRID_X_POSITION = ((DisplayConfig::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION - 50);
+const int QUICK_INVENTORY_ITEMS_GRID_Y_POSITION = DisplayConfig::ScreenHeight - (DisplayConfig::ScreenHeight / 3);
 const SDL_Color color = { 255, 255, 255, 255 };
 int MAX_INDEX = 1;
 
@@ -227,7 +228,7 @@ void PauseMenu::drawInventoryItems() {
 		}
 
 		if (textureYPosOffset > 0 && textureYPosOffset % 3 == 0) {
-			textureYPos += (Globals::ScreenHeight / 8);
+			textureYPos += (DisplayConfig::ScreenHeight / 8);
 		}
 	}
 }
@@ -269,8 +270,8 @@ void PauseMenu::drawSelectedItemNameAndDescription() {
 	renderTexture(
 		itemNameTexture,
 		renderer,
-		((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
-		(Globals::ScreenHeight / 8)
+		((DisplayConfig::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
+		(DisplayConfig::ScreenHeight / 8)
 	);
 
 	// SO recriar textura se descricao mudou
@@ -317,8 +318,8 @@ void PauseMenu::drawSelectedItemNameAndDescription() {
 		renderTexture(
 			itemDescTexture,
 			renderer,
-			((Globals::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
-			(Globals::ScreenHeight / 8) + (FONT_SIZE * 1.2)
+			((DisplayConfig::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
+			(DisplayConfig::ScreenHeight / 8) + (FONT_SIZE * 1.2)
 		);
 	}
 }
@@ -358,7 +359,7 @@ void PauseMenu::drawQuickInventory() {
 		}
 
 		if (textureYPosOffset > 0 && textureYPosOffset % 2 == 0) {
-			textureYPos += (Globals::ScreenHeight / 8);
+			textureYPos += (DisplayConfig::ScreenHeight / 8);
 		}
 	}
 }
@@ -371,16 +372,16 @@ void PauseMenu::drawMenuForeground() {
 		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 200);
 		SDL_RenderDrawLine(
 			renderer,
-			Globals::ScreenWidth / 2,
-			Globals::ScreenHeight / 14,
-			Globals::ScreenWidth / 2,
-			Globals::ScreenHeight - Globals::ScreenHeight / 14);
+			DisplayConfig::ScreenWidth / 2,
+			DisplayConfig::ScreenHeight / 14,
+			DisplayConfig::ScreenWidth / 2,
+			DisplayConfig::ScreenHeight - DisplayConfig::ScreenHeight / 14);
 
 		SDL_RenderDrawLine(
 			renderer,
-			Globals::ScreenWidth - Globals::ScreenWidth / 3,
+			DisplayConfig::ScreenWidth - DisplayConfig::ScreenWidth / 3,
 			225,
-			Globals::ScreenWidth - 100,
+			DisplayConfig::ScreenWidth - 100,
 			225);
 		break;
 	}
@@ -434,7 +435,7 @@ SDL_Point PauseMenu::calculateQuickAccessRectSelectionBoxPosition() {
 	int yMultiplier = quickAccessIndex / 5;
 
 	position.x = QUICK_INVENTORY_ITEMS_GRID_X_POSITION + ((ITEMS_IMAGES_X_OFFSET - 10) * xMultiplier) - 2;
-	position.y = QUICK_INVENTORY_ITEMS_GRID_Y_POSITION + ((Globals::ScreenHeight / 8) * yMultiplier) - 2;
+	position.y = QUICK_INVENTORY_ITEMS_GRID_Y_POSITION + ((DisplayConfig::ScreenHeight / 8) * yMultiplier) - 2;
 
 	return position;
 }
@@ -487,10 +488,10 @@ void PauseMenu::setUp() {
 void PauseMenu::drawMenuBackground() {
 	if (renderer == nullptr) return;
 
-	const int bgRectX = Globals::ScreenWidth / 16;
-	const int bgRectY = Globals::ScreenHeight / 16;
-	const int bgRectWidth = Globals::ScreenWidth - Globals::ScreenWidth / 8;
-	const int bgRectHeight = Globals::ScreenHeight - Globals::ScreenHeight / 8;
+	const int bgRectX = DisplayConfig::ScreenWidth / 16;
+	const int bgRectY = DisplayConfig::ScreenHeight / 16;
+	const int bgRectWidth = DisplayConfig::ScreenWidth - DisplayConfig::ScreenWidth / 8;
+	const int bgRectHeight = DisplayConfig::ScreenHeight - DisplayConfig::ScreenHeight / 8;
 	*bgRect = { bgRectX, bgRectY, bgRectWidth, bgRectHeight };
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, 50, 50, 50, 220);
@@ -538,7 +539,7 @@ void PauseMenu::drawSelectionBox() {
 
 	switch (currentPage) {
 	case MenuPage::PAGE1: {
-		const int yLinePos = (Globals::ScreenHeight / 8) + (FONT_SIZE + 2) * (index + 1);
+		const int yLinePos = (DisplayConfig::ScreenHeight / 8) + (FONT_SIZE + 2) * (index + 1);
 		SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
 		SDL_RenderDrawLine(
 			renderer,
@@ -621,7 +622,7 @@ void PauseMenu::drawPage1() {
 			menuTextTextures[i],
 			renderer,
 			90 - textXOffset,
-			(Globals::ScreenHeight / 8) + 2 + textYOffset
+			(DisplayConfig::ScreenHeight / 8) + 2 + textYOffset
 		);
 
 		textYOffset += FONT_SIZE + 2;
@@ -653,8 +654,8 @@ SDL_Point PauseMenu::calculateRectSelectionBoxPosition() {
 	xMultiplier = index % 3;
 	yMultiplier = (index / 3);
 
-	position.x = (Globals::ScreenWidth / 6) + (ITEMS_IMAGES_X_OFFSET * xMultiplier) - 2;
-	position.y = ((Globals::ScreenHeight / 8) * yMultiplier + 45) - 2;
+	position.x = (DisplayConfig::ScreenWidth / 6) + (ITEMS_IMAGES_X_OFFSET * xMultiplier) - 2;
+	position.y = ((DisplayConfig::ScreenHeight / 8) * yMultiplier + 45) - 2;
 
 	return position;
 }

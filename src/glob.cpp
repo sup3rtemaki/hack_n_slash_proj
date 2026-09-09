@@ -1,4 +1,5 @@
 #include "glob.h"
+#include "displayConfig.h"
 #include "item/itemsHub.h"
 #include "resourceConfig.h"
 #include "soundManager.h"
@@ -57,8 +58,8 @@ Glob::Glob(SDL_Renderer* renderer) {
 		// transfer ownership to this object by storing it in the member
 		this->localAnimSet = std::move(localAnimSet);
 	type = "enemy";
-	x = Globals::ScreenWidth / 2;
-	y = Globals::ScreenHeight / 2;
+	x = DisplayConfig::ScreenWidth / 2;
+	y = DisplayConfig::ScreenHeight / 2;
 	moveSpeed = 0;
 	moveSpeedMax = 20;
 	hp = hpMax = 10 + (rand() % 20); //10-29

@@ -1,4 +1,5 @@
 #include "hero.h"
+#include "displayConfig.h"
 #include "resourceConfig.h"
 #include "soundManager.h"
 
@@ -111,8 +112,8 @@ Hero::Hero(SDL_Renderer* renderer) {
 	type = "hero";
 
 	//setup default hero values
-	x = Globals::ScreenWidth / 2;
-	y = Globals::ScreenHeight / 2;
+	x = DisplayConfig::ScreenWidth / 2;
+	y = DisplayConfig::ScreenHeight / 2;
 	moveSpeed = 0;
 	moveSpeedMax = 50;
 	hp = hpMax = 100;

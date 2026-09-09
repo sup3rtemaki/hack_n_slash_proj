@@ -1,4 +1,5 @@
 #include "termiteMiner.h"
+#include "displayConfig.h"
 
 #include "item/itemsHub.h"
 #include "soundManager.h"
@@ -52,8 +53,8 @@ TermiteMiner::TermiteMiner(SDL_Renderer* renderer) {
 	this->animSet = localAnim.get();
 	this->localAnimSet = std::move(localAnim);
 	type = "enemy";
-	x = Globals::ScreenWidth / 2;
-	y = Globals::ScreenHeight / 2;
+	x = DisplayConfig::ScreenWidth / 2;
+	y = DisplayConfig::ScreenHeight / 2;
 	essence = 55;
 	moveSpeed = 0;
 	moveSpeedMax = 20;

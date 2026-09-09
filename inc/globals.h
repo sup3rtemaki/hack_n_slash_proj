@@ -13,12 +13,6 @@ public:
 	//math
 	static const float PI;
 
-	//useful as a dev
-	static bool debugging;
-
-	//sdl
-	static int ScreenWidth, ScreenHeight, ScreenScale;
-
 	//clips off header
 	static string clipOffDataHeader(string data);
 };

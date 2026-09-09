@@ -1,4 +1,5 @@
 #include "roundKing.h"
+#include "displayConfig.h"
 #include "resourceConfig.h"
 #include "soundManager.h"
 
@@ -30,8 +31,8 @@ RoundKing::RoundKing(SDL_Renderer* renderer) : renderer(renderer) {
 	// Local anim set could be loaded here if a file is available.
 	this->animSet = nullptr;
 	type = "boss";
-	x = Globals::ScreenWidth - 32;
-	y = Globals::ScreenHeight - 32;
+	x = DisplayConfig::ScreenWidth - 32;
+	y = DisplayConfig::ScreenHeight - 32;
 	moveSpeed = 0;
 	moveSpeedMax = 20;
 	hp = hpMax = 500;

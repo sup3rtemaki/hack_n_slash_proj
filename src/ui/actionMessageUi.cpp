@@ -1,4 +1,5 @@
 #include "ui/actionMessageUi.h"
+#include "displayConfig.h"
 #include "resourceConfig.h"
 
 #include "globals.h"
@@ -7,7 +8,7 @@
 
 const string FONT_FILE = "alagard.ttf";
 const string MESSAGE_BAR_TEXTURE_FILE = "message_bar_tex.png";
-const int SCREEN_CENTER_X = Globals::ScreenWidth / 2;
+const int SCREEN_CENTER_X = DisplayConfig::ScreenWidth / 2;
 const int FONT_Y = 250;
 const int FONT_SIZE = 16;
 const float SHOW_MESSAGE_TIME = 0.1f;

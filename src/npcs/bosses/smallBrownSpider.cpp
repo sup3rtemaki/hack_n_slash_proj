@@ -1,4 +1,5 @@
 #include "npcs\bosses\smallBrownSpider.h"
+#include "displayConfig.h"
 
 #include "soundManager.h"
 #include "resourceConfig.h"
@@ -76,8 +77,8 @@ SmallBrownSpider::SmallBrownSpider(SDL_Renderer* renderer) {
 	this->localAnimSet = std::move(localAnim);
 
 	type = "boss";
-	x = Globals::ScreenWidth - 32;
-	y = Globals::ScreenHeight - 32;
+	x = DisplayConfig::ScreenWidth - 32;
+	y = DisplayConfig::ScreenHeight - 32;
 	essence = 300;
 	moveSpeed = 0;
 	moveSpeedMax = 40;

@@ -224,6 +224,9 @@
     <ClInclude Include="inc\cleanup.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="inc\displayConfig.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
     <ClInclude Include="inc\dataGroupType.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>

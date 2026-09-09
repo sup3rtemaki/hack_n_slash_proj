@@ -1,12 +1,13 @@
 #include "ui/menu/mainMenu.h"
+#include "displayConfig.h"
 #include "resourceConfig.h"
 
 #include "hero.h"
 #include "globals.h"
 
 const int FONT_SIZE = 32;
-const int FONT_X = (Globals::ScreenWidth / 2);
-const int FONT_Y = (Globals::ScreenHeight / 2);
+const int FONT_X = (DisplayConfig::ScreenWidth / 2);
+const int FONT_Y = (DisplayConfig::ScreenHeight / 2);
 const SDL_Color color = { 255, 255, 255, 255 };
 const int MAX_INDEX = 1;
 

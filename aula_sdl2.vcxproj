@@ -235,6 +235,7 @@
     <ClInclude Include="inc\checkpoint.h" />
     <ClInclude Include="inc\cleanup.h" />
     <ClInclude Include="inc\dataGroupType.h" />
+  	<ClInclude Include="inc\displayConfig.h" />
     <ClInclude Include="inc\drawing_functions.h" />
     <ClInclude Include="inc\entities\enemyEntity.h" />
     <ClInclude Include="inc\entities\lootDropSource.h" />

@@ -1,4 +1,5 @@
 #include "ui/hpBar.h"
+#include "displayConfig.h"
 #include <hero.h>
 
 const int HERO_HP_BAR_X = 10;
@@ -88,8 +89,8 @@ void HPBar::setUp() {
 		case BarType::BOSS_HEALTH_BAR:
 			barWidth = BOSS_HP_BAR_W;
 			barHeight = BOSS_HP_BAR_H;
-			x = Globals::ScreenWidth / 2.0f - (barWidth / 2.0f); // centered horizontally
-			y = Globals::ScreenHeight - barHeight - 20; // 20 pixels off the bottom
+			x = DisplayConfig::ScreenWidth / 2.0f - (barWidth / 2.0f); // centered horizontally
+			y = DisplayConfig::ScreenHeight - barHeight - 20; // 20 pixels off the bottom
 			color.r = BOSS_HP_BAR_R;
 			color.g = BOSS_HP_BAR_G;
 			color.b = BOSS_HP_BAR_B;

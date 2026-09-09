@@ -1,4 +1,5 @@
 #include "grob.h"
+#include "displayConfig.h"
 #include "item/itemsHub.h"
 #include "resourceConfig.h"
 #include "soundManager.h"
@@ -55,8 +56,8 @@ Grob::Grob(SDL_Renderer* renderer) {
 	this->animSet = localAnim.get();
 	this->localAnimSet = std::move(localAnim);
 	type = "enemy";
-	x = Globals::ScreenWidth / 2;
-	y = Globals::ScreenHeight / 2;
+	x = DisplayConfig::ScreenWidth / 2;
+	y = DisplayConfig::ScreenHeight / 2;
 	essence = 40;
 	moveSpeed = 0;
 	moveSpeedMax = 20;

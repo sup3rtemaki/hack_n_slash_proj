@@ -1,4 +1,5 @@
 #include "game.h"
+#include "displayConfig.h"
 #include "timeController.h"
 #include "helpers/gameSaveManager.h"
 #include "systems/interactionSystem.h"
@@ -41,8 +42,8 @@ Game::Game(SDL_Renderer* renderer) : gameSaveManager(saveHandler) {
 	// setup camera
 	// Initialize renderContext as the explicit dependency source for subsequent bootstrap resources.
 	renderContext.renderer = renderer;
-	renderContext.camera = { 0, 0, Globals::ScreenWidth, Globals::ScreenHeight };
-	renderContext.debugging = Globals::debugging;
+	renderContext.camera = { 0, 0, DisplayConfig::ScreenWidth, DisplayConfig::ScreenHeight };
+	renderContext.debugging = false;
 
 	fadeImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "blackBG.png", renderContext.renderer);
 	splashImage = loadTexture(resPath + ResourcePaths::HUD_TEXTURES + "cyborgtitle.png", renderContext.renderer);
@@ -181,8 +182,8 @@ Game::Game(SDL_Renderer* renderer) : gameSaveManager(saveHandler) {
 		renderContext.renderer,
 		SDL_PIXELFORMAT_RGBA8888,
 		SDL_TEXTUREACCESS_TARGET,
-		Globals::ScreenWidth,
-		Globals::ScreenHeight
+		DisplayConfig::ScreenWidth,
+		DisplayConfig::ScreenHeight
 	);
 
 	quickItemUi = new QuickItemUi(hero);

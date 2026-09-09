@@ -1,12 +1,13 @@
 #include "ui/menu/subMenu.h"
+#include "displayConfig.h"
 #include "resourceConfig.h"
 
 #include "hero.h"
 #include "item.h"
 #include "globals.h"
 
-const int MENU_HEIGHT = Globals::ScreenHeight / 4;
-const int MENU_WIDTH = Globals::ScreenWidth / 4;
+const int MENU_HEIGHT = DisplayConfig::ScreenHeight / 4;
+const int MENU_WIDTH = DisplayConfig::ScreenWidth / 4;
 const int FONT_SIZE = 16;
 const SDL_Color color = { 255, 255, 255, 255 };
 int SUB_MENU_MAX_INDEX = 1;
@@ -91,8 +92,8 @@ void SubMenu::draw() {
 void SubMenu::drawMenuBackground() {
 	if (renderer == nullptr) return;
 
-	const int bgRectWidth = Globals::ScreenWidth / 8;
-	const int bgRectHeight = Globals::ScreenHeight / 6;
+	const int bgRectWidth = DisplayConfig::ScreenWidth / 8;
+	const int bgRectHeight = DisplayConfig::ScreenHeight / 6;
 	*bgRect = { xPos, yPos, bgRectWidth, bgRectHeight };
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 150);
