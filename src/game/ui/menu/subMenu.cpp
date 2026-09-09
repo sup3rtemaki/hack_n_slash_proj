@@ -4,7 +4,6 @@
 
 #include "hero.h"
 #include "item.h"
-#include "globals.h"
 
 const int MENU_HEIGHT = DisplayConfig::ScreenHeight / 4;
 const int MENU_WIDTH = DisplayConfig::ScreenWidth / 4;

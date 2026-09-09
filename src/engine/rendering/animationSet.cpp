@@ -1,6 +1,6 @@
 #include "animationSet.h"
 #include "resourceConfig.h"
-#include "globals.h"
+#include "stringUtils.h"
 
 AnimationSet::AnimationSet(){
 	spriteSheet = NULL;
@@ -75,7 +75,7 @@ void AnimationSet::loadAnimationSet(string fileName, list<DataGroupType>& groupT
 		string buffer;
 		getline(file, buffer);
 		stringstream ss;
-		buffer = Globals::clipOffDataHeader(buffer);
+		buffer = StringUtils::clipOffDataHeader(buffer);
 		ss << buffer;
 		int numberOfAnimations;
 		ss >> numberOfAnimations;

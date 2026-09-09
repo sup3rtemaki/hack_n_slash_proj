@@ -1,7 +1,6 @@
 #ifndef GAME
 #define GAME
 
-#include "globals.h"
 #include "hero.h"
 #include "wall.h"
 #include "glob.h"

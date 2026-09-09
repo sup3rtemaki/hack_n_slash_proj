@@ -1,5 +1,5 @@
 #include "groupBuilder.h"
-#include "globals.h"
+#include "stringUtils.h"
 
 const bool GroupBuilder::savedInGroups = false;//TODO change this if fdset has saveInGroups selected
 
@@ -106,7 +106,7 @@ void GroupBuilder::loadGroups(ifstream &file, list<Group*> &groups) {
 				group = addGroupStringToGroup(line.substr(0, pos), groups);
 			}
 			//clean up string so we can add data to the group
-			line = Globals::clipOffDataHeader(line);//get rid of the 'groupName: '
+			line = StringUtils::clipOffDataHeader(line);//get rid of the 'groupName: '
 			group->addToGroup(line);
 			//done, keep going
 			

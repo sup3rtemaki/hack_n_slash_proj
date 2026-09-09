@@ -1,8 +1,6 @@
 #include "quickItemUi.h"
 #include "resourceConfig.h"
 
-#include "globals.h"
-
 const string& ITEM_FRAME_FILE = "itemFrame.png";
 const string& ITEM_FRAME_FOLDER = "\\Assets\\Textures\\HUD\\";
 const string& FONT_FILE = "alagard.ttf";

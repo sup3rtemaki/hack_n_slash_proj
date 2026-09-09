@@ -3,7 +3,6 @@
 #include "resourceConfig.h"
 
 #include "hero.h"
-#include "globals.h"
 
 const int FONT_SIZE = 32;
 const int FONT_X = (DisplayConfig::ScreenWidth / 2);

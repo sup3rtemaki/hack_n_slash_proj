@@ -5,7 +5,6 @@
 #include "subMenu.h"
 #include "hero.h"
 #include "item.h"
-#include "globals.h"
 
 const string& PAUSE_MENU_ITEMS_BG_FILE = "\\Assets\\Textures\\HUD\\pause_menu_items_bg.png";
 const string& PAUSE_ARROW_LEFT_FILE = "\\Assets\\Textures\\HUD\\arrow_left.png";

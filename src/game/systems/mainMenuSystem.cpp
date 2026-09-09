@@ -1,7 +1,6 @@
 #include "mainMenuSystem.h"
 #include "mainMenu.h"
 #include "renderContext.h"
-#include "globals.h"
 
 MainMenuSystem::MainMenuSystem(MainMenu* mainMenu, RenderContext& renderContext)
 	: mainMenu(mainMenu), renderContext(renderContext) {

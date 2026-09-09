@@ -2,8 +2,6 @@
 #include "displayConfig.h"
 #include "resourceConfig.h"
 
-#include "globals.h"
-
 #include <sstream>
 
 const string FONT_FILE = "alagard.ttf";

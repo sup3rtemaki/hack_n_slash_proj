@@ -2,7 +2,6 @@
 #include "pauseMenu.h"
 #include "timeController.h"
 #include "renderContext.h"
-#include "globals.h"
 
 PauseMenuSystem::PauseMenuSystem(PauseMenu* pauseMenu, TimeController& gameTime, RenderContext& renderContext)
 	: pauseMenu(pauseMenu), gameTime(gameTime), renderContext(renderContext) {

@@ -2,7 +2,6 @@
 #include "res_path.h"
 #include "drawing_functions.h"
 #include "SDL_mixer.h"
-#include "globals.h"
 #include "displayConfig.h"
 #include "game.h"
 #include "npcFactory.h"

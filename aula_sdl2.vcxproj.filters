@@ -45,7 +45,7 @@
     <ClCompile Include="src\glob.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="src\globals.cpp">
+    <ClCompile Include="src\engine\data\stringUtils.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="src\grob.cpp">
@@ -245,7 +245,10 @@
     <ClInclude Include="inc\glob.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="inc\globals.h">
+    <ClInclude Include="inc\engine\core\mathUtils.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\engine\data\stringUtils.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="inc\grob.h">

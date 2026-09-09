@@ -1,6 +1,6 @@
 #include "entity.h"
 #include "soundManager.h"
-#include "globals.h"
+#include "mathUtils.h"
 
 const int Entity::DIR_UP = 0, Entity::DIR_DOWN = 1, Entity::DIR_LEFT = 2, Entity::DIR_RIGHT = 3, Entity::DIR_NONE = -1;
 
@@ -53,8 +53,8 @@ void Entity::updateMovement() {
 		// works out move distance using speed, deltaTime
 		float moveDist = moveSpeed * deltaTime * moveLerp;
 		if (moveDist > 0) {
-			float xMove = moveDist * (cos(angle * Globals::PI / 180.f));
-			float yMove = moveDist * (sin(angle * Globals::PI / 180.f));
+			float xMove = moveDist * (cos(angle * MathUtils::PI / 180.f));
+			float yMove = moveDist * (sin(angle * MathUtils::PI / 180.f));
 
 			x += xMove;
 			y += yMove;
@@ -72,8 +72,8 @@ void Entity::updateMovement() {
 	if (slideAmount > 0) {
 		float slideDist = slideAmount * deltaTime * moveLerp;
 		if (slideDist > 0) {
-			float xMove = slideDist * (cos(slideAngle * Globals::PI / 180.f));
-			float yMove = slideDist * (sin(slideAngle * Globals::PI / 180.f));
+			float xMove = slideDist * (cos(slideAngle * MathUtils::PI / 180.f));
+			float yMove = slideDist * (sin(slideAngle * MathUtils::PI / 180.f));
 
 			x += xMove;
 			y += yMove;
@@ -300,7 +300,7 @@ float Entity::angleBetweenTwoEntities(Entity* e1, Entity* e2) {
 	dx = x2 - x1;
 	dy = y2 - y1;
 
-	return atan2(dy, dx) * 180 / Globals::PI;
+	return atan2(dy, dx) * 180 / MathUtils::PI;
 }
 
 bool Entity::checkCollision(SDL_Rect cbox1, SDL_Rect cbox2) {
@@ -331,7 +331,7 @@ float Entity::angleBetweenTwoPoints(float cx1, float cy1, float cx2, float cy2) 
 	float dx = cx2 - cx1;
 	float dy = cy2 - cy1;
 
-	return atan2(dy, dx) * 180 / Globals::PI;
+	return atan2(dy, dx) * 180 / MathUtils::PI;
 }
 
 float Entity::angleBetweenTwoRects(SDL_Rect& r1, SDL_Rect& r2) {

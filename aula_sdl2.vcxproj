@@ -175,7 +175,7 @@
     <ClCompile Include="src\engine\rendering\frame.cpp" />
     <ClCompile Include="src\game\game.cpp" />
     <ClCompile Include="src\game\actors\glob.cpp" />
-    <ClCompile Include="src\globals.cpp" />
+    <ClCompile Include="src\engine\data\stringUtils.cpp" />
     <ClCompile Include="src\game\actors\grob.cpp" />
     <ClCompile Include="src\engine\data\groupBuilder.cpp" />
     <ClCompile Include="src\game\persistence\gameSaveManager.cpp" />
@@ -243,7 +243,8 @@
     <ClInclude Include="inc\engine\rendering\frame.h" />
     <ClInclude Include="inc\game\game.h" />
     <ClInclude Include="inc\game\actors\glob.h" />
-    <ClInclude Include="inc\globals.h" />
+    <ClInclude Include="inc\engine\core\mathUtils.h" />
+    <ClInclude Include="inc\engine\data\stringUtils.h" />
     <ClInclude Include="inc\game\actors\grob.h" />
     <ClInclude Include="inc\engine\data\group.h" />
     <ClInclude Include="inc\engine\data\groupBox.h" />

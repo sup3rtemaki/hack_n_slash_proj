@@ -1,6 +1,5 @@
 #pragma once
 
-#include "globals.h"
 #include "livingEntity.h"
 #include "soundManager.h"
 #include "itemsHub.h"
