@@ -18,7 +18,6 @@ public:
 
 	//sdl
 	static int ScreenWidth, ScreenHeight, ScreenScale;
-	static SDL_Renderer* renderer;
 
 	//clips off header
 	static string clipOffDataHeader(string data);

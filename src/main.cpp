@@ -32,8 +32,8 @@ int main(int argc, char** argv) {
 	}
 
 	//Setup Renderer
-	Globals::renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (Globals::renderer == nullptr) {
+	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (renderer == nullptr) {
 		cleanup(window);
 		SDL_Quit();
 		cout << "renderer error" << endl;
@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
 
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 
-	SDL_RenderSetLogicalSize(Globals::renderer, 
+	SDL_RenderSetLogicalSize(renderer,
 		Globals::ScreenWidth,
 		Globals::ScreenHeight);
 
@@ -70,14 +70,14 @@ int main(int argc, char** argv) {
 
 
 	try {
-		Game game;
+		Game game(renderer);
 		game.update();
 	}
 	catch (const std::exception& e) {
 		cerr << e.what() << endl;
 	}
 
-	cleanup(Globals::renderer);
+	cleanup(renderer);
 	cleanup(window);
 	//cleanup(texture);
 

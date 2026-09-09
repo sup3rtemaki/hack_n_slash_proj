@@ -127,7 +127,7 @@ public:
 
 	GameState gameState;
 
-	Game();
+	Game(SDL_Renderer* renderer);
 	~Game();
 
 	void update();

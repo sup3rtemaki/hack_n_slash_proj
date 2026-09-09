@@ -31,7 +31,7 @@ std::map<std::tuple<int, int>, tson::Tile*> tileData;
 const int WORLD_WIDTH = 1024;
 const int WORLD_HEIGHT = 1024;
 
-Game::Game() : gameSaveManager(saveHandler) {
+Game::Game(SDL_Renderer* renderer) : gameSaveManager(saveHandler) {
 	//TODO: Criar m�todo initialize ou algo do tipo pra encapsular tudo isso
 	resPath = getResourcePath();
 	entities.clear();
@@ -40,7 +40,7 @@ Game::Game() : gameSaveManager(saveHandler) {
 
 	// setup camera
 	// Initialize renderContext as the explicit dependency source for subsequent bootstrap resources.
-	renderContext.renderer = Globals::renderer;
+	renderContext.renderer = renderer;
 	renderContext.camera = { 0, 0, Globals::ScreenWidth, Globals::ScreenHeight };
 	renderContext.debugging = Globals::debugging;
 
