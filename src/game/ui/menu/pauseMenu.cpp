@@ -1,0 +1,844 @@
+#include "pauseMenu.h"
+#include "displayConfig.h"
+#include "resourceConfig.h"
+
+#include "subMenu.h"
+#include "hero.h"
+#include "item.h"
+#include "globals.h"
+
+const string& PAUSE_MENU_ITEMS_BG_FILE = "\\Assets\\Textures\\HUD\\pause_menu_items_bg.png";
+const string& PAUSE_ARROW_LEFT_FILE = "\\Assets\\Textures\\HUD\\arrow_left.png";
+const string& PAUSE_ARROW_RIGHT_FILE = "\\Assets\\Textures\\HUD\\arrow_right.png";
+const int MENU_MAX_HEIGHT = DisplayConfig::ScreenHeight - (DisplayConfig::ScreenHeight / 4);
+const int FONT_SIZE = 25;
+const int ITEMS_IMAGES_GRID_X_POSITION = DisplayConfig::ScreenWidth / 6;
+const int ITEMS_IMAGES_GRID_Y_POSITION = DisplayConfig::ScreenHeight / 8;
+const int ITEMS_IMAGES_X_OFFSET = 50;
+const int QUICK_INVENTORY_ITEMS_GRID_X_POSITION = ((DisplayConfig::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION - 50);
+const int QUICK_INVENTORY_ITEMS_GRID_Y_POSITION = DisplayConfig::ScreenHeight - (DisplayConfig::ScreenHeight / 3);
+const SDL_Color color = { 255, 255, 255, 255 };
+int MAX_INDEX = 1;
+
+PauseMenu::PauseMenu(Hero* hero) {
+	this->hero = hero;
+	fontTexture = nullptr;
+	itemNameTexture = nullptr;
+	itemDescTexture = nullptr;
+	lastItemName = "";
+	lastItemDesc = "";
+	setUp();
+}
+
+PauseMenu::~PauseMenu() {
+	hero = nullptr;
+
+	// Limpar submenu
+	if (subMenu != nullptr) {
+		delete subMenu;
+		subMenu = nullptr;
+	}
+
+	// Limpar texturas do menu
+	for (auto texture : menuTextTextures) {
+		if (texture != nullptr) {
+			SDL_DestroyTexture(texture);
+		}
+	}
+	menuTextTextures.clear();
+	cachedMenuTexts.clear();
+
+	// Limpar textura generica
+	if (fontTexture != nullptr) {
+		SDL_DestroyTexture(fontTexture);
+		fontTexture = nullptr;
+	}
+
+	// Limpar texturas de item
+	if (itemNameTexture != nullptr) {
+		SDL_DestroyTexture(itemNameTexture);
+		itemNameTexture = nullptr;
+	}
+
+	if (itemDescTexture != nullptr) {
+		SDL_DestroyTexture(itemDescTexture);
+		itemDescTexture = nullptr;
+	}
+
+	// Limpar outras texturas
+	if (itemsBg != nullptr) {
+		SDL_DestroyTexture(itemsBg);
+		itemsBg = nullptr;
+	}
+
+	if (leftArrowTexture != nullptr) {
+		SDL_DestroyTexture(leftArrowTexture);
+		leftArrowTexture = nullptr;
+	}
+
+	if (rightArrowTexture != nullptr) {
+		SDL_DestroyTexture(rightArrowTexture);
+		rightArrowTexture = nullptr;
+	}
+
+	// Limpar rects
+	if (selectionRect != nullptr) {
+		delete selectionRect;
+		selectionRect = nullptr;
+	}
+
+	if (bgRect != nullptr) {
+		delete bgRect;
+		bgRect = nullptr;
+	}
+}
+
+void PauseMenu::setRenderer(SDL_Renderer* rendererContext) {
+	Ui::setRenderer(rendererContext);
+	if (subMenu != nullptr) {
+		subMenu->setRenderer(rendererContext);
+	}
+
+	if (renderer == nullptr) return;
+	if (itemsBg == nullptr) {
+		itemsBg = loadTexture(resourcePath + PAUSE_MENU_ITEMS_BG_FILE, renderer);
+	}
+	if (leftArrowTexture == nullptr) {
+		leftArrowTexture = loadTexture(resourcePath + PAUSE_ARROW_LEFT_FILE, renderer);
+	}
+	if (rightArrowTexture == nullptr) {
+		rightArrowTexture = loadTexture(resourcePath + PAUSE_ARROW_RIGHT_FILE, renderer);
+	}
+}
+
+void PauseMenu::draw() {
+	if (menuState == MenuState::Inactive) return;
+
+	drawMenuBackground();
+	drawText();
+	drawSelectionBox();
+	drawQuickAccessSelectionBox(); // Adicione esta linha
+
+	if (subMenu->menuState == MenuState::Active) {
+		subMenu->draw();
+	}
+}
+
+void PauseMenu::drawPageInitialCheck() {
+	switch (currentPage) {
+	case MenuPage::PAGE1:
+		// Atualiza menuItems caso mude de pagina
+		if (previousPage != currentPage) {
+			MAX_INDEX = 2;
+			supVisibleItemsLimit = MAX_INDEX;
+			infVisibleItemsLimit = 0;
+			menuItems.clear();
+			menuItems.push_back("Resume");
+			menuItems.push_back("Options");
+			menuItems.push_back("Credits");
+			menuItems.push_back("Exit");
+			index = 0;
+			currentPage = MenuPage::PAGE1;
+
+			for (auto texture : menuTextTextures) {
+				if (texture != nullptr) {
+					SDL_DestroyTexture(texture);
+				}
+			}
+			menuTextTextures.clear();
+			cachedMenuTexts.clear();
+		}
+		break;
+	case MenuPage::PAGE2:
+		// Atualiza inventarios
+		if (inventory.size() != hero->inventory.size()) {
+			inventory.clear();
+			for (auto& item : hero->inventory) {
+				inventory.push_back(item.second.get());
+			}
+		}
+
+		// Atualiza menuItems caso mude de pagina
+		if (previousPage != currentPage) {
+			menuItems.clear();
+			MAX_INDEX = inventory.size();
+			index = 0;
+			currentPage = MenuPage::PAGE2;
+
+			if (itemNameTexture != nullptr) {
+				SDL_DestroyTexture(itemNameTexture);
+				itemNameTexture = nullptr;
+			}
+			if (itemDescTexture != nullptr) {
+				SDL_DestroyTexture(itemDescTexture);
+				itemDescTexture = nullptr;
+			}
+			lastItemName = "";
+			lastItemDesc = "";
+		}
+		break;
+	}
+}
+
+void PauseMenu::drawInventoryItems() {
+	if (renderer == nullptr) return;
+
+	// Desenha a imagem de fundo dos items
+	renderTexture(
+		itemsBg,
+		renderer,
+		ITEMS_IMAGES_GRID_X_POSITION,
+		ITEMS_IMAGES_GRID_Y_POSITION
+	);
+
+	// Desenha imagens dos itens no inventario
+	int textureXPos = ITEMS_IMAGES_GRID_X_POSITION;
+	int textureYPos = ITEMS_IMAGES_GRID_Y_POSITION;
+	int textureXPosReset = 0;
+	int textureYPosOffset = 0;
+	for (auto item : inventory) {
+		renderTexture(
+			item->image,
+			renderer,
+			textureXPos,
+			textureYPos
+		);
+
+		// Desenha um indicador se o item est� no quick access
+		bool isInQuickAccess = std::find(
+			hero->quickAccessInventory.begin(),
+			hero->quickAccessInventory.end(),
+			item->id
+		) != hero->quickAccessInventory.end();
+
+		if (isInQuickAccess) {
+			// Desenha um pequeno �cone ou borda colorida
+			SDL_Rect indicator = { textureXPos + 30, textureYPos, 10, 10 };
+			SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+			SDL_RenderFillRect(renderer, &indicator);
+		}
+
+		textureXPos += ITEMS_IMAGES_X_OFFSET;
+		textureYPosOffset++;
+		textureXPosReset++;
+
+		if (textureXPosReset >= 3) {
+			textureXPosReset = 0;
+			textureXPos = ITEMS_IMAGES_GRID_X_POSITION;
+		}
+
+		if (textureYPosOffset > 0 && textureYPosOffset % 3 == 0) {
+			textureYPos += (DisplayConfig::ScreenHeight / 8);
+		}
+	}
+}
+
+void PauseMenu::drawSelectedItemNameAndDescription() {
+	if (renderer == nullptr) return;
+
+	// Verificar se item mudou
+	const string& itemName = inventory.at(index)->name;
+	const string& itemDesc = inventory.at(index)->description;
+
+	// SO recriar textura se nome mudou
+	if (itemNameTexture == nullptr || itemName != lastItemName) {
+		// Limpar textura antiga
+		if (itemNameTexture != nullptr) {
+			SDL_DestroyTexture(itemNameTexture);
+			itemNameTexture = nullptr;
+		}
+
+		// Criar nova textura do nome
+		itemNameTexture = renderText(
+			itemName,
+			resourcePath + ResourcePaths::FONTS + FONT_FILE,
+			color,
+			FONT_SIZE,
+			renderer
+		);
+
+		lastItemName = itemName;
+	}
+
+	// Renderizar nome
+	int digits;
+	(int)itemName.size() > 0 ?
+		digits = int(log10((int)itemName.size()) + 1) :
+		digits = 1;
+	int textXOffset = (FONT_SIZE)*digits;
+
+	renderTexture(
+		itemNameTexture,
+		renderer,
+		((DisplayConfig::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
+		(DisplayConfig::ScreenHeight / 8)
+	);
+
+	// SO recriar textura se descricao mudou
+	if (itemDescTexture == nullptr || itemDesc != lastItemDesc) {
+		// Limpar textura antiga
+		if (itemDescTexture != nullptr) {
+			SDL_DestroyTexture(itemDescTexture);
+			itemDescTexture = nullptr;
+		}
+
+		// Criar nova textura da descricao
+		TTF_Font* font = TTF_OpenFont(
+			(resourcePath + ResourcePaths::FONTS + FONT_FILE).c_str(),
+			(int)(FONT_SIZE / 1.5)
+		);
+
+		if (font != nullptr) {
+			auto textSurf = TTF_RenderText_Blended_Wrapped(
+				font,
+				itemDesc.c_str(),
+				color,
+				200
+			);
+
+			if (textSurf != nullptr) {
+				itemDescTexture = SDL_CreateTextureFromSurface(renderer, textSurf);
+				SDL_FreeSurface(textSurf);
+			}
+
+			TTF_CloseFont(font); // IMPORTANTE: Fechar fonte!
+			font = nullptr;
+		}
+
+		lastItemDesc = itemDesc;
+	}
+
+	// Renderizar descricao
+	if (itemDescTexture != nullptr) {
+		(int)itemDesc.size() > 0 ?
+			digits = int(log10((int)itemDesc.size()) + 1) :
+			digits = 1;
+		textXOffset = (FONT_SIZE)*digits;
+
+		renderTexture(
+			itemDescTexture,
+			renderer,
+			((DisplayConfig::ScreenWidth / 2) + ITEMS_IMAGES_GRID_X_POSITION) - textXOffset,
+			(DisplayConfig::ScreenHeight / 8) + (FONT_SIZE * 1.2)
+		);
+	}
+}
+
+void PauseMenu::drawQuickInventory() {
+	if (renderer == nullptr) return;
+
+	// Desenha imagens dos itens no inventario
+	int textureXPos = QUICK_INVENTORY_ITEMS_GRID_X_POSITION;
+	int textureYPos = QUICK_INVENTORY_ITEMS_GRID_Y_POSITION;
+	int textureXPosReset = 0;
+	int textureYPosOffset = 0;
+	for (auto item : inventory) {
+		if (
+			std::find(
+				hero->quickAccessInventory.begin(),
+				hero->quickAccessInventory.end(),
+				item->id) ==
+			hero->quickAccessInventory.end()) {
+			continue;
+		}
+
+		renderTexture(
+			item->image,
+			renderer,
+			textureXPos,
+			textureYPos
+		);
+
+		textureXPos += ITEMS_IMAGES_X_OFFSET - 10;
+		textureYPosOffset++;
+		textureXPosReset++;
+
+		if (textureXPosReset >= 5) {
+			textureXPosReset = 0;
+			textureXPos = QUICK_INVENTORY_ITEMS_GRID_X_POSITION;
+		}
+
+		if (textureYPosOffset > 0 && textureYPosOffset % 2 == 0) {
+			textureYPos += (DisplayConfig::ScreenHeight / 8);
+		}
+	}
+}
+
+void PauseMenu::drawMenuForeground() {
+	if (renderer == nullptr) return;
+
+	switch (currentPage) {
+	case MenuPage::PAGE2:
+		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 200);
+		SDL_RenderDrawLine(
+			renderer,
+			DisplayConfig::ScreenWidth / 2,
+			DisplayConfig::ScreenHeight / 14,
+			DisplayConfig::ScreenWidth / 2,
+			DisplayConfig::ScreenHeight - DisplayConfig::ScreenHeight / 14);
+
+		SDL_RenderDrawLine(
+			renderer,
+			DisplayConfig::ScreenWidth - DisplayConfig::ScreenWidth / 3,
+			225,
+			DisplayConfig::ScreenWidth - 100,
+			225);
+		break;
+	}
+}
+
+void PauseMenu::toggleQuickAccessItem() {
+	if (inventory.empty() || index >= inventory.size()) {
+		return;
+	}
+
+	Item* selectedItem = inventory.at(index);
+	int itemId = selectedItem->id;
+
+	// Verifica se o item j� est� no quick access inventory
+	auto it = std::find(
+		hero->quickAccessInventory.begin(),
+		hero->quickAccessInventory.end(),
+		itemId
+	);
+
+	if (it != hero->quickAccessInventory.end()) {
+		// Item j� existe no quick access - remove
+		hero->quickAccessInventory.erase(it);
+		hideSubMenu();
+	}
+	else {
+		// Item n�o existe - entra no modo de sele��o de slot
+		enterQuickSlotSelectionMode();
+	}
+}
+
+void PauseMenu::enterQuickSlotSelectionMode() {
+	if (inventory.empty() || index >= inventory.size()) {
+		return;
+	}
+
+	// Guarda o ID do item a ser adicionado
+	itemToAddId = inventory.at(index)->id;
+
+	// Muda para modo de sele��o
+	inventoryMode = InventoryMode::SelectingQuickSlot;
+	quickAccessIndex = 0;
+
+	// Fecha o submenu
+	hideSubMenu();
+}
+
+SDL_Point PauseMenu::calculateQuickAccessRectSelectionBoxPosition() {
+	SDL_Point position;
+	int xMultiplier = quickAccessIndex % 5;
+	int yMultiplier = quickAccessIndex / 5;
+
+	position.x = QUICK_INVENTORY_ITEMS_GRID_X_POSITION + ((ITEMS_IMAGES_X_OFFSET - 10) * xMultiplier) - 2;
+	position.y = QUICK_INVENTORY_ITEMS_GRID_Y_POSITION + ((DisplayConfig::ScreenHeight / 8) * yMultiplier) - 2;
+
+	return position;
+}
+
+void PauseMenu::drawQuickAccessSelectionBox() {
+	if (inventoryMode != InventoryMode::SelectingQuickSlot) return;
+	if (renderer == nullptr) return;
+
+	SDL_Point selectionPos = calculateQuickAccessRectSelectionBoxPosition();
+	SDL_Rect quickSelectionRect = { selectionPos.x, selectionPos.y, 36, 36 };
+
+	// Desenha com uma cor diferente para indicar modo de sele��o
+	SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255); // Amarelo
+	SDL_RenderDrawRect(renderer, &quickSelectionRect);
+
+	// Desenha uma segunda linha para destacar
+	SDL_Rect quickSelectionRect2 = { selectionPos.x - 1, selectionPos.y - 1, 38, 38 };
+	SDL_RenderDrawRect(renderer, &quickSelectionRect2);
+}
+
+void PauseMenu::setUp() {
+    __super::setUp();
+    subMenu = new SubMenu(hero);
+    menuState = MenuState::Inactive;
+    currentPage = MenuPage::PAGE1;
+    previousPage = MenuPage::PAGE5;
+
+    // Inicializa modo de invent�rio
+    inventoryMode = InventoryMode::Normal;
+    quickAccessIndex = 0;
+    itemToAddId = -1;
+
+    selectionRect = new SDL_Rect();
+    selectionRect->w = 36;
+    selectionRect->h = 36;
+
+    bgRect = new SDL_Rect();
+
+	itemsBg = nullptr;
+	leftArrowTexture = nullptr;
+	rightArrowTexture = nullptr;
+
+    if (hero == nullptr) return;
+
+    for (auto& item : hero->inventory) {
+        inventory.push_back(item.second.get());
+    }
+}
+
+void PauseMenu::drawMenuBackground() {
+	if (renderer == nullptr) return;
+
+	const int bgRectX = DisplayConfig::ScreenWidth / 16;
+	const int bgRectY = DisplayConfig::ScreenHeight / 16;
+	const int bgRectWidth = DisplayConfig::ScreenWidth - DisplayConfig::ScreenWidth / 8;
+	const int bgRectHeight = DisplayConfig::ScreenHeight - DisplayConfig::ScreenHeight / 8;
+	*bgRect = { bgRectX, bgRectY, bgRectWidth, bgRectHeight };
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(renderer, 50, 50, 50, 220);
+	SDL_RenderFillRect(renderer, bgRect);
+
+	switch (currentPage) {
+	case MenuPage::PAGE1:
+		renderTexture(
+			rightArrowTexture,
+			renderer,
+			bgRectX + bgRectWidth - 5,
+			ITEMS_IMAGES_GRID_Y_POSITION + 100
+		);
+		break;
+	case MenuPage::PAGE2:
+		renderTexture(
+			leftArrowTexture,
+			renderer,
+			bgRectX - 5,
+			ITEMS_IMAGES_GRID_Y_POSITION + 100
+		);
+		break;
+	}
+}
+
+void PauseMenu::drawText() {
+	if (menuState == MenuState::Inactive) return;
+
+	textYOffset = 0;
+
+	switch (currentPage) {
+	case MenuPage::PAGE1:
+		drawPage1();
+		break;
+	case MenuPage::PAGE2:
+		drawPage2();
+		break;
+	}
+
+	previousPage = currentPage;
+}
+
+void PauseMenu::drawSelectionBox() {
+	if (renderer == nullptr) return;
+
+	switch (currentPage) {
+	case MenuPage::PAGE1: {
+		const int yLinePos = (DisplayConfig::ScreenHeight / 8) + (FONT_SIZE + 2) * (index + 1);
+		SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
+		SDL_RenderDrawLine(
+			renderer,
+			90,
+			yLinePos,
+			150,
+			yLinePos);
+		break;
+	}
+	case MenuPage::PAGE2:
+		SDL_Point selectionRectPos = calculateRectSelectionBoxPosition();
+		selectionRect->x = selectionRectPos.x;
+		selectionRect->y = selectionRectPos.y;
+		SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
+		SDL_RenderDrawRect(renderer, selectionRect);
+		break;
+	}
+}
+
+void PauseMenu::drawPage1() {
+	if (renderer == nullptr) return;
+
+	drawPageInitialCheck();
+
+	vector<string> menuItemsToShow;
+	for (int i = infVisibleItemsLimit; i < supVisibleItemsLimit; i++) {
+		menuItemsToShow.push_back(menuItems[i]);
+	}
+
+	// Verificar se precisa recriar texturas do menu
+	bool needsRecreate = false;
+	if (menuTextTextures.size() != menuItemsToShow.size()) {
+		needsRecreate = true;
+	}
+	else {
+		for (size_t i = 0; i < menuItemsToShow.size(); i++) {
+			if (i >= cachedMenuTexts.size() || menuItemsToShow[i] != cachedMenuTexts[i]) {
+				needsRecreate = true;
+				break;
+			}
+		}
+	}
+
+	if (needsRecreate) {
+		// Limpar texturas antigas
+		for (auto texture : menuTextTextures) {
+			if (texture != nullptr) {
+				SDL_DestroyTexture(texture);
+			}
+		}
+		menuTextTextures.clear();
+		cachedMenuTexts.clear();
+
+		// Criar novas texturas
+		for (const auto& text : menuItemsToShow) {
+			SDL_Texture* texture = renderText(
+				text,
+				resourcePath + ResourcePaths::FONTS + FONT_FILE,
+				color,
+				FONT_SIZE,
+				renderer
+			);
+			menuTextTextures.push_back(texture);
+			cachedMenuTexts.push_back(text);
+		}
+	}
+
+	// Renderizar texturas cacheadas
+	textYOffset = 0;
+	for (size_t i = 0; i < menuTextTextures.size(); i++) {
+		const string& text = menuItemsToShow[i];
+
+		int digits;
+		(int)text.size() > 0 ?
+			digits = int(log10((int)text.size()) + 1) :
+			digits = 1;
+		int textXOffset = (FONT_SIZE)*digits;
+
+		renderTexture(
+			menuTextTextures[i],
+			renderer,
+			90 - textXOffset,
+			(DisplayConfig::ScreenHeight / 8) + 2 + textYOffset
+		);
+
+		textYOffset += FONT_SIZE + 2;
+	}
+}
+
+void PauseMenu::drawPage2() {
+	drawMenuForeground();
+	drawPageInitialCheck();
+	drawInventoryItems();
+	drawSelectedItemNameAndDescription();
+	drawQuickInventory();
+}
+
+void PauseMenu::drawPage3() {
+}
+
+void PauseMenu::drawPage4() {
+}
+
+void PauseMenu::drawPage5() {
+}
+
+SDL_Point PauseMenu::calculateRectSelectionBoxPosition() {
+	SDL_Point position;
+	int xMultiplier;
+	int yMultiplier;
+
+	xMultiplier = index % 3;
+	yMultiplier = (index / 3);
+
+	position.x = (DisplayConfig::ScreenWidth / 6) + (ITEMS_IMAGES_X_OFFSET * xMultiplier) - 2;
+	position.y = ((DisplayConfig::ScreenHeight / 8) * yMultiplier + 45) - 2;
+
+	return position;
+}
+
+void PauseMenu::onIndexUp() {
+	switch (menuState) {
+	case MenuState::Active:
+		// Verifica se est� no modo de sele��o de quick slot
+		if (inventoryMode == InventoryMode::SelectingQuickSlot) {
+			quickAccessIndex -= 5;
+			if (quickAccessIndex < 0) {
+				quickAccessIndex = 0;
+			}
+			return;
+		}
+
+		switch (currentPage) {
+		case MenuPage::PAGE1:
+			index--;
+
+			if (index < 0) {
+				index = 0;
+
+				if (infVisibleItemsLimit > 0) {
+					supVisibleItemsLimit--;
+					infVisibleItemsLimit--;
+				}
+			}
+			break;
+		case MenuPage::PAGE2:
+			index -= 3;
+
+			if (index < 0) {
+				index = 0;
+			}
+			break;
+		default:
+			break;
+		}
+		break;
+	case MenuState::Background:
+		subMenu->onIndexUp();
+		break;
+	}
+}
+
+void PauseMenu::onIndexDown() {
+	switch (menuState) {
+	case MenuState::Active:
+		// Verifica se est� no modo de sele��o de quick slot
+		if (inventoryMode == InventoryMode::SelectingQuickSlot) {
+			int maxQuickAccessSlots = hero->quickAccessInventory.size();
+			quickAccessIndex += 5;
+			if (quickAccessIndex >= maxQuickAccessSlots) {
+				quickAccessIndex = maxQuickAccessSlots - 1;
+			}
+			return;
+		}
+
+		switch (currentPage) {
+		case MenuPage::PAGE1:
+			index++;
+
+			if (index >= MAX_INDEX) {
+				index = MAX_INDEX - 1;
+
+				if (menuItems.size() > supVisibleItemsLimit) {
+					supVisibleItemsLimit++;
+					infVisibleItemsLimit++;
+				}
+			}
+			break;
+		case MenuPage::PAGE2:
+			index += 3;
+
+			if (index >= MAX_INDEX) {
+				index = MAX_INDEX - 1;
+			}
+			break;
+		default:
+			break;
+		}
+		break;
+	case MenuState::Background:
+		subMenu->onIndexDown();
+		break;
+	}
+}
+
+void PauseMenu::onIndexLeft() {
+	if (menuState == MenuState::Active) {
+		// Verifica se est� no modo de sele��o de quick slot
+		if (inventoryMode == InventoryMode::SelectingQuickSlot) {
+			quickAccessIndex--;
+			if (quickAccessIndex < 0) {
+				quickAccessIndex = 0;
+			}
+			return;
+		}
+
+		switch (currentPage) {
+		case MenuPage::PAGE1:
+			break;
+		case MenuPage::PAGE2:
+			index--;
+
+			if (index < 0) {
+				index = 0;
+			}
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void PauseMenu::onIndexRight() {
+	if (menuState == MenuState::Active) {
+		// Verifica se est� no modo de sele��o de quick slot
+		if (inventoryMode == InventoryMode::SelectingQuickSlot) {
+			int maxQuickAccessSlots = hero->quickAccessInventory.size();
+			quickAccessIndex++;
+			if (quickAccessIndex >= maxQuickAccessSlots) {
+				quickAccessIndex = maxQuickAccessSlots - 1;
+			}
+			return;
+		}
+
+		switch (currentPage) {
+		case MenuPage::PAGE1:
+			break;
+		case MenuPage::PAGE2:
+			index++;
+
+			if (index >= MAX_INDEX) {
+				index = MAX_INDEX - 1;
+			}
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void PauseMenu::showSubMenu() {
+	subMenu->activateSubMenu(selectionRect->x + 32, selectionRect->y);
+	menuState = MenuState::Background;
+}
+
+void PauseMenu::hideSubMenu() {
+	subMenu->menuState = MenuState::Inactive;
+	menuState = MenuState::Active;
+}
+
+void PauseMenu::onSubMenuAction() {
+	switch (subMenu->index) {
+	case 0:
+		// TODO: Usar item
+		break;
+	case 1:
+		toggleQuickAccessItem();
+		break;
+	case 2:
+		// Dropar item
+		break;
+	}
+}
+
+void PauseMenu::confirmQuickSlotSelection() {
+	if (itemToAddId < 0) return;
+
+	// Adiciona o item no slot selecionado
+	hero->addItemToQuickAccess(itemToAddId, quickAccessIndex);
+
+	// Volta ao modo normal
+	inventoryMode = InventoryMode::Normal;
+	itemToAddId = -1;
+	quickAccessIndex = 0;
+}
+
+void PauseMenu::cancelQuickSlotSelection() {
+	// Cancela a sele��o e volta ao modo normal
+	inventoryMode = InventoryMode::Normal;
+	itemToAddId = -1;
+	quickAccessIndex = 0;
+}

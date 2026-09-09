@@ -5,7 +5,7 @@
 #include "globals.h"
 #include "displayConfig.h"
 #include "game.h"
-#include "npcs/npcFactory.h"
+#include "npcFactory.h"
 #include <cstdlib> //srand, rand
 #include <ctime> //time
 
