@@ -53,7 +53,7 @@ void EssenceCounterUi::setRenderer(SDL_Renderer* rendererContext) {
     if (renderer == nullptr || essenceCounterBarTexture != nullptr) return;
 
     essenceCounterBarTexture = loadTexture(
-        Ui::RES_PATH + ESSENCE_COUNTER_BAR_FOLDER + ESSENCE_COUNTER_BAR_FILE,
+        resourcePath + ESSENCE_COUNTER_BAR_FOLDER + ESSENCE_COUNTER_BAR_FILE,
         renderer
     );
 }
@@ -82,7 +82,7 @@ void EssenceCounterUi::drawEssenceQuantity() {
         message << std::to_string(currentEssence);
         fontTexture = renderText(
             message.str(),
-            Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
+            resourcePath + ResourcePaths::FONTS + FONT_FILE,
             color,
             FONT_SIZE,
 			renderer

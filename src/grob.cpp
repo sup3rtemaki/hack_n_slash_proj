@@ -31,8 +31,6 @@ const int Grob::GROB_STATE_DEAD = 4;
 const int Grob::GROB_AI_NORMAL = 0;
 const int Grob::GROB_AI_CHASE = 1;
 
-int Grob::grobsKilled = 0;
-
 Grob::Grob(SDL_Renderer* renderer) {
 	list<DataGroupType> dataGroupTypes;
 	DataGroupType colBoxType;
@@ -154,7 +152,9 @@ void Grob::die() {
 	}
 
 	//add to score
-	Grob::grobsKilled++;
+	if (sessionStats != nullptr) {
+		++sessionStats->grobsKilled;
+	}
 }
 
 void Grob::findNearestTarget() {

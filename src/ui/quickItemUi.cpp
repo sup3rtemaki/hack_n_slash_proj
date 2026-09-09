@@ -55,7 +55,7 @@ void QuickItemUi::setRenderer(SDL_Renderer* rendererContext) {
 	if (renderer == nullptr || quickItemFrame != nullptr) return;
 
 	quickItemFrame = loadTexture(
-		Ui::RES_PATH + ITEM_FRAME_FOLDER + ITEM_FRAME_FILE,
+		resourcePath + ITEM_FRAME_FOLDER + ITEM_FRAME_FILE,
 		renderer
 	);
 }
@@ -105,7 +105,7 @@ void QuickItemUi::drawItemQuantity() {
         ss << currentQuantity;
         itemQuantityTexture = renderText(
             ss.str(),
-            Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
+            resourcePath + ResourcePaths::FONTS + FONT_FILE,
             color,
             ITEM_QUANTITY_FONT_SIZE,
 			renderer

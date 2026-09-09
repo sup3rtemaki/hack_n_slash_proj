@@ -117,7 +117,7 @@ void SubMenu::drawText() {
 		for (const auto& text : menuItems) {
 			SDL_Texture* texture = renderText(
 				text,
-				Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
+				resourcePath + ResourcePaths::FONTS + FONT_FILE,
 				color,
 				FONT_SIZE,
 				renderer

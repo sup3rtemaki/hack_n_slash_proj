@@ -35,8 +35,6 @@ public:
 	static const int GROB_AI_NORMAL;
 	static const int GROB_AI_CHASE;
 
-	static int grobsKilled;
-
 	float thinkTimer = 0; //when 0, choose to do an action (AI)
 	LivingEntity* target = NULL; //who should i chase
 

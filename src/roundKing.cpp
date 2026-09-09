@@ -25,8 +25,6 @@ const int RoundKing::ROUND_KING_PHASE_NORMAL = 1;
 const int RoundKing::ROUND_KING_PHASE_DAMAGED = 2;
 const int RoundKing::ROUND_KING_PHASE_FRANTIC = 3;
 
-int RoundKing::roundKingsKilled = 0;
-
 RoundKing::RoundKing(SDL_Renderer* renderer) : renderer(renderer) {
 	// Local anim set could be loaded here if a file is available.
 	this->animSet = nullptr;
@@ -208,7 +206,9 @@ void RoundKing::die() {
 	moving = false;
 	changeAnimation(ROUND_KING_STATE_DEAD, true);
 	soundManager->playSound(SoundIds::ENEMY_DIE);
-	roundKingsKilled++;
+	if (sessionStats != nullptr) {
+		++sessionStats->roundKingsKilled;
+	}
 }
 
 void RoundKing::findNearestTarget() {

@@ -22,7 +22,7 @@ void MainMenu::setUp() {
 	textYOffset = 0;
 	menuItems.push_back("Start");
 	menuItems.push_back("Exit");
-	bgImage = loadTexture(Ui::RES_PATH + ResourcePaths::HUD_TEXTURES + "main_menu_bg.png", renderer);
+	bgImage = loadTexture(resourcePath + ResourcePaths::HUD_TEXTURES + "main_menu_bg.png", renderer);
 }
 
 void MainMenu::draw() {
@@ -61,7 +61,7 @@ void MainMenu::drawText() {
 
 		fontTexture = renderText(
 			text,
-			Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
+			resourcePath + ResourcePaths::FONTS + FONT_FILE,
 			color,
 			FONT_SIZE,
 			renderer

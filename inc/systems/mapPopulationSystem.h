@@ -35,6 +35,7 @@ public:
 		std::vector<int>& defeatedBossesIds,
 		std::list<int>& deadEnemiesIds,
 		HPBar*& bossHpBar,
+		SessionStats* sessionStats,
 		SDL_Renderer* renderer,
 		SoundManager& soundManager
 	);
@@ -74,6 +75,7 @@ private:
 	std::vector<int>& defeatedBossesIds;
 	std::list<int>& deadEnemiesIds;
 	HPBar*& bossHpBar;
+	SessionStats* sessionStats;
 	SDL_Renderer* renderer;
 	SoundManager& soundManager;
 

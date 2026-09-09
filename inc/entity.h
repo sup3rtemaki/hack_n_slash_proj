@@ -9,10 +9,17 @@
 
 class SoundManager; // forward declaration
 
+struct SessionStats {
+	int globsKilled = 0;
+	int grobsKilled = 0;
+	int roundKingsKilled = 0;
+};
+
 //Abstract class
 class Entity {
 public:
 	static const int DIR_UP, DIR_DOWN, DIR_LEFT, DIR_RIGHT, DIR_NONE; // reference constants
+	SessionStats* sessionStats = nullptr;
 	int id;
 	int state; // quick label to see what the entity is up to
 	float x, y;
@@ -63,11 +70,11 @@ public:
 	static float angleBetweenTwoPoints(float cx1, float cy1, float cx2, float cy2);
 	static float angleBetweenTwoRects(SDL_Rect& r1, SDL_Rect& r2);
 
-	// global entities list
-	static list<Entity*> entities;
+	// active world is owned by the current game/session; the fallback keeps creation paths valid before a scene is attached
+	static list<Entity*> defaultEntities;
 	static list<Entity*>* activeWorld;
 	static list<Entity*>& getEntities() {
-		return (activeWorld == nullptr) ? entities : *activeWorld;
+		return (activeWorld == nullptr) ? defaultEntities : *activeWorld;
 	}
 	static void setActiveWorld(list<Entity*>* world);
 	static void addEntity(Entity* entity);
@@ -76,6 +83,7 @@ public:
 	static void removeInactiveEntitiesFromList(list<Entity*>* entityList, bool deleteEntities);
 	static void removeAllFromList(list<Entity*>* entityList, bool deleteEntities);
 	void setSoundManager(SoundManager* sm) { soundManager = sm; }
+	void setSessionStats(SessionStats* stats) { sessionStats = stats; }
 };
 
 #endif

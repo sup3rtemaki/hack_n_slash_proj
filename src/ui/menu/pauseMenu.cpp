@@ -101,13 +101,13 @@ void PauseMenu::setRenderer(SDL_Renderer* rendererContext) {
 
 	if (renderer == nullptr) return;
 	if (itemsBg == nullptr) {
-		itemsBg = loadTexture(Ui::RES_PATH + PAUSE_MENU_ITEMS_BG_FILE, renderer);
+		itemsBg = loadTexture(resourcePath + PAUSE_MENU_ITEMS_BG_FILE, renderer);
 	}
 	if (leftArrowTexture == nullptr) {
-		leftArrowTexture = loadTexture(Ui::RES_PATH + PAUSE_ARROW_LEFT_FILE, renderer);
+		leftArrowTexture = loadTexture(resourcePath + PAUSE_ARROW_LEFT_FILE, renderer);
 	}
 	if (rightArrowTexture == nullptr) {
-		rightArrowTexture = loadTexture(Ui::RES_PATH + PAUSE_ARROW_RIGHT_FILE, renderer);
+		rightArrowTexture = loadTexture(resourcePath + PAUSE_ARROW_RIGHT_FILE, renderer);
 	}
 }
 
@@ -251,7 +251,7 @@ void PauseMenu::drawSelectedItemNameAndDescription() {
 		// Criar nova textura do nome
 		itemNameTexture = renderText(
 			itemName,
-			Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
+			resourcePath + ResourcePaths::FONTS + FONT_FILE,
 			color,
 			FONT_SIZE,
 			renderer
@@ -284,7 +284,7 @@ void PauseMenu::drawSelectedItemNameAndDescription() {
 
 		// Criar nova textura da descricao
 		TTF_Font* font = TTF_OpenFont(
-			(Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE).c_str(),
+			(resourcePath + ResourcePaths::FONTS + FONT_FILE).c_str(),
 			(int)(FONT_SIZE / 1.5)
 		);
 
@@ -597,7 +597,7 @@ void PauseMenu::drawPage1() {
 		for (const auto& text : menuItemsToShow) {
 			SDL_Texture* texture = renderText(
 				text,
-				Ui::RES_PATH + ResourcePaths::FONTS + FONT_FILE,
+				resourcePath + ResourcePaths::FONTS + FONT_FILE,
 				color,
 				FONT_SIZE,
 				renderer

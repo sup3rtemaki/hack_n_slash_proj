@@ -666,7 +666,7 @@ void Hero::pickNearItemFromGround() {
 
 	// MUDAN�A: Transferir ownership do item
 	// Criar unique_ptr a partir do raw pointer
-	// IMPORTANTE: Remover item de Entity::entities ANTES!
+	// IMPORTANTE: Remover item do mundo ativo antes da transferência!
 
 	// Primeiro, remover da lista ativa do mundo
 	Entity::removeEntity(currentNearItem);

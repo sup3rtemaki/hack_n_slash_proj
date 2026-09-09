@@ -25,9 +25,6 @@
 using json = nlohmann::json;
 using namespace std;
 
-std::unique_ptr<tson::Map> tiledMap; // Tiled map
-std::map<std::tuple<int, int>, tson::Tile*> tileData;
-
 // Ant Hero maps are fixed-size square worlds; the camera controller receives this as a parameter.
 const int WORLD_WIDTH = 1024;
 const int WORLD_HEIGHT = 1024;
@@ -135,9 +132,9 @@ Game::Game(SDL_Renderer* renderer) : gameSaveManager(saveHandler) {
 
 	// Load NPC definitions and spawn a friendly NPC near the hero
 	try {
-		NpcFactory::getInstance().loadAllNpcs("data/npcs/");
-		if (NpcFactory::getInstance().hasNpc("blacksmith")) {
-			auto npcUP = NpcFactory::getInstance().createNpc("blacksmith", renderContext.renderer);
+		npcFactory.loadAllNpcs("data/npcs/");
+		if (npcFactory.hasNpc("blacksmith")) {
+			auto npcUP = npcFactory.createNpc("blacksmith", renderContext.renderer);
 			FriendlyNpc* npc = npcUP.release();
 			// place npc close to hero
 			npc->x = hero->x + 32;
@@ -156,7 +153,7 @@ Game::Game(SDL_Renderer* renderer) : gameSaveManager(saveHandler) {
 	mapPopulationSystem = new MapPopulationSystem(
 		tiledMap, currentMap, entities, walls, fogWalls, currentMapEnemies,
 		hero, currentBoss, gui, openDoorsIds, defeatedBossesIds, deadEnemiesIds, bossHpBar,
-		renderContext.renderer, soundManager
+		&sessionStats, renderContext.renderer, soundManager
 	);
 	mapPopulationSystem->setSpawnItemCallback([this](int itemId, int quant, int xPos, int yPos) {
 		this->spawnItem(itemId, quant, xPos, yPos);
@@ -348,9 +345,9 @@ Game::~Game() {
 	Entity::removeAllFromList(&currentMapEnemies, false);
 	Entity::removeAllFromList(&fogWalls, false);
 
-	// CR�TICO: Mudar de 'false' para 'true' para deletar entities
+	// CRÍTICO: Mudar de 'false' para 'true' para deletar entities
 	Entity::removeAllFromList(&entities, true);
-	Entity::entities = entities;
+	Entity::setActiveWorld(&Entity::defaultEntities);
 
 	deadEnemiesIds.clear();
 	openDoorsIds.clear();
@@ -364,7 +361,7 @@ Game::~Game() {
 		currentMap = nullptr;
 	}
 
-	// Resetar ponteiros (j� foram deletados em Entity::entities)
+	// Resetar ponteiros (já foram deletados no mundo ativo da sessão)
 	currentBoss = nullptr;
 	bloodstain = nullptr;
 	hero = nullptr;
@@ -379,7 +376,6 @@ Game::~Game() {
 
 void Game::syncEntityRegistry() {
 	Entity::setActiveWorld(&entities);
-	Entity::entities = entities;
 }
 
 void Game::handleInputCommand(const InputCommand& command) {
@@ -457,7 +453,7 @@ void Game::update() {
 }
 
 bool Game::isBossMap() {
-	auto tMap = tiledMap.get();
+	auto tMap = this->tiledMap.get();
 	if (tMap == nullptr) {
 		cout << "Mapa nulo" << endl;
 		return false;
@@ -531,9 +527,9 @@ void Game::runMainGame() {
 					buildBossNext = false;
 					//bossHpBar->entity = nullptr; // make hpbar point to no entities
 
-					RoundKing::roundKingsKilled = 0;
-					Glob::globsKilled = 0;
-					Grob::grobsKilled = 0;
+					sessionStats.globsKilled = 0;
+					sessionStats.grobsKilled = 0;
+					sessionStats.roundKingsKilled = 0;
 
 					if (scoreTexture != NULL) {
 						cleanup(scoreTexture);
@@ -723,11 +719,11 @@ void Game::persistPickedMapItems() {
 }
 
 void Game::loadTiledMap(const string& mapFile) {
-	tiledMap = tiledMapLoader.load(mapFile);
+	this->tiledMap = tiledMapLoader.load(mapFile);
 }
 
 void Game::renderTiles() {
-	tileRenderer->render(tiledMap.get());
+	tileRenderer->render(this->tiledMap.get());
 }
 
 
@@ -789,7 +785,7 @@ void Game::draw() {
 				SDL_Color color = { 255, 255, 255, 255 };
 
 				stringstream ss;
-				ss << "Enemies dispatched: " << Glob::globsKilled + Grob::grobsKilled + RoundKing::roundKingsKilled;
+				ss << "Enemies dispatched: " << sessionStats.globsKilled + sessionStats.grobsKilled + sessionStats.roundKingsKilled;
 
 				scoreTexture = renderText(ss.str(), resPath + ResourcePaths::FONTS + "vermin_vibes_1989.ttf", color, 30, renderContext.renderer);
 			}

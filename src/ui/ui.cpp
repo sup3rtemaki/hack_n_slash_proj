@@ -1,13 +1,14 @@
 #include "ui/ui.h"
 
 Ui::Ui() {
+	setUp();
 }
 
 Ui::~Ui() {
 }
 
 void Ui::setUp() {
-    RES_PATH = getResourcePath();
+	resourcePath = getResourcePath();
 }
 
 void Ui::drawHorizontalGradientBox(SDL_Renderer* renderer,

@@ -20,6 +20,15 @@
 #include "renderContext.h"
 #include "inputCommand.h"
 #include "tiledMapLoader.h"
+#include "npcs/npcFactory.h"
+
+#include <map>
+#include <tuple>
+
+namespace tson {
+class Map;
+class Tile;
+}
 
 #include "helpers/saveHandler.h"
 #include "helpers/gameSaveManager.h"
@@ -65,6 +74,8 @@ public:
 	int currentMapId, lastMapId;
 	int mapToDrawCount;
 	Map* currentMap;
+	std::unique_ptr<tson::Map> tiledMap;
+	std::map<std::tuple<int, int>, tson::Tile*> tileData;
 	list<Map> mapList;
 	vector<int> openDoorsIds;
 	vector<int> defeatedBossesIds;
@@ -91,7 +102,7 @@ public:
 	bool isPaused = false;
 	bool quit = false;
 	bool mustSetBloodstainLocation = true;
-
+	SessionStats sessionStats;
 
 	HPBar* heroHpBar;
 	HPBar* heroStBar;
@@ -109,6 +120,7 @@ public:
 
 	SaveHandler saveHandler;
 	GameSaveManager gameSaveManager;
+	NpcFactory npcFactory;
 	TiledMapLoader tiledMapLoader;
 	InteractionSystem* interactionSystem;
 	MapPopulationSystem* mapPopulationSystem;

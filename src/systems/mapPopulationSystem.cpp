@@ -32,6 +32,7 @@ MapPopulationSystem::MapPopulationSystem(
 	std::vector<int>& defeatedBossesIds,
 	std::list<int>& deadEnemiesIds,
 	HPBar*& bossHpBar,
+	SessionStats* sessionStats,
 	SDL_Renderer* renderer,
 	SoundManager& soundManager
 )
@@ -48,6 +49,7 @@ MapPopulationSystem::MapPopulationSystem(
 	defeatedBossesIds(defeatedBossesIds),
 	deadEnemiesIds(deadEnemiesIds),
 	bossHpBar(bossHpBar),
+	sessionStats(sessionStats),
 	renderer(renderer),
 	soundManager(soundManager)
 {
@@ -192,6 +194,7 @@ void MapPopulationSystem::spawnEnemies() {
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
 					TermiteMiner* enemy = new TermiteMiner(renderer);
 					enemy->setSoundManager(&soundManager);
+					enemy->setSessionStats(sessionStats);
 					enemy->x = enemyPosX;
 					enemy->y = enemyPosY;
 					enemy->invincibleTimer = 0.1;
@@ -206,6 +209,7 @@ void MapPopulationSystem::spawnEnemies() {
 				std::find(deadEnemiesIds.begin(), deadEnemiesIds.end(), uniqueId) == deadEnemiesIds.end()) {
 					TermiteMiner* enemy = new TermiteMiner(renderer);
 					enemy->setSoundManager(&soundManager);
+					enemy->setSessionStats(sessionStats);
 					enemy->x = enemyPosX;
 					enemy->y = enemyPosY;
 					enemy->invincibleTimer = 0.1;
@@ -252,6 +256,7 @@ void MapPopulationSystem::spawnBoss() {
 			case 990001: // Small Brown Spider
 				currentBoss = new SmallBrownSpider(renderer);
 				currentBoss->setSoundManager(&soundManager);
+				currentBoss->setSessionStats(sessionStats);
 				currentBoss->x = bossPosX;
 				currentBoss->y = bossPosY;
 				currentBoss->id = bossId;

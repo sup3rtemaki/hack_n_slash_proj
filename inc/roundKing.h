@@ -48,9 +48,6 @@ public:
 	int aiState = ROUND_KING_PHASE_NORMAL;
 
 
-
-	static int roundKingsKilled;
-
 	RoundKing(SDL_Renderer* renderer);
 	void update();
 	void updateShoot();

@@ -10,13 +10,8 @@ class NpcFactory {
 private:
 	std::unordered_map<std::string, NpcData> npcDatabase;
 
-	NpcFactory() = default; // Singleton
-
 public:
-	static NpcFactory& getInstance() {
-		static NpcFactory instance;
-		return instance;
-	}
+	NpcFactory() = default;
 
 	// Carrega todos os NPCs de um diretório
 	void loadAllNpcs(const std::string& directory);

@@ -6,7 +6,7 @@
 
 class Ui {
 public:
-	string RES_PATH;
+	string resourcePath;
 	string FONT_FILE = "Berylium.ttf";;
 	float deltaTime = 0;
 	SDL_Renderer* renderer = nullptr;

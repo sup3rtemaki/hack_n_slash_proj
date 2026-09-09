@@ -31,8 +31,6 @@ const int Glob::GLOB_STATE_DEAD = 4;
 const int Glob::GLOB_AI_NORMAL = 0;
 const int Glob::GLOB_AI_CHASE = 1;
 
-int Glob::globsKilled = 0;
-
 Glob::Glob(SDL_Renderer* renderer) {
 	list<DataGroupType> dataGroupTypes;
 		DataGroupType colBoxType;
@@ -157,7 +155,9 @@ void Glob::die() {
 	}
 
 	//add to score
-	Glob::globsKilled++;
+	if (sessionStats != nullptr) {
+		++sessionStats->globsKilled;
+	}
 }
 
 void Glob::findNearestTarget() {

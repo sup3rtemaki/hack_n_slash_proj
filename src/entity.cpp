@@ -343,33 +343,27 @@ float Entity::angleBetweenTwoRects(SDL_Rect& r1, SDL_Rect& r2) {
 	return angleBetweenTwoPoints(cx1, cy1, cx2, cy2);
 }
 
-list<Entity*> Entity::entities;
-list<Entity*>* Entity::activeWorld = &Entity::entities;
+list<Entity*> Entity::defaultEntities;
+list<Entity*>* Entity::activeWorld = &Entity::defaultEntities;
 
 void Entity::setActiveWorld(list<Entity*>* world) {
-	if (world != nullptr) {
-		Entity::activeWorld = world;
-	}
+	Entity::activeWorld = (world == nullptr) ? &Entity::defaultEntities : world;
 }
 
 void Entity::addEntity(Entity* entity) {
 	if (entity == nullptr) {
 		return;
 	}
-	Entity::entities.push_back(entity);
-	if (Entity::activeWorld != nullptr && Entity::activeWorld != &Entity::entities) {
-		Entity::activeWorld->push_back(entity);
-	}
+	list<Entity*>& activeEntities = Entity::getEntities();
+	activeEntities.push_back(entity);
 }
 
 void Entity::removeEntity(Entity* entity) {
 	if (entity == nullptr) {
 		return;
 	}
-	Entity::entities.remove(entity);
-	if (Entity::activeWorld != nullptr && Entity::activeWorld != &Entity::entities) {
-		Entity::activeWorld->remove(entity);
-	}
+	list<Entity*>& activeEntities = Entity::getEntities();
+	activeEntities.remove(entity);
 }
 
 bool Entity::EntityCompare(const Entity* const& a, const Entity* const& b) {
