@@ -393,7 +393,7 @@ void SmallBrownSpider::updateDamages() {
 	//am i hittable
 	if (active && hp > 0 && invincibleTimer <= 0) {
 		for (auto entity = Entity::getEntities().begin(); entity != Entity::getEntities().end(); entity++) {
-			if ((*entity)->active && (*entity)->type == "hero") {
+			if ((*entity)->active && ((*entity)->type == "hero") || (*entity)->type == "projectile") {
 				//cast entity pointer to livingentity pointer
 				LivingEntity* enemy = (LivingEntity*)(*entity);
 

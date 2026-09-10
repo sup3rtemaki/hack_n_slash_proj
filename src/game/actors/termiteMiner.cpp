@@ -288,9 +288,8 @@ void TermiteMiner::updateDamages() {
 				if (enemy->damage > 0 && Entity::checkCollision(collisionBox, enemy->hitBox)) {
 					enemy->hitLanded(this); // let attacker know they hit
 					hp -= enemy->damage;
-
 					if (hp > 0) {
-								soundManager->playSound(SoundIds::ENEMY_DIE);
+						soundManager->playSound(SoundIds::ENEMY_HIT);
 						invincibleTimer = 0.1;
 					}
 					//get thrown backwards

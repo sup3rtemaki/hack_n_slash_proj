@@ -485,7 +485,7 @@ void Game::runMainGame() {
 	frameCount++;
 
 	if (frameCount % 60 == 0) {
-		cout << frameCount << endl;
+		//cout << frameCount << endl;
 		frameCount = 0;
 	}
 
