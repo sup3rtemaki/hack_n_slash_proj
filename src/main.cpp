@@ -2,9 +2,9 @@
 #include "res_path.h"
 #include "drawing_functions.h"
 #include "SDL_mixer.h"
-#include "globals.h"
+#include "displayConfig.h"
 #include "game.h"
-#include "npcs/npcFactory.h"
+#include "npcFactory.h"
 #include <cstdlib> //srand, rand
 #include <ctime> //time
 
@@ -22,8 +22,8 @@ int main(int argc, char** argv) {
 	//Setup Window
 	SDL_Window* window = SDL_CreateWindow("Ant Hero",
 		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-		Globals::ScreenWidth * Globals::ScreenScale,
-		Globals::ScreenHeight * Globals::ScreenScale,
+		DisplayConfig::ScreenWidth * DisplayConfig::ScreenScale,
+		DisplayConfig::ScreenHeight * DisplayConfig::ScreenScale,
 		SDL_WINDOW_MAXIMIZED | SDL_WINDOW_RESIZABLE | SDL_RENDERER_PRESENTVSYNC | SDL_WINDOW_ALLOW_HIGHDPI); //SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN
 	if (window == nullptr) {
 		SDL_Quit();
@@ -32,8 +32,8 @@ int main(int argc, char** argv) {
 	}
 
 	//Setup Renderer
-	Globals::renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (Globals::renderer == nullptr) {
+	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (renderer == nullptr) {
 		cleanup(window);
 		SDL_Quit();
 		cout << "renderer error" << endl;
@@ -42,9 +42,9 @@ int main(int argc, char** argv) {
 
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 
-	SDL_RenderSetLogicalSize(Globals::renderer, 
-		Globals::ScreenWidth,
-		Globals::ScreenHeight);
+	SDL_RenderSetLogicalSize(renderer,
+		DisplayConfig::ScreenWidth,
+		DisplayConfig::ScreenHeight);
 
 	//Initialize sdl_image
 	if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG) {
@@ -70,14 +70,14 @@ int main(int argc, char** argv) {
 
 
 	try {
-		Game game;
+		Game game(renderer);
 		game.update();
 	}
 	catch (const std::exception& e) {
 		cerr << e.what() << endl;
 	}
 
-	cleanup(Globals::renderer);
+	cleanup(renderer);
 	cleanup(window);
 	//cleanup(texture);
 

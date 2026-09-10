@@ -94,7 +94,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\inc\npcs;D:\Workspaces\Cpp\aula_sdl2\src\npcs;D:\Workspaces\Cpp\aula_sdl2\src\item;D:\Workspaces\Cpp\aula_sdl2\inc\item;D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)inc\engine\core;$(ProjectDir)inc\engine\rendering;$(ProjectDir)inc\engine\audio;$(ProjectDir)inc\engine\input;$(ProjectDir)inc\engine\world;$(ProjectDir)inc\engine\data;$(ProjectDir)inc\engine;$(ProjectDir)inc\game\actors;$(ProjectDir)inc\game\items;$(ProjectDir)inc\game\npcs;$(ProjectDir)inc\game\npcs\bosses;$(ProjectDir)inc\game\npcs\friendlies;$(ProjectDir)inc\game\persistence;$(ProjectDir)inc\game\systems;$(ProjectDir)inc\game\ui;$(ProjectDir)inc\game\ui\menu;$(ProjectDir)inc\game\world;$(ProjectDir)inc\game;$(ProjectDir)inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -112,7 +112,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Workspaces\Cpp\aula_sdl2\inc\npcs;D:\Workspaces\Cpp\aula_sdl2\src\npcs;D:\Workspaces\Cpp\aula_sdl2\src\item;D:\Workspaces\Cpp\aula_sdl2\inc\item;D:\Workspaces\Cpp\aula_sdl2\src;D:\Workspaces\Cpp\aula_sdl2\inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)inc\engine\core;$(ProjectDir)inc\engine\rendering;$(ProjectDir)inc\engine\audio;$(ProjectDir)inc\engine\input;$(ProjectDir)inc\engine\world;$(ProjectDir)inc\engine\data;$(ProjectDir)inc\engine;$(ProjectDir)inc\game\actors;$(ProjectDir)inc\game\items;$(ProjectDir)inc\game\npcs;$(ProjectDir)inc\game\npcs\bosses;$(ProjectDir)inc\game\npcs\friendlies;$(ProjectDir)inc\game\persistence;$(ProjectDir)inc\game\systems;$(ProjectDir)inc\game\ui;$(ProjectDir)inc\game\ui\menu;$(ProjectDir)inc\game\world;$(ProjectDir)inc\game;$(ProjectDir)inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -130,7 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)inc\engine\core;$(ProjectDir)inc\engine\rendering;$(ProjectDir)inc\engine\audio;$(ProjectDir)inc\engine\input;$(ProjectDir)inc\engine\world;$(ProjectDir)inc\engine\data;$(ProjectDir)inc\engine;$(ProjectDir)inc\game\actors;$(ProjectDir)inc\game\items;$(ProjectDir)inc\game\npcs;$(ProjectDir)inc\game\npcs\bosses;$(ProjectDir)inc\game\npcs\friendlies;$(ProjectDir)inc\game\persistence;$(ProjectDir)inc\game\systems;$(ProjectDir)inc\game\ui;$(ProjectDir)inc\game\ui\menu;$(ProjectDir)inc\game\world;$(ProjectDir)inc\game;$(ProjectDir)inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -148,7 +148,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)inc\engine\core;$(ProjectDir)inc\engine\rendering;$(ProjectDir)inc\engine\audio;$(ProjectDir)inc\engine\input;$(ProjectDir)inc\engine\world;$(ProjectDir)inc\engine\data;$(ProjectDir)inc\engine;$(ProjectDir)inc\game\actors;$(ProjectDir)inc\game\items;$(ProjectDir)inc\game\npcs;$(ProjectDir)inc\game\npcs\bosses;$(ProjectDir)inc\game\npcs\friendlies;$(ProjectDir)inc\game\persistence;$(ProjectDir)inc\game\systems;$(ProjectDir)inc\game\ui;$(ProjectDir)inc\game\ui\menu;$(ProjectDir)inc\game\world;$(ProjectDir)inc\game;$(ProjectDir)inc;C:\sdl2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -161,120 +161,107 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\animation.cpp" />
-    <ClCompile Include="src\animationSet.cpp" />
-    <ClCompile Include="src\bloodstain.cpp" />
-    <ClCompile Include="src\bullet.cpp" />
-    <ClCompile Include="src\cameraController.cpp" />
-    <ClCompile Include="src\checkpoint.cpp" />
-    <ClCompile Include="src\cleanup.cpp" />
-    <ClCompile Include="src\drawing_functions.cpp" />
-    <ClCompile Include="src\entities\enemyEntity.cpp" />
-    <ClCompile Include="src\entity.cpp" />
-    <ClCompile Include="src\frame.cpp" />
-    <ClCompile Include="src\game.cpp" />
-    <ClCompile Include="src\glob.cpp" />
-    <ClCompile Include="src\globals.cpp" />
-    <ClCompile Include="src\grob.cpp" />
-    <ClCompile Include="src\groupBuilder.cpp" />
-    <ClCompile Include="src\helpers\saveHandler.cpp" />
-    <ClCompile Include="src\hero.cpp" />
-    <ClCompile Include="src\item.cpp" />
-    <ClCompile Include="src\item\greenBerry.cpp" />
-    <ClCompile Include="src\item\honeydewPotion.cpp" />
-    <ClCompile Include="src\item\key.cpp" />
-    <ClCompile Include="src\item\stone.cpp" />
-    <ClCompile Include="src\joystickInput.cpp" />
-    <ClCompile Include="src\keyboardInput.cpp" />
-    <ClCompile Include="src\livingEntity.cpp" />
+    <ClCompile Include="src\game\world\bloodstain.cpp" />
+    <ClCompile Include="src\game\actors\bullet.cpp" />
+    <ClCompile Include="src\game\world\checkpoint.cpp" />
+    <ClCompile Include="src\game\actors\enemyEntity.cpp" />
+    <ClCompile Include="src\game\actors\lootDropSource.cpp" />
+    <ClCompile Include="src\game\game.cpp" />
+    <ClCompile Include="src\game\actors\glob.cpp" />
+    <ClCompile Include="src\game\actors\grob.cpp" />
+    <ClCompile Include="src\game\persistence\gameSaveManager.cpp" />
+    <ClCompile Include="src\game\persistence\saveHandler.cpp" />
+    <ClCompile Include="src\game\systems\interactionSystem.cpp" />
+    <ClCompile Include="src\game\systems\mapPopulationSystem.cpp" />
+    <ClCompile Include="src\game\systems\pauseMenuSystem.cpp" />
+    <ClCompile Include="src\game\systems\mainMenuSystem.cpp" />
+    <ClCompile Include="src\game\systems\mapTransitionSystem.cpp" />
+    <ClCompile Include="src\game\systems\mapStateSystem.cpp" />
+    <ClCompile Include="src\game\systems\mapFlowSystem.cpp" />
+    <ClCompile Include="src\game\systems\tileRenderer.cpp" />
+    <ClCompile Include="src\game\actors\hero.cpp" />
+    <ClCompile Include="src\game\items\item.cpp" />
+    <ClCompile Include="src\game\items\greenBerry.cpp" />
+    <ClCompile Include="src\game\items\honeydewPotion.cpp" />
+    <ClCompile Include="src\game\items\key.cpp" />
+    <ClCompile Include="src\game\items\stone.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\map.cpp" />
-    <ClCompile Include="src\npcs\bosses\smallBrownSpider.cpp" />
-    <ClCompile Include="src\npcs\door.cpp" />
-    <ClCompile Include="src\npcs\friendlies\friendlyNpc.cpp" />
-    <ClCompile Include="src\npcs\npcData.cpp" />
-    <ClCompile Include="src\npcs\npcFactory.cpp" />
-    <ClCompile Include="src\projectiles\stoneProjectile.cpp" />
-    <ClCompile Include="src\randomNumber.cpp" />
-    <ClCompile Include="src\res_path.cpp" />
-    <ClCompile Include="src\roundKing.cpp" />
-    <ClCompile Include="src\soundManager.cpp" />
-    <ClCompile Include="src\termiteMiner.cpp" />
-    <ClCompile Include="src\timeController.cpp" />
-    <ClCompile Include="src\ui\actionMessageUi.cpp" />
-    <ClCompile Include="src\ui\essenceCounterUi.cpp" />
-    <ClCompile Include="src\ui\hpBar.cpp" />
-    <ClCompile Include="src\ui\itemPickMessageUi.cpp" />
-    <ClCompile Include="src\ui\menu\mainMenu.cpp" />
-    <ClCompile Include="src\ui\menu\menu.cpp" />
-    <ClCompile Include="src\ui\menu\paginatedMenu.cpp" />
-    <ClCompile Include="src\ui\menu\pauseMenu.cpp" />
-    <ClCompile Include="src\ui\menu\subMenu.cpp" />
-    <ClCompile Include="src\ui\quickItemUi.cpp" />
-    <ClCompile Include="src\ui\ui.cpp" />
-    <ClCompile Include="src\wall.cpp" />
+    <ClCompile Include="src\game\world\map.cpp" />
+    <ClCompile Include="src\game\npcs\bosses\smallBrownSpider.cpp" />
+    <ClCompile Include="src\game\npcs\door.cpp" />
+    <ClCompile Include="src\game\npcs\friendlies\friendlyNpc.cpp" />
+    <ClCompile Include="src\game\npcs\npcData.cpp" />
+    <ClCompile Include="src\game\npcs\npcFactory.cpp" />
+    <ClCompile Include="src\game\items\stoneProjectile.cpp" />
+    <ClCompile Include="src\game\actors\roundKing.cpp" />
+    <ClCompile Include="src\game\actors\termiteMiner.cpp" />
+    <ClCompile Include="src\game\ui\actionMessageUi.cpp" />
+    <ClCompile Include="src\game\ui\essenceCounterUi.cpp" />
+    <ClCompile Include="src\game\ui\hpBar.cpp" />
+    <ClCompile Include="src\game\ui\itemPickMessageUi.cpp" />
+    <ClCompile Include="src\game\ui\menu\mainMenu.cpp" />
+    <ClCompile Include="src\game\ui\menu\menu.cpp" />
+    <ClCompile Include="src\game\ui\menu\paginatedMenu.cpp" />
+    <ClCompile Include="src\game\ui\menu\pauseMenu.cpp" />
+    <ClCompile Include="src\game\ui\menu\subMenu.cpp" />
+    <ClCompile Include="src\game\ui\quickItemUi.cpp" />
+    <ClCompile Include="src\game\ui\ui.cpp" />
+    <ClCompile Include="src\game\world\wall.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inc\animation.h" />
-    <ClInclude Include="inc\animationSet.h" />
-    <ClInclude Include="inc\bloodstain.h" />
-    <ClInclude Include="inc\bullet.h" />
-    <ClInclude Include="inc\cameraController.h" />
-    <ClInclude Include="inc\checkpoint.h" />
-    <ClInclude Include="inc\cleanup.h" />
-    <ClInclude Include="inc\dataGroupType.h" />
-    <ClInclude Include="inc\drawing_functions.h" />
-    <ClInclude Include="inc\entities\enemyEntity.h" />
-    <ClInclude Include="inc\entity.h" />
-    <ClInclude Include="inc\frame.h" />
-    <ClInclude Include="inc\game.h" />
-    <ClInclude Include="inc\glob.h" />
-    <ClInclude Include="inc\globals.h" />
-    <ClInclude Include="inc\grob.h" />
-    <ClInclude Include="inc\group.h" />
-    <ClInclude Include="inc\groupBox.h" />
-    <ClInclude Include="inc\groupBuilder.h" />
-    <ClInclude Include="inc\groupNumber.h" />
-    <ClInclude Include="inc\groupPosition.h" />
-    <ClInclude Include="inc\groupString.h" />
-    <ClInclude Include="inc\helpers\saveHandler.h" />
-    <ClInclude Include="inc\hero.h" />
-    <ClInclude Include="inc\item.h" />
-    <ClInclude Include="inc\item\greenBerry.h" />
-    <ClInclude Include="inc\item\honeydewPotion.h" />
-    <ClInclude Include="inc\item\itemsHub.h" />
-    <ClInclude Include="inc\item\key.h" />
-    <ClInclude Include="inc\item\stone.h" />
-    <ClInclude Include="inc\joystickInput.h" />
-    <ClInclude Include="inc\keyboardInput.h" />
-    <ClInclude Include="inc\livingEntity.h" />
-    <ClInclude Include="inc\map.h" />
-    <ClInclude Include="inc\npcs\bosses\smallBrownSpider.h" />
-    <ClInclude Include="inc\npcs\door.h" />
-    <ClInclude Include="inc\npcs\friendlies\friendlyNpc.h" />
-    <ClInclude Include="inc\npcs\npcData.h" />
-    <ClInclude Include="inc\npcs\npcFactory.h" />
-    <ClInclude Include="inc\projectiles\stoneProjectile.h" />
-    <ClInclude Include="inc\randomNumber.h" />
-    <ClInclude Include="inc\res_path.h" />
-    <ClInclude Include="inc\roundKing.h" />
-    <ClInclude Include="inc\soundManager.h" />
-    <ClInclude Include="inc\termiteMiner.h" />
+    <ClInclude Include="inc\game\world\bloodstain.h" />
+    <ClInclude Include="inc\game\actors\bullet.h" />
+    <ClInclude Include="inc\game\world\checkpoint.h" />
+    <ClInclude Include="inc\game\actors\enemyEntity.h" />
+    <ClInclude Include="inc\game\actors\lootDropSource.h" />
+    <ClInclude Include="inc\game\game.h" />
+    <ClInclude Include="inc\game\actors\glob.h" />
+    <ClInclude Include="inc\game\actors\grob.h" />
+    <ClInclude Include="inc\game\persistence\gameSaveManager.h" />
+    <ClInclude Include="inc\game\persistence\saveHandler.h" />
+    <ClInclude Include="inc\game\systems\interactionSystem.h" />
+    <ClInclude Include="inc\game\systems\mapPopulationSystem.h" />
+    <ClInclude Include="inc\game\systems\pauseMenuSystem.h" />
+    <ClInclude Include="inc\game\systems\mainMenuSystem.h" />
+    <ClInclude Include="inc\game\systems\mapTransitionSystem.h" />
+    <ClInclude Include="inc\game\systems\mapStateSystem.h" />
+    <ClInclude Include="inc\game\systems\mapFlowSystem.h" />
+    <ClInclude Include="inc\game\systems\tileRenderer.h" />
+    <ClInclude Include="inc\game\actors\hero.h" />
+    <ClInclude Include="inc\game\items\item.h" />
+    <ClInclude Include="inc\game\items\greenBerry.h" />
+    <ClInclude Include="inc\game\items\honeydewPotion.h" />
+    <ClInclude Include="inc\game\items\itemsHub.h" />
+    <ClInclude Include="inc\game\items\key.h" />
+    <ClInclude Include="inc\game\items\stone.h" />
+    <ClInclude Include="inc\game\world\map.h" />
+    <ClInclude Include="inc\game\npcs\bosses\smallBrownSpider.h" />
+    <ClInclude Include="inc\game\npcs\door.h" />
+    <ClInclude Include="inc\game\npcs\friendlies\friendlyNpc.h" />
+    <ClInclude Include="inc\game\npcs\npcData.h" />
+    <ClInclude Include="inc\game\npcs\npcFactory.h" />
+    <ClInclude Include="inc\game\items\stoneProjectile.h" />
+    <ClInclude Include="inc\game\actors\roundKing.h" />
+    <ClInclude Include="inc\game\actors\termiteMiner.h" />
     <ClInclude Include="inc\tileson\tileson.hpp" />
-    <ClInclude Include="inc\timeController.h" />
-    <ClInclude Include="inc\ui\actionMessageUi.h" />
-    <ClInclude Include="inc\ui\essenceCounterUi.h" />
-    <ClInclude Include="inc\ui\hpBar.h" />
-    <ClInclude Include="inc\ui\itemPickMessageUi.h" />
-    <ClInclude Include="inc\ui\menu\mainMenu.h" />
-    <ClInclude Include="inc\ui\menu\menu.h" />
-    <ClInclude Include="inc\ui\menu\paginatedMenu.h" />
-    <ClInclude Include="inc\ui\menu\pauseMenu.h" />
-    <ClInclude Include="inc\ui\menu\subMenu.h" />
-    <ClInclude Include="inc\ui\quickItemUi.h" />
-    <ClInclude Include="inc\ui\ui.h" />
-    <ClInclude Include="inc\wall.h" />
+    <ClInclude Include="inc\game\ui\actionMessageUi.h" />
+    <ClInclude Include="inc\game\ui\essenceCounterUi.h" />
+    <ClInclude Include="inc\game\ui\hpBar.h" />
+    <ClInclude Include="inc\game\ui\itemPickMessageUi.h" />
+    <ClInclude Include="inc\game\ui\menu\mainMenu.h" />
+    <ClInclude Include="inc\game\ui\menu\menu.h" />
+    <ClInclude Include="inc\game\ui\menu\paginatedMenu.h" />
+    <ClInclude Include="inc\game\ui\menu\pauseMenu.h" />
+    <ClInclude Include="inc\game\ui\menu\subMenu.h" />
+    <ClInclude Include="inc\game\ui\quickItemUi.h" />
+    <ClInclude Include="inc\game\ui\ui.h" />
+    <ClInclude Include="inc\game\world\wall.h" />
     <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="engine.vcxproj">
+      <Project>{a2b3c4d5-6789-4123-abcd-ef0123456789}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="aula_sdl2.rc" />

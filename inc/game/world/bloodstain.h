@@ -1,0 +1,36 @@
+#ifndef BLOODSTAIN
+#define BLOODSTAIN
+
+#include "entity.h"
+#include <memory>
+
+class Bloodstain : public Entity {
+public:
+	static const string BLOODSTAIN_ANIM_IDLE;
+	static const string BLOODSTAIN_ANIM_DIE;
+
+	static const int BLOODSTAIN_STATE_IDLE;
+	static const int BLOODSTAIN_STATE_DIE;
+
+	bool isLive;
+	string mapName;
+	int essence = 0;
+
+	Bloodstain(SDL_Renderer* renderer);
+	~Bloodstain();
+
+	void update();
+	void changeAnimation(int newState, bool resetFrameToBeginning, string animName = "");
+	void updateAnimation();
+	void setLocation(int posX, int posY, int essence, string mapName);
+	void create();
+	void destroy();
+	int recoverEssence();
+
+private:
+	std::unique_ptr<AnimationSet> localAnimSet;
+	int prevX;
+	int prevY;
+};
+
+#endif // !BLOODSTAIN

@@ -1,0 +1,33 @@
+#ifndef QUICKITEMUI
+#define QUICKITEMUI
+
+#include "ui.h"
+
+#include "hero.h"
+
+#include <string>
+
+class QuickItemUi : public Ui {
+public:
+	QuickItemUi(Hero* hero);
+	~QuickItemUi();
+
+	virtual void draw() override;
+	virtual void setUp() override;
+	virtual void setRenderer(SDL_Renderer* rendererContext) override;
+
+private:
+	SDL_Texture* quickItemFrame;
+	Hero* hero = nullptr;
+
+	SDL_Texture* itemQuantityTexture;
+	int lastQuantity;
+	int lastItemId;
+
+	void drawItemFrame();
+	void drawCurrentItem();
+	void drawItemQuantity();
+};
+
+#endif // !QUICKITEMUI
+

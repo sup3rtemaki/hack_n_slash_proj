@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\inc\game\persistence\</FILEPATH>
+      <FILENAME>saveHandler.h</FILENAME>
+      <LINE>14</LINE>
+      <COLUMN>0</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>A variável 'BloodstainInfo::x' não foi inicializada. Sempre inicialize uma variável de membro (type.6).</DESCRIPTION>
+    <FUNCTION>BloodstainInfo::{ctor}</FUNCTION>
+    <DECORATED>??0BloodstainInfo@@QAE@XZ</DECORATED>
+    <FUNCLINE>14</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>BloodstainInfo::x</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\inc\game\persistence\</FILEPATH>
+      <FILENAME>saveHandler.h</FILENAME>
+      <LINE>14</LINE>
+      <COLUMN>0</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>A variável 'BloodstainInfo::essence' não foi inicializada. Sempre inicialize uma variável de membro (type.6).</DESCRIPTION>
+    <FUNCTION>BloodstainInfo::{ctor}</FUNCTION>
+    <DECORATED>??0BloodstainInfo@@QAE@XZ</DECORATED>
+    <FUNCLINE>14</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>BloodstainInfo::essence</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\inc\game\persistence\</FILEPATH>
+      <FILENAME>saveHandler.h</FILENAME>
+      <LINE>14</LINE>
+      <COLUMN>0</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>A variável 'BloodstainInfo::y' não foi inicializada. Sempre inicialize uma variável de membro (type.6).</DESCRIPTION>
+    <FUNCTION>BloodstainInfo::{ctor}</FUNCTION>
+    <DECORATED>??0BloodstainInfo@@QAE@XZ</DECORATED>
+    <FUNCLINE>14</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>BloodstainInfo::y</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\inc\nlohmann\</FILEPATH>
+      <FILENAME>json.hpp</FILENAME>
+      <LINE>7270</LINE>
+      <COLUMN>17</COLUMN>
+    </SFA>
+    <DEFECTCODE>26819</DEFECTCODE>
+    <DESCRIPTION>Fallthrough sem anotações entre os rótulos switch (es.78).</DESCRIPTION>
+    <FUNCTION>nlohmann::detail::lexer&lt;nlohmann::basic_json&lt;std::map,std::vector,std::basic_string&lt;char,std::char_traits&lt;char&gt;,std::allocator&lt;char&gt; &gt;,bool,__int64,unsigned __int64,double,std::allocator,nlohmann::adl_serializer,std::vector&lt;unsigned char,std::allocator&lt;unsigned char&gt; &gt; &gt;,nlohmann::detail::iterator_input_adapter&lt;char const *&gt; &gt;::scan_comment</FUNCTION>
+    <DECORATED>?scan_comment@?$lexer@V?$basic_json@Vmap@std@@Vvector@2@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@2@_N_J_KNVallocator@2@Uadl_serializer@nlohmann@@V?$vector@EV?$allocator@E@std@@@2@@nlohmann@@V?$iterator_input_adapter@PBD@detail@2@@detail@nlohmann@@AAE_NXZ</DECORATED>
+    <FUNCLINE>7246</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Workspaces\Cpp\aula_sdl2\inc\nlohmann\</FILEPATH>
+      <FILENAME>json.hpp</FILENAME>
+      <LINE>7307</LINE>
+      <COLUMN>30</COLUMN>
+    </SFA>
+    <DEFECTCODE>26819</DEFECTCODE>
+    <DESCRIPTION>Fallthrough sem anotações entre os rótulos switch (es.78).</DESCRIPTION>
+    <FUNCTION>nlohmann::detail::lexer&lt;nlohmann::basic_json&lt;std::map,std::vector,std::basic_string&lt;char,std::char_traits&lt;char&gt;,std::allocator&lt;char&gt; &gt;,bool,__int64,unsigned __int64,double,std::allocator,nlohmann::adl_serializer,std::vector&lt;unsigned char,std::allocator&lt;unsigned char&gt; &gt; &gt;,nlohmann::detail::iterator_input_adapter&lt;char const *&gt; &gt;::scan_comment</FUNCTION>
+    <DECORATED>?scan_comment@?$lexer@V?$basic_json@Vmap@std@@Vvector@2@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@2@_N_J_KNVallocator@2@Uadl_serializer@nlohmann@@V?$vector@EV?$allocator@E@std@@@2@@nlohmann@@V?$iterator_input_adapter@PBD@detail@2@@detail@nlohmann@@AAE_NXZ</DECORATED>
+    <FUNCLINE>7246</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>
