@@ -4,7 +4,7 @@
 #include "entity.h"
 #include "hero.h"
 #include "bloodstain.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 #include "mapPopulationSystem.h"
 
 #include <string>

@@ -1,5 +1,4 @@
 #include "animationSet.h"
-#include "resourceConfig.h"
 #include "stringUtils.h"
 
 AnimationSet::AnimationSet(){
@@ -33,7 +32,7 @@ Animation* AnimationSet::getAnimation(string name) {
 //we would prefer to be transparent, then we can say yes to 'colorKeying'(make a colour in the palette actually equal full transparent)
 //and then just use the index of that transparentPixel (e.g, if its the third colour in the palette, then put in 2 as index starts at 0)
 //if you need an alternative white version of the sprite sheet, then make this last option true (maybe move this out of this class? not sure)
-void AnimationSet::loadAnimationSet(string fileName, list<DataGroupType>& groupTypes, SDL_Renderer* renderer, bool setColourKey, int transparentPixelIndex, bool createWhiteTexture) {
+void AnimationSet::loadAnimationSet(string fileName, list<DataGroupType>& groupTypes, SDL_Renderer* renderer, bool setColourKey, int transparentPixelIndex, bool createWhiteTexture, const string& whitePaletteFile) {
 
 	ifstream file;
 	const string resPath = getResourcePath();
@@ -54,9 +53,9 @@ void AnimationSet::loadAnimationSet(string fileName, list<DataGroupType>& groupT
 
 			spriteSheet = convertSurfaceToTexture(spriteSurface, renderer, false);
 
-			if (createWhiteTexture)
+			if (createWhiteTexture && !whitePaletteFile.empty())
 			{
-				SDL_Surface* whiteSurface = loadSurface(resPath + ResourcePaths::ALL_WHITE_TEXTURE, renderer);
+				SDL_Surface* whiteSurface = loadSurface(resPath + whitePaletteFile, renderer);
 				surfacePaletteSwap(spriteSurface, whiteSurface);
 				SDL_SetColorKey(spriteSurface, 1, SDL_MapRGB(spriteSurface->format, transparentPixel->r, transparentPixel->g, transparentPixel->b));
 				whiteSpriteSheet = convertSurfaceToTexture(spriteSurface, renderer, false); //create the texture whilst destroying the surface

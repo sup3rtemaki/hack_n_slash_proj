@@ -1,6 +1,6 @@
 #include "hero.h"
 #include "displayConfig.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 #include "soundManager.h"
 
 #include "bloodstain.h"
@@ -85,7 +85,7 @@ Hero::Hero(SDL_Renderer* renderer) {
 		dataGroupTypes.push_back(dmgType);
 
 		localAnimSet = std::make_unique<AnimationSet>();
-		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "antHero.fdset", dataGroupTypes, renderer, true, 0, true);
+		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "antHero.fdset", dataGroupTypes, renderer, true, 0, true, ResourcePaths::ALL_WHITE_TEXTURE);
 		this->animSet = localAnimSet.get();
 	}
 
@@ -107,7 +107,7 @@ Hero::Hero(SDL_Renderer* renderer) {
 		dataGroupTypes.push_back(dmgType);
 
 		localAnimSet = std::make_unique<AnimationSet>();
-		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "antHero.fdset", dataGroupTypes, renderer, true, 0, true);
+		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "antHero.fdset", dataGroupTypes, renderer, true, 0, true, ResourcePaths::ALL_WHITE_TEXTURE);
 		this->animSet = localAnimSet.get();
 	type = "hero";
 

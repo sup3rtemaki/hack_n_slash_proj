@@ -1,6 +1,6 @@
 #include "roundKing.h"
 #include "displayConfig.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 #include "soundManager.h"
 #include "randomNumber.h"
 
@@ -207,8 +207,8 @@ void RoundKing::die() {
 	moving = false;
 	changeAnimation(ROUND_KING_STATE_DEAD, true);
 	soundManager->playSound(SoundIds::ENEMY_DIE);
-	if (sessionStats != nullptr) {
-		++sessionStats->roundKingsKilled;
+	if (gameKillStats != nullptr) {
+		++gameKillStats->roundKingsKilled;
 	}
 }
 

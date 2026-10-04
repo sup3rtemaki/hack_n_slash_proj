@@ -1,7 +1,8 @@
 #include "grob.h"
+#include "pheromoneTrailSource.h"
 #include "displayConfig.h"
 #include "itemsHub.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 #include "soundManager.h"
 
 const string Grob::GROB_ANIM_UP = "up";
@@ -50,7 +51,7 @@ Grob::Grob(SDL_Renderer* renderer) {
 	dataGroupTypes.push_back(dmgType);
 
 	std::unique_ptr<AnimationSet> localAnim = std::make_unique<AnimationSet>();
-	localAnim->loadAnimationSet(ResourcePaths::ANIMATIONS + "grob.fdset", dataGroupTypes, renderer, true, 0, true);
+	localAnim->loadAnimationSet(ResourcePaths::ANIMATIONS + "grob.fdset", dataGroupTypes, renderer, true, 0, true, ResourcePaths::ALL_WHITE_TEXTURE);
 	this->animSet = localAnim.get();
 	this->localAnimSet = std::move(localAnim);
 	type = "enemy";
@@ -152,8 +153,8 @@ void Grob::die() {
 	}
 
 	//add to score
-	if (sessionStats != nullptr) {
-		++sessionStats->grobsKilled;
+	if (gameKillStats != nullptr) {
+		++gameKillStats->grobsKilled;
 	}
 }
 
@@ -330,20 +331,21 @@ void Grob::populatePossibleDropItemsMap() {
 
 void Grob::pursueTarget(LivingEntity* entity) {
 	float dist = Entity::distanceBetweenTwoEntities(this, target);
+	auto* trailSource = dynamic_cast<PheromoneTrailSource*>(target);
 	if ((dist > distanceThreshold)) {
-		if (!target->pheromoneTrail.empty()) {
+		if (trailSource != nullptr && !trailSource->getPheromoneTrail().empty()) {
 			// TODO fazer com que o inimigo persiga o ponto de feromonio mais proximo dele
 			if (currentTargetPos.x == 0 || currentTargetPos.y == 0) {
-				currentTargetPos = target->pheromoneTrail.front();
+				currentTargetPos = trailSource->getPheromoneTrail().front();
 			}
 			if (Entity::distanceBetweenTwoPoints(this->x, this->y, currentTargetPos.x, currentTargetPos.y) < (distanceThreshold / 5.f)) {
-				currentTargetPos = target->pheromoneTrail.at(pheromoneTrailIndex);
+				currentTargetPos = trailSource->getPheromoneTrail().at(pheromoneTrailIndex);
 				pheromoneTrailIndex++;
 				isChasingPheromone = true;
 			}
 			else {
 				if (isChasingPheromone) {
-					currentTargetPos = target->pheromoneTrail.front();
+					currentTargetPos = trailSource->getPheromoneTrail().front();
 					pheromoneTrailIndex = 1;
 				}
 				else {

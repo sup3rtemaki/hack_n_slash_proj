@@ -1,7 +1,7 @@
 #include "stone.h"
 
 #include "stoneProjectile.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 
 Stone::Stone(bool isOnGround, int quant, SDL_Renderer* renderer) : renderer(renderer) {
 	list<DataGroupType> dataGroupTypes;

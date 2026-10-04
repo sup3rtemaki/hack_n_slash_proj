@@ -3,8 +3,6 @@
 
 #include "entity.h"
 
-#include <deque>
-
 //abstract class
 class LivingEntity : public Entity {
 public:
@@ -28,8 +26,6 @@ public:
 	float staminaStatusTimer;
 	float staminaRate;
 	float staminaStatusAmount;
-
-	deque<SDL_Point> pheromoneTrail;
 
 	virtual ~LivingEntity() = default;
 	virtual void updateHitBox();

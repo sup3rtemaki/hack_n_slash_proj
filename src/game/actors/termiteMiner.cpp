@@ -1,9 +1,10 @@
 #include "termiteMiner.h"
+#include "pheromoneTrailSource.h"
 #include "displayConfig.h"
 
 #include "itemsHub.h"
 #include "soundManager.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 
 const string TermiteMiner::TERMITE_MINER_ANIM_UP = "up";
 const string TermiteMiner::TERMITE_MINER_ANIM_DOWN = "down";
@@ -49,7 +50,7 @@ TermiteMiner::TermiteMiner(SDL_Renderer* renderer) {
 	dataGroupTypes.push_back(dmgType);
 
 	std::unique_ptr<AnimationSet> localAnim = std::make_unique<AnimationSet>();
-	localAnim->loadAnimationSet(ResourcePaths::ANIMATIONS + "termiteMiner.fdset", dataGroupTypes, renderer, true, 0, true);
+	localAnim->loadAnimationSet(ResourcePaths::ANIMATIONS + "termiteMiner.fdset", dataGroupTypes, renderer, true, 0, true, ResourcePaths::ALL_WHITE_TEXTURE);
 	this->animSet = localAnim.get();
 	this->localAnimSet = std::move(localAnim);
 	type = "enemy";
@@ -288,8 +289,9 @@ void TermiteMiner::updateDamages() {
 				if (enemy->damage > 0 && Entity::checkCollision(collisionBox, enemy->hitBox)) {
 					enemy->hitLanded(this); // let attacker know they hit
 					hp -= enemy->damage;
+
 					if (hp > 0) {
-						soundManager->playSound(SoundIds::ENEMY_HIT);
+								soundManager->playSound(SoundIds::ENEMY_DIE);
 						invincibleTimer = 0.1;
 					}
 					//get thrown backwards
@@ -306,20 +308,21 @@ void TermiteMiner::populatePossibleDropItemsMap() {
 
 void TermiteMiner::pursueTarget(LivingEntity* entity) {
 	float dist = Entity::distanceBetweenTwoEntities(this, target);
+	auto* trailSource = dynamic_cast<PheromoneTrailSource*>(target);
 	if ((dist > distanceThreshold)) {
-		if (!target->pheromoneTrail.empty()) {
+		if (trailSource != nullptr && !trailSource->getPheromoneTrail().empty()) {
 			// TODO fazer com que o inimigo persiga o ponto de feromonio mais proximo dele
 			if (currentTargetPos.x == 0 || currentTargetPos.y == 0) {
-				currentTargetPos = target->pheromoneTrail.front();
+				currentTargetPos = trailSource->getPheromoneTrail().front();
 			}
 			if (Entity::distanceBetweenTwoPoints(this->x, this->y, currentTargetPos.x, currentTargetPos.y) < (distanceThreshold / 5.f)) {
-				currentTargetPos = target->pheromoneTrail.at(pheromoneTrailIndex);
+				currentTargetPos = trailSource->getPheromoneTrail().at(pheromoneTrailIndex);
 				pheromoneTrailIndex++;
 				isChasingPheromone = true;
 			}
 			else {
 				if (isChasingPheromone) {
-					currentTargetPos = target->pheromoneTrail.front();
+					currentTargetPos = trailSource->getPheromoneTrail().front();
 					pheromoneTrailIndex = 1;
 				}
 				else {

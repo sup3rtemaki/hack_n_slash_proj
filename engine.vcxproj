@@ -168,7 +168,6 @@
     <ClInclude Include="inc\engine\rendering\drawing_functions.h" />
     <ClInclude Include="inc\engine\rendering\frame.h" />
     <ClInclude Include="inc\engine\rendering\renderContext.h" />
-    <ClInclude Include="inc\engine\rendering\resourceConfig.h" />
     <ClInclude Include="inc\engine\world\cameraController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

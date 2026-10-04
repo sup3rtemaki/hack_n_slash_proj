@@ -2,7 +2,7 @@
 
 #include "map.h"
 #include "entity.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 #include "jsonFileStore.h"
 #include "item.h"
 

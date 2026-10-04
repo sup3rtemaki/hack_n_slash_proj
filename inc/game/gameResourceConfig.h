@@ -1,5 +1,4 @@
-#ifndef RESOURCECONFIG
-#define RESOURCECONFIG
+#pragma once
 
 #include <string>
 
@@ -25,5 +24,3 @@ inline const std::string SMASH = "smash";
 inline const std::string SHOOT = "shoot";
 inline const std::string LAUGH = "laugh";
 }
-
-#endif

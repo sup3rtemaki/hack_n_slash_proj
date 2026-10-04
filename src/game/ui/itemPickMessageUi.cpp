@@ -1,5 +1,5 @@
 #include "itemPickMessageUi.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 
 const string FONT_FILE = "alagard.ttf";
 const int FONT_X = 20;

@@ -1,5 +1,5 @@
 #include "bloodstain.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 
 const string Bloodstain::BLOODSTAIN_ANIM_IDLE = "idle";
 const string Bloodstain::BLOODSTAIN_ANIM_DIE = "die";

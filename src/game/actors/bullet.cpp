@@ -1,5 +1,5 @@
 #include "bullet.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 
 const string Bullet::BULLET_ANIM_BULLET = "bullet";
 

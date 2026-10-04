@@ -215,6 +215,8 @@
     <ClInclude Include="inc\game\actors\enemyEntity.h" />
     <ClInclude Include="inc\game\actors\lootDropSource.h" />
     <ClInclude Include="inc\game\game.h" />
+    <ClInclude Include="inc\game\gameKillStats.h" />
+    <ClInclude Include="inc\game\gameResourceConfig.h" />
     <ClInclude Include="inc\game\actors\glob.h" />
     <ClInclude Include="inc\game\actors\grob.h" />
     <ClInclude Include="inc\game\persistence\gameSaveManager.h" />
@@ -228,6 +230,7 @@
     <ClInclude Include="inc\game\systems\mapFlowSystem.h" />
     <ClInclude Include="inc\game\systems\tileRenderer.h" />
     <ClInclude Include="inc\game\actors\hero.h" />
+    <ClInclude Include="inc\game\actors\pheromoneTrailSource.h" />
     <ClInclude Include="inc\game\items\item.h" />
     <ClInclude Include="inc\game\items\greenBerry.h" />
     <ClInclude Include="inc\game\items\honeydewPotion.h" />

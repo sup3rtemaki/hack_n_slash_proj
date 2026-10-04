@@ -1,6 +1,7 @@
 #ifndef GAME
 #define GAME
 
+#include "gameKillStats.h"
 #include "hero.h"
 #include "wall.h"
 #include "glob.h"
@@ -101,7 +102,7 @@ public:
 	bool isPaused = false;
 	bool quit = false;
 	bool mustSetBloodstainLocation = true;
-	SessionStats sessionStats;
+	GameKillStats sessionStats;
 
 	HPBar* heroHpBar;
 	HPBar* heroStBar;

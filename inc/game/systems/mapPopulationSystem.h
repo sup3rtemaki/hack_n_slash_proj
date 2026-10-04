@@ -13,7 +13,7 @@ class Ui;
 class HPBar;
 class LivingEntity;
 class SoundManager;
-struct SessionStats;
+struct GameKillStats;
 struct SDL_Renderer;
 
 namespace tson {
@@ -36,7 +36,7 @@ public:
 		std::vector<int>& defeatedBossesIds,
 		std::list<int>& deadEnemiesIds,
 		HPBar*& bossHpBar,
-		SessionStats* sessionStats,
+		GameKillStats* gameKillStats,
 		SDL_Renderer* renderer,
 		SoundManager& soundManager
 	);
@@ -76,7 +76,7 @@ private:
 	std::vector<int>& defeatedBossesIds;
 	std::list<int>& deadEnemiesIds;
 	HPBar*& bossHpBar;
-	SessionStats* sessionStats;
+	GameKillStats* gameKillStats;
 	SDL_Renderer* renderer;
 	SoundManager& soundManager;
 

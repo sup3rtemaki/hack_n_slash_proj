@@ -19,7 +19,7 @@
 #include "smallBrownSpider.h"
 #include "checkpoint.h"
 #include "npcFactory.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 #include "jsonFileStore.h"
 
 using json = nlohmann::json;
@@ -485,7 +485,7 @@ void Game::runMainGame() {
 	frameCount++;
 
 	if (frameCount % 60 == 0) {
-		//cout << frameCount << endl;
+		cout << frameCount << endl;
 		frameCount = 0;
 	}
 

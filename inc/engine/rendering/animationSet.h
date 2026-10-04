@@ -17,7 +17,7 @@ public:
 
 	Animation* getAnimation(string name);
 
-	void loadAnimationSet(string fileName, list<DataGroupType>& groupTypes, SDL_Renderer* renderer, bool setColorKey = false, int transparentPixelIndex = 0, bool createWhiteTexture = false);
+	void loadAnimationSet(string fileName, list<DataGroupType>& groupTypes, SDL_Renderer* renderer, bool setColorKey = false, int transparentPixelIndex = 0, bool createWhiteTexture = false, const string& whitePaletteFile = "");
 };
 
 #endif // !ANIMATIONSET

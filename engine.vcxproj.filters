@@ -148,9 +148,6 @@
     <ClInclude Include="inc\engine\rendering\renderContext.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="inc\engine\rendering\resourceConfig.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
     <ClInclude Include="inc\engine\world\cameraController.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>

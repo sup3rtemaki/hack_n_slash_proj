@@ -1,7 +1,8 @@
 #include "glob.h"
+#include "pheromoneTrailSource.h"
 #include "displayConfig.h"
 #include "itemsHub.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 #include "soundManager.h"
 
 const string Glob::GLOB_ANIM_UP = "up";
@@ -51,7 +52,7 @@ Glob::Glob(SDL_Renderer* renderer) {
 
 		// own the anim set
 		std::unique_ptr<AnimationSet> localAnimSet = std::make_unique<AnimationSet>();
-		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "glob.fdset", dataGroupTypes, renderer, true, 0, true);
+		localAnimSet->loadAnimationSet(ResourcePaths::ANIMATIONS + "glob.fdset", dataGroupTypes, renderer, true, 0, true, ResourcePaths::ALL_WHITE_TEXTURE);
 		this->animSet = localAnimSet.get();
 		// transfer ownership to this object by storing it in the member
 		this->localAnimSet = std::move(localAnimSet);
@@ -155,8 +156,8 @@ void Glob::die() {
 	}
 
 	//add to score
-	if (sessionStats != nullptr) {
-		++sessionStats->globsKilled;
+	if (gameKillStats != nullptr) {
+		++gameKillStats->globsKilled;
 	}
 }
 
@@ -334,20 +335,21 @@ void Glob::populatePossibleDropItemsMap(){
 
 void Glob::pursueTarget(LivingEntity* entity) {
 	float dist = Entity::distanceBetweenTwoEntities(this, target);
+	auto* trailSource = dynamic_cast<PheromoneTrailSource*>(target);
 	if ((dist > distanceThreshold)) {
-		if (!target->pheromoneTrail.empty()) {
+		if (trailSource != nullptr && !trailSource->getPheromoneTrail().empty()) {
 			// TODO fazer com que o inimigo persiga o ponto de feromonio mais proximo dele
 			if (currentTargetPos.x == 0 || currentTargetPos.y == 0) {
-				currentTargetPos = target->pheromoneTrail.front();
+				currentTargetPos = trailSource->getPheromoneTrail().front();
 			}
 			if (Entity::distanceBetweenTwoPoints(this->x, this->y, currentTargetPos.x, currentTargetPos.y) < (distanceThreshold / 5.f)) {
-				currentTargetPos = target->pheromoneTrail.at(pheromoneTrailIndex);
+				currentTargetPos = trailSource->getPheromoneTrail().at(pheromoneTrailIndex);
 				pheromoneTrailIndex++;
 				isChasingPheromone = true;
 			}
 			else {
 				if (isChasingPheromone) {
-					currentTargetPos = target->pheromoneTrail.front();
+					currentTargetPos = trailSource->getPheromoneTrail().front();
 					pheromoneTrailIndex = 1;
 				}
 				else {

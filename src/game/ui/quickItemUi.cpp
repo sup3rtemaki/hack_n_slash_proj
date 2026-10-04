@@ -1,5 +1,5 @@
 #include "quickItemUi.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 
 const string& ITEM_FRAME_FILE = "itemFrame.png";
 const string& ITEM_FRAME_FOLDER = "\\Assets\\Textures\\HUD\\";

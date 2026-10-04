@@ -1,5 +1,5 @@
 #include "door.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 
 const int Door::DOOR_STATE_CLOSED = 0;
 const int Door::DOOR_STATE_OPENING = 1;

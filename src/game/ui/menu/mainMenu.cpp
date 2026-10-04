@@ -1,6 +1,6 @@
 #include "mainMenu.h"
 #include "displayConfig.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 
 #include "hero.h"
 

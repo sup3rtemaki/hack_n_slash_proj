@@ -1,5 +1,5 @@
 #include "honeydewPotion.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 
 HoneydewPotion::HoneydewPotion(bool isOnGround, int quant, SDL_Renderer* renderer) {
 	list<DataGroupType> dataGroupTypes;

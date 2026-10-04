@@ -1,5 +1,5 @@
 #include "checkpoint.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 
 const string Checkpoint::CHECKPOINT_ANIM_ACTIVE = "active";
 const string Checkpoint::CHECKPOINT_ANIM_INACTIVE = "inactive";

@@ -1,7 +1,7 @@
 #include "key.h"
 
 #include "hero.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 
 Key::Key(bool isOnGround, int quant, SDL_Renderer* renderer) {
 	list<DataGroupType> dataGroupTypes;

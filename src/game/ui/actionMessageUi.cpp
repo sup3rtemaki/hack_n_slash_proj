@@ -1,6 +1,6 @@
 #include "actionMessageUi.h"
 #include "displayConfig.h"
-#include "resourceConfig.h"
+#include "gameResourceConfig.h"
 
 #include <sstream>
 

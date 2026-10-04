@@ -1,6 +1,7 @@
 #pragma once
 
 #include "livingEntity.h"
+#include "pheromoneTrailSource.h"
 #include "soundManager.h"
 #include "itemsHub.h"
 #include "map.h"
@@ -30,7 +31,7 @@ enum class HERO_STATE {
 	RESTING
 };
 
-class Hero : public LivingEntity {
+class Hero : public LivingEntity, public PheromoneTrailSource {
 public:
 	static const string HERO_ANIM_UP;
 	static const string HERO_ANIM_DOWN;
@@ -162,5 +163,7 @@ private:
 	void updateEssence();
 	void updateAttackSequence();
 	void updatePheromoneTrail();
+	const std::deque<SDL_Point>& getPheromoneTrail() const override { return pheromoneTrail; }
+	std::deque<SDL_Point> pheromoneTrail;
 	Item* currentNearItem;
 };

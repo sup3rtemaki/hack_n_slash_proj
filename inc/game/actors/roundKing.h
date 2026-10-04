@@ -4,11 +4,13 @@
 #include <cstdlib>
 #include "livingEntity.h"
 #include "lootDropSource.h"
+#include "gameKillStats.h"
 #include "soundManager.h"
 #include "bullet.h"
 
 class RoundKing : public LivingEntity, public LootDropSource {
 public:
+	GameKillStats* gameKillStats = nullptr;
 	//animations
 	static const string ROUND_KING_ANIM_IDLE;
 	static const string ROUND_KING_ANIM_CHARGE;
@@ -62,6 +64,7 @@ public:
 	void changeAnimation(int newState, bool resetFrameToBeginning);
 	void updateAnimation();
 	void updateDamages();
+	void setGameKillStats(GameKillStats* stats) { gameKillStats = stats; }
 
 private:
 	SDL_Renderer* renderer;

@@ -12,17 +12,10 @@ using std::string;
 
 class SoundManager; // forward declaration
 
-struct SessionStats {
-	int globsKilled = 0;
-	int grobsKilled = 0;
-	int roundKingsKilled = 0;
-};
-
 //Abstract class
 class Entity {
 public:
 	static const int DIR_UP, DIR_DOWN, DIR_LEFT, DIR_RIGHT, DIR_NONE; // reference constants
-	SessionStats* sessionStats = nullptr;
 	int id;
 	int state; // quick label to see what the entity is up to
 	float x, y;
@@ -86,7 +79,6 @@ public:
 	static void removeInactiveEntitiesFromList(list<Entity*>* entityList, bool deleteEntities);
 	static void removeAllFromList(list<Entity*>* entityList, bool deleteEntities);
 	void setSoundManager(SoundManager* sm) { soundManager = sm; }
-	void setSessionStats(SessionStats* stats) { sessionStats = stats; }
 };
 
 #endif
