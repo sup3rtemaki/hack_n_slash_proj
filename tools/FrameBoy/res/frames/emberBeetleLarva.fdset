@@ -1,0 +1,306 @@
+emberBeetleLarva.png
+animations: 12
+idleDown
+frames: 2
+frame
+clip: 0 62 65 67
+offset: 31 32
+duration: 0.5
+index: 0
+collisionBox: 23 4 18 57
+frame
+clip: 65 67 65 58
+offset: 30 25
+duration: 0.1
+index: 1
+collisionBox: 23 3 17 51
+idleUp
+frames: 2
+frame
+clip: 0 131 66 63
+offset: 31 27
+duration: 0.5
+index: 0
+collisionBox: 22 3 20 56
+frame
+clip: 66 131 62 61
+offset: 29 26
+duration: 0.1
+index: 1
+collisionBox: 22 3 16 55
+idleRight
+frames: 2
+frame
+clip: 0 0 65 35
+offset: 30 21
+duration: 1
+index: 0
+collisionBox: 8 16 52 9
+frame
+clip: 63 0 65 32
+offset: 31 21
+duration: 0.5
+index: 1
+collisionBox: 12 15 48 9
+idleLeft
+frames: 2
+frame
+clip: 0 35 65 29
+offset: 33 18
+duration: 1
+index: 0
+collisionBox: 5 11 51 10
+frame
+clip: 64 36 63 26
+offset: 33 17
+duration: 0.5
+index: 1
+collisionBox: 6 10 48 11
+up
+frames: 4
+frame
+clip: 142 131 37 62
+offset: 17 26
+duration: 0.1
+index: 0
+collisionBox: 13 4 10 55
+frame
+clip: 204 130 42 64
+offset: 19 27
+duration: 0.1
+index: 1
+collisionBox: 14 7 11 51
+frame
+clip: 269 131 40 64
+offset: 18 26
+duration: 0.1
+index: 2
+collisionBox: 14 4 10 54
+frame
+clip: 333 127 38 70
+offset: 18 30
+duration: 0.1
+index: 3
+collisionBox: 13 9 11 51
+down
+frames: 4
+frame
+clip: 137 65 46 64
+offset: 22 29
+duration: 0.1
+index: 0
+collisionBox: 16 0 15 58
+frame
+clip: 203 65 43 61
+offset: 20 29
+duration: 0.1
+index: 1
+collisionBox: 15 1 12 54
+frame
+clip: 268 62 41 66
+offset: 19 32
+duration: 0.1
+index: 2
+collisionBox: 15 4 11 56
+frame
+clip: 330 66 46 64
+offset: 21 28
+duration: 0.1
+index: 3
+collisionBox: 15 4 14 52
+left
+frames: 4
+frame
+clip: 127 0 64 31
+offset: 31 21
+duration: 0.1
+index: 0
+collisionBox: 10 14 49 11
+frame
+clip: 191 3 62 30
+offset: 31 17
+duration: 0.1
+index: 1
+collisionBox: 11 11 48 11
+frame
+clip: 253 4 66 31
+offset: 33 16
+duration: 0.1
+index: 2
+collisionBox: 11 9 50 13
+frame
+clip: 318 3 65 34
+offset: 32 17
+duration: 0.1
+index: 3
+collisionBox: 10 11 49 12
+right
+frames: 4
+frame
+clip: 130 36 65 27
+offset: 31 17
+duration: 0.1
+index: 0
+collisionBox: 4 9 55 13
+frame
+clip: 192 37 66 27
+offset: 33 15
+duration: 0.1
+index: 1
+collisionBox: 7 10 53 10
+frame
+clip: 258 33 62 31
+offset: 31 20
+duration: 0.1
+index: 2
+collisionBox: 4 14 54 12
+frame
+clip: 321 39 67 28
+offset: 32 14
+duration: 0.1
+index: 3
+collisionBox: 4 5 57 15
+attackLeft
+frames: 5
+frame
+clip: 0 195 65 30
+offset: 30 18
+duration: 0.1
+index: 0
+collisionBox: 8 10 51 12
+frame
+clip: 62 196 66 26
+offset: 31 17
+duration: 0.3
+index: 1
+collisionBox: 13 8 48 11
+frame
+clip: 127 197 63 24
+offset: 32 16
+duration: 0.1
+index: 2
+collisionBox: 10 8 51 13
+hitBox: 1 6 15 16
+damage: 30
+frame
+clip: 190 196 64 29
+offset: 33 17
+duration: 0.1
+index: 3
+collisionBox: 9 8 52 15
+hitBox: 1 13 16 8
+damage: 30
+frame
+clip: 255 196 64 29
+offset: 31 17
+duration: 0.1
+index: 4
+collisionBox: 9 10 52 12
+attackRight
+frames: 5
+frame
+clip: 0 225 66 30
+offset: 33 20
+duration: 0.1
+index: 0
+collisionBox: 7 10 48 14
+frame
+clip: 64 227 61 28
+offset: 34 18
+duration: 0.2
+index: 1
+collisionBox: 5 8 47 12
+frame
+clip: 128 230 67 26
+offset: 32 15
+duration: 0.1
+index: 2
+collisionBox: 6 8 52 11
+hitBox: 50 5 16 16
+damage: 30
+frame
+clip: 194 229 64 25
+offset: 31 16
+duration: 0.1
+index: 3
+collisionBox: 5 10 53 10
+hitBox: 51 11 11 9
+damage: 30
+frame
+clip: 258 231 65 24
+offset: 31 14
+duration: 0.1
+index: 4
+collisionBox: 2 6 55 12
+attackDown
+frames: 5
+frame
+clip: 12 256 41 63
+offset: 19 30
+duration: 0.1
+index: 0
+collisionBox: 13 2 14 48
+frame
+clip: 73 256 46 59
+offset: 22 31
+duration: 0.2
+index: 1
+collisionBox: 15 3 17 47
+frame
+clip: 137 256 47 63
+offset: 22 28
+duration: 0.1
+index: 2
+collisionBox: 14 2 20 56
+hitBox: 9 49 29 12
+damage: 30
+frame
+clip: 203 255 43 66
+offset: 20 31
+duration: 0.1
+index: 3
+collisionBox: 12 3 18 52
+hitBox: 16 51 10 10
+damage: 30
+frame
+clip: 263 253 49 67
+offset: 24 33
+duration: 0.1
+index: 4
+collisionBox: 16 5 17 56
+attackUp
+frames: 5
+frame
+clip: 15 325 35 59
+offset: 16 24
+duration: 0.1
+index: 0
+collisionBox: 8 5 18 52
+frame
+clip: 77 328 36 58
+offset: 18 19
+duration: 0.2
+index: 1
+collisionBox: 13 8 13 45
+frame
+clip: 141 322 37 62
+offset: 18 27
+duration: 0.1
+index: 2
+collisionBox: 11 13 17 46
+hitBox: 5 3 28 12
+damage: 30
+frame
+clip: 207 325 36 59
+offset: 16 24
+duration: 0.1
+index: 3
+collisionBox: 11 11 13 46
+hitBox: 13 0 8 11
+damage: 30
+frame
+clip: 274 323 30 62
+offset: 13 26
+duration: 0.1
+index: 4
+collisionBox: 5 11 18 47
