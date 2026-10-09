@@ -278,7 +278,7 @@
     <ClInclude Include="inc\game\actors\termiteMiner.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\inc\tileson\tileson.hpp">
+    <ClInclude Include="submodules\Vertex2D\inc\tileson\tileson.hpp">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="inc\game\ui\actionMessageUi.h">

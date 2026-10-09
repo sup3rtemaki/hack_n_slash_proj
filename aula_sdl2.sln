@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "engine", "Engine\engine.vcxproj", "{A2B3C4D5-6789-4123-ABCD-EF0123456789}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "engine", "submodules\Vertex2D\engine.vcxproj", "{A2B3C4D5-6789-4123-ABCD-EF0123456789}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aula_sdl2", "aula_sdl2.vcxproj", "{69C407D8-ED75-4323-B461-8C2C8FDF4CFF}"
 EndProject

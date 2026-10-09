@@ -53,7 +53,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <Import Project="$(ProjectDir)Engine\SDL2.props" />
+  <Import Project="$(ProjectDir)submodules\Vertex2D\SDL2.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
@@ -82,12 +82,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
-    <IncludePath>$(ProjectDir)Engine\inc;$(ProjectDir)inc;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)submodules\Vertex2D\inc;$(ProjectDir)inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
-    <IncludePath>$(ProjectDir)Engine\inc;$(ProjectDir)inc;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)submodules\Vertex2D\inc;$(ProjectDir)inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -95,7 +95,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\inc\engine\core;$(ProjectDir)Engine\inc\engine\rendering;$(ProjectDir)Engine\inc\engine\audio;$(ProjectDir)Engine\inc\engine\input;$(ProjectDir)Engine\inc\engine\world;$(ProjectDir)Engine\inc\engine\data;$(ProjectDir)Engine\inc\engine;$(ProjectDir)Engine\inc;$(ProjectDir)inc\game\actors;$(ProjectDir)inc\game\items;$(ProjectDir)inc\game\npcs;$(ProjectDir)inc\game\npcs\bosses;$(ProjectDir)inc\game\npcs\friendlies;$(ProjectDir)inc\game\persistence;$(ProjectDir)inc\game\systems;$(ProjectDir)inc\game\ui;$(ProjectDir)inc\game\ui\menu;$(ProjectDir)inc\game\world;$(ProjectDir)inc\game;$(ProjectDir)inc;$(SDL2IncludeDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)submodules\Vertex2D\inc\engine\core;$(ProjectDir)submodules\Vertex2D\inc\engine\rendering;$(ProjectDir)submodules\Vertex2D\inc\engine\audio;$(ProjectDir)submodules\Vertex2D\inc\engine\input;$(ProjectDir)submodules\Vertex2D\inc\engine\world;$(ProjectDir)submodules\Vertex2D\inc\engine\data;$(ProjectDir)submodules\Vertex2D\inc\engine;$(ProjectDir)submodules\Vertex2D\inc;$(ProjectDir)inc\game\actors;$(ProjectDir)inc\game\items;$(ProjectDir)inc\game\npcs;$(ProjectDir)inc\game\npcs\bosses;$(ProjectDir)inc\game\npcs\friendlies;$(ProjectDir)inc\game\persistence;$(ProjectDir)inc\game\systems;$(ProjectDir)inc\game\ui;$(ProjectDir)inc\game\ui\menu;$(ProjectDir)inc\game\world;$(ProjectDir)inc\game;$(ProjectDir)inc;$(SDL2IncludeDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -113,7 +113,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\inc\engine\core;$(ProjectDir)Engine\inc\engine\rendering;$(ProjectDir)Engine\inc\engine\audio;$(ProjectDir)Engine\inc\engine\input;$(ProjectDir)Engine\inc\engine\world;$(ProjectDir)Engine\inc\engine\data;$(ProjectDir)Engine\inc\engine;$(ProjectDir)Engine\inc;$(ProjectDir)inc\game\actors;$(ProjectDir)inc\game\items;$(ProjectDir)inc\game\npcs;$(ProjectDir)inc\game\npcs\bosses;$(ProjectDir)inc\game\npcs\friendlies;$(ProjectDir)inc\game\persistence;$(ProjectDir)inc\game\systems;$(ProjectDir)inc\game\ui;$(ProjectDir)inc\game\ui\menu;$(ProjectDir)inc\game\world;$(ProjectDir)inc\game;$(ProjectDir)inc;$(SDL2IncludeDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)submodules\Vertex2D\inc\engine\core;$(ProjectDir)submodules\Vertex2D\inc\engine\rendering;$(ProjectDir)submodules\Vertex2D\inc\engine\audio;$(ProjectDir)submodules\Vertex2D\inc\engine\input;$(ProjectDir)submodules\Vertex2D\inc\engine\world;$(ProjectDir)submodules\Vertex2D\inc\engine\data;$(ProjectDir)submodules\Vertex2D\inc\engine;$(ProjectDir)submodules\Vertex2D\inc;$(ProjectDir)inc\game\actors;$(ProjectDir)inc\game\items;$(ProjectDir)inc\game\npcs;$(ProjectDir)inc\game\npcs\bosses;$(ProjectDir)inc\game\npcs\friendlies;$(ProjectDir)inc\game\persistence;$(ProjectDir)inc\game\systems;$(ProjectDir)inc\game\ui;$(ProjectDir)inc\game\ui\menu;$(ProjectDir)inc\game\world;$(ProjectDir)inc\game;$(ProjectDir)inc;$(SDL2IncludeDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -131,7 +131,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\inc\engine\core;$(ProjectDir)Engine\inc\engine\rendering;$(ProjectDir)Engine\inc\engine\audio;$(ProjectDir)Engine\inc\engine\input;$(ProjectDir)Engine\inc\engine\world;$(ProjectDir)Engine\inc\engine\data;$(ProjectDir)Engine\inc\engine;$(ProjectDir)Engine\inc;$(ProjectDir)inc\game\actors;$(ProjectDir)inc\game\items;$(ProjectDir)inc\game\npcs;$(ProjectDir)inc\game\npcs\bosses;$(ProjectDir)inc\game\npcs\friendlies;$(ProjectDir)inc\game\persistence;$(ProjectDir)inc\game\systems;$(ProjectDir)inc\game\ui;$(ProjectDir)inc\game\ui\menu;$(ProjectDir)inc\game\world;$(ProjectDir)inc\game;$(ProjectDir)inc;$(SDL2IncludeDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)submodules\Vertex2D\inc\engine\core;$(ProjectDir)submodules\Vertex2D\inc\engine\rendering;$(ProjectDir)submodules\Vertex2D\inc\engine\audio;$(ProjectDir)submodules\Vertex2D\inc\engine\input;$(ProjectDir)submodules\Vertex2D\inc\engine\world;$(ProjectDir)submodules\Vertex2D\inc\engine\data;$(ProjectDir)submodules\Vertex2D\inc\engine;$(ProjectDir)submodules\Vertex2D\inc;$(ProjectDir)inc\game\actors;$(ProjectDir)inc\game\items;$(ProjectDir)inc\game\npcs;$(ProjectDir)inc\game\npcs\bosses;$(ProjectDir)inc\game\npcs\friendlies;$(ProjectDir)inc\game\persistence;$(ProjectDir)inc\game\systems;$(ProjectDir)inc\game\ui;$(ProjectDir)inc\game\ui\menu;$(ProjectDir)inc\game\world;$(ProjectDir)inc\game;$(ProjectDir)inc;$(SDL2IncludeDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -149,7 +149,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\inc\engine\core;$(ProjectDir)Engine\inc\engine\rendering;$(ProjectDir)Engine\inc\engine\audio;$(ProjectDir)Engine\inc\engine\input;$(ProjectDir)Engine\inc\engine\world;$(ProjectDir)Engine\inc\engine\data;$(ProjectDir)Engine\inc\engine;$(ProjectDir)Engine\inc;$(ProjectDir)inc\game\actors;$(ProjectDir)inc\game\items;$(ProjectDir)inc\game\npcs;$(ProjectDir)inc\game\npcs\bosses;$(ProjectDir)inc\game\npcs\friendlies;$(ProjectDir)inc\game\persistence;$(ProjectDir)inc\game\systems;$(ProjectDir)inc\game\ui;$(ProjectDir)inc\game\ui\menu;$(ProjectDir)inc\game\world;$(ProjectDir)inc\game;$(ProjectDir)inc;$(SDL2IncludeDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)submodules\Vertex2D\inc\engine\core;$(ProjectDir)submodules\Vertex2D\inc\engine\rendering;$(ProjectDir)submodules\Vertex2D\inc\engine\audio;$(ProjectDir)submodules\Vertex2D\inc\engine\input;$(ProjectDir)submodules\Vertex2D\inc\engine\world;$(ProjectDir)submodules\Vertex2D\inc\engine\data;$(ProjectDir)submodules\Vertex2D\inc\engine;$(ProjectDir)submodules\Vertex2D\inc;$(ProjectDir)inc\game\actors;$(ProjectDir)inc\game\items;$(ProjectDir)inc\game\npcs;$(ProjectDir)inc\game\npcs\bosses;$(ProjectDir)inc\game\npcs\friendlies;$(ProjectDir)inc\game\persistence;$(ProjectDir)inc\game\systems;$(ProjectDir)inc\game\ui;$(ProjectDir)inc\game\ui\menu;$(ProjectDir)inc\game\world;$(ProjectDir)inc\game;$(ProjectDir)inc;$(SDL2IncludeDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -247,7 +247,7 @@
     <ClInclude Include="inc\game\items\stoneProjectile.h" />
     <ClInclude Include="inc\game\actors\roundKing.h" />
     <ClInclude Include="inc\game\actors\termiteMiner.h" />
-    <ClInclude Include="Engine\inc\tileson\tileson.hpp" />
+    <ClInclude Include="submodules\Vertex2D\inc\tileson\tileson.hpp" />
     <ClInclude Include="inc\game\ui\actionMessageUi.h" />
     <ClInclude Include="inc\game\ui\essenceCounterUi.h" />
     <ClInclude Include="inc\game\ui\hpBar.h" />
@@ -263,7 +263,7 @@
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Engine\engine.vcxproj">
+    <ProjectReference Include="submodules\Vertex2D\engine.vcxproj">
       <Project>{a2b3c4d5-6789-4123-abcd-ef0123456789}</Project>
     </ProjectReference>
   </ItemGroup>

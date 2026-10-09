@@ -1,6 +1,6 @@
 [submodule "submodules/ant_hero_tiled_project"]
 	path = submodules/ant_hero_tiled_project
 	url = https://github.com/sup3rtemaki/ant_hero_tiled_project
-[submodule "Engine"]
-	path = Engine
+[submodule "Vertex2D"]
+	path = submodules/Vertex2D
 	url = https://github.com/sup3rtemaki/Vertex2D.git
